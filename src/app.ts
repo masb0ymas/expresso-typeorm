@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import compression from 'compression'
 import winstonLogger, { winstonStream } from 'config/Logger'
 import Cors from 'cors'
 import Express, { Application, NextFunction, Request, Response } from 'express'
 import Helmet from 'helmet'
+import hpp from 'hpp'
 import createError from 'http-errors'
+import ExpressErrorResponse from 'middlewares/ExpressErrorResponse'
 import Logger from 'morgan'
 import path from 'path'
 import Routes from 'routes'
@@ -26,6 +28,8 @@ class App {
     this.application.use(Express.urlencoded({ extended: true }))
     this.application.use(Express.json())
     this.application.use(Express.static(path.resolve(`${__dirname}/../public`)))
+    this.application.use(hpp())
+    this.application.use(compression())
   }
 
   private routes(): void {
@@ -33,6 +37,8 @@ class App {
   }
 
   public run(): void {
+    this.application.use(ExpressErrorResponse)
+
     // Catch 404 and forward to error handler
     this.application.use(function (
       req: Request,
