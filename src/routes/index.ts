@@ -34,11 +34,4 @@ route.get('/v1', function (req: Request, res: Response) {
   )
 })
 
-/* Not Found */
-route.get('*', function (req: Request, res: Response) {
-  throw new ResponseError.NotFound(
-    `Sorry, endpoint: ${req.url} HTTP resource you are looking for was not found.`
-  )
-})
-
 export default route

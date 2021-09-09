@@ -1,6 +1,6 @@
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { NextFunction, Request, Response } from 'express'
-import { isObject } from 'lodash'
+import _ from 'lodash'
 
 function generateErrorResponseError(
   e: Error,
@@ -11,7 +11,7 @@ function generateErrorResponseError(
       code: Number
       message: string
     } {
-  return isObject(e.message) ? e.message : { code, message: e.message }
+  return _.isObject(e.message) ? e.message : { code, message: e.message }
 }
 
 async function ExpressErrorResponse(

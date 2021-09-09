@@ -1,10 +1,10 @@
+import ResponseError from '@expresso/modules/Response/ResponseError'
 import compression from 'compression'
 import winstonLogger, { winstonStream } from 'config/Logger'
 import Cors from 'cors'
-import Express, { Application, NextFunction, Request, Response } from 'express'
+import Express, { Application, Request, Response } from 'express'
 import Helmet from 'helmet'
 import hpp from 'hpp'
-import createError from 'http-errors'
 import ExpressErrorResponse from 'middlewares/ExpressErrorResponse'
 import Logger from 'morgan'
 import path from 'path'
@@ -34,19 +34,17 @@ class App {
 
   private routes(): void {
     this.application.use(Routes)
+
+    // Catch error 404 endpoint not found
+    this.application.use('*', function (req: Request, res: Response) {
+      throw new ResponseError.NotFound(
+        `Sorry, endpoint: ${req.url} HTTP resource you are looking for was not found.`
+      )
+    })
   }
 
   public run(): void {
     this.application.use(ExpressErrorResponse)
-
-    // Catch 404 and forward to error handler
-    this.application.use(function (
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ) {
-      next(createError(404))
-    })
 
     // Error handler
     this.application.use(function (err: any, req: Request, res: Response) {
