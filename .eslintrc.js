@@ -33,6 +33,7 @@ module.exports = {
       },
     ],
     'no-useless-constructor': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/no-extraneous-class': 'off',
     'node/no-path-concat': 'off',
