@@ -2,7 +2,7 @@ import asyncHandler from '@expresso/helpers/asyncHandler'
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
 import { Request, Response } from 'express'
 import RoleService from './service'
-import route from 'routes/v1'
+import route from '@routes/v1'
 
 route.get(
   '/role',

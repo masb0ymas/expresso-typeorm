@@ -1,8 +1,8 @@
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
 import ResponseError from '@expresso/modules/Response/ResponseError'
-import { BASE_URL_SERVER } from 'config/BaseURL'
+import { BASE_URL_SERVER } from '@config/BaseURL'
 import Express, { Request, Response } from 'express'
-import v1Route from 'routes/v1'
+import v1Route from '@routes/v1'
 
 const { NODE_ENV } = process.env
 const route = Express.Router()

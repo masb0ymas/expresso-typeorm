@@ -37,6 +37,7 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/no-extraneous-class': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
     'node/no-path-concat': 'off',
   },
   env: {

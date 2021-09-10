@@ -1,14 +1,14 @@
+import winstonLogger, { winstonStream } from '@config/Logger'
 import ResponseError from '@expresso/modules/Response/ResponseError'
+import ExpressErrorResponse from '@middlewares/ExpressErrorResponse'
+import Routes from '@routes/index'
 import compression from 'compression'
-import winstonLogger, { winstonStream } from 'config/Logger'
 import Cors from 'cors'
 import Express, { Application, Request, Response } from 'express'
 import Helmet from 'helmet'
 import hpp from 'hpp'
-import ExpressErrorResponse from 'middlewares/ExpressErrorResponse'
 import Logger from 'morgan'
 import path from 'path'
-import Routes from 'routes'
 
 class App {
   private readonly application: Application
