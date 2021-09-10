@@ -35,6 +35,20 @@ class RoleService {
 
     return data
   }
+
+  public static async updated(id: string, formData: RolePost): Promise<Role> {
+    const roleRepository = getRepository(Role)
+    const data = await this.getOne(id)
+
+    const value = useValidation(roleSchema.create, {
+      ...data,
+      ...formData,
+    })
+
+    await roleRepository.update(id, value)
+
+    return data
+  }
 }
 
 export default RoleService

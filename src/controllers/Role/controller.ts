@@ -36,3 +36,16 @@ route.post(
     return res.status(201).json(httpResponse)
   })
 )
+
+route.put(
+  '/role/:id',
+  asyncHandler(async function created(req: Request, res: Response) {
+    const { id } = req.params
+    const formData = req.body
+
+    const data = await RoleService.updated(id, formData)
+
+    const httpResponse = HttpResponse.updated({ data })
+    return res.status(201).json(httpResponse)
+  })
+)
