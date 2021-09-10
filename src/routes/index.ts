@@ -2,6 +2,7 @@ import HttpResponse from '@expresso/modules/Response/HttpResponse'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { BASE_URL_SERVER } from 'config/BaseURL'
 import Express, { Request, Response } from 'express'
+import v1Route from 'routes/v1'
 
 const { NODE_ENV } = process.env
 const route = Express.Router()
@@ -23,9 +24,11 @@ route.get('/', function (req: Request, res: Response) {
     }
   }
 
-  const buildResponse = HttpResponse.get(responseData)
-  return res.json(buildResponse)
+  const httpResponse = HttpResponse.get(responseData)
+  return res.json(httpResponse)
 })
+
+route.use('/v1', v1Route)
 
 /* Forbidden Page. */
 route.get('/v1', function (req: Request, res: Response) {
