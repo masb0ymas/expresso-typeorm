@@ -16,9 +16,18 @@ const dbConfig: ConnectionOptions = {
   timezone: process.env.TYPEORM_TIMEZONE ?? '+07:00',
   synchronize: validateBoolean(process.env.TYPEORM_SYNCHRONIZE) ?? true,
   logging: validateBoolean(process.env.TYPEORM_LOGGING) ?? false,
-  entities: [path.resolve(`${__dirname}/../entity/**/*.ts`)],
-  migrations: [path.resolve(`${__dirname}/../migration/**/*.ts`)],
-  subscribers: [path.resolve(`${__dirname}/../subscriber/**/*.ts`)],
+  entities: [
+    path.resolve(`${__dirname}/../entity/**/*.ts`),
+    path.resolve(`${__dirname}/../entity/**/*.js`),
+  ],
+  migrations: [
+    path.resolve(`${__dirname}/../migration/**/*.ts`),
+    path.resolve(`${__dirname}/../migration/**/*.js`),
+  ],
+  subscribers: [
+    path.resolve(`${__dirname}/../subscriber/**/*.ts`),
+    path.resolve(`${__dirname}/../subscriber/**/*.js`),
+  ],
   cli: {
     entitiesDir: path.resolve(`${__dirname}/../entity`),
     migrationsDir: path.resolve(`${__dirname}/../migration`),
