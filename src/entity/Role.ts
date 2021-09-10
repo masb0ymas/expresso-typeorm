@@ -6,6 +6,15 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
+interface RoleAttributes {
+  id?: string
+  name: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type RolePost = Pick<RoleAttributes, 'name'>
+
 @Entity()
 export class Role {
   @PrimaryGeneratedColumn('uuid')

@@ -14,6 +14,17 @@ route.get(
   })
 )
 
+route.get(
+  '/role/:id',
+  asyncHandler(async function getOne(req: Request, res: Response) {
+    const { id } = req.params
+    const data = await RoleService.getOne(id)
+
+    const httpResponse = HttpResponse.get({ data })
+    return res.status(200).json(httpResponse)
+  })
+)
+
 route.post(
   '/role',
   asyncHandler(async function created(req: Request, res: Response) {
