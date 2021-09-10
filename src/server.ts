@@ -1,16 +1,16 @@
-/* eslint-disable import/first */
-/* eslint-disable @typescript-eslint/no-var-requires */
-require('@babel/register')({ extensions: ['.js', '.ts'] })
+import 'module-alias/register'
+import './pathAlias'
 
 import 'reflect-metadata'
+import dbConfig from './config/Database'
 import { createConnection } from 'typeorm'
 import App from './app'
 
 const Server = new App()
 
 // connect to database
-createConnection()
-  .then(() => {
+createConnection(dbConfig)
+  .then((connection) => {
     console.log('Connection has been established successfully.')
   })
   .catch((err) => {

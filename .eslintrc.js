@@ -33,6 +33,7 @@ module.exports = {
       },
     ],
     'no-useless-constructor': 'off',
+    '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/no-extraneous-class': 'off',
@@ -50,10 +51,10 @@ module.exports = {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     'import/resolver': {
+      alias: true,
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
-      'babel-module': {},
     },
   },
 }
