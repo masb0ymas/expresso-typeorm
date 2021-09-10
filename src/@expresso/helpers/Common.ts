@@ -1,3 +1,23 @@
+const invalidValues = [
+  null,
+  undefined,
+  '',
+  false,
+  0,
+  'false',
+  '0',
+  'null',
+  'undefined',
+]
+
+function validateBoolean(value: string | boolean | number | any): boolean {
+  if (invalidValues.includes(value)) {
+    return false
+  }
+
+  return true
+}
+
 function normalizePort(value: string): number | string | boolean {
   const port = parseInt(value, 10)
 
@@ -14,4 +34,4 @@ function normalizePort(value: string): number | string | boolean {
   return false
 }
 
-export { normalizePort }
+export { normalizePort, validateBoolean }
