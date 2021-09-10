@@ -6,7 +6,8 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const dbConfig: ConnectionOptions = {
-  type: 'mysql',
+  // @ts-expect-error
+  type: process.env.TYPEORM_CONNECTION ?? 'mysql',
   host: process.env.TYPEORM_HOST ?? '127.0.0.1',
   port: Number(process.env.TYPEORM_PORT) ?? 3306,
   username: process.env.TYPEORM_USERNAME ?? 'test',
