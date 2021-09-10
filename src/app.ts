@@ -1,10 +1,14 @@
 import winstonLogger, { winstonStream } from '@config/Logger'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import ExpressErrorResponse from '@middlewares/ExpressErrorResponse'
+import ExpressErrorYup from '@middlewares/ExpressErrorYup'
+import ExpressRateLimit from '@middlewares/ExpressRateLimit'
 import Routes from '@routes/index'
 import compression from 'compression'
+import cookieParser from 'cookie-parser'
 import Cors from 'cors'
 import Express, { Application, Request, Response } from 'express'
+import UserAgent from 'express-useragent'
 import Helmet from 'helmet'
 import hpp from 'hpp'
 import Logger from 'morgan'
@@ -26,10 +30,15 @@ class App {
     this.application.use(Cors())
     this.application.use(Logger('combined', { stream: winstonStream }))
     this.application.use(Express.urlencoded({ extended: true }))
-    this.application.use(Express.json())
+    this.application.use(
+      Express.json({ limit: '200mb', type: 'application/json' })
+    )
+    this.application.use(cookieParser())
+    this.application.use(compression())
     this.application.use(Express.static(path.resolve(`${__dirname}/../public`)))
     this.application.use(hpp())
-    this.application.use(compression())
+    this.application.use(UserAgent.express())
+    this.application.use(ExpressRateLimit)
   }
 
   private routes(): void {
@@ -44,6 +53,7 @@ class App {
   }
 
   public run(): void {
+    this.application.use(ExpressErrorYup)
     this.application.use(ExpressErrorResponse)
 
     // Error handler
@@ -54,7 +64,6 @@ class App {
 
       // Add this line to include winston logging
       winstonLogger.error(
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
           req.method
         } - ${req.ip}`
