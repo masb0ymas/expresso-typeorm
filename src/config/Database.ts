@@ -5,6 +5,8 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+const NODE_ENV = process.env.NODE_ENV ?? 'development'
+
 const dbConfig: ConnectionOptions = {
   // @ts-expect-error
   type: process.env.TYPEORM_CONNECTION ?? 'mysql',
@@ -17,16 +19,19 @@ const dbConfig: ConnectionOptions = {
   synchronize: validateBoolean(process.env.TYPEORM_SYNCHRONIZE) ?? true,
   logging: validateBoolean(process.env.TYPEORM_LOGGING) ?? false,
   entities: [
-    path.resolve(`${__dirname}/../entity/**/*.ts`),
-    path.resolve(`${__dirname}/../entity/**/*.js`),
+    NODE_ENV === 'development'
+      ? path.resolve(`${__dirname}/../entity/**/*.ts`)
+      : path.resolve(`${__dirname}/../entity/**/*.js`),
   ],
   migrations: [
-    path.resolve(`${__dirname}/../migration/**/*.ts`),
-    path.resolve(`${__dirname}/../migration/**/*.js`),
+    NODE_ENV === 'development'
+      ? path.resolve(`${__dirname}/../migration/**/*.ts`)
+      : path.resolve(`${__dirname}/../migration/**/*.js`),
   ],
   subscribers: [
-    path.resolve(`${__dirname}/../subscriber/**/*.ts`),
-    path.resolve(`${__dirname}/../subscriber/**/*.js`),
+    NODE_ENV === 'development'
+      ? path.resolve(`${__dirname}/../subscriber/**/*.ts`)
+      : path.resolve(`${__dirname}/../subscriber/**/*.js`),
   ],
   cli: {
     entitiesDir: path.resolve(`${__dirname}/../entity`),
