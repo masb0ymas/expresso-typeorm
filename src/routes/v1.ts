@@ -5,3 +5,4 @@ const route = Express.Router()
 export default route
 
 require('@controllers/Role/controller')
+require('@controllers/Session/controller')
