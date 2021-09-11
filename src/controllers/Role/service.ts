@@ -1,15 +1,30 @@
 import { Role, RolePost } from '@entity/Role'
 import useValidation from '@expresso/hooks/useValidation'
 import ResponseError from '@expresso/modules/Response/ResponseError'
+import { Request } from 'express'
 import 'reflect-metadata'
 import { getRepository } from 'typeorm'
 import roleSchema from './schema'
 
-class RoleService {
-  public static async getAll(): Promise<Role[]> {
-    const data = await getRepository(Role).find()
+interface RolePaginate {
+  data: Role[]
+  total: number
+}
 
-    return data
+class RoleService {
+  public static async getAll(req: Request): Promise<RolePaginate> {
+    const page = Number(req.query.page) || 1
+    const pageSize = Number(req.query.pageSize) || 10
+
+    const data = await getRepository(Role)
+      .createQueryBuilder()
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getMany()
+
+    const total = await getRepository(Role).createQueryBuilder().getCount()
+
+    return { data, total }
   }
 
   public static async getOne(id: string): Promise<Role> {
@@ -45,9 +60,17 @@ class RoleService {
       ...formData,
     })
 
-    await roleRepository.update(id, value)
+    const newData = await roleRepository.save({ ...data, ...value })
 
-    return data
+    return newData
+  }
+
+  public static async deleted(id: string): Promise<void> {
+    const roleRepository = getRepository(Role)
+    const data = await this.getOne(id)
+    console.log({ data })
+
+    await roleRepository.delete(id)
   }
 }
 

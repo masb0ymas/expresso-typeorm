@@ -7,9 +7,9 @@ import route from '@routes/v1'
 route.get(
   '/role',
   asyncHandler(async function getAll(req: Request, res: Response) {
-    const data = await RoleService.getAll()
+    const data = await RoleService.getAll(req)
 
-    const httpResponse = HttpResponse.get({ data })
+    const httpResponse = HttpResponse.get(data)
     return res.status(200).json(httpResponse)
   })
 )
@@ -46,6 +46,18 @@ route.put(
     const data = await RoleService.updated(id, formData)
 
     const httpResponse = HttpResponse.updated({ data })
-    return res.status(201).json(httpResponse)
+    return res.status(200).json(httpResponse)
+  })
+)
+
+route.delete(
+  '/role/:id',
+  asyncHandler(async function created(req: Request, res: Response) {
+    const { id } = req.params
+
+    await RoleService.deleted(id)
+
+    const httpResponse = HttpResponse.deleted({})
+    return res.status(200).json(httpResponse)
   })
 )
