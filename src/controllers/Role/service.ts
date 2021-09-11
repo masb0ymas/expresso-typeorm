@@ -13,22 +13,25 @@ interface RolePaginate {
 
 class RoleService {
   public static async getAll(req: Request): Promise<RolePaginate> {
+    const roleRepository = getRepository(Role)
+
     const page = Number(req.query.page) || 1
     const pageSize = Number(req.query.pageSize) || 10
 
-    const data = await getRepository(Role)
+    const data = await roleRepository
       .createQueryBuilder()
       .skip((page - 1) * pageSize)
       .take(pageSize)
       .getMany()
 
-    const total = await getRepository(Role).createQueryBuilder().getCount()
+    const total = await roleRepository.createQueryBuilder().getCount()
 
     return { data, total }
   }
 
   public static async getOne(id: string): Promise<Role> {
-    const data = await getRepository(Role).findOne(id)
+    const roleRepository = getRepository(Role)
+    const data = await roleRepository.findOne(id)
 
     if (!data) {
       throw new ResponseError.NotFound(
@@ -41,14 +44,12 @@ class RoleService {
 
   public static async created(formData: RolePost): Promise<Role> {
     const roleRepository = getRepository(Role)
+    const data = new Role()
 
     const value = useValidation(roleSchema.create, formData)
+    const newData = await roleRepository.save({ ...data, ...value })
 
-    const data = new Role()
-    data.name = value.name
-    await roleRepository.save(data)
-
-    return data
+    return newData
   }
 
   public static async updated(id: string, formData: RolePost): Promise<Role> {
