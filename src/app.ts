@@ -1,18 +1,25 @@
 import winstonLogger, { winstonStream } from '@config/Logger'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import ExpressErrorResponse from '@middlewares/ExpressErrorResponse'
+import ExpressErrorTypeOrm from '@middlewares/ExpressErrorTypeOrm'
 import ExpressErrorYup from '@middlewares/ExpressErrorYup'
 import ExpressRateLimit from '@middlewares/ExpressRateLimit'
 import Routes from '@routes/index'
+import chalk from 'chalk'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import Cors from 'cors'
+import dotenv from 'dotenv'
 import Express, { Application, Request, Response } from 'express'
 import UserAgent from 'express-useragent'
 import Helmet from 'helmet'
 import hpp from 'hpp'
 import Logger from 'morgan'
 import path from 'path'
+
+dotenv.config()
+
+const NODE_ENV = process.env.NODE_ENV ?? 'development'
 
 class App {
   private readonly application: Application
@@ -54,6 +61,7 @@ class App {
 
   public run(): void {
     this.application.use(ExpressErrorYup)
+    this.application.use(ExpressErrorTypeOrm)
     this.application.use(ExpressErrorResponse)
 
     // Error handler
@@ -76,7 +84,8 @@ class App {
 
     // Run listener
     this.application.listen(this.port, () => {
-      console.log(`Server listening on http://localhost:${this.port}`)
+      const host = chalk.cyan(`http://localhost:${this.port}`)
+      console.log(`Server listening on ${host} & Env: ${chalk.blue(NODE_ENV)}`)
     })
   }
 }
