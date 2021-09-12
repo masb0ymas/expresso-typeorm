@@ -1,11 +1,15 @@
+import * as bcrypt from 'bcrypt'
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
   Unique,
+  UpdateDateColumn,
 } from 'typeorm'
+import { Role } from './Role'
 
 interface UserAttributes {
   id?: string
@@ -61,12 +65,17 @@ export class User {
   @Column('boolean', { default: false })
   isBlocked: boolean
 
-  @Column('uuid')
-  RoleId: string
+  @OneToOne(() => Role, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'RoleId' })
+  role: Role
 
   @CreateDateColumn()
   createdAt: Date
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  async comparePassword(currentPassword: string): Promise<boolean> {
+    return await bcrypt.compare(currentPassword, this.password)
+  }
 }
