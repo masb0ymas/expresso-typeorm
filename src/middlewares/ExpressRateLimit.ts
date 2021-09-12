@@ -3,6 +3,7 @@ import redisClient from '@config/redisClient'
 import dotenv from 'dotenv'
 import { NextFunction, Request, Response } from 'express'
 import { RateLimiterRedis } from 'rate-limiter-flexible'
+import chalk from 'chalk'
 
 dotenv.config()
 
@@ -25,7 +26,10 @@ async function ExpressRateLimit(
     await rateLimiter.consume(req.ip)
     return next()
   } catch (err) {
-    return res.status(429).json({ code: 429, message: 'Too Many Requests' })
+    const errMessage = 'Too Many Requests'
+    console.log(chalk.red('Limit Request Error:'), chalk.green(errMessage))
+
+    return res.status(429).json({ code: 429, message: errMessage })
   }
 }
 
