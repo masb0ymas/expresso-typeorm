@@ -15,3 +15,15 @@ route.post(
     return res.status(200).json(httpResponse)
   })
 )
+
+route.post(
+  '/auth/sign-in',
+  asyncHandler(async function signIn(req: Request, res: Response) {
+    const formData = req.body
+
+    const data = await AuthService.signIn(formData)
+
+    const httpResponse = HttpResponse.get(data)
+    return res.status(200).json(httpResponse)
+  })
+)
