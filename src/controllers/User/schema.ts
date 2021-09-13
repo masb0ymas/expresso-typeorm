@@ -14,18 +14,30 @@ const createPassword = yup
   })
   .required()
 
+const create = yup.object().shape({
+  firstName: yup.string().required('first name is required'),
+  lastName: yup.string().required('last name is required'),
+  email: yup.string().email('invalid email').required('email is required'),
+  phone: yup.string(),
+  RoleId: yup.string().required('role is required'),
+})
+
 const register = yup
   .object()
   .shape({
     ...createPassword.fields,
-    firstName: yup.string().required('first name is required'),
-    lastName: yup.string().required('last name is required'),
-    email: yup.string().email('invalid email').required('email is required'),
-    phone: yup.string(),
-    RoleId: yup.string().required('role is required'),
+    ...create.fields,
   })
   .required()
 
-const userSchema = { createPassword, register }
+const login = yup
+  .object()
+  .shape({
+    email: yup.string().email('invalid email').required('email is required'),
+    password: yup.string().required('password is required'),
+  })
+  .required()
+
+const userSchema = { createPassword, create, register, login }
 
 export default userSchema
