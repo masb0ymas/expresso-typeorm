@@ -4,7 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -36,6 +36,8 @@ export type CreatePassword = Pick<
   'newPassword' | 'confirmNewPassword'
 >
 
+export type LoginAttributes = Pick<UserAttributes, 'email' | 'password'>
+
 export type UserPost = Omit<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>
 
 @Entity()
@@ -53,7 +55,7 @@ export class User {
   @Column()
   email: string
 
-  @Column()
+  @Column({ select: false })
   password: string
 
   @Column('char', { length: 20, nullable: true })
@@ -65,9 +67,12 @@ export class User {
   @Column('boolean', { default: false })
   isBlocked: boolean
 
-  @OneToOne(() => Role, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
+  @ManyToOne(() => Role, (role) => role)
   @JoinColumn({ name: 'RoleId' })
   role: Role
+
+  @Column('uuid')
+  RoleId: string
 
   @CreateDateColumn()
   createdAt: Date
@@ -76,6 +81,8 @@ export class User {
   updatedAt: Date
 
   async comparePassword(currentPassword: string): Promise<boolean> {
+    console.log({ currentPassword }, this.password)
+
     return await bcrypt.compare(currentPassword, this.password)
   }
 }
