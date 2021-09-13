@@ -24,6 +24,14 @@ route.post(
     const data = await AuthService.signIn(formData)
 
     const httpResponse = HttpResponse.get(data)
-    return res.status(200).json(httpResponse)
+    return res
+      .status(200)
+      .cookie('token', data.accessToken, {
+        maxAge: Number(data.expiresIn) * 1000,
+        httpOnly: true,
+        path: '/v1',
+        secure: process.env.NODE_ENV === 'production',
+      })
+      .json(httpResponse)
   })
 )
