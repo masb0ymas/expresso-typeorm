@@ -81,8 +81,6 @@ export class User {
   updatedAt: Date
 
   async comparePassword(currentPassword: string): Promise<boolean> {
-    console.log({ currentPassword }, this.password)
-
     return await bcrypt.compare(currentPassword, this.password)
   }
 }
