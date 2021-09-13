@@ -1,4 +1,5 @@
 import winstonLogger, { winstonStream } from '@config/Logger'
+import withState from '@expresso/helpers/withState'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import ExpressErrorResponse from '@middlewares/ExpressErrorResponse'
 import ExpressErrorTypeOrm from '@middlewares/ExpressErrorTypeOrm'
@@ -10,7 +11,7 @@ import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import Cors from 'cors'
 import dotenv from 'dotenv'
-import Express, { Application, Request, Response } from 'express'
+import Express, { Application, NextFunction, Request, Response } from 'express'
 import UserAgent from 'express-useragent'
 import Helmet from 'helmet'
 import hpp from 'hpp'
@@ -46,6 +47,14 @@ class App {
     this.application.use(hpp())
     this.application.use(UserAgent.express())
     this.application.use(ExpressRateLimit)
+    this.application.use(function (
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ) {
+      new withState(req)
+      next()
+    })
   }
 
   private routes(): void {
