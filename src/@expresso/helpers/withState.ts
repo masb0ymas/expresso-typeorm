@@ -13,6 +13,7 @@ class withState {
     this.req.getCookies = this.getCookies.bind(this)
     this.req.getHeaders = this.getHeaders.bind(this)
     this.req.getQuery = this.getQuery.bind(this)
+    this.req.getQueryPolluted = this.getQueryPolluted.bind(this)
     this.req.getParams = this.getParams.bind(this)
     this.req.getBody = this.getBody.bind(this)
   }
@@ -49,6 +50,11 @@ class withState {
 
   getQuery(path?: any, defaultValue?: any): any {
     return _.get(this.req.query, path, defaultValue)
+  }
+
+  getQueryPolluted(path?: any, defaultValue?: any): any {
+    // @ts-expect-error
+    return _.get(this.req.queryPolluted, path, defaultValue)
   }
 
   getParams(path?: any, defaultValue?: any): any {
