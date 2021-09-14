@@ -37,6 +37,7 @@
       "@middlewares/*": ["middlewares/*"],
       "@migration/*": ["migration/*"],
       "@routes/*": ["routes/*"],
+      "@seeds/*": ["seeds/*"],
       "@utils/*": ["utils/*"],
       "@views/*": ["views/*"],
     },                                                   /* Specify a set of entries that re-map imports to additional lookup locations. */
