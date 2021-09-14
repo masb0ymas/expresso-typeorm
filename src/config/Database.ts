@@ -5,7 +5,9 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const NODE_ENV = process.env.NODE_ENV ?? 'development'
+function pathResolve(_path: string): string {
+  return path.resolve(`${__dirname}/../${_path}`)
+}
 
 const dbConfig: ConnectionOptions = {
   // @ts-expect-error
@@ -18,25 +20,13 @@ const dbConfig: ConnectionOptions = {
   timezone: process.env.TYPEORM_TIMEZONE ?? '+07:00',
   synchronize: validateBoolean(process.env.TYPEORM_SYNCHRONIZE) ?? true,
   logging: validateBoolean(process.env.TYPEORM_LOGGING) ?? false,
-  entities: [
-    NODE_ENV === 'development'
-      ? path.resolve(`${__dirname}/../entity/**/*.ts`)
-      : path.resolve(`${__dirname}/../entity/**/*.js`),
-  ],
-  migrations: [
-    NODE_ENV === 'development'
-      ? path.resolve(`${__dirname}/../migration/**/*.ts`)
-      : path.resolve(`${__dirname}/../migration/**/*.js`),
-  ],
-  subscribers: [
-    NODE_ENV === 'development'
-      ? path.resolve(`${__dirname}/../subscriber/**/*.ts`)
-      : path.resolve(`${__dirname}/../subscriber/**/*.js`),
-  ],
+  entities: [pathResolve(`entity/**/*{.ts,.js}`)],
+  migrations: [pathResolve(`migration/**/*{.ts,.js}`)],
+  subscribers: [pathResolve(`subscriber/**/*{.ts,.js}`)],
   cli: {
-    entitiesDir: path.resolve(`${__dirname}/../entity`),
-    migrationsDir: path.resolve(`${__dirname}/../migration`),
-    subscribersDir: path.resolve(`${__dirname}/../subscriber`),
+    entitiesDir: pathResolve('entity'),
+    migrationsDir: pathResolve('migration'),
+    subscribersDir: pathResolve('subscriber'),
   },
 }
 
