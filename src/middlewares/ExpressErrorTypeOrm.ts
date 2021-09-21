@@ -13,7 +13,8 @@ async function ExpressErrorTypeOrm(
   next: NextFunction
 ): Promise<Response<any, Record<string, any>> | undefined> {
   if (err instanceof QueryFailedError) {
-    console.log(`${chalk.red('TypeORM Error:')} ${chalk.green(err.message)}`)
+    const errType = 'TypeORM Error:'
+    console.log(`${chalk.red(errType)} ${chalk.green(err.message)}`)
 
     return res.status(400).json({
       code: 400,

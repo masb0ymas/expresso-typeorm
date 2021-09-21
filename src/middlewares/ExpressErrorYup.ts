@@ -9,8 +9,9 @@ async function ExpressErrorYup(
   next: NextFunction
 ): Promise<Response<any, Record<string, any>> | undefined> {
   if (err instanceof ValidationError) {
+    const errType = 'Yup Validation Error:'
     const errMessage = err.errors.join('<br/>') || 'Yup Validation Error !'
-    console.log(chalk.red('Yup Validation Error:'), chalk.green(errMessage))
+    console.log(chalk.red(errType), chalk.green(errMessage))
 
     const error = {
       code: 422,

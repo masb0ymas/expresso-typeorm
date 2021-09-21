@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
-import redisClient from '@config/redisClient'
+import clientRedis from '@config/clientRedis'
+import chalk from 'chalk'
 import dotenv from 'dotenv'
 import { NextFunction, Request, Response } from 'express'
 import { RateLimiterRedis } from 'rate-limiter-flexible'
-import chalk from 'chalk'
 
 dotenv.config()
 
@@ -11,7 +11,7 @@ const RATE_LIMIT = Number(process.env.RATE_LIMIT) || 50
 
 // Rate Limit Request
 const rateLimiter = new RateLimiterRedis({
-  storeClient: redisClient,
+  storeClient: clientRedis,
   keyPrefix: 'middleware',
   points: RATE_LIMIT, // 10 requests
   duration: 1, // per 1 second by IP
@@ -26,8 +26,9 @@ async function ExpressRateLimit(
     await rateLimiter.consume(req.ip)
     return next()
   } catch (err) {
+    const errType = 'Limit Request Error:'
     const errMessage = 'Too Many Requests'
-    console.log(chalk.red('Limit Request Error:'), chalk.green(errMessage))
+    console.log(chalk.red(errType), chalk.green(errMessage))
 
     return res.status(429).json({ code: 429, message: errMessage })
   }
