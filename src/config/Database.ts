@@ -20,7 +20,9 @@ const dbConfig: ConnectionOptions = {
   timezone: process.env.TYPEORM_TIMEZONE ?? '+07:00',
   synchronize: validateBoolean(process.env.TYPEORM_SYNCHRONIZE) ?? true,
   logging: validateBoolean(process.env.TYPEORM_LOGGING) ?? false,
-  entities: [pathResolve(`entity/**/*{.ts,.js}`)],
+  entities: [
+    process.env.TYPEORM_ENTITIES ?? pathResolve(`entity/**/*{.ts,.js}`),
+  ],
   migrations: [pathResolve(`migration/**/*{.ts,.js}`)],
   subscribers: [pathResolve(`subscriber/**/*{.ts,.js}`)],
   cli: {
