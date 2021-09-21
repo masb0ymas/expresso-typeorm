@@ -20,8 +20,8 @@ interface UserAttributes {
   confirmNewPassword?: string | null
   password: string
   phone: string | null
-  isActive?: boolean
-  isBlocked?: boolean
+  isActive?: boolean | null
+  isBlocked?: boolean | null
   RoleId: string
   createdAt: Date
   updatedAt: Date
