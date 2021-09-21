@@ -1,6 +1,7 @@
 import winstonLogger, { winstonStream } from '@config/Logger'
 import withState from '@expresso/helpers/withState'
 import ResponseError from '@expresso/modules/Response/ResponseError'
+import { optionsSwaggerUI, swaggerSpec } from '@expresso/utils/DocsSwagger'
 import ExpressErrorResponse from '@middlewares/ExpressErrorResponse'
 import ExpressErrorTypeOrm from '@middlewares/ExpressErrorTypeOrm'
 import ExpressErrorYup from '@middlewares/ExpressErrorYup'
@@ -17,6 +18,7 @@ import Helmet from 'helmet'
 import hpp from 'hpp'
 import Logger from 'morgan'
 import path from 'path'
+import swaggerUI from 'swagger-ui-express'
 
 dotenv.config()
 
@@ -31,6 +33,12 @@ class App {
     this.port = APP_PORT
     this.application = Express()
     this.plugins()
+
+    // docs swagger disable for production mode
+    if (NODE_ENV !== 'production') {
+      this.docsSwagger()
+    }
+
     this.routes()
   }
 
@@ -56,6 +64,19 @@ class App {
       new withState(req)
       next()
     })
+  }
+
+  private docsSwagger(): void {
+    this.application.get('/v1/api-docs.json', (req: Request, res: Response) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(swaggerSpec)
+    })
+
+    this.application.use('/v1/api-docs', swaggerUI.serve)
+    this.application.get(
+      '/v1/api-docs',
+      swaggerUI.setup(swaggerSpec, optionsSwaggerUI)
+    )
   }
 
   private routes(): void {
