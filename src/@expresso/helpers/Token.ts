@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import dotenv from 'dotenv'
 import { Request } from 'express'
 import { IncomingHttpHeaders } from 'http'
@@ -31,6 +32,11 @@ type DtoVerifyAccessToken =
     }
   | undefined
 
+/**
+ *
+ * @param payload
+ * @returns
+ */
 function generateAccessToken(payload: any): PayloadAccessToken {
   const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000
 
@@ -43,6 +49,11 @@ function generateAccessToken(payload: any): PayloadAccessToken {
   return { accessToken, expiresIn }
 }
 
+/**
+ *
+ * @param headers
+ * @returns
+ */
 function getToken(headers: IncomingHttpHeaders): string | null | any {
   if (headers?.authorization) {
     const parted = headers.authorization.split(' ')
@@ -60,6 +71,11 @@ function getToken(headers: IncomingHttpHeaders): string | null | any {
   return null
 }
 
+/**
+ *
+ * @param req
+ * @returns
+ */
 function currentToken(req: Request): string {
   const getCookie = req.getCookies()
   const getHeaders = req.getHeaders()
@@ -75,6 +91,11 @@ function currentToken(req: Request): string {
   return curToken
 }
 
+/**
+ *
+ * @param token
+ * @returns
+ */
 function verifyAccessToken(token: string): DtoVerifyAccessToken {
   try {
     if (!token) {
@@ -85,15 +106,18 @@ function verifyAccessToken(token: string): DtoVerifyAccessToken {
     return { data, message: 'Token is verify' }
   } catch (err) {
     if (err instanceof TokenExpiredError) {
-      return { data: null, message: `Token ${err.message}` }
+      console.log(chalk.red('JWT Expired Error:'), chalk.green(err.message))
+      return { data: null, message: `JWT Expired Error: ${err.message}` }
     }
 
     if (err instanceof JsonWebTokenError) {
-      return { data: null, message: `Token ${err.message}` }
+      console.log(chalk.red('JWT Token Error:'), chalk.green(err.message))
+      return { data: null, message: `JWT Token Error: ${err.message}` }
     }
 
     if (err instanceof NotBeforeError) {
-      return { data: null, message: `Token ${err.message}` }
+      console.log(chalk.red('JWT Not Before Error:'), chalk.green(err.message))
+      return { data: null, message: `JWT Not Before Error: ${err.message}` }
     }
   }
 }
