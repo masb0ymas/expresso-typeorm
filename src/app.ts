@@ -21,13 +21,14 @@ import path from 'path'
 dotenv.config()
 
 const NODE_ENV = process.env.NODE_ENV ?? 'development'
+const APP_PORT = Number(process.env.PORT) ?? 8000
 
 class App {
   private readonly application: Application
   private readonly port: number | string
 
   constructor() {
-    this.port = Number(process.env.PORT) || 8000
+    this.port = APP_PORT
     this.application = Express()
     this.plugins()
     this.routes()

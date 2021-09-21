@@ -17,9 +17,9 @@ createConnection(dbConfig)
     console.log(
       `Database ${db}, Connection ${dbConnect} has been established successfully.`
     )
+
+    Server.run()
   })
   .catch((err) => {
     console.error('Unable to connect to the database:', err)
   })
-
-Server.run()
