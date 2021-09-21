@@ -28,13 +28,13 @@ route.get('/', function (req: Request, res: Response) {
   return res.json(httpResponse)
 })
 
-route.use('/v1', v1Route)
-
 /* Forbidden Page. */
 route.get('/v1', function (req: Request, res: Response) {
   throw new ResponseError.Forbidden(
     `Forbidden, wrong access endpoint: ${req.url}`
   )
 })
+
+route.use('/v1', v1Route)
 
 export default route
