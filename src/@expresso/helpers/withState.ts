@@ -1,6 +1,7 @@
 import { Request } from 'express'
 import _ from 'lodash'
 import getterObject from './getterObject'
+import Multers from './Multer'
 
 class withState {
   private req: Request
@@ -17,6 +18,8 @@ class withState {
     this.req.getQueryPolluted = this.getQueryPolluted.bind(this)
     this.req.getParams = this.getParams.bind(this)
     this.req.getBody = this.getBody.bind(this)
+    this.req.getSingleArrayFile = this.getSingleArrayFile.bind(this)
+    this.req.getMultiArrayFile = this.getMultiArrayFile.bind(this)
   }
 
   setState(value: object): void {
@@ -64,6 +67,32 @@ class withState {
 
   getBody(path?: any, defaultValue?: any): any {
     return getterObject(this.req.body, path, defaultValue)
+  }
+
+  getSingleArrayFile(name: string): any {
+    const data = getterObject(
+      this.req,
+      ['files', name, '0'].join('.')
+    ) as unknown as Express.Multer.File
+    if (data) {
+      return data
+    }
+  }
+
+  pickSingleFieldMulter(fields: string[]): Partial<any> {
+    return Multers.pickSingleFieldMulter(this.req, fields)
+  }
+
+  getMultiArrayFile(name: string): any {
+    const data = _.get(this.req.files, name, []) as Express.Multer.File
+
+    if (data) {
+      return data
+    }
+  }
+
+  pickMultiFieldMulter(fields: string[]): Partial<any> {
+    return Multers.pickMultiFieldMulter(this.req, fields)
   }
 }
 
