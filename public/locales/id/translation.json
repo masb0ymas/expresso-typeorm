@@ -1,0 +1,11 @@
+{
+  "welcome": "Selamat Datang",
+  "errors": {
+    "permissionAccess": "Anda tidak diijinkan"
+  },
+  "success": {
+    "register": "Pendaftaran berhasil",
+    "login": "Berhasil masuk",
+    "logout": "Anda telah keluar dari aplikasi"
+  }
+}

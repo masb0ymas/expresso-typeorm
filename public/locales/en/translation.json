@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome",
+  "errors": {
+    "permissionAccess": "You are not allowed"
+  },
+  "success": {
+    "register": "Registration is successful",
+    "login": "Login successfully",
+    "logout": "You have logged out of the application"
+  }
+}
