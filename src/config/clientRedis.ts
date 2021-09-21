@@ -11,14 +11,14 @@ const optionConfigs: ClientOpts = {
   password: REDIS_PASSWORD ?? undefined,
 }
 
-const redisClient = redis.createClient(optionConfigs)
+const clientRedis = redis.createClient(optionConfigs)
 
-redisClient.on('connect', function () {
+clientRedis.on('connect', function () {
   console.log('Redis client connected')
 })
 
-redisClient.on('error', function (err) {
+clientRedis.on('error', function (err) {
   console.log(`Something went wrong ${err}`)
 })
 
-export default redisClient
+export default clientRedis
