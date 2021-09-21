@@ -16,6 +16,8 @@
     "db:create": "npx typeorm-extension db:create",
     "db:drop": "npx typeorm-extension db:drop",
     "db:reset": "npm run db:drop && npm run db:create",
+    "seed:config": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js config",
+    "seed:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -24,6 +26,10 @@
   ],
   "author": "masb0ymas",
   "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">= 12.x"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "chalk": "^4.1.2",
@@ -49,6 +55,8 @@
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.37",
     "typeorm-extension": "^0.2.9",
+    "typeorm-seeding": "^1.6.1",
+    "uuid": "^8.3.2",
     "winston": "^3.3.3",
     "yup": "0.31.0"
   },
@@ -68,6 +76,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^16.7.13",
     "@types/redis": "^2.8.32",
+    "@types/uuid": "^8.3.1",
     "@types/yup": "^0.29.13",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
@@ -83,9 +92,6 @@
     "prettier": "^2.3.2",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.2"
-  },
-  "engines": {
-    "node": ">= 12.x"
   },
   "_moduleAliases": {
     "@expresso/*": "dist/@expresso/*",
