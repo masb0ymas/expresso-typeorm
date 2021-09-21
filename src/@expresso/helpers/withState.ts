@@ -1,5 +1,6 @@
 import { Request } from 'express'
 import _ from 'lodash'
+import getterObject from './getterObject'
 
 class withState {
   private req: Request
@@ -41,28 +42,28 @@ class withState {
   }
 
   getCookies(path?: any, defaultValue?: any): any {
-    return _.get(this.req.cookies, path, defaultValue)
+    return getterObject(this.req.cookies, path, defaultValue)
   }
 
   getHeaders(path?: any, defaultValue?: any): any {
-    return _.get(this.req.headers, path, defaultValue)
+    return getterObject(this.req.headers, path, defaultValue)
   }
 
   getQuery(path?: any, defaultValue?: any): any {
-    return _.get(this.req.query, path, defaultValue)
+    return getterObject(this.req.query, path, defaultValue)
   }
 
   getQueryPolluted(path?: any, defaultValue?: any): any {
     // @ts-expect-error
-    return _.get(this.req.queryPolluted, path, defaultValue)
+    return getterObject(this.req.queryPolluted, path, defaultValue)
   }
 
   getParams(path?: any, defaultValue?: any): any {
-    return _.get(this.req.params, path, defaultValue)
+    return getterObject(this.req.params, path, defaultValue)
   }
 
   getBody(path?: any, defaultValue?: any): any {
-    return _.get(this.req.body, path, defaultValue)
+    return getterObject(this.req.body, path, defaultValue)
   }
 }
 
