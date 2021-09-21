@@ -47,7 +47,7 @@ class AuthService {
 
     // check active account
     if (!getUser.isActive) {
-      throw new ResponseError.NotFound(
+      throw new ResponseError.BadRequest(
         'please check your email account to verify your email and continue the registration process.'
       )
     }
