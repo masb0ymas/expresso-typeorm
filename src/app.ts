@@ -1,4 +1,6 @@
+import i18next from '@config/i18nextConfig'
 import winstonLogger, { winstonStream } from '@config/Logger'
+import allowedOrigins from '@expresso/constants/ConstAllowedOrigins'
 import withState from '@expresso/helpers/withState'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { optionsSwaggerUI, swaggerSpec } from '@expresso/utils/DocsSwagger'
@@ -16,14 +18,20 @@ import Express, { Application, NextFunction, Request, Response } from 'express'
 import UserAgent from 'express-useragent'
 import Helmet from 'helmet'
 import hpp from 'hpp'
+import i18nextMiddleware from 'i18next-http-middleware'
 import Logger from 'morgan'
 import path from 'path'
+import requestIp from 'request-ip'
 import swaggerUI from 'swagger-ui-express'
 
 dotenv.config()
 
 const NODE_ENV = process.env.NODE_ENV ?? 'development'
 const APP_PORT = Number(process.env.PORT) ?? 8000
+
+const optCors: Cors.CorsOptions = {
+  origin: allowedOrigins,
+}
 
 class App {
   private readonly application: Application
@@ -44,7 +52,7 @@ class App {
 
   private plugins(): void {
     this.application.use(Helmet())
-    this.application.use(Cors())
+    this.application.use(Cors(optCors))
     this.application.use(Logger('combined', { stream: winstonStream }))
     this.application.use(Express.urlencoded({ extended: true }))
     this.application.use(
@@ -54,7 +62,9 @@ class App {
     this.application.use(compression())
     this.application.use(Express.static(path.resolve(`${__dirname}/../public`)))
     this.application.use(hpp())
+    this.application.use(requestIp.mw())
     this.application.use(UserAgent.express())
+    this.application.use(i18nextMiddleware.handle(i18next))
     this.application.use(ExpressRateLimit)
     this.application.use(function (
       req: Request,
