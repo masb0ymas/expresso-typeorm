@@ -1,9 +1,20 @@
+import SessionService from '@controllers/Session/service'
 import userSchema from '@controllers/User/schema'
-import { LoginAttributes, User, UserPost } from '@entity/User'
-import { generateAccessToken } from '@expresso/helpers/Token'
+import UserService from '@controllers/User/service'
+import {
+  LoginAttributes,
+  User,
+  UserLoginAttributes,
+  UserPost,
+} from '@entity/User'
+import ConstRole from '@expresso/constants/ConstRole'
+import SendMail from '@expresso/helpers/SendMail'
+import { generateAccessToken, verifyAccessToken } from '@expresso/helpers/Token'
 import useValidation from '@expresso/hooks/useValidation'
 import ResponseError from '@expresso/modules/Response/ResponseError'
+import _ from 'lodash'
 import { getRepository } from 'typeorm'
+import { v4 as uuidv4 } from 'uuid'
 
 interface DtoLogin {
   tokenType: string
@@ -16,21 +27,41 @@ interface DtoLogin {
 }
 
 class AuthService {
+  /**
+   *
+   * @param formData
+   * @returns
+   */
   public static async signUp(formData: UserPost): Promise<User> {
     const userRepository = getRepository(User)
+
+    const randomToken = generateAccessToken({ uuid: uuidv4() })
     const value = useValidation(userSchema.register, formData)
 
     const newFormData = {
       ...value,
       password: value.confirmNewPassword,
+      RoleId: ConstRole.ID_USER,
     }
 
     const data = new User()
     const newData = await userRepository.save({ ...data, ...newFormData })
 
+    // send email notification
+    SendMail.AccountRegistration({
+      email: value.email,
+      fullName: `${value.firstName} ${value.lastName}`,
+      token: randomToken.accessToken,
+    })
+
     return newData
   }
 
+  /**
+   *
+   * @param formData
+   * @returns
+   */
   public static async signIn(formData: LoginAttributes): Promise<DtoLogin> {
     const userRepository = getRepository(User)
     const value = useValidation(userSchema.login, formData)
@@ -70,6 +101,46 @@ class AuthService {
     }
 
     return newData
+  }
+
+  /**
+   *
+   * @param UserId
+   * @param token
+   * @returns
+   */
+  public static async verifySession(
+    UserId: string,
+    token: string
+  ): Promise<User | null> {
+    const getSession = await SessionService.findByUserToken(UserId, token)
+    const verifyToken = verifyAccessToken(getSession.token)
+
+    const userToken = verifyToken?.data as UserLoginAttributes
+
+    if (!_.isEmpty(userToken.uid)) {
+      const getUser = await UserService.findById(userToken.uid)
+
+      return getUser
+    }
+
+    return null
+  }
+
+  /**
+   *
+   * @param UserId
+   * @param token
+   * @returns
+   */
+  public static async logout(UserId: string, token: string): Promise<string> {
+    const getUser = await UserService.findById(UserId)
+
+    // clean session
+    await SessionService.deleteByUserToken(getUser.id, token)
+    const message = 'You have logged out of the application'
+
+    return message
   }
 }
 
