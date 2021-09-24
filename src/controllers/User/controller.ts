@@ -1,13 +1,17 @@
+import ConstRole from '@expresso/constants/ConstRole'
 import asyncHandler from '@expresso/helpers/asyncHandler'
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
+import Authorization from '@middlewares/Authorization'
+import PermissionAccess from '@middlewares/PermissionAccess'
 import route from '@routes/v1'
 import { Request, Response } from 'express'
 import UserService from './service'
 
 route.get(
   '/user',
-  asyncHandler(async function getAll(req: Request, res: Response) {
-    const data = await UserService.getAll(req)
+  Authorization,
+  asyncHandler(async function findAll(req: Request, res: Response) {
+    const data = await UserService.findAll(req)
 
     const httpResponse = HttpResponse.get(data)
     return res.status(200).json(httpResponse)
@@ -16,9 +20,10 @@ route.get(
 
 route.get(
   '/user/:id',
-  asyncHandler(async function getOne(req: Request, res: Response) {
-    const { id } = req.params
-    const data = await UserService.getOne(id)
+  Authorization,
+  asyncHandler(async function findById(req: Request, res: Response) {
+    const { id } = req.getParams()
+    const data = await UserService.findById(id)
 
     const httpResponse = HttpResponse.get({ data })
     return res.status(200).json(httpResponse)
@@ -27,8 +32,10 @@ route.get(
 
 route.post(
   '/user',
+  Authorization,
+  PermissionAccess([ConstRole.ID_ADMIN]),
   asyncHandler(async function created(req: Request, res: Response) {
-    const formData = req.body
+    const formData = req.getBody()
 
     const data = await UserService.created(formData)
 
@@ -39,9 +46,11 @@ route.post(
 
 route.put(
   '/user/:id',
+  Authorization,
+  PermissionAccess([ConstRole.ID_ADMIN]),
   asyncHandler(async function created(req: Request, res: Response) {
-    const { id } = req.params
-    const formData = req.body
+    const { id } = req.getParams()
+    const formData = req.getBody()
 
     const data = await UserService.updated(id, formData)
 
@@ -52,8 +61,10 @@ route.put(
 
 route.delete(
   '/user/:id',
+  Authorization,
+  PermissionAccess([ConstRole.ID_ADMIN]),
   asyncHandler(async function created(req: Request, res: Response) {
-    const { id } = req.params
+    const { id } = req.getParams()
 
     await UserService.deleted(id)
 

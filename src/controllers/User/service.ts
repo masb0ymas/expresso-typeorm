@@ -1,4 +1,5 @@
 import { User, UserPost } from '@entity/User'
+import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
@@ -6,13 +7,18 @@ import 'reflect-metadata'
 import { getRepository } from 'typeorm'
 import userSchema from './schema'
 
-interface UserPaginate {
+interface DtoPaginate {
   data: User[]
   total: number
 }
 
 class UserService {
-  public static async getAll(req: Request): Promise<UserPaginate> {
+  /**
+   *
+   * @param req
+   * @returns
+   */
+  public static async findAll(req: Request): Promise<DtoPaginate> {
     const userRepository = getRepository(User)
 
     const page = Number(req.query.page) || 1
@@ -30,9 +36,16 @@ class UserService {
     return { data, total }
   }
 
-  public static async getOne(id: string): Promise<User> {
+  /**
+   *
+   * @param id
+   * @returns
+   */
+  public static async findById(id: string): Promise<User> {
     const userRepository = getRepository(User)
-    const data = await userRepository.findOne(id)
+
+    const newId = validateUUID(id)
+    const data = await userRepository.findOne(newId)
 
     if (!data) {
       throw new ResponseError.NotFound(
@@ -43,6 +56,11 @@ class UserService {
     return data
   }
 
+  /**
+   *
+   * @param formData
+   * @returns
+   */
   public static async created(formData: UserPost): Promise<User> {
     const userRepository = getRepository(User)
     const data = new User()
@@ -53,9 +71,15 @@ class UserService {
     return newData
   }
 
+  /**
+   *
+   * @param id
+   * @param formData
+   * @returns
+   */
   public static async updated(id: string, formData: UserPost): Promise<User> {
     const userRepository = getRepository(User)
-    const data = await this.getOne(id)
+    const data = await this.findById(id)
 
     const value = useValidation(userSchema.create, {
       ...data,
@@ -67,12 +91,15 @@ class UserService {
     return newData
   }
 
+  /**
+   *
+   * @param id
+   */
   public static async deleted(id: string): Promise<void> {
     const userRepository = getRepository(User)
-    const data = await this.getOne(id)
-    console.log({ data })
+    const data = await this.findById(id)
 
-    await userRepository.delete(id)
+    await userRepository.delete(data.id)
   }
 }
 
