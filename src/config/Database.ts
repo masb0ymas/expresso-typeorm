@@ -1,7 +1,7 @@
-import { validateBoolean } from '@expresso/helpers/Common'
+import { validateBoolean } from '@expresso/helpers/Formatter'
+import dotenv from 'dotenv'
 import path from 'path'
 import { ConnectionOptions } from 'typeorm'
-import dotenv from 'dotenv'
 
 dotenv.config()
 
@@ -22,6 +22,9 @@ const dbConfig: ConnectionOptions = {
   logging: validateBoolean(process.env.TYPEORM_LOGGING) ?? false,
   entities: [
     process.env.TYPEORM_ENTITIES ?? pathResolve(`entity/**/*{.ts,.js}`),
+  ],
+  seeds: [
+    process.env.TYPEORM_SEEDING_SEEDS ?? pathResolve(`src/seeds/**/*{.ts,.js}`),
   ],
   migrations: [pathResolve(`migration/**/*{.ts,.js}`)],
   subscribers: [pathResolve(`subscriber/**/*{.ts,.js}`)],
