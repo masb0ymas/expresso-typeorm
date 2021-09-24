@@ -8,6 +8,7 @@ import {
   UserPost,
 } from '@entity/User'
 import ConstRole from '@expresso/constants/ConstRole'
+import { validateEmpty } from '@expresso/helpers/Formatter'
 import SendMail from '@expresso/helpers/SendMail'
 import { generateAccessToken, verifyAccessToken } from '@expresso/helpers/Token'
 import useValidation from '@expresso/hooks/useValidation'
@@ -34,18 +35,24 @@ class AuthService {
    */
   public static async signUp(formData: UserPost): Promise<User> {
     const userRepository = getRepository(User)
-
     const randomToken = generateAccessToken({ uuid: uuidv4() })
-    const value = useValidation(userSchema.register, formData)
 
     const newFormData = {
-      ...value,
-      password: value.confirmNewPassword,
+      ...formData,
+      tokenVerify: randomToken.accessToken,
       RoleId: ConstRole.ID_USER,
     }
 
+    const value = useValidation(userSchema.register, newFormData)
+
+    const formRegistration = {
+      ...value,
+      phone: validateEmpty(formData.phone),
+      password: value.confirmNewPassword,
+    }
+
     const data = new User()
-    const newData = await userRepository.save({ ...data, ...newFormData })
+    const newData = await userRepository.save({ ...data, ...formRegistration })
 
     // send email notification
     SendMail.AccountRegistration({

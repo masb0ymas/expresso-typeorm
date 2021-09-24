@@ -20,6 +20,8 @@ interface UserAttributes {
   confirmNewPassword?: string | null
   password: string
   phone: string | null
+  tokenVerify: string | null
+  picturePath: string | null
   isActive?: boolean | null
   isBlocked?: boolean | null
   RoleId: string
@@ -60,6 +62,12 @@ export class User {
 
   @Column('char', { length: 20, nullable: true })
   phone!: string
+
+  @Column('text', { nullable: true })
+  tokenVerify!: string
+
+  @Column('text', { nullable: true })
+  picturePath!: string
 
   @Column('boolean', { default: false })
   isActive: boolean

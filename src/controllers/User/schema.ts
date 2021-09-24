@@ -19,6 +19,8 @@ const create = yup.object().shape({
   lastName: yup.string().required('last name is required'),
   email: yup.string().email('invalid email').required('email is required'),
   phone: yup.string(),
+  tokenVerify: yup.string(),
+  picturePath: yup.string(),
   RoleId: yup.string().required('role is required'),
 })
 
