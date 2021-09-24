@@ -1,4 +1,5 @@
 import { Role, RolePost } from '@entity/Role'
+import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
@@ -6,13 +7,18 @@ import 'reflect-metadata'
 import { getRepository } from 'typeorm'
 import roleSchema from './schema'
 
-interface RolePaginate {
+interface DtoPaginate {
   data: Role[]
   total: number
 }
 
 class RoleService {
-  public static async getAll(req: Request): Promise<RolePaginate> {
+  /**
+   *
+   * @param req
+   * @returns
+   */
+  public static async findAll(req: Request): Promise<DtoPaginate> {
     const roleRepository = getRepository(Role)
 
     const page = Number(req.query.page) || 1
@@ -29,9 +35,16 @@ class RoleService {
     return { data, total }
   }
 
-  public static async getOne(id: string): Promise<Role> {
+  /**
+   *
+   * @param id
+   * @returns
+   */
+  public static async findById(id: string): Promise<Role> {
     const roleRepository = getRepository(Role)
-    const data = await roleRepository.findOne(id)
+
+    const newId = validateUUID(id)
+    const data = await roleRepository.findOne(newId)
 
     if (!data) {
       throw new ResponseError.NotFound(
@@ -42,6 +55,11 @@ class RoleService {
     return data
   }
 
+  /**
+   *
+   * @param formData
+   * @returns
+   */
   public static async created(formData: RolePost): Promise<Role> {
     const roleRepository = getRepository(Role)
     const data = new Role()
@@ -52,9 +70,15 @@ class RoleService {
     return newData
   }
 
+  /**
+   *
+   * @param id
+   * @param formData
+   * @returns
+   */
   public static async updated(id: string, formData: RolePost): Promise<Role> {
     const roleRepository = getRepository(Role)
-    const data = await this.getOne(id)
+    const data = await this.findById(id)
 
     const value = useValidation(roleSchema.create, {
       ...data,
@@ -66,12 +90,15 @@ class RoleService {
     return newData
   }
 
+  /**
+   *
+   * @param id
+   */
   public static async deleted(id: string): Promise<void> {
     const roleRepository = getRepository(Role)
-    const data = await this.getOne(id)
-    console.log({ data })
+    const data = await this.findById(id)
 
-    await roleRepository.delete(id)
+    await roleRepository.delete(data.id)
   }
 }
 
