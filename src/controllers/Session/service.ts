@@ -1,4 +1,5 @@
 import { Session, SessionPost } from '@entity/Session'
+import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
@@ -6,13 +7,19 @@ import 'reflect-metadata'
 import { getRepository } from 'typeorm'
 import sessionSchema from './schema'
 
-interface SessionPaginate {
+interface DtoPaginate {
+  message: string
   data: Session[]
   total: number
 }
 
 class SessionService {
-  public static async getAll(req: Request): Promise<SessionPaginate> {
+  /**
+   *
+   * @param req
+   * @returns
+   */
+  public static async findAll(req: Request): Promise<DtoPaginate> {
     const sessionRepository = getRepository(Session)
 
     const page = Number(req.query.page) || 1
@@ -26,22 +33,57 @@ class SessionService {
 
     const total = await sessionRepository.createQueryBuilder().getCount()
 
-    return { data, total }
+    return { message: `${total} data has been received.`, data, total }
   }
 
-  public static async getOne(id: string): Promise<Session> {
+  /**
+   *
+   * @param id
+   * @returns
+   */
+  public static async findById(id: string): Promise<Session> {
     const sessionRepository = getRepository(Session)
-    const data = await sessionRepository.findOne(id)
+
+    const newId = validateUUID(id)
+    const data = await sessionRepository.findOne(newId)
 
     if (!data) {
       throw new ResponseError.NotFound(
-        'role data not found or has been deleted'
+        'session data not found or has been deleted'
       )
     }
 
     return data
   }
 
+  /**
+   *
+   * @param UserId
+   * @param token
+   * @returns
+   */
+  public static async findByUserToken(
+    UserId: string,
+    token: string
+  ): Promise<Session> {
+    const sessionRepository = getRepository(Session)
+
+    const data = await sessionRepository.findOne({ where: { UserId, token } })
+
+    if (!data) {
+      throw new ResponseError.NotFound(
+        'the login session has ended, please re-login'
+      )
+    }
+
+    return data
+  }
+
+  /**
+   *
+   * @param formData
+   * @returns
+   */
   public static async created(formData: SessionPost): Promise<Session> {
     const sessionRepository = getRepository(Session)
 
@@ -53,30 +95,53 @@ class SessionService {
     return newData
   }
 
-  public static async updated(
-    id: string,
-    formData: SessionPost
-  ): Promise<Session> {
+  /**
+   *
+   * @param formData
+   */
+  public static async createOrUpdate(formData: SessionPost): Promise<void> {
     const sessionRepository = getRepository(Session)
-    const data = await this.getOne(id)
+    const value = useValidation(sessionSchema.create, formData)
 
-    const value = useValidation(sessionSchema.create, {
-      ...data,
-      ...formData,
+    const data = await sessionRepository.findOne({
+      where: { UserId: value.UserId },
     })
 
-    const newData = await sessionRepository.save({ ...data, ...value })
-
-    return newData
+    if (!data) {
+      await this.created(formData)
+    } else {
+      await sessionRepository.save({ ...data, ...value })
+    }
   }
 
-  public static async deleted(id: string): Promise<void> {
+  /**
+   *
+   * @param UserId
+   * @param token
+   */
+  public static async deleteByUserToken(
+    UserId: string,
+    token: string
+  ): Promise<void> {
     const sessionRepository = getRepository(Session)
 
-    const data = await this.getOne(id)
-    console.log({ data })
+    await sessionRepository
+      .createQueryBuilder()
+      .delete()
+      .where('UserId = :UserId', { UserId })
+      .where('token = :token', { token })
+      .execute()
+  }
 
-    await sessionRepository.delete(id)
+  /**
+   *
+   * @param id
+   */
+  public static async deleted(id: string): Promise<void> {
+    const sessionRepository = getRepository(Session)
+    const data = await this.findById(id)
+
+    await sessionRepository.delete(data.id)
   }
 }
 

@@ -1,13 +1,15 @@
 import asyncHandler from '@expresso/helpers/asyncHandler'
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
-import { Request, Response } from 'express'
+import Authorization from '@middlewares/Authorization'
 import route from '@routes/v1'
+import { Request, Response } from 'express'
 import SessionService from './service'
 
 route.get(
   '/session',
-  asyncHandler(async function getAll(req: Request, res: Response) {
-    const data = await SessionService.getAll(req)
+  Authorization,
+  asyncHandler(async function findAll(req: Request, res: Response) {
+    const data = await SessionService.findAll(req)
 
     const httpResponse = HttpResponse.get(data)
     return res.status(200).json(httpResponse)
@@ -16,9 +18,10 @@ route.get(
 
 route.get(
   '/session/:id',
-  asyncHandler(async function getOne(req: Request, res: Response) {
-    const { id } = req.params
-    const data = await SessionService.getOne(id)
+  Authorization,
+  asyncHandler(async function findById(req: Request, res: Response) {
+    const { id } = req.getParams()
+    const data = await SessionService.findById(id)
 
     const httpResponse = HttpResponse.get({ data })
     return res.status(200).json(httpResponse)
@@ -27,9 +30,9 @@ route.get(
 
 route.post(
   '/session',
+  Authorization,
   asyncHandler(async function created(req: Request, res: Response) {
-    const formData = req.body
-
+    const formData = req.getBody()
     const data = await SessionService.created(formData)
 
     const httpResponse = HttpResponse.created({ data })
@@ -37,23 +40,11 @@ route.post(
   })
 )
 
-route.put(
-  '/session/:id',
-  asyncHandler(async function created(req: Request, res: Response) {
-    const { id } = req.params
-    const formData = req.body
-
-    const data = await SessionService.updated(id, formData)
-
-    const httpResponse = HttpResponse.updated({ data })
-    return res.status(200).json(httpResponse)
-  })
-)
-
 route.delete(
   '/session/:id',
-  asyncHandler(async function created(req: Request, res: Response) {
-    const { id } = req.params
+  Authorization,
+  asyncHandler(async function deleted(req: Request, res: Response) {
+    const { id } = req.getParams()
 
     await SessionService.deleted(id)
 
