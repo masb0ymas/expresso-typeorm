@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -11,9 +12,13 @@ interface RoleAttributes {
   name: string
   createdAt: Date
   updatedAt: Date
+  deletedAt?: Date | null
 }
 
-export type RolePost = Pick<RoleAttributes, 'name'>
+export type RolePost = Omit<
+  RoleAttributes,
+  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
+>
 
 @Entity()
 export class Role {
@@ -28,4 +33,7 @@ export class Role {
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  @DeleteDateColumn()
+  deletedAt: Date
 }

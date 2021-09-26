@@ -93,7 +93,29 @@ class RoleService {
    *
    * @param id
    */
-  public static async deleted(id: string): Promise<void> {
+  public static async restore(id: string): Promise<void> {
+    const roleRepository = getRepository(Role)
+    const newId = validateUUID(id)
+
+    await roleRepository.restore(newId)
+  }
+
+  /**
+   *
+   * @param id
+   */
+  public static async softDelete(id: string): Promise<void> {
+    const roleRepository = getRepository(Role)
+    const data = await this.findById(id)
+
+    await roleRepository.softDelete(data.id)
+  }
+
+  /**
+   *
+   * @param id
+   */
+  public static async forceDelete(id: string): Promise<void> {
     const roleRepository = getRepository(Role)
     const data = await this.findById(id)
 
