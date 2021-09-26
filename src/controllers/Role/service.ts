@@ -3,7 +3,6 @@ import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
-import 'reflect-metadata'
 import { getRepository } from 'typeorm'
 import roleSchema from './schema'
 

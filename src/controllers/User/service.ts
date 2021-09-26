@@ -3,7 +3,6 @@ import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
-import 'reflect-metadata'
 import { getRepository } from 'typeorm'
 import userSchema from './schema'
 
@@ -45,7 +44,7 @@ class UserService {
     const userRepository = getRepository(User)
 
     const newId = validateUUID(id)
-    const data = await userRepository.findOne(newId)
+    const data = await userRepository.findOne(newId, { relations: ['role'] })
 
     if (!data) {
       throw new ResponseError.NotFound(
