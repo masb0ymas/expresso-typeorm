@@ -5,11 +5,9 @@ const create = yup
   .shape({
     UserId: yup.string().required('user id is required'),
     token: yup.string().required('token is required'),
-    ipAddress: yup.string(),
-    device: yup.string(),
-    platform: yup.string(),
-    latitude: yup.string(),
-    longitude: yup.string(),
+    ipAddress: yup.string().required('ip address is required'),
+    device: yup.string().required('device is required'),
+    platform: yup.string().required('platform is required'),
   })
   .required()
 

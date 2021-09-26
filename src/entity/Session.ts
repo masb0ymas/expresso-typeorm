@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { User } from './User'
 
 interface SessionAttributes {
   id?: string
@@ -13,8 +16,6 @@ interface SessionAttributes {
   ipAddress?: string | null
   device?: string | null
   platform?: string | null
-  latitude?: string | null
-  longitude?: string | null
   createdAt: Date
   updatedAt: Date
 }
@@ -28,6 +29,10 @@ export type SessionPost = Omit<
 export class Session {
   @PrimaryGeneratedColumn('uuid')
   id: string
+
+  @ManyToOne(() => User, (user) => user)
+  @JoinColumn({ name: 'UserId' })
+  user: User
 
   @Column('uuid')
   UserId: string
@@ -43,12 +48,6 @@ export class Session {
 
   @Column({ nullable: true })
   platform!: string
-
-  @Column({ nullable: true })
-  latitude!: string
-
-  @Column({ nullable: true })
-  longitude!: string
 
   @CreateDateColumn()
   createdAt: Date
