@@ -94,7 +94,29 @@ class UserService {
    *
    * @param id
    */
-  public static async deleted(id: string): Promise<void> {
+  public static async restore(id: string): Promise<void> {
+    const userRepository = getRepository(User)
+    const newId = validateUUID(id)
+
+    await userRepository.restore(newId)
+  }
+
+  /**
+   *
+   * @param id
+   */
+  public static async softDelete(id: string): Promise<void> {
+    const userRepository = getRepository(User)
+    const data = await this.findById(id)
+
+    await userRepository.softDelete(data.id)
+  }
+
+  /**
+   *
+   * @param id
+   */
+  public static async forceDelete(id: string): Promise<void> {
     const userRepository = getRepository(User)
     const data = await this.findById(id)
 

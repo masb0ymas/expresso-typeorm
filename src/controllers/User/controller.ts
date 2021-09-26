@@ -59,14 +59,42 @@ route.put(
   })
 )
 
-route.delete(
-  '/user/:id',
+route.put(
+  '/user/restore/:id',
   Authorization,
   PermissionAccess([ConstRole.ID_ADMIN]),
   asyncHandler(async function created(req: Request, res: Response) {
     const { id } = req.getParams()
 
-    await UserService.deleted(id)
+    await UserService.restore(id)
+
+    const httpResponse = HttpResponse.deleted({})
+    return res.status(200).json(httpResponse)
+  })
+)
+
+route.delete(
+  '/user/soft-delete/:id',
+  Authorization,
+  PermissionAccess([ConstRole.ID_ADMIN]),
+  asyncHandler(async function created(req: Request, res: Response) {
+    const { id } = req.getParams()
+
+    await UserService.softDelete(id)
+
+    const httpResponse = HttpResponse.deleted({})
+    return res.status(200).json(httpResponse)
+  })
+)
+
+route.delete(
+  '/user/force-delete/:id',
+  Authorization,
+  PermissionAccess([ConstRole.ID_ADMIN]),
+  asyncHandler(async function created(req: Request, res: Response) {
+    const { id } = req.getParams()
+
+    await UserService.forceDelete(id)
 
     const httpResponse = HttpResponse.deleted({})
     return res.status(200).json(httpResponse)

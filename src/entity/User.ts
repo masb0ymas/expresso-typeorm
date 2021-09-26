@@ -2,6 +2,7 @@ import * as bcrypt from 'bcrypt'
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -27,6 +28,7 @@ interface UserAttributes {
   RoleId: string
   createdAt: Date
   updatedAt: Date
+  deletedAt?: Date | null
 }
 
 export interface UserLoginAttributes {
@@ -40,7 +42,10 @@ export type CreatePassword = Pick<
 
 export type LoginAttributes = Pick<UserAttributes, 'email' | 'password'>
 
-export type UserPost = Omit<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>
+export type UserPost = Omit<
+  UserAttributes,
+  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
+>
 
 @Entity()
 @Unique(['email'])
@@ -87,6 +92,9 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  @DeleteDateColumn()
+  deletedAt: Date
 
   async comparePassword(currentPassword: string): Promise<boolean> {
     return await bcrypt.compare(currentPassword, this.password)
