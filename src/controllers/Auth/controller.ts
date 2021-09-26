@@ -1,7 +1,6 @@
 import SessionService from '@controllers/Session/service'
 import { UserLoginAttributes } from '@entity/User'
 import asyncHandler from '@expresso/helpers/asyncHandler'
-import { validateEmpty } from '@expresso/helpers/Formatter'
 import { currentToken } from '@expresso/helpers/Token'
 import userAgentHelper from '@expresso/helpers/userAgent'
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
@@ -38,8 +37,6 @@ route.post(
       ipAddress: req.clientIp?.replace('::ffff:', ''),
       device: userAgentHelper.currentDevice(req),
       platform: userAgentHelper.currentPlatform(req),
-      latitude: validateEmpty(formData.latitude),
-      longitude: validateEmpty(formData.longitude),
     })
 
     return res
