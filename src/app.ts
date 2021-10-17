@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import i18next from '@config/i18nextConfig'
 import winstonLogger, { winstonStream } from '@config/Logger'
 import allowedOrigins from '@expresso/constants/ConstAllowedOrigins'
@@ -5,10 +6,9 @@ import withState from '@expresso/helpers/withState'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { optionsSwaggerUI, swaggerSpec } from '@expresso/utils/DocsSwagger'
 import ExpressErrorResponse from '@middlewares/ExpressErrorResponse'
-import ExpressErrorTypeOrm from '@middlewares/ExpressErrorTypeOrm'
 import ExpressErrorYup from '@middlewares/ExpressErrorYup'
 import ExpressRateLimit from '@middlewares/ExpressRateLimit'
-import Routes from '@routes/index'
+import indexRoutes from '@routes/index'
 import chalk from 'chalk'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
@@ -18,6 +18,7 @@ import Express, { Application, NextFunction, Request, Response } from 'express'
 import UserAgent from 'express-useragent'
 import Helmet from 'helmet'
 import hpp from 'hpp'
+import http from 'http'
 import i18nextMiddleware from 'i18next-http-middleware'
 import Logger from 'morgan'
 import path from 'path'
@@ -90,19 +91,18 @@ class App {
   }
 
   private routes(): void {
-    this.application.use(Routes)
+    this.application.use(indexRoutes)
 
     // Catch error 404 endpoint not found
     this.application.use('*', function (req: Request, res: Response) {
       throw new ResponseError.NotFound(
-        `Sorry, endpoint: ${req.url} HTTP resource you are looking for was not found.`
+        `Sorry, HTTP resource you are looking for was not found.`
       )
     })
   }
 
   public run(): void {
     this.application.use(ExpressErrorYup)
-    this.application.use(ExpressErrorTypeOrm)
     this.application.use(ExpressErrorResponse)
 
     // Error handler
@@ -123,11 +123,47 @@ class App {
       res.render('error')
     })
 
-    // Run listener
-    this.application.listen(this.port, () => {
-      const host = chalk.cyan(`http://localhost:${this.port}`)
+    // setup port
+    this.application.set('port', this.port)
+    const server = http.createServer(this.application)
+
+    const onError = (error: { syscall: string; code: string }): void => {
+      if (error.syscall !== 'listen') {
+        throw error
+      }
+
+      const bind =
+        typeof this.port === 'string'
+          ? `Pipe ${this.port}`
+          : `Port ${this.port}`
+
+      // handle specific listen errors with friendly messages
+      switch (error.code) {
+        case 'EACCES':
+          console.error(`${bind} requires elevated privileges`)
+          process.exit(1)
+          break
+        case 'EADDRINUSE':
+          console.error(`${bind} is already in use`)
+          process.exit(1)
+          break
+        default:
+          throw error
+      }
+    }
+
+    const onListening = (): void => {
+      const addr = server.address()
+      const bind = typeof addr === 'string' ? `${addr}` : `${addr?.port}`
+
+      const host = chalk.cyan(`http://localhost:${bind}`)
       console.log(`Server listening on ${host} & Env: ${chalk.blue(NODE_ENV)}`)
-    })
+    }
+
+    // Run listener
+    server.listen(this.port)
+    server.on('error', onError)
+    server.on('listening', onListening)
   }
 }
 

@@ -1,14 +1,14 @@
-import { Role, RolePost } from '@entity/Role'
+import { Role, RoleAttributes } from '@database/entity/Role'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
+import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
 import { getRepository } from 'typeorm'
 import roleSchema from './schema'
 
-interface DtoPaginate {
+interface DtoPaginate extends DtoFindAll {
   data: Role[]
-  total: number
 }
 
 class RoleService {
@@ -31,7 +31,7 @@ class RoleService {
 
     const total = await roleRepository.createQueryBuilder().getCount()
 
-    return { data, total }
+    return { message: `${total} data has been received.`, data, total }
   }
 
   /**
@@ -59,7 +59,7 @@ class RoleService {
    * @param formData
    * @returns
    */
-  public static async created(formData: RolePost): Promise<Role> {
+  public static async create(formData: RoleAttributes): Promise<Role> {
     const roleRepository = getRepository(Role)
     const data = new Role()
 
@@ -75,7 +75,10 @@ class RoleService {
    * @param formData
    * @returns
    */
-  public static async updated(id: string, formData: RolePost): Promise<Role> {
+  public static async update(
+    id: string,
+    formData: Partial<RoleAttributes>
+  ): Promise<Role> {
     const roleRepository = getRepository(Role)
     const data = await this.findById(id)
 
@@ -95,8 +98,8 @@ class RoleService {
    */
   public static async restore(id: string): Promise<void> {
     const roleRepository = getRepository(Role)
-    const newId = validateUUID(id)
 
+    const newId = validateUUID(id)
     await roleRepository.restore(newId)
   }
 
@@ -106,8 +109,8 @@ class RoleService {
    */
   public static async softDelete(id: string): Promise<void> {
     const roleRepository = getRepository(Role)
-    const data = await this.findById(id)
 
+    const data = await this.findById(id)
     await roleRepository.softDelete(data.id)
   }
 

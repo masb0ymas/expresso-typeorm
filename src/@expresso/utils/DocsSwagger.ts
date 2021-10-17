@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { BASE_URL_SERVER } from '@config/BaseURL'
+import { BASE_URL_SERVER } from '@config/baseURL'
 import dotenv from 'dotenv'
 import fs from 'fs'
 import _ from 'lodash'

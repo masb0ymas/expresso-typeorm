@@ -1,14 +1,14 @@
-import { User, UserPost } from '@entity/User'
+import { User, UserAttributes } from '@database/entity/User'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
+import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
 import { getRepository } from 'typeorm'
 import userSchema from './schema'
 
-interface DtoPaginate {
+interface DtoPaginate extends DtoFindAll {
   data: User[]
-  total: number
 }
 
 class UserService {
@@ -32,7 +32,7 @@ class UserService {
 
     const total = await userRepository.createQueryBuilder().getCount()
 
-    return { data, total }
+    return { message: `${total} data has been received.`, data, total }
   }
 
   /**
@@ -60,7 +60,7 @@ class UserService {
    * @param formData
    * @returns
    */
-  public static async created(formData: UserPost): Promise<User> {
+  public static async create(formData: UserAttributes): Promise<User> {
     const userRepository = getRepository(User)
     const data = new User()
 
@@ -76,7 +76,10 @@ class UserService {
    * @param formData
    * @returns
    */
-  public static async updated(id: string, formData: UserPost): Promise<User> {
+  public static async update(
+    id: string,
+    formData: Partial<UserAttributes>
+  ): Promise<User> {
     const userRepository = getRepository(User)
     const data = await this.findById(id)
 
@@ -96,8 +99,8 @@ class UserService {
    */
   public static async restore(id: string): Promise<void> {
     const userRepository = getRepository(User)
-    const newId = validateUUID(id)
 
+    const newId = validateUUID(id)
     await userRepository.restore(newId)
   }
 

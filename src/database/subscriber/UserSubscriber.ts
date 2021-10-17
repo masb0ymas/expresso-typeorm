@@ -1,8 +1,8 @@
-import { User } from '@entity/User'
+import { User } from '@database/entity/User'
 import bcrypt from 'bcrypt'
 import {
-  EventSubscriber,
   EntitySubscriberInterface,
+  EventSubscriber,
   InsertEvent,
   UpdateEvent,
 } from 'typeorm'

@@ -2,7 +2,6 @@ import 'module-alias/register'
 import './pathAlias'
 
 import 'reflect-metadata'
-import dbConfig from './config/Database'
 import { createConnection } from 'typeorm'
 import chalk from 'chalk'
 import App from './app'
@@ -10,7 +9,7 @@ import App from './app'
 const Server = new App()
 
 // connect to database
-createConnection(dbConfig)
+createConnection()
   .then((connection) => {
     const db = chalk.blue(connection.options.database)
     const dbConnect = chalk.cyan(connection.options.type)

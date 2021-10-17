@@ -26,7 +26,8 @@ function createAxios(baseUri: string): AxiosInstance {
 
     if (!_.isEmpty(cacheToken)) {
       try {
-        curConfig.headers.Authorization = cacheToken
+        // @ts-expect-error
+        curConfig?.headers?.Authorization = cacheToken
       } catch (e) {
         console.log(e)
       }
@@ -63,6 +64,7 @@ function createAxios(baseUri: string): AxiosInstance {
       }
 
       const handleError = error?.response?.headers?.handleError
+      // @ts-expect-error
       if (!handleError || !handleError(error)) {
         if (error.code === 'ECONNREFUSED') {
           console.log(`${errAxios('Service Unavailable')}, ${message}`)

@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-interface RoleAttributes {
+interface RoleEntity {
   id?: string
   name: string
   createdAt: Date
@@ -15,8 +15,8 @@ interface RoleAttributes {
   deletedAt?: Date | null
 }
 
-export type RolePost = Omit<
-  RoleAttributes,
+export type RoleAttributes = Omit<
+  RoleEntity,
   'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >
 

@@ -12,7 +12,7 @@ import {
 } from 'typeorm'
 import { Role } from './Role'
 
-interface UserAttributes {
+interface UserEntity {
   id?: string
   firstName: string
   lastName: string
@@ -36,14 +36,14 @@ export interface UserLoginAttributes {
 }
 
 export type CreatePassword = Pick<
-  UserAttributes,
+  UserEntity,
   'newPassword' | 'confirmNewPassword'
 >
 
-export type LoginAttributes = Pick<UserAttributes, 'email' | 'password'>
+export type LoginAttributes = Pick<UserEntity, 'email' | 'password'>
 
-export type UserPost = Omit<
-  UserAttributes,
+export type UserAttributes = Omit<
+  UserEntity,
   'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >
 

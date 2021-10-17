@@ -1,8 +1,9 @@
+import { BASE_URL_SERVER } from '@config/baseURL'
+import { formatDateTime } from '@expresso/helpers/Date'
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
 import ResponseError from '@expresso/modules/Response/ResponseError'
-import { BASE_URL_SERVER } from '@config/BaseURL'
-import Express, { Request, Response } from 'express'
 import v1Route from '@routes/v1'
+import Express, { Request, Response } from 'express'
 
 const { NODE_ENV } = process.env
 const route = Express.Router()
@@ -12,9 +13,9 @@ const route = Express.Router()
  */
 route.get('/', function (req: Request, res: Response) {
   let responseData: any = {
-    message: 'Express built in TypeORM',
+    message: 'expresso-typeorm',
     maintaner: 'masb0ymas, <n.fajri@outlook.com>',
-    source: 'https://github.com/masb0ymas/expresso-typeorm',
+    source: 'https://github.com/masb0ymas/expresso',
   }
 
   if (NODE_ENV !== 'production') {
@@ -26,6 +27,23 @@ route.get('/', function (req: Request, res: Response) {
 
   const httpResponse = HttpResponse.get(responseData)
   return res.json(httpResponse)
+})
+
+route.get('/health', function (req: Request, res: Response) {
+  const startUsage = process.cpuUsage()
+
+  const status = {
+    uptime: process.uptime(),
+    message: 'Ok',
+    timezone: 'ID',
+    date: formatDateTime(new Date()),
+    node: process.version,
+    memory: process.memoryUsage,
+    platform: process.platform,
+    cpuUsage: process.cpuUsage(startUsage),
+  }
+
+  res.status(200).json({ status })
 })
 
 /* Forbidden Page. */

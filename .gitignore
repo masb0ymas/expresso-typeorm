@@ -6,6 +6,10 @@
 .pnp.js
 package-lock.json
 pnpm-lock.yaml
+.idea/
+build/
+tmp/
+temp/
 
 # testing
 /coverage

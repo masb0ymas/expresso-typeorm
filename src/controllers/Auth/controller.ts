@@ -1,5 +1,5 @@
 import SessionService from '@controllers/Session/service'
-import { UserLoginAttributes } from '@entity/User'
+import { UserLoginAttributes } from '@database/entity/User'
 import asyncHandler from '@expresso/helpers/asyncHandler'
 import { currentToken } from '@expresso/helpers/Token'
 import userAgentHelper from '@expresso/helpers/userAgent'
@@ -32,7 +32,7 @@ route.post(
 
     // create session
     await SessionService.createOrUpdate({
-      UserId: data.user.uid,
+      UserId: data.user.uid as unknown as string,
       token: data.accessToken,
       ipAddress: req.clientIp?.replace('::ffff:', ''),
       device: userAgentHelper.currentDevice(req),

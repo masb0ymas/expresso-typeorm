@@ -1,5 +1,5 @@
 import UserService from '@controllers/User/service'
-import { UserLoginAttributes } from '@entity/User'
+import { UserLoginAttributes } from '@database/entity/User'
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
 import chalk from 'chalk'
 import { NextFunction, Request, Response } from 'express'

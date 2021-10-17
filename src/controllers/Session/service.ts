@@ -1,15 +1,14 @@
-import { Session, SessionPost } from '@entity/Session'
+import { Session, SessionAttributes } from '@database/entity/Session'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
+import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
 import { getRepository } from 'typeorm'
 import sessionSchema from './schema'
 
-interface DtoPaginate {
-  message: string
+interface DtoPaginate extends DtoFindAll {
   data: Session[]
-  total: number
 }
 
 class SessionService {
@@ -70,7 +69,7 @@ class SessionService {
     const data = await sessionRepository.findOne({ where: { UserId, token } })
 
     if (!data) {
-      throw new ResponseError.NotFound(
+      throw new ResponseError.Unauthorized(
         'the login session has ended, please re-login'
       )
     }
@@ -83,7 +82,7 @@ class SessionService {
    * @param formData
    * @returns
    */
-  public static async created(formData: SessionPost): Promise<Session> {
+  public static async create(formData: SessionAttributes): Promise<Session> {
     const sessionRepository = getRepository(Session)
 
     const value = useValidation(sessionSchema.create, formData)
@@ -98,7 +97,9 @@ class SessionService {
    *
    * @param formData
    */
-  public static async createOrUpdate(formData: SessionPost): Promise<void> {
+  public static async createOrUpdate(
+    formData: SessionAttributes
+  ): Promise<void> {
     const sessionRepository = getRepository(Session)
     const value = useValidation(sessionSchema.create, formData)
 
@@ -107,7 +108,7 @@ class SessionService {
     })
 
     if (!data) {
-      await this.created(formData)
+      await this.create(formData)
     } else {
       await sessionRepository.save({ ...data, ...value })
     }
@@ -136,7 +137,7 @@ class SessionService {
    *
    * @param id
    */
-  public static async deleted(id: string): Promise<void> {
+  public static async delete(id: string): Promise<void> {
     const sessionRepository = getRepository(Session)
     const data = await this.findById(id)
 

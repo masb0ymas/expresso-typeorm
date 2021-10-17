@@ -4,9 +4,9 @@ import UserService from '@controllers/User/service'
 import {
   LoginAttributes,
   User,
+  UserAttributes,
   UserLoginAttributes,
-  UserPost,
-} from '@entity/User'
+} from '@database/entity/User'
 import ConstRole from '@expresso/constants/ConstRole'
 import { validateEmpty } from '@expresso/helpers/Formatter'
 import SendMail from '@expresso/helpers/SendMail'
@@ -33,7 +33,7 @@ class AuthService {
    * @param formData
    * @returns
    */
-  public static async signUp(formData: UserPost): Promise<User> {
+  public static async signUp(formData: UserAttributes): Promise<User> {
     const userRepository = getRepository(User)
     const randomToken = generateAccessToken({ uuid: uuidv4() })
 

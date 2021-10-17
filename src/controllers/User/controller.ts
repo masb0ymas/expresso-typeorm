@@ -34,10 +34,10 @@ route.post(
   '/user',
   Authorization,
   PermissionAccess([ConstRole.ID_ADMIN]),
-  asyncHandler(async function created(req: Request, res: Response) {
+  asyncHandler(async function create(req: Request, res: Response) {
     const formData = req.getBody()
 
-    const data = await UserService.created(formData)
+    const data = await UserService.create(formData)
 
     const httpResponse = HttpResponse.created({ data })
     return res.status(201).json(httpResponse)
@@ -48,11 +48,11 @@ route.put(
   '/user/:id',
   Authorization,
   PermissionAccess([ConstRole.ID_ADMIN]),
-  asyncHandler(async function created(req: Request, res: Response) {
+  asyncHandler(async function udpate(req: Request, res: Response) {
     const { id } = req.getParams()
     const formData = req.getBody()
 
-    const data = await UserService.updated(id, formData)
+    const data = await UserService.update(id, formData)
 
     const httpResponse = HttpResponse.updated({ data })
     return res.status(200).json(httpResponse)
@@ -63,12 +63,12 @@ route.put(
   '/user/restore/:id',
   Authorization,
   PermissionAccess([ConstRole.ID_ADMIN]),
-  asyncHandler(async function created(req: Request, res: Response) {
+  asyncHandler(async function restore(req: Request, res: Response) {
     const { id } = req.getParams()
 
     await UserService.restore(id)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.updated({})
     return res.status(200).json(httpResponse)
   })
 )
@@ -77,7 +77,7 @@ route.delete(
   '/user/soft-delete/:id',
   Authorization,
   PermissionAccess([ConstRole.ID_ADMIN]),
-  asyncHandler(async function created(req: Request, res: Response) {
+  asyncHandler(async function softDelete(req: Request, res: Response) {
     const { id } = req.getParams()
 
     await UserService.softDelete(id)
@@ -91,7 +91,7 @@ route.delete(
   '/user/force-delete/:id',
   Authorization,
   PermissionAccess([ConstRole.ID_ADMIN]),
-  asyncHandler(async function created(req: Request, res: Response) {
+  asyncHandler(async function forceDelete(req: Request, res: Response) {
     const { id } = req.getParams()
 
     await UserService.forceDelete(id)

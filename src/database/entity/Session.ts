@@ -9,7 +9,7 @@ import {
 } from 'typeorm'
 import { User } from './User'
 
-interface SessionAttributes {
+interface SessionEntity {
   id?: string
   UserId: string
   token: string
@@ -20,8 +20,8 @@ interface SessionAttributes {
   updatedAt: Date
 }
 
-export type SessionPost = Omit<
-  SessionAttributes,
+export type SessionAttributes = Omit<
+  SessionEntity,
   'id' | 'createdAt' | 'updatedAt'
 >
 
