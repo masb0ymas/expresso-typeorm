@@ -1,5 +1,5 @@
-import chalk from 'chalk'
-import dotenv from 'dotenv'
+/* eslint-disable import/no-duplicates */
+import { JWT_ACCESS_TOKEN_EXPIRED, JWT_SECRET_ACCESS_TOKEN } from '@config/env'
 import { Request } from 'express'
 import { IncomingHttpHeaders } from 'http'
 import jwt, {
@@ -10,11 +10,7 @@ import jwt, {
 } from 'jsonwebtoken'
 import _ from 'lodash'
 import ms from 'ms'
-
-dotenv.config()
-
-const { JWT_SECRET_ACCESS_TOKEN }: any = process.env
-const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED ?? '1d'
+import { logErrServer } from './Formatter'
 
 interface PayloadAccessToken {
   accessToken: string
@@ -38,7 +34,8 @@ type DtoVerifyAccessToken =
  * @returns
  */
 function generateAccessToken(payload: any): PayloadAccessToken {
-  const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000
+  const getMilliSecondExpires = ms(JWT_ACCESS_TOKEN_EXPIRED)
+  const expiresIn = Number(getMilliSecondExpires) / 1000
 
   const accessToken = jwt.sign(
     JSON.parse(JSON.stringify(payload)),
@@ -106,17 +103,17 @@ function verifyAccessToken(token: string): DtoVerifyAccessToken {
     return { data, message: 'Token is verify' }
   } catch (err) {
     if (err instanceof TokenExpiredError) {
-      console.log(chalk.red('JWT Expired Error:'), chalk.green(err.message))
+      console.log(logErrServer('JWT Expired Error:', err.message))
       return { data: null, message: `JWT Expired Error: ${err.message}` }
     }
 
     if (err instanceof JsonWebTokenError) {
-      console.log(chalk.red('JWT Token Error:'), chalk.green(err.message))
+      console.log(logErrServer('JWT Token Error:', err.message))
       return { data: null, message: `JWT Token Error: ${err.message}` }
     }
 
     if (err instanceof NotBeforeError) {
-      console.log(chalk.red('JWT Not Before Error:'), chalk.green(err.message))
+      console.log(logErrServer('JWT Not Before Error:', err.message))
       return { data: null, message: `JWT Not Before Error: ${err.message}` }
     }
   }

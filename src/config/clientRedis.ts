@@ -1,24 +1,29 @@
+import { logErrServer, logServer } from '@expresso/helpers/Formatter'
 import redis, { ClientOpts } from 'redis'
-import dotenv from 'dotenv'
+import { REDIS_HOST, REDIS_PASSWORD, REDIS_PORT } from './env'
 
-dotenv.config()
-
-const { REDIS_HOST, REDIS_PORT, REDIS_PASSWORD } = process.env
-
-const optionConfigs: ClientOpts = {
+const optConfig: ClientOpts = {
   host: REDIS_HOST,
-  port: Number(REDIS_PORT),
-  password: REDIS_PASSWORD ?? undefined,
+  port: REDIS_PORT,
+  password: REDIS_PASSWORD,
 }
 
-const clientRedis = redis.createClient(optionConfigs)
+const clientRedis = redis.createClient(optConfig)
 
+// client connect
 clientRedis.on('connect', function () {
-  console.log('Redis client connected')
+  const msgType = `Redis`
+  const message = `Connection has been established successfully.`
+
+  console.log(logServer(msgType, message))
 })
 
+// client error
 clientRedis.on('error', function (err) {
-  console.log(`Something went wrong ${err}`)
+  const errType = `Redis Error:`
+  const message = `Something went wrong ${err}`
+
+  console.log(logErrServer(errType, message))
 })
 
 export default clientRedis

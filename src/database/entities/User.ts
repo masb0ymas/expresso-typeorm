@@ -1,21 +1,18 @@
 import * as bcrypt from 'bcrypt'
 import {
   Column,
-  CreateDateColumn,
   DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn,
   Unique,
-  UpdateDateColumn,
 } from 'typeorm'
+import { Base } from './Base'
 import { Role } from './Role'
 
 interface UserEntity {
   id?: string
-  firstName: string
-  lastName: string
+  fullName: string
   email: string
   newPassword?: string | null
   confirmNewPassword?: string | null
@@ -49,15 +46,9 @@ export type UserAttributes = Omit<
 
 @Entity()
 @Unique(['email'])
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
-
+export class User extends Base {
   @Column()
-  firstName: string
-
-  @Column()
-  lastName: string
+  fullName: string
 
   @Column()
   email: string
@@ -87,14 +78,8 @@ export class User {
   @Column('uuid')
   RoleId: string
 
-  @CreateDateColumn()
-  createdAt: Date
-
-  @UpdateDateColumn()
-  updatedAt: Date
-
-  @DeleteDateColumn()
-  deletedAt: Date
+  @DeleteDateColumn({ nullable: true })
+  deletedAt!: Date
 
   async comparePassword(currentPassword: string): Promise<boolean> {
     return await bcrypt.compare(currentPassword, this.password)

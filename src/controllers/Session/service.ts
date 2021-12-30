@@ -1,4 +1,4 @@
-import { Session, SessionAttributes } from '@database/entity/Session'
+import { Session, SessionAttributes } from '@database/entities/Session'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'

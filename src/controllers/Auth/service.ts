@@ -6,7 +6,7 @@ import {
   User,
   UserAttributes,
   UserLoginAttributes,
-} from '@database/entity/User'
+} from '@database/entities/User'
 import ConstRole from '@expresso/constants/ConstRole'
 import { validateEmpty } from '@expresso/helpers/Formatter'
 import SendMail from '@expresso/helpers/SendMail'
@@ -57,7 +57,7 @@ class AuthService {
     // send email notification
     SendMail.AccountRegistration({
       email: value.email,
-      fullName: `${value.firstName} ${value.lastName}`,
+      fullName: value.fullName,
       token: randomToken.accessToken,
     })
 

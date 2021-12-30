@@ -1,18 +1,22 @@
-import UserService from '@controllers/User/service'
-import { UserLoginAttributes } from '@database/entity/User'
+import { User, UserLoginAttributes } from '@database/entities/User'
+import { logErrServer } from '@expresso/helpers/Formatter'
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
-import chalk from 'chalk'
 import { NextFunction, Request, Response } from 'express'
+import { getRepository } from 'typeorm'
 
 function NotPermittedAccess(roles: string[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const userLogin = req.getState('userLogin') as UserLoginAttributes
-    const getUser = await UserService.findById(userLogin.uid)
+    const userRepository = getRepository(User)
 
-    if (roles.includes(getUser.RoleId)) {
-      const errType = `Not Permitted Access Error:`
-      const message = 'You are not allowed'
-      console.log(chalk.red(errType), chalk.green(message))
+    const userLogin = req.getState('userLogin') as UserLoginAttributes
+    const getUser = await userRepository.findOne(userLogin.uid)
+
+    const errType = `Not Permitted Access Error:`
+    const message = 'You are not allowed'
+
+    if (getUser && roles.includes(getUser.RoleId)) {
+      // log error
+      console.log(logErrServer(errType, message))
 
       const httpResponse = HttpResponse.get({
         code: 403,

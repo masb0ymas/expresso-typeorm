@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
+import { APP_NAME, APP_PORT, NODE_ENV } from '@config/env'
 import i18next from '@config/i18nextConfig'
 import winstonLogger, { winstonStream } from '@config/Logger'
 import allowedOrigins from '@expresso/constants/ConstAllowedOrigins'
+import { logServer } from '@expresso/helpers/Formatter'
 import withState from '@expresso/helpers/withState'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { optionsSwaggerUI, swaggerSpec } from '@expresso/utils/DocsSwagger'
 import ExpressErrorResponse from '@middlewares/ExpressErrorResponse'
+import ExpressErrorTypeOrm from '@middlewares/ExpressErrorTypeOrm'
 import ExpressErrorYup from '@middlewares/ExpressErrorYup'
 import ExpressRateLimit from '@middlewares/ExpressRateLimit'
 import indexRoutes from '@routes/index'
@@ -13,7 +16,6 @@ import chalk from 'chalk'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
 import Cors from 'cors'
-import dotenv from 'dotenv'
 import Express, { Application, NextFunction, Request, Response } from 'express'
 import UserAgent from 'express-useragent'
 import Helmet from 'helmet'
@@ -24,11 +26,6 @@ import Logger from 'morgan'
 import path from 'path'
 import requestIp from 'request-ip'
 import swaggerUI from 'swagger-ui-express'
-
-dotenv.config()
-
-const NODE_ENV = process.env.NODE_ENV ?? 'development'
-const APP_PORT = Number(process.env.PORT) ?? 8000
 
 const optCors: Cors.CorsOptions = {
   origin: allowedOrigins,
@@ -102,6 +99,7 @@ class App {
   }
 
   public run(): void {
+    this.application.use(ExpressErrorTypeOrm)
     this.application.use(ExpressErrorYup)
     this.application.use(ExpressErrorResponse)
 
@@ -157,7 +155,13 @@ class App {
       const bind = typeof addr === 'string' ? `${addr}` : `${addr?.port}`
 
       const host = chalk.cyan(`http://localhost:${bind}`)
-      console.log(`Server listening on ${host} & Env: ${chalk.blue(NODE_ENV)}`)
+
+      const msgType = `${APP_NAME}`
+      const message = `Server listening on ${host} & ENV: ${chalk.blue(
+        NODE_ENV
+      )}`
+
+      console.log(logServer(msgType, message))
     }
 
     // Run listener

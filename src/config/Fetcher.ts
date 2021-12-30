@@ -1,15 +1,13 @@
+import { logErrServer } from '@expresso/helpers/Formatter'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import RedisProvider from '@expresso/providers/Redis'
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import chalk from 'chalk'
-import dotenv from 'dotenv'
 import _ from 'lodash'
-
-dotenv.config()
+import { LOG_SERVER } from './baseURL'
+import { AXIOS_TIMEOUT } from './env'
 
 const Redis = new RedisProvider()
-
-const AXIOS_TIMEOUT = Number(process.env.AXIOS_TIMEOUT) ?? 5000
 
 function createAxios(baseUri: string): AxiosInstance {
   const instanceAxios = axios.create({
@@ -27,7 +25,7 @@ function createAxios(baseUri: string): AxiosInstance {
     if (!_.isEmpty(cacheToken)) {
       try {
         // @ts-expect-error
-        curConfig?.headers?.Authorization = cacheToken
+        curConfig.headers.Authorization = cacheToken
       } catch (e) {
         console.log(e)
       }
@@ -49,17 +47,17 @@ function createAxios(baseUri: string): AxiosInstance {
       const errAxios = (type: string): string => chalk.red(`Axios Err: ${type}`)
 
       if (statusCode === 401) {
-        console.log(`${errAxios('Unauhtorized')}, ${message}`)
+        console.log(logErrServer(errAxios('Unauhtorized'), message))
         throw new ResponseError.Unauthorized(message)
       }
 
       if (statusCode === 400) {
-        console.log(`${errAxios('Bad Request')}, ${message}`)
+        console.log(logErrServer(errAxios('Bad Request'), message))
         throw new ResponseError.BadRequest(message)
       }
 
       if (statusCode === 404) {
-        console.log(`${errAxios('Not Found')}, ${message}`)
+        console.log(logErrServer(errAxios('Not Found'), message))
         throw new ResponseError.NotFound(message)
       }
 
@@ -67,12 +65,14 @@ function createAxios(baseUri: string): AxiosInstance {
       // @ts-expect-error
       if (!handleError || !handleError(error)) {
         if (error.code === 'ECONNREFUSED') {
-          console.log(`${errAxios('Service Unavailable')}, ${message}`)
+          console.log(logErrServer(errAxios('Service Unavailable'), message))
           throw new ResponseError.InternalServer('Service Unavailable')
         }
 
-        console.log(`${errAxios(error.message)}`)
-        throw new ResponseError.BadRequest(error.message)
+        const errMessage = error.response?.data ?? error.message
+
+        console.log(`${LOG_SERVER} ${errAxios(errMessage)}`)
+        throw new ResponseError.BadRequest(errMessage)
       }
       return await Promise.reject(error)
     }

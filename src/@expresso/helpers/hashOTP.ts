@@ -1,8 +1,6 @@
+import { EXPIRED_OTP, SECRET_OTP } from '@config/env'
 import crypto from 'crypto'
 import ms from 'ms'
-
-const { SECRET_OTP }: any = process.env
-const EXPIRED_OTP = process.env.EXPIRED_OTP ?? '5m'
 
 interface HashOTPAttributes {
   phone: string
@@ -15,7 +13,7 @@ interface VerifyHashOTPAttributes extends HashOTPAttributes {
 
 /**
  * Generate Random OTP
- * @returns
+ * @returns {string}
  */
 export function getRandomOTP(): string {
   // which stores all digits
@@ -31,8 +29,8 @@ export function getRandomOTP(): string {
 
 /**
  *
- * @param params
- * @returns
+ * @param params {HashOTPAttributes}
+ * @returns {string}
  */
 export function createHashOTP(params: HashOTPAttributes): string {
   const { phone, otp } = params
@@ -52,8 +50,8 @@ export function createHashOTP(params: HashOTPAttributes): string {
 
 /**
  *
- * @param params
- * @returns
+ * @param params {VerifyHashOTPAttributes}
+ * @returns {boolean}
  */
 export function verifyHashOTP(params: VerifyHashOTPAttributes): boolean {
   const { phone, otp, hash } = params

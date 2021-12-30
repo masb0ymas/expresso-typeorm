@@ -1,6 +1,6 @@
+import { logErrServer } from '@expresso/helpers/Formatter'
 import { NextFunction, Request, Response } from 'express'
 import { ValidationError } from 'yup'
-import chalk from 'chalk'
 
 async function ExpressErrorYup(
   err: any,
@@ -11,7 +11,8 @@ async function ExpressErrorYup(
   if (err instanceof ValidationError) {
     const errType = `Yup Validation Error:`
     const message = err.errors.join('<br/>') || 'Yup Validation Error !'
-    console.log(chalk.red(errType), chalk.green(message))
+
+    console.log(logErrServer(errType, message))
 
     const error = {
       code: 422,

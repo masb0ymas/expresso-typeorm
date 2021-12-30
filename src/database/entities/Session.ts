@@ -1,12 +1,5 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
+import { Base } from './Base'
 import { User } from './User'
 
 interface SessionEntity {
@@ -26,10 +19,7 @@ export type SessionAttributes = Omit<
 >
 
 @Entity()
-export class Session {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
-
+export class Session extends Base {
   @ManyToOne(() => User, (user) => user)
   @JoinColumn({ name: 'UserId' })
   user: User
@@ -48,10 +38,4 @@ export class Session {
 
   @Column({ nullable: true })
   platform!: string
-
-  @CreateDateColumn()
-  createdAt: Date
-
-  @UpdateDateColumn()
-  updatedAt: Date
 }

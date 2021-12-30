@@ -1,4 +1,4 @@
-import chalk from 'chalk'
+import { logServer } from '@expresso/helpers/Formatter'
 import i18next from 'i18next'
 import i18nextBackend from 'i18next-fs-backend'
 
@@ -16,8 +16,7 @@ void i18next.use(i18nextBackend).init(
   (err, _t) => {
     if (err) return console.error(err)
 
-    const name = chalk.cyan('i18next')
-    console.log(`${name} is ready...`)
+    console.log(logServer('i18next', 'is ready...'))
   }
 )
 

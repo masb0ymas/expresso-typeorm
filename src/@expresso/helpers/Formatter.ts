@@ -1,4 +1,6 @@
+import { LOG_SERVER } from '@config/baseURL'
 import ResponseError from '@expresso/modules/Response/ResponseError'
+import chalk from 'chalk'
 import _ from 'lodash'
 import { validate as uuidValidate } from 'uuid'
 
@@ -75,4 +77,50 @@ function validateUUID(value: string): string {
   return value
 }
 
-export { arrayFormatter, validateEmpty, validateBoolean, validateUUID }
+/**
+ *
+ * @param length
+ * @returns
+ */
+function getUniqueCodev2(length = 32): string {
+  let result = ''
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const charactersLength = characters.length
+  for (let i = 0; i < length; i += 1) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+  }
+  return result
+}
+
+/**
+ *
+ * @param type
+ * @param message
+ * @returns
+ */
+function logServer(type: string, message: string): string {
+  const logErr = `${LOG_SERVER} ${chalk.blue(type)} ${chalk.green(message)}`
+  return logErr
+}
+
+/**
+ *
+ * @param type
+ * @param message
+ * @returns
+ */
+function logErrServer(type: string, message: string): string {
+  const logErr = `${LOG_SERVER} ${chalk.red(type)} ${chalk.green(message)}`
+  return logErr
+}
+
+export {
+  arrayFormatter,
+  validateEmpty,
+  validateBoolean,
+  validateUUID,
+  getUniqueCodev2,
+  logServer,
+  logErrServer,
+}

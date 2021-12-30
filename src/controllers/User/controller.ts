@@ -14,7 +14,7 @@ route.get(
     const data = await UserService.findAll(req)
 
     const httpResponse = HttpResponse.get(data)
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -26,7 +26,7 @@ route.get(
     const data = await UserService.findById(id)
 
     const httpResponse = HttpResponse.get({ data })
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -40,7 +40,7 @@ route.post(
     const data = await UserService.create(formData)
 
     const httpResponse = HttpResponse.created({ data })
-    return res.status(201).json(httpResponse)
+    res.status(201).json(httpResponse)
   })
 )
 
@@ -55,7 +55,7 @@ route.put(
     const data = await UserService.update(id, formData)
 
     const httpResponse = HttpResponse.updated({ data })
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -69,7 +69,7 @@ route.put(
     await UserService.restore(id)
 
     const httpResponse = HttpResponse.updated({})
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -83,7 +83,7 @@ route.delete(
     await UserService.softDelete(id)
 
     const httpResponse = HttpResponse.deleted({})
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -97,6 +97,6 @@ route.delete(
     await UserService.forceDelete(id)
 
     const httpResponse = HttpResponse.deleted({})
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )

@@ -1,4 +1,4 @@
-import { User, UserAttributes } from '@database/entity/User'
+import { User, UserAttributes } from '@database/entities/User'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'

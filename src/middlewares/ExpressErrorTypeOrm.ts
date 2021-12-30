@@ -1,6 +1,6 @@
+import { logErrServer } from '@expresso/helpers/Formatter'
 import { NextFunction, Request, Response } from 'express'
 import { QueryFailedError } from 'typeorm'
-import chalk from 'chalk'
 
 function msg(message: string): string {
   return `TypeORM Error: ${message}`
@@ -14,7 +14,8 @@ async function ExpressErrorTypeOrm(
 ): Promise<Response<any, Record<string, any>> | undefined> {
   if (err instanceof QueryFailedError) {
     const errType = 'TypeORM Error:'
-    console.log(`${chalk.red(errType)} ${chalk.green(err.message)}`)
+
+    console.log(logErrServer(errType, err.message))
 
     return res.status(400).json({
       code: 400,

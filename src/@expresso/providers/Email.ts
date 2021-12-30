@@ -1,30 +1,26 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
+import {
+  APP_NAME,
+  MAILGUN_API_KEY,
+  MAILGUN_DOMAIN,
+  MAIL_AUTH_TYPE,
+  MAIL_DRIVER,
+  MAIL_HOST,
+  MAIL_PASSWORD,
+  MAIL_PORT,
+  MAIL_USERNAME,
+  OAUTH_CLIENT_ID,
+  OAUTH_CLIENT_SECRET,
+  OAUTH_REDIRECT_URL,
+  OAUTH_REFRESH_TOKEN,
+} from '@config/env'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import chalk from 'chalk'
-import dotenv from 'dotenv'
 import { Headers } from 'gaxios'
 import { google } from 'googleapis'
 import { isEmpty } from 'lodash'
 import nodemailer from 'nodemailer'
 import mg from 'nodemailer-mailgun-transport'
-
-dotenv.config()
-
-const {
-  APP_NAME,
-  MAIL_DRIVER,
-  MAIL_HOST,
-  MAIL_PORT,
-  MAIL_USERNAME,
-  MAIL_PASSWORD,
-  MAIL_AUTH_TYPE,
-  MAILGUN_API_KEY,
-  MAILGUN_DOMAIN,
-  OAUTH_CLIENT_ID,
-  OAUTH_CLIENT_SECRET,
-  OAUTH_REFRESH_TOKEN,
-  OAUTH_REDIRECT_URL,
-} = process.env
 
 const isMailgunAPI = !isEmpty(MAILGUN_API_KEY) || !isEmpty(MAILGUN_DOMAIN)
 
@@ -38,16 +34,16 @@ class EmailProvider {
    * @param subject
    * @param template
    */
-  public send = async (
+  public send = (
     to: string | string[],
     subject: string,
     template: string
-  ): Promise<void | string[]> => {
+  ): void | string[] => {
     const dest: string = Array.isArray(to) ? to.join(',') : to
     const text: string = template
 
     // send an e-mail
-    await this.sendMail(dest, subject, text)
+    this.sendMail(dest, subject, text)
   }
 
   /**
@@ -126,11 +122,11 @@ class EmailProvider {
    * @param subject
    * @param text
    */
-  private readonly sendMail = async (
+  private readonly sendMail = (
     dest: string,
     subject: string,
     text: string
-  ): Promise<void | string[]> => {
+  ): void | string[] => {
     this.mailConfig = isMailgunAPI
       ? mg(this.setMailConfig())
       : this.setMailConfig()

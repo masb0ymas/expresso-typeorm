@@ -1,23 +1,18 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { BASE_URL_SERVER } from '@config/baseURL'
-import dotenv from 'dotenv'
+import {
+  APP_NAME,
+  NODE_ENV,
+  URL_SERVER_PRODUCTION,
+  URL_SERVER_SANDBOX,
+} from '@config/env'
 import fs from 'fs'
 import _ from 'lodash'
 import path from 'path'
 import swaggerJSDoc from 'swagger-jsdoc'
 
-dotenv.config()
-
-const APP_NAME = process.env.APP_NAME ?? 'expresso'
-const NODE_ENV = process.env.NODE_ENV ?? 'development'
-
-const URL_SERVER_STAGING =
-  process.env.URL_SERVER_STAGING ?? 'https://api-staging.example.com'
-const URL_SERVER_PRODUCTION =
-  process.env.URL_SERVER_PRODUCTION ?? 'https://api.example.com'
-
 const baseRoutes = path.resolve(`${__dirname}/../docs/swagger/routes`)
-// const baseSchemas = path.resolve('./docs/swagger/schemas')
+// const baseSchemas = path.resolve(`${__dirname}/../docs/swagger/schemas`)
 
 const getDocs = (basePath: string | Buffer): {} => {
   return fs.readdirSync(basePath).reduce((acc, file) => {
@@ -31,7 +26,7 @@ const getDocs = (basePath: string | Buffer): {} => {
 }
 
 const docsSources = getDocs(baseRoutes)
-// const docsSchemes = getDocs(baseSchemas, getPathSchemes)
+// const docsSchemes = getDocs(baseSchemas)
 
 let baseURLServer = []
 let swaggerOptURL = []
@@ -43,7 +38,7 @@ if (NODE_ENV === 'development') {
       description: `${_.capitalize(NODE_ENV)} Server`,
     },
     {
-      url: `${URL_SERVER_STAGING}/v1`,
+      url: `${URL_SERVER_SANDBOX}/v1`,
       description: 'Staging Server',
     },
     {
@@ -58,7 +53,7 @@ if (NODE_ENV === 'development') {
       name: `${_.capitalize(NODE_ENV)} Server`,
     },
     {
-      url: `${URL_SERVER_STAGING}/v1/api-docs.json`,
+      url: `${URL_SERVER_SANDBOX}/v1/api-docs.json`,
       name: 'Staging Server',
     },
     {
@@ -84,6 +79,11 @@ if (NODE_ENV === 'development') {
 
 export const swaggerOptions = {
   definition: {
+    info: {
+      title: `Api ${APP_NAME} Docs`,
+      description: `This is Api Documentation ${APP_NAME}`,
+      version: '1.0.0',
+    },
     openapi: '3.0.1',
     servers: baseURLServer,
     // Set GLOBAL
@@ -131,10 +131,6 @@ export const swaggerOptions = {
           description: 'Example: [{"id": "createdAt", "desc": true}]',
         },
       },
-    },
-    info: {
-      title: `Api ${APP_NAME} Documentation`,
-      version: '1.0.0',
     },
     paths: docsSources,
   },

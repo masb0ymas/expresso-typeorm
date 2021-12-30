@@ -1,5 +1,5 @@
 import SessionService from '@controllers/Session/service'
-import { UserLoginAttributes } from '@database/entity/User'
+import { UserLoginAttributes } from '@database/entities/User'
 import asyncHandler from '@expresso/helpers/asyncHandler'
 import { currentToken } from '@expresso/helpers/Token'
 import userAgentHelper from '@expresso/helpers/userAgent'
@@ -18,7 +18,7 @@ route.post(
     const data = await AuthService.signUp(formData)
 
     const httpResponse = HttpResponse.get({ data })
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -39,7 +39,7 @@ route.post(
       platform: userAgentHelper.currentPlatform(req),
     })
 
-    return res
+    res
       .status(200)
       .cookie('token', data.accessToken, {
         maxAge: Number(data.expiresIn) * 1000,
@@ -61,7 +61,7 @@ route.get(
     const data = await AuthService.verifySession(userLogin.uid, getToken)
 
     const httpResponse = HttpResponse.get({ data })
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -78,11 +78,8 @@ route.post(
     }
 
     const message = await AuthService.logout(userLogin.uid, getToken)
-    const httpResponse = HttpResponse.get({ message })
 
-    return res
-      .status(200)
-      .clearCookie('token', { path: '/v1' })
-      .json(httpResponse)
+    const httpResponse = HttpResponse.get({ message })
+    res.status(200).clearCookie('token', { path: '/v1' }).json(httpResponse)
   })
 )

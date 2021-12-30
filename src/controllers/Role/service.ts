@@ -1,4 +1,4 @@
-import { Role, RoleAttributes } from '@database/entity/Role'
+import { Role, RoleAttributes } from '@database/entities/Role'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'

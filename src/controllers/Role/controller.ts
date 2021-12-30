@@ -7,12 +7,12 @@ import RoleService from './service'
 
 route.get(
   '/role',
-  Authorization,
+  // Authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
     const data = await RoleService.findAll(req)
 
     const httpResponse = HttpResponse.get(data)
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -24,7 +24,7 @@ route.get(
     const data = await RoleService.findById(id)
 
     const httpResponse = HttpResponse.get({ data })
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -36,7 +36,7 @@ route.post(
     const data = await RoleService.create(formData)
 
     const httpResponse = HttpResponse.created({ data })
-    return res.status(201).json(httpResponse)
+    res.status(201).json(httpResponse)
   })
 )
 
@@ -50,7 +50,7 @@ route.put(
     const data = await RoleService.update(id, formData)
 
     const httpResponse = HttpResponse.updated({ data })
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -63,7 +63,7 @@ route.put(
     await RoleService.restore(id)
 
     const httpResponse = HttpResponse.updated({})
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -76,7 +76,7 @@ route.delete(
     await RoleService.softDelete(id)
 
     const httpResponse = HttpResponse.deleted({})
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
 
@@ -89,6 +89,6 @@ route.delete(
     await RoleService.forceDelete(id)
 
     const httpResponse = HttpResponse.deleted({})
-    return res.status(200).json(httpResponse)
+    res.status(200).json(httpResponse)
   })
 )
