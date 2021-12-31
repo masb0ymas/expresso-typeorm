@@ -40,21 +40,12 @@ export const URL_SERVER_PRODUCTION = process.env.URL_SERVER_PRODUCTION ?? 'https
 // database
 export const TYPEORM_CONNECTION = process.env.TYPEORM_CONNECTION ?? 'postgres'
 export const TYPEORM_HOST = process.env.TYPEORM_HOST ?? '127.0.0.1'
-export const TYPEORM_DATABASE = process.env.TYPEORM_DATABASE ?? 'latihan-typeorm'
-export const TYPEORM_USERNAME = process.env.TYPEORM_USERNAME ?? 'masb0ymas'
-export const TYPEORM_PASSWORD = process.env.TYPEORM_PASSWORD ?? 'padang123'
 export const TYPEORM_PORT = Number(process.env.TYPEORM_PORT) ?? 5432
+export const TYPEORM_DATABASE = process.env.TYPEORM_DATABASE ?? 'expresso'
+export const TYPEORM_USERNAME = process.env.TYPEORM_USERNAME ?? 'postgres'
+export const TYPEORM_PASSWORD = process.env.TYPEORM_PASSWORD ?? 'postgres'
 export const TYPEORM_SYNCHRONIZE = process.env.TYPEORM_SYNCHRONIZE ?? true
 export const TYPEORM_LOGGING = process.env.TYPEORM_LOGGING ?? true
-
-export const DB_CONNECTION = process.env.DB_CONNECTION ?? 'mysql'
-export const DB_HOST = process.env.DB_HOST ?? '127.0.0.1'
-export const DB_PORT = Number(process.env.DB_PORT) ?? 3306
-export const DB_DATABASE = process.env.DB_DATABASE ?? 'example'
-export const DB_USERNAME = process.env.DB_USERNAME ?? 'root'
-export const DB_PASSWORD = process.env.DB_PASSWORD ?? undefined
-export const DB_OPERATOR_ALIAS = process.env.DB_OPERATOR_ALIAS ?? undefined
-export const DB_TIMEZONE = process.env.DB_TIMEZONE ?? '+07:00' // for mysql = +07:00, for postgres = Asia/Jakarta
 export const TYPEORM_MIGRATIONS_RUN = process.env.TYPEORM_MIGRATIONS_RUN ?? true
 
 // smtp

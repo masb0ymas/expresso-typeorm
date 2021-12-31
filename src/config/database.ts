@@ -12,8 +12,6 @@ import {
   TYPEORM_USERNAME,
 } from './env'
 
-// const PRODUCTION_ENV = NODE_ENV === 'production'
-
 const databaseConfig: ConnectionOptions = {
   type: TYPEORM_CONNECTION as 'mysql' | 'postgres' | 'mongodb',
   host: TYPEORM_HOST,
@@ -26,9 +24,11 @@ const databaseConfig: ConnectionOptions = {
   entities: ['dist/database/entities/**/*.js'],
   migrations: ['dist/database/migrations/**/*.js'],
   migrationsRun: validateBoolean(TYPEORM_MIGRATIONS_RUN),
+  subscribers: ['dist/database/subscribers/**/*.js'],
   cli: {
     migrationsDir: 'dist/database/migrations',
     entitiesDir: 'dist/database/entities',
+    subscribersDir: 'dist/database/subscribers',
   },
 }
 
