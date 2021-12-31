@@ -18,8 +18,8 @@
     "serve:staging": "NODE_ENV=staging node ./dist/server.js",
     "serve:production": "NODE_ENV=production node ./dist/server.js",
     "serve:production-docker": "NODE_ENV=production pm2-runtime ./dist/server.js",
-    "db:create": "npx typeorm-extension db:create",
-    "db:drop": "npx typeorm-extension db:drop",
+    "db:create": "npx typeorm schema:sync",
+    "db:drop": "npx typeorm schema:drop",
     "db:reset": "npm run db:drop && npm run db:create",
     "release": "standard-version",
     "release:pre": "npm run release -- --prerelease",
@@ -87,7 +87,6 @@
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
     "typeorm": "^0.2.38",
-    "typeorm-extension": "^0.3.0",
     "uuid": "^8.3.2",
     "winston": "^3.3.3",
     "yup": "0.31.0"
