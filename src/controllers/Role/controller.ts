@@ -7,7 +7,7 @@ import RoleService from './service'
 
 route.get(
   '/role',
-  // Authorization,
+  Authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
     const data = await RoleService.findAll(req)
 
