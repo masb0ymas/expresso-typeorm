@@ -4,6 +4,7 @@ import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
+import _ from 'lodash'
 import { getRepository } from 'typeorm'
 import sessionSchema from './schema'
 
@@ -19,17 +20,25 @@ class SessionService {
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
     const sessionRepository = getRepository(Session)
+    const reqQuery = req.getQuery()
 
-    const page = Number(req.query.page) || 1
-    const pageSize = Number(req.query.pageSize) || 10
+    const page = Number(reqQuery.page) || 1
+    const pageSize = Number(reqQuery.pageSize) || 10
 
-    const data = await sessionRepository
+    // query
+    const UserId = _.get(reqQuery, 'UserId', null)
+
+    const query = sessionRepository
       .createQueryBuilder()
       .skip((page - 1) * pageSize)
       .take(pageSize)
-      .getMany()
 
-    const total = await sessionRepository.createQueryBuilder().getCount()
+    if (!_.isEmpty(UserId)) {
+      query.where('Session.UserId ILIKE :UserId', { UserId: `%${UserId}%` })
+    }
+
+    const data = await query.orderBy('Session.createdAt', 'DESC').getMany()
+    const total = await query.getCount()
 
     return { message: `${total} data has been received.`, data, total }
   }

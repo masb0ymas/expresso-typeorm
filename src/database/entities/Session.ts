@@ -22,7 +22,7 @@ export type SessionAttributes = Omit<
 export class Session extends Base {
   @ManyToOne(() => User, (user) => user)
   @JoinColumn({ name: 'UserId' })
-  user: User
+  User: User
 
   @Column('uuid')
   UserId: string
