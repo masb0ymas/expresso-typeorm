@@ -4,6 +4,7 @@ import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
+import _ from 'lodash'
 import { getRepository } from 'typeorm'
 import userSchema from './schema'
 
@@ -19,18 +20,32 @@ class UserService {
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
     const userRepository = getRepository(User)
+    const reqQuery = req.getQuery()
 
-    const page = Number(req.query.page) || 1
-    const pageSize = Number(req.query.pageSize) || 10
+    const page = Number(reqQuery.page) || 1
+    const pageSize = Number(reqQuery.pageSize) || 10
 
-    const data = await userRepository
-      .createQueryBuilder('user')
+    // query
+    const email = _.get(reqQuery, 'email', null)
+    const RoleId = _.get(reqQuery, 'RoleId', null)
+
+    const query = userRepository
+      .createQueryBuilder()
       .skip((page - 1) * pageSize)
       .take(pageSize)
-      .leftJoinAndSelect('user.role', 'role')
-      .getMany()
+      .leftJoinAndSelect('User.Role', 'Role')
+      .leftJoinAndSelect('User.Sessions', 'Session')
 
-    const total = await userRepository.createQueryBuilder().getCount()
+    if (!_.isEmpty(email)) {
+      query.where('User.email ILIKE :email', { email: `%${email}%` })
+    }
+
+    if (!_.isEmpty(RoleId)) {
+      query.where('User.RoleId ILIKE :RoleId', { RoleId: `%${RoleId}%` })
+    }
+
+    const data = await query.orderBy('User.createdAt', 'DESC').getMany()
+    const total = await query.getCount()
 
     return { message: `${total} data has been received.`, data, total }
   }

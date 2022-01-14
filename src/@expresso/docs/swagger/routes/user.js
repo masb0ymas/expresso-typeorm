@@ -17,10 +17,10 @@ module.exports = {
           $ref: '#/components/parameters/pageSize',
         },
         {
-          $ref: '#/components/parameters/filtered',
+          $ref: '#/components/parameters/email',
         },
         {
-          $ref: '#/components/parameters/sorted',
+          $ref: '#/components/parameters/RoleId',
         },
       ],
       responses: {
@@ -44,10 +44,7 @@ module.exports = {
             schema: {
               type: 'object',
               properties: {
-                firstName: {
-                  type: 'string',
-                },
-                lastName: {
+                fullName: {
                   type: 'string',
                 },
                 email: {
@@ -67,8 +64,7 @@ module.exports = {
                 },
               },
               required: [
-                'firstName',
-                'lastName',
+                'fullName',
                 'email',
                 'newPassword',
                 'confirmNewPassword',
@@ -237,10 +233,7 @@ module.exports = {
             schema: {
               type: 'object',
               properties: {
-                firstName: {
-                  type: 'string',
-                },
-                lastName: {
+                fullName: {
                   type: 'string',
                 },
                 email: {
@@ -253,7 +246,7 @@ module.exports = {
                   type: 'string',
                 },
               },
-              required: ['firstName', 'lastName', 'email', 'RoleId'],
+              required: ['fullName', 'email', 'RoleId'],
             },
           },
         },

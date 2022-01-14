@@ -4,11 +4,14 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   Unique,
 } from 'typeorm'
 import { Base } from './Base'
 import { Role } from './Role'
+import { Session } from './Session'
 
 interface UserEntity {
   id?: string
@@ -47,6 +50,9 @@ export type UserAttributes = Omit<
 @Entity()
 @Unique(['email'])
 export class User extends Base {
+  @DeleteDateColumn({ nullable: true })
+  deletedAt!: Date
+
   @Column()
   fullName: string
 
@@ -73,13 +79,14 @@ export class User extends Base {
 
   @ManyToOne(() => Role, (role) => role)
   @JoinColumn({ name: 'RoleId' })
-  role: Role
+  Role: Role
 
   @Column('uuid')
   RoleId: string
 
-  @DeleteDateColumn({ nullable: true })
-  deletedAt!: Date
+  @ManyToMany(() => Session)
+  @JoinTable()
+  Sessions: Session[]
 
   async comparePassword(currentPassword: string): Promise<boolean> {
     return await bcrypt.compare(currentPassword, this.password)
