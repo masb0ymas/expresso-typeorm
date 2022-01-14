@@ -4,6 +4,7 @@ import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { Request } from 'express'
+import _ from 'lodash'
 import { getRepository } from 'typeorm'
 import roleSchema from './schema'
 
@@ -19,17 +20,25 @@ class RoleService {
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
     const roleRepository = getRepository(Role)
+    const reqQuery = req.getQuery()
 
-    const page = Number(req.query.page) || 1
-    const pageSize = Number(req.query.pageSize) || 10
+    const page = Number(reqQuery.page) || 1
+    const pageSize = Number(reqQuery.pageSize) || 10
 
-    const data = await roleRepository
+    // query
+    const name = _.get(reqQuery, 'name', null)
+
+    const query = roleRepository
       .createQueryBuilder()
       .skip((page - 1) * pageSize)
       .take(pageSize)
-      .getMany()
 
-    const total = await roleRepository.createQueryBuilder().getCount()
+    if (!_.isEmpty(name)) {
+      query.where('Role.name ILIKE :name', { name: `%${name}%` })
+    }
+
+    const data = await query.orderBy('Role.createdAt', 'DESC').getMany()
+    const total = await query.getCount()
 
     return { message: `${total} data has been received.`, data, total }
   }

@@ -13,9 +13,9 @@ export type RoleAttributes = Pick<RoleEntity, 'name'>
 
 @Entity()
 export class Role extends Base {
-  @Column()
-  name: string
-
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date
+
+  @Column()
+  name: string
 }
