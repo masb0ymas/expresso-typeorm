@@ -92,7 +92,7 @@
     "yup": "0.31.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^15.0.0",
+    "@commitlint/cli": "^16.0.2",
     "@commitlint/config-conventional": "^15.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.2",
