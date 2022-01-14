@@ -130,6 +130,26 @@ export const swaggerOptions = {
           default: [],
           description: 'Example: [{"id": "createdAt", "desc": true}]',
         },
+        name: {
+          in: 'query',
+          name: 'name',
+          required: false,
+        },
+        email: {
+          in: 'query',
+          name: 'email',
+          required: false,
+        },
+        RoleId: {
+          in: 'query',
+          name: 'RoleId',
+          required: false,
+        },
+        UserId: {
+          in: 'query',
+          name: 'UserId',
+          required: false,
+        },
       },
     },
     paths: docsSources,
