@@ -51,7 +51,7 @@
     "date-fns": "^2.26.0",
     "dotenv": "^10.0.0",
     "exceljs": "^4.3.0",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "express-async-handler": "^1.2.0",
     "express-useragent": "^1.0.15",
     "googleapis": "^91.0.0",
