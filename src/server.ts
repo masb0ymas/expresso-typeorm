@@ -1,10 +1,11 @@
 import 'module-alias/register'
-import './pathAlias'
 import 'reflect-metadata'
+import './pathAlias'
 
 import initialAwsS3 from '@config/clientS3'
 import databaseConfig from '@config/database'
 import { AWS_ACCESS_KEY, AWS_SECRET_KEY } from '@config/env'
+import { logErrServer, logServer } from '@expresso/helpers/Formatter'
 import chalk from 'chalk'
 import { createConnection } from 'typeorm'
 import App from './app'
@@ -17,14 +18,15 @@ createConnection(databaseConfig)
   .then((connection) => {
     const dbName = chalk.blue(connection.options.database)
     const dbConnect = chalk.cyan(connection.options.type)
-    console.log(
-      `Database ${dbName}, Connection ${dbConnect} has been established successfully.`
-    )
+
+    const message = `Database ${dbName}, Connection ${dbConnect} has been established successfully.`
+    console.log(logServer('TypeORM', message))
 
     Server.run()
   })
   .catch((err) => {
-    console.error('Unable to connect to the database:', err)
+    const message = `Unable to connect to the database: ${err}`
+    console.log(logErrServer('TypeORM Error: ', message))
   })
 
 // check if exist access & secret key aws
