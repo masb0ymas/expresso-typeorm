@@ -48,6 +48,14 @@ export const TYPEORM_SYNCHRONIZE = process.env.TYPEORM_SYNCHRONIZE ?? true
 export const TYPEORM_LOGGING = process.env.TYPEORM_LOGGING ?? true
 export const TYPEORM_MIGRATIONS_RUN = process.env.TYPEORM_MIGRATIONS_RUN ?? true
 
+export const TYPEORM_ENTITIES = process.env.TYPEORM_ENTITIES ?? 'dist/database/entities/**/*{.ts,.js}'
+export const TYPEORM_MIGRATIONS = process.env.TYPEORM_MIGRATIONS ?? 'dist/database/migrations/**/*{.ts,.js}'
+export const TYPEORM_SUBSCRIBERS = process.env.TYPEORM_SUBSCRIBERS ?? 'dist/database/subscribers/**/*{.ts,.js}'
+
+export const TYPEORM_ENTITIES_DIR = process.env.TYPEORM_ENTITIES_DIR ?? 'dist/database/entities'
+export const TYPEORM_MIGRATIONS_DIR = process.env.TYPEORM_MIGRATIONS_DIR ?? 'dist/database/migrations'
+export const TYPEORM_SUBSCRIBERS_DIR = process.env.TYPEORM_SUBSCRIBERS_DIR ?? 'dist/database/subscribers'
+
 // smtp
 export const MAIL_DRIVER = process.env.MAIL_DRIVER ?? 'smtp'
 export const MAIL_HOST = process.env.MAIL_HOST ?? 'smtp.mailtrap.io'
