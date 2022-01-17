@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { BASE_URL_SERVER } from '@config/baseURLs'
+import { BASE_URL_SERVER } from '@config/baseURL'
 import {
   APP_NAME,
   NODE_ENV,

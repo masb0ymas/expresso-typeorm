@@ -1,4 +1,4 @@
-import { BASE_URL_SERVER } from '@config/baseURLs'
+import { BASE_URL_SERVER } from '@config/baseURL'
 import { NODE_ENV } from '@config/env'
 import asyncHandler from '@expresso/helpers/asyncHandler'
 import { formatDateTime } from '@expresso/helpers/Date'
