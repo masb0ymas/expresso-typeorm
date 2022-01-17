@@ -1,4 +1,4 @@
-import { LOG_SERVER } from '@config/baseURL'
+import { LOG_SERVER } from '@config/baseURLs'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import chalk from 'chalk'
 import _ from 'lodash'

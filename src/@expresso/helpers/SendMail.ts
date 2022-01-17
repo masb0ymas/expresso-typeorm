@@ -1,4 +1,4 @@
-import { BASE_URL_SERVER } from '@config/baseURL'
+import { BASE_URL_SERVER } from '@config/baseURLs'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import EmailProvider from '@expresso/providers/Email'
 import fs from 'fs'

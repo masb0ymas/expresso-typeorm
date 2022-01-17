@@ -4,7 +4,7 @@ import RedisProvider from '@expresso/providers/Redis'
 import axios, { AxiosError, AxiosInstance } from 'axios'
 import chalk from 'chalk'
 import _ from 'lodash'
-import { LOG_SERVER } from './baseURL'
+import { LOG_SERVER } from './baseURLs'
 import { AXIOS_TIMEOUT } from './env'
 
 const Redis = new RedisProvider()
