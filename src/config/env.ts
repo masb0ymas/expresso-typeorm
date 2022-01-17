@@ -1,7 +1,5 @@
 /* eslint-disable prettier/prettier */
-import dotenv from 'dotenv'
-
-dotenv.config()
+import 'dotenv/config'
 
 // node env
 export const NODE_ENV = process.env.NODE_ENV ?? 'development'
