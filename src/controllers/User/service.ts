@@ -41,7 +41,7 @@ class UserService {
     }
 
     if (!_.isEmpty(RoleId)) {
-      query.where('User.RoleId ILIKE :RoleId', { RoleId: `%${RoleId}%` })
+      query.where('User.RoleId = :RoleId', { RoleId: `%${RoleId}%` })
     }
 
     const data = await query.orderBy('User.createdAt', 'DESC').getMany()
@@ -139,6 +139,60 @@ class UserService {
     const data = await this.findById(id)
 
     await userRepository.delete(data.id)
+  }
+
+  /**
+   * Multiple Force Delete
+   * @param ids
+   */
+  public static async multipleRestore(ids: string[]): Promise<void> {
+    const userRepository = getRepository(User)
+
+    if (_.isEmpty(ids)) {
+      throw new ResponseError.BadRequest('ids cannot be empty')
+    }
+
+    await userRepository
+      .createQueryBuilder()
+      .where('User.id IN (:...ids)', { ids: [...ids] })
+      .restore()
+      .execute()
+  }
+
+  /**
+   * Multiple Soft Delete
+   * @param ids
+   */
+  public static async multipleSoftDelete(ids: string[]): Promise<void> {
+    const userRepository = getRepository(User)
+
+    if (_.isEmpty(ids)) {
+      throw new ResponseError.BadRequest('ids cannot be empty')
+    }
+
+    await userRepository
+      .createQueryBuilder()
+      .where('User.id IN (:...ids)', { ids: [...ids] })
+      .softDelete()
+      .execute()
+  }
+
+  /**
+   * Multiple Force Delete
+   * @param ids
+   */
+  public static async multipleForceDelete(ids: string[]): Promise<void> {
+    const userRepository = getRepository(User)
+
+    if (_.isEmpty(ids)) {
+      throw new ResponseError.BadRequest('ids cannot be empty')
+    }
+
+    await userRepository
+      .createQueryBuilder()
+      .where('User.id IN (:...ids)', { ids: [...ids] })
+      .delete()
+      .execute()
   }
 }
 
