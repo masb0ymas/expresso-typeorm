@@ -5,8 +5,8 @@ import {
   Entity,
   JoinColumn,
   JoinTable,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   Unique,
 } from 'typeorm'
 import { Base } from './Base'
@@ -84,7 +84,7 @@ export class User extends Base {
   @Column('uuid')
   RoleId: string
 
-  @ManyToMany(() => Session)
+  @OneToMany(() => Session, (Session) => Session.User)
   @JoinTable()
   Sessions: Session[]
 

@@ -20,7 +20,7 @@ export type SessionAttributes = Omit<
 
 @Entity()
 export class Session extends Base {
-  @ManyToOne(() => User, (user) => user)
+  @ManyToOne(() => User, (User) => User.Sessions)
   @JoinColumn({ name: 'UserId' })
   User: User
 

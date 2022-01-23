@@ -9,7 +9,10 @@ interface RoleEntity {
   deletedAt?: Date | null
 }
 
-export type RoleAttributes = Pick<RoleEntity, 'name'>
+export type RoleAttributes = Omit<
+  RoleEntity,
+  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
+>
 
 @Entity()
 export class Role extends Base {
