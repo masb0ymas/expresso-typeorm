@@ -32,9 +32,10 @@ class SessionService {
       .createQueryBuilder()
       .skip((page - 1) * pageSize)
       .take(pageSize)
+      .leftJoinAndSelect('Session.User', 'User')
 
     if (!_.isEmpty(UserId)) {
-      query.where('Session.UserId ILIKE :UserId', { UserId: `%${UserId}%` })
+      query.where('Session.UserId = :UserId', { UserId: `%${UserId}%` })
     }
 
     const data = await query.orderBy('Session.createdAt', 'DESC').getMany()
