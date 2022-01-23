@@ -59,7 +59,9 @@ class UserService {
     const userRepository = getRepository(User)
 
     const newId = validateUUID(id)
-    const data = await userRepository.findOne(newId, { relations: ['role'] })
+    const data = await userRepository.findOne(newId, {
+      relations: ['Role', 'Sessions'],
+    })
 
     if (!data) {
       throw new ResponseError.NotFound(
