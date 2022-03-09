@@ -22,8 +22,8 @@ class UserService {
     const userRepository = getRepository(User)
     const reqQuery = req.getQuery()
 
-    const page = Number(reqQuery.page) || 1
-    const pageSize = Number(reqQuery.pageSize) || 10
+    const page = Number(reqQuery.page) ?? 1
+    const pageSize = Number(reqQuery.pageSize) ?? 10
 
     // query
     const email = _.get(reqQuery, 'email', null)

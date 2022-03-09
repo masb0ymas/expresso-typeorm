@@ -22,8 +22,8 @@ class RoleService {
     const roleRepository = getRepository(Role)
     const reqQuery = req.getQuery()
 
-    const page = Number(reqQuery.page) || 1
-    const pageSize = Number(reqQuery.pageSize) || 10
+    const page = Number(reqQuery.page) ?? 1
+    const pageSize = Number(reqQuery.pageSize) ?? 10
 
     // query
     const name = _.get(reqQuery, 'name', null)
