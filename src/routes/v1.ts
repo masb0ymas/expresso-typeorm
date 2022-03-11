@@ -7,6 +7,9 @@ export default route
 // Auth
 require('@controllers/Auth/controller')
 
+// Upload
+require('@controllers/Upload/controller')
+
 // Account
 require('@controllers/Role/controller')
 require('@controllers/Session/controller')
