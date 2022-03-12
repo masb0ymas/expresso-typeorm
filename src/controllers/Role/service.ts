@@ -22,10 +22,11 @@ class RoleService {
     const roleRepository = getRepository(Role)
     const reqQuery = req.getQuery()
 
-    const page = Number(reqQuery.page) ?? 1
-    const pageSize = Number(reqQuery.pageSize) ?? 10
+    // query pagination
+    const page = Number(_.get(reqQuery, 'page', 1))
+    const pageSize = Number(_.get(reqQuery, 'pageSize', 10))
 
-    // query
+    // query where
     const name = _.get(reqQuery, 'name', null)
 
     const query = roleRepository
