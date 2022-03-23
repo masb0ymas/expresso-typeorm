@@ -3,6 +3,7 @@ import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
+import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
 import _ from 'lodash'
 import { getRepository } from 'typeorm'
@@ -20,26 +21,12 @@ class RoleService {
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
     const roleRepository = getRepository(Role)
-    const reqQuery = req.getQuery()
 
-    // query pagination
-    const page = Number(_.get(reqQuery, 'page', 1))
-    const pageSize = Number(_.get(reqQuery, 'pageSize', 10))
+    const query = roleRepository.createQueryBuilder()
+    const newQuery = queryFiltered(query, req)
 
-    // query where
-    const name = _.get(reqQuery, 'name', null)
-
-    const query = roleRepository
-      .createQueryBuilder()
-      .skip((page - 1) * pageSize)
-      .take(pageSize)
-
-    if (!_.isEmpty(name)) {
-      query.where('Role.name ILIKE :name', { name: `%${name}%` })
-    }
-
-    const data = await query.orderBy('Role.createdAt', 'DESC').getMany()
-    const total = await query.getCount()
+    const data = await newQuery.orderBy('Role.createdAt', 'DESC').getMany()
+    const total = await newQuery.getCount()
 
     return { message: `${total} data has been received.`, data, total }
   }
@@ -148,7 +135,7 @@ class RoleService {
 
     await userRepository
       .createQueryBuilder()
-      .where('Role.id IN (:...ids)', { ids: [...ids] })
+      .where('id IN (:...ids)', { ids: [...ids] })
       .restore()
       .execute()
   }
@@ -166,7 +153,7 @@ class RoleService {
 
     await userRepository
       .createQueryBuilder()
-      .where('Role.id IN (:...ids)', { ids: [...ids] })
+      .where('id IN (:...ids)', { ids: [...ids] })
       .softDelete()
       .execute()
   }
@@ -184,7 +171,7 @@ class RoleService {
 
     await userRepository
       .createQueryBuilder()
-      .where('Role.id IN (:...ids)', { ids: [...ids] })
+      .where('id IN (:...ids)', { ids: [...ids] })
       .delete()
       .execute()
   }

@@ -3,6 +3,7 @@ import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
+import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
 import _ from 'lodash'
 import { getRepository } from 'typeorm'
@@ -20,33 +21,15 @@ class UserService {
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
     const userRepository = getRepository(User)
-    const reqQuery = req.getQuery()
-
-    // query pagination
-    const page = Number(_.get(reqQuery, 'page', 1))
-    const pageSize = Number(_.get(reqQuery, 'pageSize', 10))
-
-    // query where
-    const email = _.get(reqQuery, 'email', null)
-    const RoleId = _.get(reqQuery, 'RoleId', null)
 
     const query = userRepository
       .createQueryBuilder()
-      .skip((page - 1) * pageSize)
-      .take(pageSize)
       .leftJoinAndSelect('User.Role', 'Role')
       .leftJoinAndSelect('User.Sessions', 'Session')
+    const newQuery = queryFiltered(query, req)
 
-    if (!_.isEmpty(email)) {
-      query.where('User.email ILIKE :email', { email: `%${email}%` })
-    }
-
-    if (!_.isEmpty(RoleId)) {
-      query.where('User.RoleId = :RoleId', { RoleId: `%${RoleId}%` })
-    }
-
-    const data = await query.orderBy('User.createdAt', 'DESC').getMany()
-    const total = await query.getCount()
+    const data = await newQuery.orderBy('User.createdAt', 'DESC').getMany()
+    const total = await newQuery.getCount()
 
     return { message: `${total} data has been received.`, data, total }
   }
@@ -157,7 +140,7 @@ class UserService {
 
     await userRepository
       .createQueryBuilder()
-      .where('User.id IN (:...ids)', { ids: [...ids] })
+      .where('id IN (:...ids)', { ids: [...ids] })
       .restore()
       .execute()
   }
@@ -175,7 +158,7 @@ class UserService {
 
     await userRepository
       .createQueryBuilder()
-      .where('User.id IN (:...ids)', { ids: [...ids] })
+      .where('id IN (:...ids)', { ids: [...ids] })
       .softDelete()
       .execute()
   }
@@ -193,7 +176,7 @@ class UserService {
 
     await userRepository
       .createQueryBuilder()
-      .where('User.id IN (:...ids)', { ids: [...ids] })
+      .where('id IN (:...ids)', { ids: [...ids] })
       .delete()
       .execute()
   }

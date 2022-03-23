@@ -12,6 +12,7 @@ import useValidation from '@expresso/hooks/useValidation'
 import { FileAttributes } from '@expresso/interfaces/Files'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
+import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { endOfYesterday } from 'date-fns'
 import { Request } from 'express'
 import fs from 'fs'
@@ -32,26 +33,12 @@ class UploadService {
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
     const uploadRepository = getRepository(Upload)
-    const reqQuery = req.getQuery()
 
-    // query pagination
-    const page = Number(_.get(reqQuery, 'page', 1))
-    const pageSize = Number(_.get(reqQuery, 'pageSize', 10))
+    const query = uploadRepository.createQueryBuilder()
+    const newQuery = queryFiltered(query, req)
 
-    // query where
-    const keyFile = _.get(reqQuery, 'keyFile', null)
-
-    const query = uploadRepository
-      .createQueryBuilder()
-      .skip((page - 1) * pageSize)
-      .take(pageSize)
-
-    if (!_.isEmpty(keyFile)) {
-      query.where('Upload.keyFile ILIKE :keyFile', { keyFile: `%${keyFile}%` })
-    }
-
-    const data = await query.orderBy('Upload.createdAt', 'DESC').getMany()
-    const total = await query.getCount()
+    const data = await newQuery.orderBy('Upload.createdAt', 'DESC').getMany()
+    const total = await newQuery.getCount()
 
     return { message: `${total} data has been received.`, data, total }
   }
@@ -160,7 +147,7 @@ class UploadService {
 
     await userRepository
       .createQueryBuilder()
-      .where('Upload.id IN (:...ids)', { ids: [...ids] })
+      .where('id IN (:...ids)', { ids: [...ids] })
       .restore()
       .execute()
   }
@@ -178,7 +165,7 @@ class UploadService {
 
     await userRepository
       .createQueryBuilder()
-      .where('Upload.id IN (:...ids)', { ids: [...ids] })
+      .where('id IN (:...ids)', { ids: [...ids] })
       .softDelete()
       .execute()
   }
@@ -196,7 +183,7 @@ class UploadService {
 
     await userRepository
       .createQueryBuilder()
-      .where('Upload.id IN (:...ids)', { ids: [...ids] })
+      .where('id IN (:...ids)', { ids: [...ids] })
       .delete()
       .execute()
   }
