@@ -16,16 +16,7 @@ import ResponseError from '@expresso/modules/Response/ResponseError'
 import _ from 'lodash'
 import { getRepository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
-
-interface DtoLogin {
-  tokenType: string
-  user: {
-    uid: string
-  }
-  accessToken: string
-  expiresIn: number
-  message: string
-}
+import { DtoLogin } from './interface'
 
 class AuthService {
   /**
