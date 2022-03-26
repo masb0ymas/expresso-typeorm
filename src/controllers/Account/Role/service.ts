@@ -127,13 +127,13 @@ class RoleService {
    * @param ids
    */
   public static async multipleRestore(ids: string[]): Promise<void> {
-    const userRepository = getRepository(Role)
+    const roleRepository = getRepository(Role)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await userRepository
+    await roleRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
       .restore()
@@ -145,13 +145,13 @@ class RoleService {
    * @param ids
    */
   public static async multipleSoftDelete(ids: string[]): Promise<void> {
-    const userRepository = getRepository(Role)
+    const roleRepository = getRepository(Role)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await userRepository
+    await roleRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
       .softDelete()
@@ -163,13 +163,13 @@ class RoleService {
    * @param ids
    */
   public static async multipleForceDelete(ids: string[]): Promise<void> {
-    const userRepository = getRepository(Role)
+    const roleRepository = getRepository(Role)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await userRepository
+    await roleRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
       .delete()

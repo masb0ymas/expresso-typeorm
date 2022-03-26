@@ -139,13 +139,13 @@ class UploadService {
    * @param ids
    */
   public static async multipleRestore(ids: string[]): Promise<void> {
-    const userRepository = getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await userRepository
+    await uploadRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
       .restore()
@@ -157,13 +157,13 @@ class UploadService {
    * @param ids
    */
   public static async multipleSoftDelete(ids: string[]): Promise<void> {
-    const userRepository = getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await userRepository
+    await uploadRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
       .softDelete()
@@ -175,13 +175,13 @@ class UploadService {
    * @param ids
    */
   public static async multipleForceDelete(ids: string[]): Promise<void> {
-    const userRepository = getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await userRepository
+    await uploadRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
       .delete()
