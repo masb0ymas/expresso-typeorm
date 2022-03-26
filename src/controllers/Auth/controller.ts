@@ -1,4 +1,4 @@
-import SessionService from '@controllers/Session/service'
+import SessionService from '@controllers/Account/Session/service'
 import { UserLoginAttributes } from '@database/entities/User'
 import asyncHandler from '@expresso/helpers/asyncHandler'
 import { currentToken } from '@expresso/helpers/Token'
