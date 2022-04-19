@@ -1,4 +1,6 @@
 import {
+  DeleteObjectCommand,
+  DeleteObjectCommandOutput,
   GetObjectCommand,
   PutObjectCommand,
   PutObjectCommandOutput,
@@ -7,7 +9,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { clientS3, s3ExpiresDate, s3ObjectExpired } from '@config/clientS3'
 import { AWS_BUCKET_NAME } from '@config/env'
 import { Upload, UploadAttributes } from '@database/entities/Upload'
-import { validateUUID } from '@expresso/helpers/Formatter'
+import { logServer, validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import { FileAttributes } from '@expresso/interfaces/Files'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
@@ -103,6 +105,26 @@ class UploadService {
 
   /**
    *
+   * @param keyFile
+   * @returns
+   */
+  public static async deleteObjectS3(
+    keyFile: string
+  ): Promise<DeleteObjectCommandOutput> {
+    const dataAwsS3 = await clientS3.send(
+      new DeleteObjectCommand({
+        Bucket: AWS_BUCKET_NAME,
+        Key: keyFile,
+      })
+    )
+
+    console.log(logServer('Aws S3 : ', 'Success. Object deleted.'), dataAwsS3)
+
+    return dataAwsS3
+  }
+
+  /**
+   *
    * @param id
    */
   public static async restore(id: string): Promise<void> {
@@ -131,6 +153,9 @@ class UploadService {
     const uploadRepository = getRepository(Upload)
     const data = await this.findById(id)
 
+    // delete file from aws s3
+    await this.deleteObjectS3(data.keyFile)
+
     await uploadRepository.delete(data.id)
   }
 
@@ -145,11 +170,12 @@ class UploadService {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await uploadRepository
+    const query = uploadRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
-      .restore()
-      .execute()
+
+    // restore record
+    await query.restore().execute()
   }
 
   /**
@@ -163,11 +189,12 @@ class UploadService {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await uploadRepository
+    const query = uploadRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
-      .softDelete()
-      .execute()
+
+    // soft delete record
+    await query.softDelete().execute()
   }
 
   /**
@@ -181,11 +208,23 @@ class UploadService {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await uploadRepository
+    const query = uploadRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
-      .delete()
-      .execute()
+
+    const getUpload = await query.getMany()
+
+    if (!_.isEmpty(getUpload)) {
+      for (let i = 0; i < getUpload.length; i += 1) {
+        const item = getUpload[i]
+
+        // delete file from aws s3
+        await this.deleteObjectS3(item.keyFile)
+      }
+    }
+
+    // delete record
+    await query.delete().execute()
   }
 
   /**
