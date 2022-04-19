@@ -1,3 +1,4 @@
+import DBConnection from '@config/database'
 import { Role, RoleAttributes } from '@database/entities/Role'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
@@ -6,7 +7,6 @@ import ResponseError from '@expresso/modules/Response/ResponseError'
 import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
 import _ from 'lodash'
-import { getRepository } from 'typeorm'
 import roleSchema from './schema'
 
 interface DtoPaginate extends DtoFindAll {
@@ -20,7 +20,7 @@ class RoleService {
    * @returns
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
 
     const query = roleRepository.createQueryBuilder()
     const newQuery = queryFiltered(query, req)
@@ -37,10 +37,10 @@ class RoleService {
    * @returns
    */
   public static async findById(id: string): Promise<Role> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
 
     const newId = validateUUID(id)
-    const data = await roleRepository.findOne(newId)
+    const data = await roleRepository.findOne({ where: { id: newId } })
 
     if (!data) {
       throw new ResponseError.NotFound(
@@ -57,7 +57,7 @@ class RoleService {
    * @returns
    */
   public static async create(formData: RoleAttributes): Promise<Role> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
     const data = new Role()
 
     const value = useValidation(roleSchema.create, formData)
@@ -76,7 +76,7 @@ class RoleService {
     id: string,
     formData: Partial<RoleAttributes>
   ): Promise<Role> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
     const data = await this.findById(id)
 
     const value = useValidation(roleSchema.create, {
@@ -94,7 +94,7 @@ class RoleService {
    * @param id
    */
   public static async restore(id: string): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
 
     const newId = validateUUID(id)
     await roleRepository.restore(newId)
@@ -105,7 +105,7 @@ class RoleService {
    * @param id
    */
   public static async softDelete(id: string): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
 
     const data = await this.findById(id)
     await roleRepository.softDelete(data.id)
@@ -116,7 +116,7 @@ class RoleService {
    * @param id
    */
   public static async forceDelete(id: string): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
     const data = await this.findById(id)
 
     await roleRepository.delete(data.id)
@@ -127,17 +127,18 @@ class RoleService {
    * @param ids
    */
   public static async multipleRestore(ids: string[]): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await roleRepository
+    const query = roleRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
-      .restore()
-      .execute()
+
+    // restore record
+    await query.restore().execute()
   }
 
   /**
@@ -145,17 +146,18 @@ class RoleService {
    * @param ids
    */
   public static async multipleSoftDelete(ids: string[]): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await roleRepository
+    const query = roleRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
-      .softDelete()
-      .execute()
+
+    // soft delete record
+    await query.softDelete().execute()
   }
 
   /**
@@ -163,17 +165,18 @@ class RoleService {
    * @param ids
    */
   public static async multipleForceDelete(ids: string[]): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = DBConnection.getRepository(Role)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
     }
 
-    await roleRepository
+    const query = roleRepository
       .createQueryBuilder()
       .where('id IN (:...ids)', { ids: [...ids] })
-      .delete()
-      .execute()
+
+    // delete record
+    await query.delete().execute()
   }
 }
 

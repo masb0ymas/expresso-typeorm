@@ -1,15 +1,17 @@
+import DBConnection from '@config/database'
 import { User, UserLoginAttributes } from '@database/entities/User'
 import { logErrServer } from '@expresso/helpers/Formatter'
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
 import { NextFunction, Request, Response } from 'express'
-import { getRepository } from 'typeorm'
 
 function NotPermittedAccess(roles: string[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const userRepository = getRepository(User)
+    const userRepository = DBConnection.getRepository(User)
 
     const userLogin = req.getState('userLogin') as UserLoginAttributes
-    const getUser = await userRepository.findOne(userLogin.uid)
+    const getUser = await userRepository.findOne({
+      where: { id: userLogin.uid },
+    })
 
     const errType = `Not Permitted Access Error:`
     const message = 'You are not allowed'
