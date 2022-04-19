@@ -7,7 +7,6 @@ import {
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { clientS3, s3ExpiresDate, s3ObjectExpired } from '@config/clientS3'
-import DBConnection from '@config/database'
 import { AWS_BUCKET_NAME } from '@config/env'
 import { Upload, UploadAttributes } from '@database/entities/Upload'
 import { logServer, validateUUID } from '@expresso/helpers/Formatter'
@@ -20,7 +19,7 @@ import { endOfYesterday } from 'date-fns'
 import { Request } from 'express'
 import fs from 'fs'
 import _ from 'lodash'
-
+import { getRepository } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
 import uploadSchema from './schema'
 
@@ -35,7 +34,7 @@ class UploadService {
    * @returns
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     const query = uploadRepository.createQueryBuilder()
     const newQuery = queryFiltered(query, req)
@@ -52,7 +51,7 @@ class UploadService {
    * @returns
    */
   public static async findById(id: string): Promise<Upload> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     const newId = validateUUID(id)
     const data = await uploadRepository.findOne({ where: { id: newId } })
@@ -72,7 +71,7 @@ class UploadService {
    * @returns
    */
   public static async create(formData: UploadAttributes): Promise<Upload> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
     const data = new Upload()
 
     const value = useValidation(uploadSchema.create, formData)
@@ -91,7 +90,7 @@ class UploadService {
     id: string,
     formData: Partial<UploadAttributes>
   ): Promise<Upload> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
     const data = await this.findById(id)
 
     const value = useValidation(uploadSchema.create, {
@@ -129,7 +128,7 @@ class UploadService {
    * @param id
    */
   public static async restore(id: string): Promise<void> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     const newId = validateUUID(id)
     await uploadRepository.restore(newId)
@@ -140,7 +139,7 @@ class UploadService {
    * @param id
    */
   public static async softDelete(id: string): Promise<void> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     const data = await this.findById(id)
     await uploadRepository.softDelete(data.id)
@@ -151,7 +150,7 @@ class UploadService {
    * @param id
    */
   public static async forceDelete(id: string): Promise<void> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
     const data = await this.findById(id)
 
     // delete file from aws s3
@@ -165,7 +164,7 @@ class UploadService {
    * @param ids
    */
   public static async multipleRestore(ids: string[]): Promise<void> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
@@ -184,7 +183,7 @@ class UploadService {
    * @param ids
    */
   public static async multipleSoftDelete(ids: string[]): Promise<void> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
@@ -203,7 +202,7 @@ class UploadService {
    * @param ids
    */
   public static async multipleForceDelete(ids: string[]): Promise<void> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
@@ -261,7 +260,7 @@ class UploadService {
     dataAwsS3: PutObjectCommandOutput
     resUpload: Upload
   }> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     let resUpload
 
@@ -315,7 +314,7 @@ class UploadService {
    * Update Signed URL Aws S3
    */
   public static async updateSignedUrl(): Promise<void> {
-    const uploadRepository = DBConnection.getRepository(Upload)
+    const uploadRepository = getRepository(Upload)
 
     const query = uploadRepository
       .createQueryBuilder()

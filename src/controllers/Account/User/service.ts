@@ -1,4 +1,3 @@
-import DBConnection from '@config/database'
 import { User, UserAttributes } from '@database/entities/User'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
@@ -41,7 +40,7 @@ class UserService {
    * @returns
    */
   public static async findById(id: string): Promise<User> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
 
     const newId = validateUUID(id)
     const data = await userRepository.findOne({
@@ -64,7 +63,7 @@ class UserService {
    * @returns
    */
   public static async create(formData: UserAttributes): Promise<User> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
     const data = new User()
 
     const value = useValidation(userSchema.create, formData)
@@ -83,7 +82,7 @@ class UserService {
     id: string,
     formData: Partial<UserAttributes>
   ): Promise<User> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
     const data = await this.findById(id)
 
     const value = useValidation(userSchema.create, {
@@ -101,7 +100,7 @@ class UserService {
    * @param id
    */
   public static async restore(id: string): Promise<void> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
 
     const newId = validateUUID(id)
     await userRepository.restore(newId)
@@ -112,7 +111,7 @@ class UserService {
    * @param id
    */
   public static async softDelete(id: string): Promise<void> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
     const data = await this.findById(id)
 
     await userRepository.softDelete(data.id)
@@ -123,7 +122,7 @@ class UserService {
    * @param id
    */
   public static async forceDelete(id: string): Promise<void> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
     const data = await this.findById(id)
 
     await userRepository.delete(data.id)
@@ -134,7 +133,7 @@ class UserService {
    * @param ids
    */
   public static async multipleRestore(ids: string[]): Promise<void> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
@@ -153,7 +152,7 @@ class UserService {
    * @param ids
    */
   public static async multipleSoftDelete(ids: string[]): Promise<void> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')
@@ -172,7 +171,7 @@ class UserService {
    * @param ids
    */
   public static async multipleForceDelete(ids: string[]): Promise<void> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
 
     if (_.isEmpty(ids)) {
       throw new ResponseError.BadRequest('ids cannot be empty')

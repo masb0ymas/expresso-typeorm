@@ -1,4 +1,3 @@
-import DBConnection from '@config/database'
 import { Session, SessionAttributes } from '@database/entities/Session'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
@@ -6,6 +5,7 @@ import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
+import { getRepository } from 'typeorm'
 import sessionSchema from './schema'
 
 interface DtoPaginate extends DtoFindAll {
@@ -19,7 +19,7 @@ class SessionService {
    * @returns
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
-    const sessionRepository = DBConnection.getRepository(Session)
+    const sessionRepository = getRepository(Session)
 
     const query = sessionRepository
       .createQueryBuilder()
@@ -38,7 +38,7 @@ class SessionService {
    * @returns
    */
   public static async findById(id: string): Promise<Session> {
-    const sessionRepository = DBConnection.getRepository(Session)
+    const sessionRepository = getRepository(Session)
 
     const newId = validateUUID(id)
     const data = await sessionRepository.findOne({ where: { id: newId } })
@@ -62,7 +62,7 @@ class SessionService {
     UserId: string,
     token: string
   ): Promise<Session> {
-    const sessionRepository = DBConnection.getRepository(Session)
+    const sessionRepository = getRepository(Session)
 
     const data = await sessionRepository.findOne({ where: { UserId, token } })
 
@@ -81,7 +81,7 @@ class SessionService {
    * @returns
    */
   public static async create(formData: SessionAttributes): Promise<Session> {
-    const sessionRepository = DBConnection.getRepository(Session)
+    const sessionRepository = getRepository(Session)
 
     const value = useValidation(sessionSchema.create, formData)
 
@@ -98,7 +98,7 @@ class SessionService {
   public static async createOrUpdate(
     formData: SessionAttributes
   ): Promise<void> {
-    const sessionRepository = DBConnection.getRepository(Session)
+    const sessionRepository = getRepository(Session)
     const value = useValidation(sessionSchema.create, formData)
 
     const data = await sessionRepository.findOne({
@@ -121,7 +121,7 @@ class SessionService {
     UserId: string,
     token: string
   ): Promise<void> {
-    const sessionRepository = DBConnection.getRepository(Session)
+    const sessionRepository = getRepository(Session)
 
     const query = sessionRepository
       .createQueryBuilder()
@@ -137,7 +137,7 @@ class SessionService {
    * @param id
    */
   public static async delete(id: string): Promise<void> {
-    const sessionRepository = DBConnection.getRepository(Session)
+    const sessionRepository = getRepository(Session)
     const data = await this.findById(id)
 
     await sessionRepository.delete(data.id)

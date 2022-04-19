@@ -1,4 +1,3 @@
-import DBConnection from '@config/database'
 import SessionService from '@controllers/Account/Session/service'
 import userSchema from '@controllers/Account/User/schema'
 import UserService from '@controllers/Account/User/service'
@@ -15,6 +14,7 @@ import { generateAccessToken, verifyAccessToken } from '@expresso/helpers/Token'
 import useValidation from '@expresso/hooks/useValidation'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import _ from 'lodash'
+import { getRepository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 import { DtoLogin } from './interface'
 
@@ -25,7 +25,7 @@ class AuthService {
    * @returns
    */
   public static async signUp(formData: UserAttributes): Promise<User> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
     const randomToken = generateAccessToken({ uuid: uuidv4() })
 
     const newFormData = {
@@ -61,7 +61,7 @@ class AuthService {
    * @returns
    */
   public static async signIn(formData: LoginAttributes): Promise<DtoLogin> {
-    const userRepository = DBConnection.getRepository(User)
+    const userRepository = getRepository(User)
     const value = useValidation(userSchema.login, formData)
 
     const getUser = await userRepository.findOne({
