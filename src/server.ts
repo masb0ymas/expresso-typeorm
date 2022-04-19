@@ -3,18 +3,17 @@ import 'reflect-metadata'
 import './pathAlias'
 
 import initialAwsS3 from '@config/clientS3'
-import databaseConfig from '@config/database'
+import DBConnection from '@config/database'
 import { AWS_ACCESS_KEY, AWS_SECRET_KEY } from '@config/env'
 import { logErrServer, logServer } from '@expresso/helpers/Formatter'
 import chalk from 'chalk'
-import { createConnection } from 'typeorm'
 import App from './app'
 import initialJobs from './jobs'
 
 const Server = new App()
 
 // connect to database
-createConnection(databaseConfig)
+DBConnection.initialize()
   .then((connection) => {
     const dbName = chalk.blue(connection.options.database)
     const dbConnect = chalk.cyan(connection.options.type)
