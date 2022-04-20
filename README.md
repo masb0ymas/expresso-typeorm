@@ -1,6 +1,6 @@
 # expresso with TypeORM
 
-[![version](https://img.shields.io/badge/version-2.0.0-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso-typeorm/releases/tag/v2.0.0)
+[![version](https://img.shields.io/badge/version-2.1.0-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso-typeorm/releases/tag/v2.1.0)
 [![Node](https://img.shields.io/badge/Node-14.18.0-informational?logo=node.js&color=43853D)](https://nodejs.org/docs/latest-v12.x/api/index.html)
 [![TypeScript](https://img.shields.io/badge/Typescript-4.6.3-informational?logo=typescript&color=2F74C0)](https://www.typescriptlang.org/)
 [![Express](https://img.shields.io/badge/Express-4.17.3-informational?logo=express&color=B1B1B1)](https://expressjs.com/)
