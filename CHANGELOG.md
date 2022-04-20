@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.0.0...v2.1.0) (2022-04-20)
+
+
+### Features
+
+* add dockerfile ([da6652d](https://github.com/masb0ymas/expresso-typeorm/commit/da6652d839d362ca7e50b3b6bafbe47a8c3a2e39))
+* add function delete object s3 ([908eec1](https://github.com/masb0ymas/expresso-typeorm/commit/908eec18d575ee5fc1f5602ea6207f79cd096ed1))
+* add upload job ([b2a9f51](https://github.com/masb0ymas/expresso-typeorm/commit/b2a9f5126957bc88fa470dc5e092a8257e3cbd66))
+
+
+### Bug Fixes
+
+* compiler target to es6 ([6d499eb](https://github.com/masb0ymas/expresso-typeorm/commit/6d499eb43850fe307e889a655a4a864cae8ade6d))
+* config docker ([ee35f38](https://github.com/masb0ymas/expresso-typeorm/commit/ee35f3838b3172936cd3eb5b197a36b02fb6a8cc))
+* db connection service ([6e17783](https://github.com/masb0ymas/expresso-typeorm/commit/6e17783fbdfedaf942e3c5ae43fc16ed0c1a3d71))
+* new database config typeorm ([51c874c](https://github.com/masb0ymas/expresso-typeorm/commit/51c874c34765477e450077a90fc953ebcf3244b0))
+* update readme ([3416e5d](https://github.com/masb0ymas/expresso-typeorm/commit/3416e5d2f5090ddc3588e3e1c48f562c3ad06eb1))
+
 ## 2.0.0 (2022-04-07)
 
 
