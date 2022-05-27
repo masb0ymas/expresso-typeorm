@@ -14,6 +14,8 @@ interface DtoPaginate extends DtoFindAll {
 }
 
 class RoleService {
+  private static readonly entity = 'Role'
+
   /**
    *
    * @param req
@@ -23,9 +25,11 @@ class RoleService {
     const roleRepository = getRepository(Role)
 
     const query = roleRepository.createQueryBuilder()
-    const newQuery = queryFiltered(query, req)
+    const newQuery = queryFiltered(this.entity, query, req)
 
-    const data = await newQuery.orderBy('Role.createdAt', 'DESC').getMany()
+    const data = await newQuery
+      .orderBy(`${this.entity}.createdAt`, 'DESC')
+      .getMany()
     const total = await newQuery.getCount()
 
     return { message: `${total} data has been received.`, data, total }

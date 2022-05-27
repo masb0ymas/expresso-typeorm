@@ -28,6 +28,8 @@ interface DtoPaginate extends DtoFindAll {
 }
 
 class UploadService {
+  private static readonly entity = 'Upload'
+
   /**
    *
    * @param req
@@ -37,9 +39,11 @@ class UploadService {
     const uploadRepository = getRepository(Upload)
 
     const query = uploadRepository.createQueryBuilder()
-    const newQuery = queryFiltered(query, req)
+    const newQuery = queryFiltered(this.entity, query, req)
 
-    const data = await newQuery.orderBy('Upload.createdAt', 'DESC').getMany()
+    const data = await newQuery
+      .orderBy(`${this.entity}.createdAt`, 'DESC')
+      .getMany()
     const total = await newQuery.getCount()
 
     return { message: `${total} data has been received.`, data, total }

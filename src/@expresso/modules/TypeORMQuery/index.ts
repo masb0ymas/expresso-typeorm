@@ -4,6 +4,7 @@ import { SelectQueryBuilder } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
 
 export function queryFiltered<T>(
+  entity: string,
   query: SelectQueryBuilder<T>,
   req: Request
 ): SelectQueryBuilder<T> {
@@ -27,12 +28,14 @@ export function queryFiltered<T>(
 
       if (uuidValidate(item.value)) {
         // case UUID
-        query.where(`${item.id} = :${item.id}`, {
+        // example : query.andWhere('User.RoleId' = :RoleId, { RoleId: 'anyValue' })
+        query.andWhere(`${entity}.${item.id} = :${item.id}`, {
           [`${item.id}`]: `${item.value}`,
         })
       } else {
         // default query LIKE
-        query.where(`${item.id} ILIKE :${item.id}`, {
+        // example : query.andWhere('User.RoleId' ILIKE :RoleId, { RoleId: '%anyValue%' })
+        query.andWhere(`${entity}.${item.id} ILIKE :${item.id}`, {
           [`${item.id}`]: `%${item.value}%`,
         })
       }

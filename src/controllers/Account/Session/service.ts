@@ -13,6 +13,8 @@ interface DtoPaginate extends DtoFindAll {
 }
 
 class SessionService {
+  private static readonly entity = 'Session'
+
   /**
    *
    * @param req
@@ -24,9 +26,11 @@ class SessionService {
     const query = sessionRepository
       .createQueryBuilder()
       .leftJoinAndSelect('Session.User', 'User')
-    const newQuery = queryFiltered(query, req)
+    const newQuery = queryFiltered(this.entity, query, req)
 
-    const data = await newQuery.orderBy('Session.createdAt', 'DESC').getMany()
+    const data = await newQuery
+      .orderBy(`${this.entity}.createdAt`, 'DESC')
+      .getMany()
     const total = await newQuery.getCount()
 
     return { message: `${total} data has been received.`, data, total }
