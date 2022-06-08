@@ -1,5 +1,6 @@
 import { User } from '@database/entities/User'
 import bcrypt from 'bcrypt'
+import _ from 'lodash'
 import {
   EntitySubscriberInterface,
   EventSubscriber,
@@ -20,15 +21,18 @@ export class UserSubscriber implements EntitySubscriberInterface<any> {
   }
 
   beforeInsert(event: InsertEvent<User>): Promise<void> | undefined {
-    if (event.entity.password) {
+    if (!_.isEmpty(event.entity.password)) {
       return this.hashPassword(event.entity)
     }
   }
 
   async beforeUpdate(event: UpdateEvent<User>): Promise<void> {
-    if (event.entity?.password !== event.databaseEntity?.password) {
-      // @ts-expect-error
-      await this.hashPassword(entity)
+    // check entity from request
+    if (!_.isEmpty(event.entity?.password)) {
+      if (event.entity?.password !== event.databaseEntity?.password) {
+        // @ts-expect-error
+        await this.hashPassword(entity)
+      }
     }
   }
 }
