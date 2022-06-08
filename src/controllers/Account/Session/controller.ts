@@ -1,3 +1,4 @@
+import { APP_LANG } from '@config/env'
 import asyncHandler from '@expresso/helpers/asyncHandler'
 import HttpResponse from '@expresso/modules/Response/HttpResponse'
 import Authorization from '@middlewares/Authorization'
@@ -20,8 +21,11 @@ route.get(
   '/session/:id',
   Authorization,
   asyncHandler(async function findById(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
-    const data = await SessionService.findById(id)
+    const data = await SessionService.findById(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.get({ data })
     res.status(200).json(httpResponse)
@@ -44,9 +48,12 @@ route.delete(
   '/session/:id',
   Authorization,
   asyncHandler(async function forceDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
 
-    await SessionService.delete(id)
+    await SessionService.delete(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
