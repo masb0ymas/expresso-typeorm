@@ -136,25 +136,20 @@ export const swaggerOptions = {
           schema: { type: 'string', enum: ['en', 'id'] },
           required: false,
         },
-        name: {
-          in: 'query',
-          name: 'name',
-          required: false,
-        },
-        email: {
+        qEmail: {
           in: 'query',
           name: 'email',
-          required: false,
+          schema: { type: 'string' },
         },
-        RoleId: {
+        qRoleId: {
           in: 'query',
           name: 'RoleId',
-          required: false,
+          schema: { type: 'string' },
         },
-        UserId: {
+        qUserId: {
           in: 'query',
           name: 'UserId',
-          required: false,
+          schema: { type: 'string' },
         },
       },
     },
