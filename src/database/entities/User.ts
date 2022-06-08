@@ -12,6 +12,7 @@ import {
 import { Base } from './Base'
 import { Role } from './Role'
 import { Session } from './Session'
+import { Upload } from './Upload'
 
 interface UserEntity {
   id?: string
@@ -22,9 +23,9 @@ interface UserEntity {
   password: string
   phone: string | null
   tokenVerify: string | null
-  picturePath: string | null
   isActive?: boolean | null
   isBlocked?: boolean | null
+  UploadId?: string | null
   RoleId: string
   createdAt: Date
   updatedAt: Date
@@ -62,27 +63,31 @@ export class User extends Base {
   @Column({ select: false })
   password: string
 
-  @Column('char', { length: 20, nullable: true })
+  @Column({ nullable: true })
   phone!: string
 
-  @Column('text', { nullable: true })
+  @Column({ type: 'text', nullable: true })
   tokenVerify!: string
 
-  @Column('text', { nullable: true })
-  picturePath!: string
-
-  @Column('boolean', { default: false })
+  @Column({ type: 'boolean', default: false })
   isActive: boolean
 
-  @Column('boolean', { default: false })
+  @Column({ type: 'boolean', default: false })
   isBlocked: boolean
 
   @ManyToOne(() => Role, (role) => role)
   @JoinColumn({ name: 'RoleId' })
   Role: Role
 
-  @Column('uuid')
+  @Column({ type: 'uuid' })
   RoleId: string
+
+  @ManyToOne(() => Upload, (upload) => upload)
+  @JoinColumn({ name: 'UploadId' })
+  Upload: Upload
+
+  @Column({ type: 'uuid', nullable: true })
+  UploadId!: string
 
   @OneToMany(() => Session, (Session) => Session.User)
   @JoinTable()
