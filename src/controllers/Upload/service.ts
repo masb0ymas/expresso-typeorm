@@ -7,17 +7,20 @@ import {
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { clientS3, s3ExpiresDate, s3ObjectExpired } from '@config/clientS3'
-import { AWS_BUCKET_NAME } from '@config/env'
+import { APP_LANG, AWS_BUCKET_NAME } from '@config/env'
+import { i18nConfig } from '@config/i18nextConfig'
 import { Upload, UploadAttributes } from '@database/entities/Upload'
 import { logServer, validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import { FileAttributes } from '@expresso/interfaces/Files'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
+import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { endOfYesterday } from 'date-fns'
 import { Request } from 'express'
 import fs from 'fs'
+import { TOptions } from 'i18next'
 import _ from 'lodash'
 import { getRepository } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
@@ -25,6 +28,11 @@ import uploadSchema from './schema'
 
 interface DtoPaginate extends DtoFindAll {
   data: Upload[]
+}
+
+interface DtoUploadWithSignedUrlEntity {
+  dataAwsS3: PutObjectCommandOutput
+  resUpload: Upload
 }
 
 class UploadService {
@@ -37,6 +45,10 @@ class UploadService {
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
     const uploadRepository = getRepository(Upload)
+    const { lang } = req.getQuery()
+
+    const defaultLang = lang ?? APP_LANG
+    const i18nOpt: string | TOptions = { lng: defaultLang }
 
     const query = uploadRepository.createQueryBuilder()
     const newQuery = queryFiltered(this.entity, query, req)
@@ -46,24 +58,29 @@ class UploadService {
       .getMany()
     const total = await newQuery.getCount()
 
-    return { message: `${total} data has been received.`, data, total }
+    const message = i18nConfig.t('success.data_received', i18nOpt)
+    return { message: `${total} ${message}`, data, total }
   }
 
   /**
    *
    * @param id
+   * @param options
    * @returns
    */
-  public static async findById(id: string): Promise<Upload> {
+  public static async findById(
+    id: string,
+    options?: ReqOptions
+  ): Promise<Upload> {
     const uploadRepository = getRepository(Upload)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const newId = validateUUID(id)
+    const newId = validateUUID(id, { ...options })
     const data = await uploadRepository.findOne({ where: { id: newId } })
 
     if (!data) {
-      throw new ResponseError.NotFound(
-        'upload data not found or has been deleted'
-      )
+      const message = i18nConfig.t('errors.not_found', i18nOpt)
+      throw new ResponseError.NotFound(`upload ${message}`)
     }
 
     return data
@@ -88,14 +105,16 @@ class UploadService {
    *
    * @param id
    * @param formData
+   * @param options
    * @returns
    */
   public static async update(
     id: string,
-    formData: Partial<UploadAttributes>
+    formData: Partial<UploadAttributes>,
+    options?: ReqOptions
   ): Promise<Upload> {
     const uploadRepository = getRepository(Upload)
-    const data = await this.findById(id)
+    const data = await this.findById(id, { ...options })
 
     const value = useValidation(uploadSchema.create, {
       ...data,
@@ -130,32 +149,42 @@ class UploadService {
   /**
    *
    * @param id
+   * @param options
    */
-  public static async restore(id: string): Promise<void> {
+  public static async restore(id: string, options?: ReqOptions): Promise<void> {
     const uploadRepository = getRepository(Upload)
 
-    const newId = validateUUID(id)
-    await uploadRepository.restore(newId)
+    const data = await this.findById(id, { ...options })
+    await uploadRepository.restore(data.id)
   }
 
   /**
    *
    * @param id
+   * @param options
    */
-  public static async softDelete(id: string): Promise<void> {
+  public static async softDelete(
+    id: string,
+    options?: ReqOptions
+  ): Promise<void> {
     const uploadRepository = getRepository(Upload)
 
-    const data = await this.findById(id)
+    const data = await this.findById(id, { ...options })
     await uploadRepository.softDelete(data.id)
   }
 
   /**
    *
    * @param id
+   * @param options
    */
-  public static async forceDelete(id: string): Promise<void> {
+  public static async forceDelete(
+    id: string,
+    options?: ReqOptions
+  ): Promise<void> {
     const uploadRepository = getRepository(Upload)
-    const data = await this.findById(id)
+
+    const data = await this.findById(id, { ...options })
 
     // delete file from aws s3
     await this.deleteObjectS3(data.keyFile)
@@ -164,57 +193,75 @@ class UploadService {
   }
 
   /**
-   * Multiple Force Delete
+   *
    * @param ids
+   * @param options
    */
-  public static async multipleRestore(ids: string[]): Promise<void> {
+  public static async multipleRestore(
+    ids: string[],
+    options?: ReqOptions
+  ): Promise<void> {
     const uploadRepository = getRepository(Upload)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
-      throw new ResponseError.BadRequest('ids cannot be empty')
+      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
+      throw new ResponseError.BadRequest(`ids ${message}`)
     }
 
     const query = uploadRepository
       .createQueryBuilder()
-      .where('id IN (:...ids)', { ids: [...ids] })
+      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
 
     // restore record
     await query.restore().execute()
   }
 
   /**
-   * Multiple Soft Delete
+   *
    * @param ids
+   * @param options
    */
-  public static async multipleSoftDelete(ids: string[]): Promise<void> {
+  public static async multipleSoftDelete(
+    ids: string[],
+    options?: ReqOptions
+  ): Promise<void> {
     const uploadRepository = getRepository(Upload)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
-      throw new ResponseError.BadRequest('ids cannot be empty')
+      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
+      throw new ResponseError.BadRequest(`ids ${message}`)
     }
 
     const query = uploadRepository
       .createQueryBuilder()
-      .where('id IN (:...ids)', { ids: [...ids] })
+      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
 
     // soft delete record
     await query.softDelete().execute()
   }
 
   /**
-   * Multiple Force Delete
+   *
    * @param ids
+   * @param options
    */
-  public static async multipleForceDelete(ids: string[]): Promise<void> {
+  public static async multipleForceDelete(
+    ids: string[],
+    options?: ReqOptions
+  ): Promise<void> {
     const uploadRepository = getRepository(Upload)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
-      throw new ResponseError.BadRequest('ids cannot be empty')
+      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
+      throw new ResponseError.BadRequest(`ids ${message}`)
     }
 
     const query = uploadRepository
       .createQueryBuilder()
-      .where('id IN (:...ids)', { ids: [...ids] })
+      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
 
     const getUpload = await query.getMany()
 
@@ -260,10 +307,7 @@ class UploadService {
     fieldUpload: FileAttributes,
     directory: string,
     UploadId?: string | null
-  ): Promise<{
-    dataAwsS3: PutObjectCommandOutput
-    resUpload: Upload
-  }> {
+  ): Promise<DtoUploadWithSignedUrlEntity> {
     const uploadRepository = getRepository(Upload)
 
     let resUpload
@@ -302,12 +346,15 @@ class UploadService {
         where: { id: String(UploadId) },
       })
 
+      // update file upload
       if (getUpload) {
         resUpload = await uploadRepository.save({ ...getUpload, ...formUpload })
       } else {
+        // create new file
         resUpload = await this.create(formUpload)
       }
     } else {
+      // create new file
       resUpload = await this.create(formUpload)
     }
 
@@ -322,11 +369,11 @@ class UploadService {
 
     const query = uploadRepository
       .createQueryBuilder()
-      .where('Upload.expiryDateUrl < :expiryDateUrl', {
+      .where(`${this.entity}.expiryDateUrl < :expiryDateUrl`, {
         expiryDateUrl: endOfYesterday(),
       })
-    const getUploads = await query.getMany()
 
+    const getUploads = await query.getMany()
     const chunkUploads = _.chunk(getUploads, 50)
 
     // chunk uploads data
@@ -341,10 +388,7 @@ class UploadService {
 
             const signedUrl = await this.getSignedUrlS3(item.keyFile)
 
-            const formUpload = {
-              signedUrl,
-              expiresUrlDate: s3ExpiresDate,
-            }
+            const formUpload = { signedUrl, expiryDateUrl: s3ExpiresDate }
 
             // update signed url & expires url
             await uploadRepository.save({ ...item, ...formUpload })
