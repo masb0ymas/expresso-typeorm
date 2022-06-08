@@ -1,10 +1,14 @@
+import { APP_LANG } from '@config/env'
+import { i18nConfig } from '@config/i18nextConfig'
 import { User, UserAttributes } from '@database/entities/User'
 import { validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
+import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
+import { TOptions } from 'i18next'
 import _ from 'lodash'
 import { getRepository } from 'typeorm'
 import userSchema from './schema'
@@ -23,6 +27,10 @@ class UserService {
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
     const userRepository = getRepository(User)
+    const { lang } = req.getQuery()
+
+    const defaultLang = lang ?? APP_LANG
+    const i18nOpt: string | TOptions = { lng: defaultLang }
 
     const query = userRepository
       .createQueryBuilder()
@@ -35,30 +43,57 @@ class UserService {
       .getMany()
     const total = await newQuery.getCount()
 
-    return { message: `${total} data has been received.`, data, total }
+    const message = i18nConfig.t('success.data_received', i18nOpt)
+    return { message: `${total} ${message}`, data, total }
   }
 
   /**
    *
    * @param id
+   * @param options
    * @returns
    */
-  public static async findById(id: string): Promise<User> {
+  public static async findById(
+    id: string,
+    options?: ReqOptions
+  ): Promise<User> {
     const userRepository = getRepository(User)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const newId = validateUUID(id)
+    const newId = validateUUID(id, { ...options })
     const data = await userRepository.findOne({
       where: { id: newId },
       relations: ['Role', 'Sessions'],
     })
 
     if (!data) {
-      throw new ResponseError.NotFound(
-        'user data not found or has been deleted'
-      )
+      const message = i18nConfig.t('errors.not_found', i18nOpt)
+      throw new ResponseError.NotFound(`user ${message}`)
     }
 
     return data
+  }
+
+  /**
+   *
+   * @param email
+   * @param options
+   */
+  public static async validateEmail(
+    email: string,
+    options?: ReqOptions
+  ): Promise<void> {
+    const userRepository = getRepository(User)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+
+    const data = await userRepository.findOne({
+      where: { email },
+    })
+
+    if (data) {
+      const message = i18nConfig.t('errors.already_email', i18nOpt)
+      throw new ResponseError.BadRequest(message)
+    }
   }
 
   /**
@@ -80,14 +115,21 @@ class UserService {
    *
    * @param id
    * @param formData
+   * @param options
    * @returns
    */
   public static async update(
     id: string,
-    formData: Partial<UserAttributes>
+    formData: Partial<UserAttributes>,
+    options?: ReqOptions
   ): Promise<User> {
     const userRepository = getRepository(User)
-    const data = await this.findById(id)
+    const data = await this.findById(id, { ...options })
+
+    // validate email from request
+    if (!_.isEmpty(formData.email) && formData.email !== data.email) {
+      await this.validateEmail(String(formData.email), { ...options })
+    }
 
     const value = useValidation(userSchema.create, {
       ...data,
@@ -102,88 +144,115 @@ class UserService {
   /**
    *
    * @param id
+   * @param options
    */
-  public static async restore(id: string): Promise<void> {
+  public static async restore(id: string, options?: ReqOptions): Promise<void> {
     const userRepository = getRepository(User)
 
-    const newId = validateUUID(id)
-    await userRepository.restore(newId)
+    const data = await this.findById(id, { ...options })
+    await userRepository.restore(data.id)
   }
 
   /**
    *
    * @param id
+   * @param options
    */
-  public static async softDelete(id: string): Promise<void> {
+  public static async softDelete(
+    id: string,
+    options?: ReqOptions
+  ): Promise<void> {
     const userRepository = getRepository(User)
-    const data = await this.findById(id)
 
+    const data = await this.findById(id, { ...options })
     await userRepository.softDelete(data.id)
   }
 
   /**
    *
    * @param id
+   * @param options
    */
-  public static async forceDelete(id: string): Promise<void> {
+  public static async forceDelete(
+    id: string,
+    options?: ReqOptions
+  ): Promise<void> {
     const userRepository = getRepository(User)
-    const data = await this.findById(id)
 
+    const data = await this.findById(id, { ...options })
     await userRepository.delete(data.id)
   }
 
   /**
-   * Multiple Force Delete
+   *
    * @param ids
+   * @param options
    */
-  public static async multipleRestore(ids: string[]): Promise<void> {
+  public static async multipleRestore(
+    ids: string[],
+    options?: ReqOptions
+  ): Promise<void> {
     const userRepository = getRepository(User)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
-      throw new ResponseError.BadRequest('ids cannot be empty')
+      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
+      throw new ResponseError.BadRequest(`ids ${message}`)
     }
 
     const query = userRepository
       .createQueryBuilder()
-      .where('id IN (:...ids)', { ids: [...ids] })
+      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
 
     // restore record
     await query.restore().execute()
   }
 
   /**
-   * Multiple Soft Delete
+   *
    * @param ids
+   * @param options
    */
-  public static async multipleSoftDelete(ids: string[]): Promise<void> {
+  public static async multipleSoftDelete(
+    ids: string[],
+    options?: ReqOptions
+  ): Promise<void> {
     const userRepository = getRepository(User)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
-      throw new ResponseError.BadRequest('ids cannot be empty')
+      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
+      throw new ResponseError.BadRequest(`ids ${message}`)
     }
 
     const query = userRepository
       .createQueryBuilder()
-      .where('id IN (:...ids)', { ids: [...ids] })
+      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
 
     // soft delete record
     await query.softDelete().execute()
   }
 
   /**
-   * Multiple Force Delete
+   *
    * @param ids
+   * @param options
    */
-  public static async multipleForceDelete(ids: string[]): Promise<void> {
+  public static async multipleForceDelete(
+    ids: string[],
+    options?: ReqOptions
+  ): Promise<void> {
     const userRepository = getRepository(User)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
-      throw new ResponseError.BadRequest('ids cannot be empty')
+      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
+      throw new ResponseError.BadRequest(`ids ${message}`)
     }
 
     const query = userRepository
       .createQueryBuilder()
-      .where('id IN (:...ids)', { ids: [...ids] })
+      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
 
     // delete record
     await query.delete().execute()

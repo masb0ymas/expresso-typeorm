@@ -1,3 +1,4 @@
+import { APP_LANG } from '@config/env'
 import ConstRole from '@expresso/constants/ConstRole'
 import asyncHandler from '@expresso/helpers/asyncHandler'
 import { arrayFormatter } from '@expresso/helpers/Formatter'
@@ -7,8 +8,6 @@ import PermissionAccess from '@middlewares/PermissionAccess'
 import route from '@routes/v1'
 import { Request, Response } from 'express'
 import UserService from './service'
-
-const onlyAdmin = [ConstRole.ID_SUPER_ADMIN, ConstRole.ID_ADMIN]
 
 route.get(
   '/user',
@@ -25,8 +24,11 @@ route.get(
   '/user/:id',
   Authorization,
   asyncHandler(async function findById(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
-    const data = await UserService.findById(id)
+    const data = await UserService.findById(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.get({ data })
     res.status(200).json(httpResponse)
@@ -36,7 +38,7 @@ route.get(
 route.post(
   '/user',
   Authorization,
-  PermissionAccess(onlyAdmin),
+  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
   asyncHandler(async function create(req: Request, res: Response) {
     const formData = req.getBody()
 
@@ -50,12 +52,15 @@ route.post(
 route.put(
   '/user/:id',
   Authorization,
-  PermissionAccess(onlyAdmin),
+  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
   asyncHandler(async function udpate(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
     const formData = req.getBody()
 
-    const data = await UserService.update(id, formData)
+    const data = await UserService.update(id, formData, { lang: defaultLang })
 
     const httpResponse = HttpResponse.updated({ data })
     res.status(200).json(httpResponse)
@@ -65,11 +70,14 @@ route.put(
 route.put(
   '/user/restore/:id',
   Authorization,
-  PermissionAccess(onlyAdmin),
+  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
   asyncHandler(async function restore(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
 
-    await UserService.restore(id)
+    await UserService.restore(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.updated({})
     res.status(200).json(httpResponse)
@@ -79,11 +87,14 @@ route.put(
 route.delete(
   '/user/soft-delete/:id',
   Authorization,
-  PermissionAccess(onlyAdmin),
+  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
   asyncHandler(async function softDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
 
-    await UserService.softDelete(id)
+    await UserService.softDelete(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
@@ -93,11 +104,14 @@ route.delete(
 route.delete(
   '/user/force-delete/:id',
   Authorization,
-  PermissionAccess(onlyAdmin),
+  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
   asyncHandler(async function forceDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
 
-    await UserService.forceDelete(id)
+    await UserService.forceDelete(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
@@ -107,12 +121,15 @@ route.delete(
 route.post(
   '/user/multiple/restore',
   Authorization,
-  PermissionAccess(onlyAdmin),
+  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UserService.multipleRestore(arrayIds)
+    await UserService.multipleRestore(arrayIds, { lang: defaultLang })
 
     const httpResponse = HttpResponse.updated({})
     res.status(200).json(httpResponse)
@@ -122,12 +139,15 @@ route.post(
 route.post(
   '/user/multiple/soft-delete',
   Authorization,
-  PermissionAccess(onlyAdmin),
+  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UserService.multipleSoftDelete(arrayIds)
+    await UserService.multipleSoftDelete(arrayIds, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
@@ -137,12 +157,15 @@ route.post(
 route.post(
   '/user/multiple/force-delete',
   Authorization,
-  PermissionAccess(onlyAdmin),
+  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UserService.multipleForceDelete(arrayIds)
+    await UserService.multipleForceDelete(arrayIds, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)

@@ -17,10 +17,10 @@ module.exports = {
           $ref: '#/components/parameters/pageSize',
         },
         {
-          $ref: '#/components/parameters/email',
+          $ref: '#/components/parameters/filtered',
         },
         {
-          $ref: '#/components/parameters/RoleId',
+          $ref: '#/components/parameters/lang',
         },
       ],
       responses: {
