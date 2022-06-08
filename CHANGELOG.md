@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.1.0...v2.2.0) (2022-06-08)
+
+
+### Features
+
+* add config docker production ([9173c9f](https://github.com/masb0ymas/expresso-typeorm/commit/9173c9f53ef7a2c682799cc3260ce9a0ed8e1094))
+* add config docker staging ([9159cbd](https://github.com/masb0ymas/expresso-typeorm/commit/9159cbdd1e2e9c3332e3a232f1a02507aea9a2ce))
+* add currency helper ([655bb31](https://github.com/masb0ymas/expresso-typeorm/commit/655bb31fb7616c27aecef96339bc00af22e9c1a7))
+* add fcm helper ([4bd67f6](https://github.com/masb0ymas/expresso-typeorm/commit/4bd67f693190f334d7ad0f3b900dbde2c7ad4921))
+* add interface req options ([31c8672](https://github.com/masb0ymas/expresso-typeorm/commit/31c8672302bf21db3ae005e6ab45852952bf4a39))
+
+
+### Bug Fixes
+
+* constant role ([78a6704](https://github.com/masb0ymas/expresso-typeorm/commit/78a67044804fec97f86f0576deed4dc88376bb80))
+* docs swagger ([78b931a](https://github.com/masb0ymas/expresso-typeorm/commit/78b931a65df8d91799c4d5af01ec663689edde9a))
+* entity session ([2a2a6f8](https://github.com/masb0ymas/expresso-typeorm/commit/2a2a6f87d702aa28f7c2a52fefe331743715952d))
+* entity user ([99c3dd4](https://github.com/masb0ymas/expresso-typeorm/commit/99c3dd485e0462e705065bdbe09783790bfec514))
+* fetcher axios config ([3f14487](https://github.com/masb0ymas/expresso-typeorm/commit/3f1448747ad20c5f025700a7086f4091eef25865))
+* formatter helper ([3f4774f](https://github.com/masb0ymas/expresso-typeorm/commit/3f4774f5825d333f80c59bc84cf26e1d165aff2a))
+* import i18nConfig ([b09a369](https://github.com/masb0ymas/expresso-typeorm/commit/b09a369e4165abd36ec36f56981d63f2faa5215b))
+* index route ([430d683](https://github.com/masb0ymas/expresso-typeorm/commit/430d6835c7120d3b9a1919e0cfd966ce0de74ae2))
+* query with entity ([623f99c](https://github.com/masb0ymas/expresso-typeorm/commit/623f99c5b0b0fc93413f41643aaa5be5007e1283))
+* translate ([1b4b7f1](https://github.com/masb0ymas/expresso-typeorm/commit/1b4b7f1cd04c599fbb59ea3f17333adca55ebb9f))
+* translate endpoint auth ([a122653](https://github.com/masb0ymas/expresso-typeorm/commit/a1226532805fbe14c006adfb3580a0c3efab73a4))
+* translate endpoint role ([65cfcf2](https://github.com/masb0ymas/expresso-typeorm/commit/65cfcf217f57a7b8786c4049ce7b49cf13f413bb))
+* translate endpoint session ([d1cbd28](https://github.com/masb0ymas/expresso-typeorm/commit/d1cbd286aa22cc304f0d6c777783d713af3e2773))
+* translate endpoint upload ([70c20f0](https://github.com/masb0ymas/expresso-typeorm/commit/70c20f0148060f19798dd3304edf1145daa95f87))
+* translate endpoint user ([fe68eca](https://github.com/masb0ymas/expresso-typeorm/commit/fe68eca96207d71ead3188cd0a0056278a89c9cc))
+* translate middleware permission ([3dd9b38](https://github.com/masb0ymas/expresso-typeorm/commit/3dd9b38868c55d536af3d60a1ff930f468e4e8df))
+* update env ([d6f913b](https://github.com/masb0ymas/expresso-typeorm/commit/d6f913b7738370a89c7b1e3e01e36bcd3b6f3cbb))
+* update env ([bb0259f](https://github.com/masb0ymas/expresso-typeorm/commit/bb0259f6d4d9a5b80e16d1aef38d6d500e0722e8))
+* url client & server staging ([8798bcd](https://github.com/masb0ymas/expresso-typeorm/commit/8798bcd237f8bb682b2dc00299d78e5026200516))
+* user subscriber ([4011ca5](https://github.com/masb0ymas/expresso-typeorm/commit/4011ca5d8f6c7c774fc5dc946856167eb8dfd0f6))
+
 ## [2.1.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.0.0...v2.1.0) (2022-04-20)
 
 
