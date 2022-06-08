@@ -17,7 +17,10 @@ module.exports = {
           $ref: '#/components/parameters/pageSize',
         },
         {
-          $ref: '#/components/parameters/name',
+          $ref: '#/components/parameters/filtered',
+        },
+        {
+          $ref: '#/components/parameters/lang',
         },
       ],
       responses: {
