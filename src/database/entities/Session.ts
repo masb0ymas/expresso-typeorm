@@ -24,10 +24,10 @@ export class Session extends Base {
   @JoinColumn({ name: 'UserId' })
   User: User
 
-  @Column('uuid')
+  @Column({ type: 'uuid' })
   UserId: string
 
-  @Column('text')
+  @Column({ type: 'text' })
   token: string
 
   @Column({ nullable: true })
