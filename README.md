@@ -32,3 +32,20 @@
 3. Setup database settings inside `.env` file
 4. Create your database ( manual )
 5. Run `yarn dev` command
+
+## Author
+
+👤 **masb0ymas**
+
+- Website: https://resume.masb0ymas.vercel.app
+- Twitter: [@masb0ymas](https://twitter.com/masb0ymas)
+- Github: [@masb0ymas](https://github.com/masb0ymas)
+- LinkedIn: [@masb0ymas](https://www.linkedin.com/in/masb0ymas/)
+
+## Support Me
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I2I03MVAI)
+
+[<img height="40" src="https://trakteer.id/images/mix/navbar-logo-lite.png">](https://trakteer.id/masb0ymas)
+
+[<img height="40" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1280px-PayPal.svg.png">](https://www.paypal.com/paypalme/masb0ymas)
