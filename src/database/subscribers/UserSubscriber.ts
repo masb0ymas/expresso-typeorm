@@ -31,7 +31,7 @@ export class UserSubscriber implements EntitySubscriberInterface<any> {
     if (!_.isEmpty(event.entity?.password)) {
       if (event.entity?.password !== event.databaseEntity?.password) {
         // @ts-expect-error
-        await this.hashPassword(entity)
+        await this.hashPassword(event.entity)
       }
     }
   }
