@@ -1,7 +1,7 @@
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18nextConfig'
 import { User, UserAttributes } from '@database/entities/User'
-import { validateUUID } from '@expresso/helpers/Formatter'
+import { validateEmpty, validateUUID } from '@expresso/helpers/Formatter'
 import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
@@ -106,8 +106,18 @@ class UserService {
     const data = new User()
 
     const value = useValidation(userSchema.create, formData)
-    const newData = await userRepository.save({ ...data, ...value })
 
+    const newFormData = {
+      ...data,
+      ...value,
+      phone: validateEmpty(value?.phone),
+      password: validateEmpty(value?.confirmNewPassword),
+    }
+
+    // @ts-expect-error
+    const newData = await userRepository.save(newFormData)
+
+    // @ts-expect-error
     return newData
   }
 
@@ -136,8 +146,17 @@ class UserService {
       ...formData,
     })
 
-    const newData = await userRepository.save({ ...data, ...value })
+    const newFormData = {
+      ...data,
+      ...value,
+      phone: validateEmpty(value?.phone),
+      password: validateEmpty(value?.confirmNewPassword),
+    }
 
+    // @ts-expect-error
+    const newData = await userRepository.save(newFormData)
+
+    // @ts-expect-error
     return newData
   }
 

@@ -47,6 +47,8 @@ class AuthService {
     }
 
     const data = new User()
+
+    // @ts-expect-error
     const newData = await userRepository.save({ ...data, ...formRegistration })
 
     // check if exist mail_username & mail_password
@@ -59,6 +61,7 @@ class AuthService {
       })
     }
 
+    // @ts-expect-error
     return newData
   }
 

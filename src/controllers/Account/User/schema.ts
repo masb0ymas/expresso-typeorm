@@ -15,11 +15,13 @@ const createPassword = yup
   .required()
 
 const create = yup.object().shape({
+  ...createPassword.fields,
   fullName: yup.string().required('full name is required'),
   email: yup.string().email('invalid email').required('email is required'),
-  phone: yup.string(),
-  tokenVerify: yup.string(),
-  UploadId: yup.string(),
+  phone: yup.string().nullable(),
+  tokenVerify: yup.string().nullable(),
+  UploadId: yup.string().nullable(),
+  isActive: yup.boolean().required('is active is required'),
   RoleId: yup.string().required('role is required'),
 })
 

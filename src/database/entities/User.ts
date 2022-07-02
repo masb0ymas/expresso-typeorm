@@ -20,9 +20,9 @@ interface UserEntity {
   email: string
   newPassword?: string | null
   confirmNewPassword?: string | null
-  password: string
-  phone: string | null
-  tokenVerify: string | null
+  password?: string | null
+  phone?: string | null
+  tokenVerify?: string | null
   isActive?: boolean | null
   isBlocked?: boolean | null
   UploadId?: string | null
@@ -60,10 +60,10 @@ export class User extends Base {
   @Column()
   email: string
 
-  @Column({ select: false })
-  password: string
+  @Column({ select: false, nullable: true })
+  password!: string
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   phone!: string
 
   @Column({ type: 'text', nullable: true })
