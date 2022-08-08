@@ -7225,10 +7225,10 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-swagger-jsdoc@^6.2.3:
-  version "6.2.3"
-  resolved "https://registry.yarnpkg.com/swagger-jsdoc/-/swagger-jsdoc-6.2.3.tgz#dc1121f4965a3733ae1b4ea91f16e31240b8bf2a"
-  integrity sha512-PvhwD/TMjAAAmNZaBslCaLpz4Cig5Qh27IT2ZU4AzChzWcRFLRZTGLcf5h8mvWfqfBzGxciaWPiDConCPDvQPg==
+swagger-jsdoc@^6.2.5:
+  version "6.2.5"
+  resolved "https://registry.yarnpkg.com/swagger-jsdoc/-/swagger-jsdoc-6.2.5.tgz#65bffa142276436b2b131255f59a6b55384a0e8e"
+  integrity sha512-l+cdsKS2y+QDhrH1TJSUiE0y9XKuf5xaGSatjf0hR/wjTlMpO8WfubBK9d/nASdbHPMtj9iJZLBH2ogBEhL7Sw==
   dependencies:
     commander "6.2.0"
     doctrine "3.0.0"
