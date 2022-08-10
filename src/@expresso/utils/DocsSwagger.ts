@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { BASE_URL_SERVER } from '@config/baseURL'
 import {
   APP_NAME,
@@ -16,6 +15,7 @@ const baseRoutes = path.resolve(`${__dirname}/../docs/swagger/routes`)
 
 const getDocs = (basePath: string | Buffer): {} => {
   return fs.readdirSync(basePath).reduce((acc, file) => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const data = require(`${baseRoutes}/${file}`)
     acc = {
       ...acc,
@@ -135,21 +135,6 @@ export const swaggerOptions = {
           name: 'lang',
           schema: { type: 'string', enum: ['en', 'id'] },
           required: false,
-        },
-        qEmail: {
-          in: 'query',
-          name: 'email',
-          schema: { type: 'string' },
-        },
-        qRoleId: {
-          in: 'query',
-          name: 'RoleId',
-          schema: { type: 'string' },
-        },
-        qUserId: {
-          in: 'query',
-          name: 'UserId',
-          schema: { type: 'string' },
         },
       },
     },
