@@ -1,8 +1,7 @@
 import * as yup from 'yup'
 
 const create = yup
-  .object()
-  .shape({
+  .object({
     name: yup.string().required('name is required'),
   })
   .required()

@@ -1,8 +1,8 @@
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18nextConfig'
+import { AppDataSource } from '@database/data-source'
 import { Role, RoleAttributes } from '@database/entities/Role'
 import { validateUUID } from '@expresso/helpers/Formatter'
-import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
@@ -10,7 +10,6 @@ import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
 import { TOptions } from 'i18next'
 import _ from 'lodash'
-import { getRepository } from 'typeorm'
 import roleSchema from './schema'
 
 interface DtoPaginate extends DtoFindAll {
@@ -26,7 +25,7 @@ class RoleService {
    * @returns
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
     const { lang } = req.getQuery()
 
     const defaultLang = lang ?? APP_LANG
@@ -54,11 +53,14 @@ class RoleService {
     id: string,
     options?: ReqOptions
   ): Promise<Role> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     const newId = validateUUID(id, { ...options })
-    const data = await roleRepository.findOne({ where: { id: newId } })
+    const data = await roleRepository.findOne({
+      where: { id: newId },
+      withDeleted: options?.withDeleted,
+    })
 
     if (!data) {
       const message = i18nConfig.t('errors.not_found', i18nOpt)
@@ -74,10 +76,14 @@ class RoleService {
    * @returns
    */
   public static async create(formData: RoleAttributes): Promise<Role> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
     const data = new Role()
 
-    const value = useValidation(roleSchema.create, formData)
+    const value = roleSchema.create.validateSync(formData, {
+      abortEarly: false,
+      stripUnknown: true,
+    })
+
     const newData = await roleRepository.save({ ...data, ...value })
 
     return newData
@@ -95,13 +101,13 @@ class RoleService {
     formData: Partial<RoleAttributes>,
     options?: ReqOptions
   ): Promise<Role> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
     const data = await this.findById(id, { ...options })
 
-    const value = useValidation(roleSchema.create, {
-      ...data,
-      ...formData,
-    })
+    const value = roleSchema.create.validateSync(
+      { ...data, ...formData },
+      { abortEarly: false, stripUnknown: true }
+    )
 
     const newData = await roleRepository.save({ ...data, ...value })
 
@@ -114,9 +120,9 @@ class RoleService {
    * @param options
    */
   public static async restore(id: string, options?: ReqOptions): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
 
-    const data = await this.findById(id, { ...options })
+    const data = await this.findById(id, { withDeleted: true, ...options })
     await roleRepository.restore(data.id)
   }
 
@@ -129,7 +135,7 @@ class RoleService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
 
     const data = await this.findById(id, { ...options })
     await roleRepository.softDelete(data.id)
@@ -144,7 +150,7 @@ class RoleService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
 
     const data = await this.findById(id, { ...options })
     await roleRepository.delete(data.id)
@@ -159,7 +165,7 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
@@ -169,6 +175,7 @@ class RoleService {
 
     const query = roleRepository
       .createQueryBuilder()
+      .withDeleted()
       .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
 
     // restore record
@@ -184,7 +191,7 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
@@ -209,7 +216,7 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = getRepository(Role)
+    const roleRepository = AppDataSource.getRepository(Role)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
