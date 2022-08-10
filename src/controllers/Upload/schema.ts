@@ -1,8 +1,7 @@
 import * as yup from 'yup'
 
 const create = yup
-  .object()
-  .shape({
+  .object({
     keyFile: yup.string().required('key file is required'),
     filename: yup.string().required('filename is required'),
     mimetype: yup.string().required('mimetype is required'),

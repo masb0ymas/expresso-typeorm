@@ -9,9 +9,9 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { clientS3, s3ExpiresDate, s3ObjectExpired } from '@config/clientS3'
 import { APP_LANG, AWS_BUCKET_NAME } from '@config/env'
 import { i18nConfig } from '@config/i18nextConfig'
+import { AppDataSource } from '@database/data-source'
 import { Upload, UploadAttributes } from '@database/entities/Upload'
 import { logServer, validateUUID } from '@expresso/helpers/Formatter'
-import useValidation from '@expresso/hooks/useValidation'
 import { FileAttributes } from '@expresso/interfaces/Files'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
@@ -22,7 +22,6 @@ import { Request } from 'express'
 import fs from 'fs'
 import { TOptions } from 'i18next'
 import _ from 'lodash'
-import { getRepository } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
 import uploadSchema from './schema'
 
@@ -44,7 +43,7 @@ class UploadService {
    * @returns
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
     const { lang } = req.getQuery()
 
     const defaultLang = lang ?? APP_LANG
@@ -72,11 +71,14 @@ class UploadService {
     id: string,
     options?: ReqOptions
   ): Promise<Upload> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     const newId = validateUUID(id, { ...options })
-    const data = await uploadRepository.findOne({ where: { id: newId } })
+    const data = await uploadRepository.findOne({
+      where: { id: newId },
+      withDeleted: options?.withDeleted,
+    })
 
     if (!data) {
       const message = i18nConfig.t('errors.not_found', i18nOpt)
@@ -92,10 +94,14 @@ class UploadService {
    * @returns
    */
   public static async create(formData: UploadAttributes): Promise<Upload> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
     const data = new Upload()
 
-    const value = useValidation(uploadSchema.create, formData)
+    const value = uploadSchema.create.validateSync(formData, {
+      abortEarly: false,
+      stripUnknown: true,
+    })
+
     const newData = await uploadRepository.save({ ...data, ...value })
 
     return newData
@@ -113,13 +119,13 @@ class UploadService {
     formData: Partial<UploadAttributes>,
     options?: ReqOptions
   ): Promise<Upload> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
     const data = await this.findById(id, { ...options })
 
-    const value = useValidation(uploadSchema.create, {
-      ...data,
-      ...formData,
-    })
+    const value = uploadSchema.create.validateSync(
+      { ...data, ...formData },
+      { abortEarly: false, stripUnknown: true }
+    )
 
     const newData = await uploadRepository.save({ ...data, ...value })
 
@@ -152,9 +158,9 @@ class UploadService {
    * @param options
    */
   public static async restore(id: string, options?: ReqOptions): Promise<void> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
 
-    const data = await this.findById(id, { ...options })
+    const data = await this.findById(id, { withDeleted: true, ...options })
     await uploadRepository.restore(data.id)
   }
 
@@ -167,7 +173,7 @@ class UploadService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
 
     const data = await this.findById(id, { ...options })
     await uploadRepository.softDelete(data.id)
@@ -182,7 +188,7 @@ class UploadService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
 
     const data = await this.findById(id, { ...options })
 
@@ -201,7 +207,7 @@ class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
@@ -211,6 +217,7 @@ class UploadService {
 
     const query = uploadRepository
       .createQueryBuilder()
+      .withDeleted()
       .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
 
     // restore record
@@ -226,7 +233,7 @@ class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
@@ -251,7 +258,7 @@ class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
@@ -308,7 +315,7 @@ class UploadService {
     directory: string,
     UploadId?: string | null
   ): Promise<DtoUploadWithSignedUrlEntity> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
 
     let resUpload
 
@@ -365,7 +372,7 @@ class UploadService {
    * Update Signed URL Aws S3
    */
   public static async updateSignedUrl(): Promise<void> {
-    const uploadRepository = getRepository(Upload)
+    const uploadRepository = AppDataSource.getRepository(Upload)
 
     const query = uploadRepository
       .createQueryBuilder()
