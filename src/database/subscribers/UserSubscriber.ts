@@ -1,5 +1,5 @@
 import { User } from '@database/entities/User'
-import bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt'
 import _ from 'lodash'
 import {
   EntitySubscriberInterface,
