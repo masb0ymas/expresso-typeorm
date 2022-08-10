@@ -43,17 +43,9 @@ export const TYPEORM_PORT = Number(process.env.TYPEORM_PORT) ?? 5432
 export const TYPEORM_DATABASE = process.env.TYPEORM_DATABASE ?? 'expresso'
 export const TYPEORM_USERNAME = process.env.TYPEORM_USERNAME ?? 'postgres'
 export const TYPEORM_PASSWORD = process.env.TYPEORM_PASSWORD ?? 'postgres'
-export const TYPEORM_SYNCHRONIZE = process.env.TYPEORM_SYNCHRONIZE ?? true
-export const TYPEORM_LOGGING = process.env.TYPEORM_LOGGING ?? true
-export const TYPEORM_MIGRATIONS_RUN = process.env.TYPEORM_MIGRATIONS_RUN ?? true
-
-export const TYPEORM_ENTITIES = process.env.TYPEORM_ENTITIES ?? 'dist/database/entities/**/*{.ts,.js}'
-export const TYPEORM_MIGRATIONS = process.env.TYPEORM_MIGRATIONS ?? 'dist/database/migrations/**/*{.ts,.js}'
-export const TYPEORM_SUBSCRIBERS = process.env.TYPEORM_SUBSCRIBERS ?? 'dist/database/subscribers/**/*{.ts,.js}'
-
-export const TYPEORM_ENTITIES_DIR = process.env.TYPEORM_ENTITIES_DIR ?? 'dist/database/entities'
-export const TYPEORM_MIGRATIONS_DIR = process.env.TYPEORM_MIGRATIONS_DIR ?? 'dist/database/migrations'
-export const TYPEORM_SUBSCRIBERS_DIR = process.env.TYPEORM_SUBSCRIBERS_DIR ?? 'dist/database/subscribers'
+export const TYPEORM_SYNCHRONIZE = Boolean(process.env.TYPEORM_SYNCHRONIZE) ?? true
+export const TYPEORM_LOGGING = Boolean(process.env.TYPEORM_LOGGING) ?? true
+export const TYPEORM_MIGRATIONS_RUN = Boolean(process.env.TYPEORM_MIGRATIONS_RUN) ?? true
 
 // smtp
 export const MAIL_DRIVER = process.env.MAIL_DRIVER ?? 'smtp'
