@@ -1,7 +1,8 @@
+import { AppDataSource } from '@database/data-source'
 import { Role } from '@database/entities/Role'
 import ConstRole from '@expresso/constants/ConstRole'
 import _ from 'lodash'
-import { getRepository, MigrationInterface, QueryRunner } from 'typeorm'
+import { MigrationInterface, QueryRunner } from 'typeorm'
 
 const data = [
   {
@@ -35,7 +36,7 @@ if (!_.isEmpty(data)) {
 export class RoleSeeder1642501604297 implements MigrationInterface {
   public async up(_: QueryRunner): Promise<void> {
     // save
-    await getRepository(Role).save(formData)
+    await AppDataSource.getRepository(Role).save(formData)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

@@ -1,7 +1,8 @@
+import { AppDataSource } from '@database/data-source'
 import { User } from '@database/entities/User'
 import ConstRole from '@expresso/constants/ConstRole'
 import _ from 'lodash'
-import { getRepository, MigrationInterface, QueryRunner } from 'typeorm'
+import { MigrationInterface, QueryRunner } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 
 const defaultPass = 'Padang123'
@@ -44,7 +45,7 @@ if (!_.isEmpty(data)) {
 export class UserSeeder1642508834295 implements MigrationInterface {
   public async up(_: QueryRunner): Promise<void> {
     // save
-    await getRepository(User).save(formData)
+    await AppDataSource.getRepository(User).save(formData)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
