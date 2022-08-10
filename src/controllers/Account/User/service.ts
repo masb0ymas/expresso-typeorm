@@ -1,8 +1,8 @@
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18nextConfig'
+import { AppDataSource } from '@database/data-source'
 import { User, UserAttributes } from '@database/entities/User'
 import { validateEmpty, validateUUID } from '@expresso/helpers/Formatter'
-import useValidation from '@expresso/hooks/useValidation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
@@ -10,7 +10,6 @@ import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
 import { TOptions } from 'i18next'
 import _ from 'lodash'
-import { getRepository } from 'typeorm'
 import userSchema from './schema'
 
 interface DtoPaginate extends DtoFindAll {
@@ -26,7 +25,7 @@ class UserService {
    * @returns
    */
   public static async findAll(req: Request): Promise<DtoPaginate> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const { lang } = req.getQuery()
 
     const defaultLang = lang ?? APP_LANG
@@ -57,13 +56,14 @@ class UserService {
     id: string,
     options?: ReqOptions
   ): Promise<User> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     const newId = validateUUID(id, { ...options })
     const data = await userRepository.findOne({
       where: { id: newId },
       relations: ['Role', 'Sessions'],
+      withDeleted: options?.withDeleted,
     })
 
     if (!data) {
@@ -83,7 +83,7 @@ class UserService {
     email: string,
     options?: ReqOptions
   ): Promise<void> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     const data = await userRepository.findOne({
@@ -102,10 +102,13 @@ class UserService {
    * @returns
    */
   public static async create(formData: UserAttributes): Promise<User> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const data = new User()
 
-    const value = useValidation(userSchema.create, formData)
+    const value = userSchema.create.validateSync(formData, {
+      abortEarly: false,
+      stripUnknown: true,
+    })
 
     const newFormData = {
       ...data,
@@ -133,7 +136,7 @@ class UserService {
     formData: Partial<UserAttributes>,
     options?: ReqOptions
   ): Promise<User> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const data = await this.findById(id, { ...options })
 
     // validate email from request
@@ -141,10 +144,10 @@ class UserService {
       await this.validateEmail(String(formData.email), { ...options })
     }
 
-    const value = useValidation(userSchema.create, {
-      ...data,
-      ...formData,
-    })
+    const value = userSchema.create.validateSync(
+      { ...data, ...formData },
+      { abortEarly: false, stripUnknown: true }
+    )
 
     const newFormData = {
       ...data,
@@ -166,9 +169,9 @@ class UserService {
    * @param options
    */
   public static async restore(id: string, options?: ReqOptions): Promise<void> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
 
-    const data = await this.findById(id, { ...options })
+    const data = await this.findById(id, { withDeleted: true, ...options })
     await userRepository.restore(data.id)
   }
 
@@ -181,7 +184,7 @@ class UserService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
 
     const data = await this.findById(id, { ...options })
     await userRepository.softDelete(data.id)
@@ -196,7 +199,7 @@ class UserService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
 
     const data = await this.findById(id, { ...options })
     await userRepository.delete(data.id)
@@ -211,7 +214,7 @@ class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
@@ -221,6 +224,7 @@ class UserService {
 
     const query = userRepository
       .createQueryBuilder()
+      .withDeleted()
       .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
 
     // restore record
@@ -236,7 +240,7 @@ class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
@@ -261,7 +265,7 @@ class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {

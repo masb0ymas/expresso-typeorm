@@ -3,6 +3,7 @@ import { i18nConfig } from '@config/i18nextConfig'
 import SessionService from '@controllers/Account/Session/service'
 import userSchema from '@controllers/Account/User/schema'
 import UserService from '@controllers/Account/User/service'
+import { AppDataSource } from '@database/data-source'
 import {
   LoginAttributes,
   User,
@@ -13,12 +14,10 @@ import ConstRole from '@expresso/constants/ConstRole'
 import { validateEmpty } from '@expresso/helpers/Formatter'
 import SendMail from '@expresso/helpers/SendMail'
 import { generateAccessToken, verifyAccessToken } from '@expresso/helpers/Token'
-import useValidation from '@expresso/hooks/useValidation'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
 import { TOptions } from 'i18next'
 import _ from 'lodash'
-import { getRepository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 import { DtoLogin } from './interface'
 
@@ -29,7 +28,7 @@ class AuthService {
    * @returns
    */
   public static async signUp(formData: UserAttributes): Promise<User> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const randomToken = generateAccessToken({ uuid: uuidv4() })
 
     const newFormData = {
@@ -38,7 +37,10 @@ class AuthService {
       RoleId: ConstRole.ID_USER,
     }
 
-    const value = useValidation(userSchema.register, newFormData)
+    const value = userSchema.register.validateSync(newFormData, {
+      abortEarly: false,
+      stripUnknown: true,
+    })
 
     const formRegistration = {
       ...value,
@@ -74,10 +76,13 @@ class AuthService {
     formData: LoginAttributes,
     options?: ReqOptions
   ): Promise<DtoLogin> {
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const value = useValidation(userSchema.login, formData)
+    const value = userSchema.login.validateSync(formData, {
+      abortEarly: false,
+      stripUnknown: true,
+    })
 
     const getUser = await userRepository.findOne({
       select: ['id', 'email', 'isActive', 'password', 'RoleId'],
