@@ -2,8 +2,8 @@
 
 [![Version](https://img.shields.io/badge/Version-2.2.0-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso-typeorm/releases/tag/v2.2.0)
 [![Node](https://img.shields.io/badge/Node-14.18.0-informational?logo=node.js&color=43853D)](https://nodejs.org/docs/latest-v14.x/api/index.html)
-[![Eslint](https://img.shields.io/badge/Eslint-8.17.0-informational?logo=eslint&color=8080F2)](https://eslint.org/)
-[![TypeScript](https://img.shields.io/badge/Typescript-4.7.3-informational?logo=typescript&color=2F74C0)](https://www.typescriptlang.org/)
+[![Eslint](https://img.shields.io/badge/Eslint-8.21.0-informational?logo=eslint&color=8080F2)](https://eslint.org/)
+[![TypeScript](https://img.shields.io/badge/Typescript-4.7.4-informational?logo=typescript&color=2F74C0)](https://www.typescriptlang.org/)
 [![Express](https://img.shields.io/badge/Express-4.18.1-informational?logo=express&color=B1B1B1)](https://expressjs.com/)
 [![Swagger](https://img.shields.io/badge/Swagger-3.0.0-informational?logo=swagger&color=85EA2D)](https://swagger.io/tools/swagger-ui/)
 
@@ -14,10 +14,10 @@
 ## Feature
 
 - [TypeScript](https://github.com/microsoft/TypeScript) `v4.x`
-- [TypeORM](https://github.com/typeorm/typeorm) `v0.2.x`
-- [Nodemailer](https://github.com/nodemailer/nodemailer) `v6.7.5`
+- [TypeORM](https://github.com/typeorm/typeorm) `v0.3.x`
+- [Nodemailer](https://github.com/nodemailer/nodemailer) `v6.x`
 - [Handlebars](https://github.com/wycats/handlebars.js) for templating HTML
-- [Yup](https://github.com/jquense/yup) for validation schema `v0.31.x`
+- [Yup](https://github.com/jquense/yup) for validation schema `v0.32.x`
 - JavaScript Style [Standard with TypeScript](https://github.com/standard/eslint-config-standard-with-typescript)
 - Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier) and [TypeScript Eslint](https://github.com/typescript-eslint/typescript-eslint#readme)
 - Using [Module Alias](https://github.com/ilearnio/module-alias) for simplify the require/import paths
@@ -37,7 +37,7 @@
 
 👤 **masb0ymas**
 
-- Website: https://resume.masb0ymas.vercel.app
+- Website: [Resume](https://masb0ymas.netlify.app/)
 - Twitter: [@masb0ymas](https://twitter.com/masb0ymas)
 - Github: [@masb0ymas](https://github.com/masb0ymas)
 - LinkedIn: [@masb0ymas](https://www.linkedin.com/in/masb0ymas/)
