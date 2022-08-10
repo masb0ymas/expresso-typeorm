@@ -37,6 +37,6 @@
     "lazy": false,
     "noInterop": false
   },
-  "exclude": ["src/database/migrations/"],
-  "minify": false
+  "minify": true
+  // "exclude": ["src/database/migrations/"]
 }
