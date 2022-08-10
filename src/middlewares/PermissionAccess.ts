@@ -1,10 +1,10 @@
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18nextConfig'
+import { AppDataSource } from '@database/data-source'
 import { User, UserLoginAttributes } from '@database/entities/User'
 import { logErrServer } from '@expresso/helpers/Formatter'
 import { NextFunction, Request, Response } from 'express'
 import { TOptions } from 'i18next'
-import { getRepository } from 'typeorm'
 
 function PermissionAccess(roles: string[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +12,7 @@ function PermissionAccess(roles: string[]) {
     const defaultLang = lang ?? APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
-    const userRepository = getRepository(User)
+    const userRepository = AppDataSource.getRepository(User)
 
     const userLogin = req.getState('userLogin') as UserLoginAttributes
     const getUser = await userRepository.findOne({
