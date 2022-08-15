@@ -53,13 +53,14 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
+COPY --from=builder /app/.swcrc ./.swcrc
 COPY --from=builder /app/logs ./logs
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/.env ./.env
 
 # initial app
-RUN node ./dist/@expresso/scripts/generate.js
+RUN node ./dist/scripts/generate.js
 
 # USER expresso
 
