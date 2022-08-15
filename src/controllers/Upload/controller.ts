@@ -146,7 +146,7 @@ route.put(
 route.put(
   '/upload/restore/:id',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function restore(req: Request, res: Response) {
     const { id } = req.getParams()
 
@@ -160,7 +160,7 @@ route.put(
 route.delete(
   '/upload/soft-delete/:id',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function softDelete(req: Request, res: Response) {
     const { id } = req.getParams()
 
@@ -174,7 +174,7 @@ route.delete(
 route.delete(
   '/upload/force-delete/:id',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function forceDelete(req: Request, res: Response) {
     const { id } = req.getParams()
 
@@ -188,7 +188,7 @@ route.delete(
 route.post(
   '/upload/multiple/restore',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
@@ -203,7 +203,7 @@ route.post(
 route.post(
   '/upload/multiple/soft-delete',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
@@ -218,7 +218,7 @@ route.post(
 route.post(
   '/upload/multiple/force-delete',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)

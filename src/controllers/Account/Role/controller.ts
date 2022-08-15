@@ -38,7 +38,7 @@ route.get(
 route.post(
   '/role',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function create(req: Request, res: Response) {
     const formData = req.getBody()
     const data = await RoleService.create(formData)
@@ -51,7 +51,7 @@ route.post(
 route.put(
   '/role/:id',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function update(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -69,7 +69,7 @@ route.put(
 route.put(
   '/role/restore/:id',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function restore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -86,7 +86,7 @@ route.put(
 route.delete(
   '/role/soft-delete/:id',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function softDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -103,7 +103,7 @@ route.delete(
 route.delete(
   '/role/force-delete/:id',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function forceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -120,7 +120,7 @@ route.delete(
 route.post(
   '/role/multiple/restore',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -138,7 +138,7 @@ route.post(
 route.post(
   '/role/multiple/soft-delete',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -156,7 +156,7 @@ route.post(
 route.post(
   '/role/multiple/force-delete',
   Authorization,
-  PermissionAccess(ConstRole.ROLE_ONLY_ADMIN),
+  PermissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
