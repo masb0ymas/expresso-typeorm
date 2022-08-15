@@ -4,8 +4,8 @@
   "description": "Express built in TypeORM",
   "main": "./src/server.ts",
   "scripts": {
-    "key:generate": "npx ts-node ./src/@expresso/scripts/generate.ts",
-    "dev": "yarn && npm-run-all build start:dev",
+    "key:generate": "npx ts-node ./src/scripts/generate.ts",
+    "dev": "yarn && npm-run-all build:swc start:dev",
     "start": "nodemon --exec 'ts-node' ./src/server.ts",
     "start:dev": "nodemon --exec node ./dist/server.js",
     "clean": "rm -rf ./dist",
@@ -13,8 +13,8 @@
     "test:types": "tsc --noEmit",
     "test:types-watch": "npm run test:types -- --watch",
     "prebuild": "npm-run-all clean test:lint test:types",
-    "build": "npx swc src -d dist",
-    "build:ts": "npx tsc -p .",
+    "build": "npx tsc -p .",
+    "build:swc": "npx swc src -d dist",
     "deploy": "npm run build && pm2 reload ecosystem.config.js",
     "serve:staging": "NODE_ENV=staging node ./dist/server.js",
     "serve:production": "NODE_ENV=production node ./dist/server.js",
@@ -23,8 +23,8 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "db:sync": "npm run typeorm -- schema:sync -d ./src/database/data-source.ts",
     "db:drop": "npm run typeorm -- schema:drop -d ./src/database/data-source.ts",
-    "db:create": "npx ts-node ./src/database/scripts/createDB.ts",
-    "db:reset": "npm-run-all db:drop db:sync",
+    "db:create": "npx ts-node ./src/scripts/createDB.ts",
+    "db:reset": "yarn && npm-run-all db:drop db:sync",
     "release": "standard-version",
     "release:pre": "npm run release -- --prerelease",
     "release:patch": "npm run release -- --release-as patch",
@@ -146,7 +146,7 @@
     "@jobs/*": "dist/jobs/*",
     "@middlewares/*": "dist/middlewares/*",
     "@routes/*": "dist/routes/*",
-    "@utils/*": "dist/utils/*",
+    "@scripts/*": "dist/scripts/*",
     "@views/*": "dist/views/*"
   }
 }
