@@ -296,11 +296,11 @@ class UploadService {
       Bucket: AWS_BUCKET_NAME,
       Key: keyFile,
     })
-    const signedUrl = await getSignedUrl(clientS3, command, {
+    const signedURL = await getSignedUrl(clientS3, command, {
       expiresIn: s3ObjectExpired,
     })
 
-    return signedUrl
+    return signedURL
   }
 
   /**
@@ -337,13 +337,13 @@ class UploadService {
     // const expiresIn = sevenDays * 60 * 60
 
     // signed url from bucket S3
-    const signedUrl = await this.getSignedUrlS3(keyFile)
+    const signedURL = await this.getSignedUrlS3(keyFile)
 
     const formUpload = {
       ...fieldUpload,
       keyFile,
-      signedUrl,
-      expiryDateUrl: s3ExpiresDate,
+      signedURL,
+      expiryDateURL: s3ExpiresDate,
     }
 
     // check uuid
@@ -376,8 +376,8 @@ class UploadService {
 
     const query = uploadRepository
       .createQueryBuilder()
-      .where(`${this.entity}.expiryDateUrl < :expiryDateUrl`, {
-        expiryDateUrl: endOfYesterday(),
+      .where(`${this.entity}.expiryDateURL < :expiryDateURL`, {
+        expiryDateURL: endOfYesterday(),
       })
 
     const getUploads = await query.getMany()
@@ -393,9 +393,9 @@ class UploadService {
           for (let i = 0; i < itemUploads.length; i += 1) {
             const item = itemUploads[i]
 
-            const signedUrl = await this.getSignedUrlS3(item.keyFile)
+            const signedURL = await this.getSignedUrlS3(item.keyFile)
 
-            const formUpload = { signedUrl, expiryDateUrl: s3ExpiresDate }
+            const formUpload = { signedURL, expiryDateURL: s3ExpiresDate }
 
             // update signed url & expires url
             await uploadRepository.save({ ...item, ...formUpload })

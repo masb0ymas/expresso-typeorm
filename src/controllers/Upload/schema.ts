@@ -6,8 +6,8 @@ const create = yup
     filename: yup.string().required('filename is required'),
     mimetype: yup.string().required('mimetype is required'),
     size: yup.number().required('size is required'),
-    signedUrl: yup.string().required('signed url is required'),
-    expiryDateUrl: yup.date().required('expiry date url is required'),
+    signedURL: yup.string().required('signed url is required'),
+    expiryDateURL: yup.date().required('expiry date url is required'),
   })
   .required()
 

@@ -7,8 +7,8 @@ interface UploadEntity {
   filename: string
   mimetype: string
   size: number
-  signedUrl: string
-  expiryDateUrl: Date
+  signedURL: string
+  expiryDateURL: Date
   createdAt: Date
   updatedAt: Date
   deletedAt?: Date | null
@@ -37,8 +37,8 @@ export class Upload extends Base {
   size: number
 
   @Column({ type: 'text' })
-  signedUrl: string
+  signedURL: string
 
   @Column()
-  expiryDateUrl: Date
+  expiryDateURL: Date
 }
