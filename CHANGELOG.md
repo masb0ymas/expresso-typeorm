@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.1](https://github.com/masb0ymas/expresso-typeorm/compare/v2.3.0...v2.3.1) (2022-08-16)
+
+
+### Bug Fixes
+
+* change location module ([2807b03](https://github.com/masb0ymas/expresso-typeorm/commit/2807b03cb7946aed170fe9ccb09aed6e12141738))
+* change role name ([95fbef9](https://github.com/masb0ymas/expresso-typeorm/commit/95fbef9560deebf627f3d9f7066142f836a7fc05))
+* config docker ([9a8b38b](https://github.com/masb0ymas/expresso-typeorm/commit/9a8b38b41363320740fb1194e40b40c05983df45))
+* field name ([2936d5c](https://github.com/masb0ymas/expresso-typeorm/commit/2936d5c9d7fb0bc16ceae2d1b2ff4129caa7e0d6))
+* import docs swagger ([df95562](https://github.com/masb0ymas/expresso-typeorm/commit/df9556279089aa7119e94c4b24cb90b74ce112ee))
+* path alias script ([0354522](https://github.com/masb0ymas/expresso-typeorm/commit/035452246b39dd89b714cf8ac2e7cb6cda4c53d9))
+
 ## [2.3.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.2.0...v2.3.0) (2022-08-10)
 
 
