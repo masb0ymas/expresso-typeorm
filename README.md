@@ -1,15 +1,14 @@
 # expresso with TypeORM
 
-[![Version](https://img.shields.io/badge/Version-2.2.0-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso-typeorm/releases/tag/v2.2.0)
-[![Node](https://img.shields.io/badge/Node-14.18.0-informational?logo=node.js&color=43853D)](https://nodejs.org/docs/latest-v14.x/api/index.html)
-[![Eslint](https://img.shields.io/badge/Eslint-8.21.0-informational?logo=eslint&color=8080F2)](https://eslint.org/)
-[![TypeScript](https://img.shields.io/badge/Typescript-4.7.4-informational?logo=typescript&color=2F74C0)](https://www.typescriptlang.org/)
-[![Express](https://img.shields.io/badge/Express-4.18.1-informational?logo=express&color=B1B1B1)](https://expressjs.com/)
-[![Swagger](https://img.shields.io/badge/Swagger-3.0.0-informational?logo=swagger&color=85EA2D)](https://swagger.io/tools/swagger-ui/)
+[![documentation](https://img.shields.io/badge/Documentation-yes-brightgreen.svg)](https://github.com/masb0ymas/expresso#readme)
+[![maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/masb0ymas/expresso/graphs/commit-activity)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/masb0ymas/expresso/blob/master/LICENSE.md)
 
-[![documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://github.com/masb0ymas/expresso-typeorm#readme)
-[![maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/masb0ymas/expresso-typeorm/graphs/commit-activity)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/masb0ymas/expresso-typeorm/blob/master/LICENSE.md)
+[![version](https://img.shields.io/badge/Version-2.3.0-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso/releases/tag/v2.3.0)
+[![Express](https://img.shields.io/badge/Express-4.18.1-informational?logo=express&color=22272E)](https://expressjs.com/)
+![Node](https://badges.aleen42.com/src/node.svg)
+![Eslint](https://badges.aleen42.com/src/eslint.svg)
+![TypeScript](https://badges.aleen42.com/src/typescript.svg)
 
 ## Feature
 
