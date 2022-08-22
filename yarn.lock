@@ -5313,10 +5313,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libphonenumber-js@^1.10.11:
-  version "1.10.11"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.11.tgz#0078756857bcc5c9dfe097123c6e04ea930e309b"
-  integrity sha512-ehoihx4HpRXO6FH/uJ0EnaEV4dVU+FDny+jv0S6k9JPyPsAIr0eXDAFvGRMBKE1daCtyHAaFSKCiuCxrOjVAzQ==
+libphonenumber-js@^1.10.13:
+  version "1.10.13"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.13.tgz#0b5833c7fdbf671140530d83531c6753f7e0ea3c"
+  integrity sha512-b74iyWmwb4GprAUPjPkJ11GTC7KX4Pd3onpJfKxYyY8y9Rbb4ERY47LvCMEDM09WD3thiLDMXtkfDK/AX+zT7Q==
 
 lie@~3.3.0:
   version "3.3.0"
