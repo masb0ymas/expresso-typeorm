@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.3.1...v2.4.0) (2022-08-25)
+
+
+### Features
+
+* **helper:** add validation yup ([6704cd2](https://github.com/masb0ymas/expresso-typeorm/commit/6704cd22cf681bd3a1d6d440d32f852bd66c10b9))
+
+
+### Bug Fixes
+
+* **auth:** implementation options yup ([8c4b1fb](https://github.com/masb0ymas/expresso-typeorm/commit/8c4b1fbf687d37c2efcf82b040ada9aaf9169c18))
+* error config fetcher ([c3b7afa](https://github.com/masb0ymas/expresso-typeorm/commit/c3b7afa686c3a4fb60977b077d8e8ee74ba636c0))
+* error message multer ([e50bce0](https://github.com/masb0ymas/expresso-typeorm/commit/e50bce00551be7d7ab372f7c22b43745d2243823))
+* response message mailing nodemailer ([793d9e3](https://github.com/masb0ymas/expresso-typeorm/commit/793d9e34def92f4f60f9c4e95621d6e84e7aef0e))
+* **role:** multiple delete or restore ([e39ebc5](https://github.com/masb0ymas/expresso-typeorm/commit/e39ebc501276de70e35c57c1d38254dc10c54e5d))
+* session service ([53dcec3](https://github.com/masb0ymas/expresso-typeorm/commit/53dcec3be214071b72eeaf3bcaa1af8e979d156c))
+* **upload:** multiple delete or restore ([d0ac44b](https://github.com/masb0ymas/expresso-typeorm/commit/d0ac44b32027594bd7a2613fbaf40fe5dcb333b6))
+* **user:** multiple delete or restore ([a320626](https://github.com/masb0ymas/expresso-typeorm/commit/a320626ed4bd202bfc8df6d3779367465e905bbe))
+
 ### [2.3.1](https://github.com/masb0ymas/expresso-typeorm/compare/v2.3.0...v2.3.1) (2022-08-16)
 
 
