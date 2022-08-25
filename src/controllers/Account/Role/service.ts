@@ -3,6 +3,7 @@ import { i18nConfig } from '@config/i18nextConfig'
 import { AppDataSource } from '@database/data-source'
 import { Role, RoleAttributes } from '@database/entities/Role'
 import { validateUUID } from '@expresso/helpers/Formatter'
+import { optionsYup } from '@expresso/helpers/Validation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
@@ -10,6 +11,7 @@ import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
 import { TOptions } from 'i18next'
 import _ from 'lodash'
+import { SelectQueryBuilder } from 'typeorm'
 import roleSchema from './schema'
 
 interface DtoPaginate extends DtoFindAll {
@@ -79,11 +81,7 @@ class RoleService {
     const roleRepository = AppDataSource.getRepository(Role)
     const data = new Role()
 
-    const value = roleSchema.create.validateSync(formData, {
-      abortEarly: false,
-      stripUnknown: true,
-    })
-
+    const value = roleSchema.create.validateSync(formData, optionsYup)
     const newData = await roleRepository.save({ ...data, ...value })
 
     return newData
@@ -106,7 +104,7 @@ class RoleService {
 
     const value = roleSchema.create.validateSync(
       { ...data, ...formData },
-      { abortEarly: false, stripUnknown: true }
+      optionsYup
     )
 
     const newData = await roleRepository.save({ ...data, ...value })
@@ -161,10 +159,10 @@ class RoleService {
    * @param ids
    * @param options
    */
-  public static async multipleRestore(
+  private static multipleGetByIds(
     ids: string[],
     options?: ReqOptions
-  ): Promise<void> {
+  ): SelectQueryBuilder<Role> {
     const roleRepository = AppDataSource.getRepository(Role)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
@@ -173,10 +171,24 @@ class RoleService {
       throw new ResponseError.BadRequest(`ids ${message}`)
     }
 
+    // query by ids
     const query = roleRepository
       .createQueryBuilder()
-      .withDeleted()
       .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+
+    return query
+  }
+
+  /**
+   *
+   * @param ids
+   * @param options
+   */
+  public static async multipleRestore(
+    ids: string[],
+    options?: ReqOptions
+  ): Promise<void> {
+    const query = this.multipleGetByIds(ids, options).withDeleted()
 
     // restore record
     await query.restore().execute()
@@ -191,17 +203,7 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = AppDataSource.getRepository(Role)
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
-    if (_.isEmpty(ids)) {
-      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
-      throw new ResponseError.BadRequest(`ids ${message}`)
-    }
-
-    const query = roleRepository
-      .createQueryBuilder()
-      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+    const query = this.multipleGetByIds(ids, options)
 
     // soft delete record
     await query.softDelete().execute()
@@ -216,17 +218,7 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = AppDataSource.getRepository(Role)
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
-    if (_.isEmpty(ids)) {
-      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
-      throw new ResponseError.BadRequest(`ids ${message}`)
-    }
-
-    const query = roleRepository
-      .createQueryBuilder()
-      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+    const query = this.multipleGetByIds(ids, options)
 
     // delete record
     await query.delete().execute()
