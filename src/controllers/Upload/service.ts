@@ -12,6 +12,7 @@ import { i18nConfig } from '@config/i18nextConfig'
 import { AppDataSource } from '@database/data-source'
 import { Upload, UploadAttributes } from '@database/entities/Upload'
 import { logServer, validateUUID } from '@expresso/helpers/Formatter'
+import { optionsYup } from '@expresso/helpers/Validation'
 import { FileAttributes } from '@expresso/interfaces/Files'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
@@ -22,6 +23,7 @@ import { Request } from 'express'
 import fs from 'fs'
 import { TOptions } from 'i18next'
 import _ from 'lodash'
+import { SelectQueryBuilder } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
 import uploadSchema from './schema'
 
@@ -97,11 +99,7 @@ class UploadService {
     const uploadRepository = AppDataSource.getRepository(Upload)
     const data = new Upload()
 
-    const value = uploadSchema.create.validateSync(formData, {
-      abortEarly: false,
-      stripUnknown: true,
-    })
-
+    const value = uploadSchema.create.validateSync(formData, optionsYup)
     const newData = await uploadRepository.save({ ...data, ...value })
 
     return newData
@@ -124,7 +122,7 @@ class UploadService {
 
     const value = uploadSchema.create.validateSync(
       { ...data, ...formData },
-      { abortEarly: false, stripUnknown: true }
+      optionsYup
     )
 
     const newData = await uploadRepository.save({ ...data, ...value })
@@ -203,10 +201,10 @@ class UploadService {
    * @param ids
    * @param options
    */
-  public static async multipleRestore(
+  private static multipleGetByIds(
     ids: string[],
     options?: ReqOptions
-  ): Promise<void> {
+  ): SelectQueryBuilder<Upload> {
     const uploadRepository = AppDataSource.getRepository(Upload)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
@@ -215,10 +213,24 @@ class UploadService {
       throw new ResponseError.BadRequest(`ids ${message}`)
     }
 
+    // query by ids
     const query = uploadRepository
       .createQueryBuilder()
-      .withDeleted()
       .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+
+    return query
+  }
+
+  /**
+   *
+   * @param ids
+   * @param options
+   */
+  public static async multipleRestore(
+    ids: string[],
+    options?: ReqOptions
+  ): Promise<void> {
+    const query = this.multipleGetByIds(ids, options).withDeleted()
 
     // restore record
     await query.restore().execute()
@@ -233,17 +245,7 @@ class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = AppDataSource.getRepository(Upload)
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
-    if (_.isEmpty(ids)) {
-      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
-      throw new ResponseError.BadRequest(`ids ${message}`)
-    }
-
-    const query = uploadRepository
-      .createQueryBuilder()
-      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+    const query = this.multipleGetByIds(ids, options)
 
     // soft delete record
     await query.softDelete().execute()
@@ -258,17 +260,7 @@ class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = AppDataSource.getRepository(Upload)
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
-    if (_.isEmpty(ids)) {
-      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
-      throw new ResponseError.BadRequest(`ids ${message}`)
-    }
-
-    const query = uploadRepository
-      .createQueryBuilder()
-      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+    const query = this.multipleGetByIds(ids, options)
 
     const getUpload = await query.getMany()
 
