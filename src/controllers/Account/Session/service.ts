@@ -3,6 +3,7 @@ import { i18nConfig } from '@config/i18nextConfig'
 import { AppDataSource } from '@database/data-source'
 import { Session, SessionAttributes } from '@database/entities/Session'
 import { validateUUID } from '@expresso/helpers/Formatter'
+import { optionsYup } from '@expresso/helpers/Validation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
@@ -100,13 +101,9 @@ class SessionService {
    */
   public static async create(formData: SessionAttributes): Promise<Session> {
     const sessionRepository = AppDataSource.getRepository(Session)
-
-    const value = sessionSchema.create.validateSync(formData, {
-      abortEarly: false,
-      stripUnknown: true,
-    })
-
     const data = new Session()
+
+    const value = sessionSchema.create.validateSync(formData, optionsYup)
     const newData = await sessionRepository.save({ ...data, ...value })
 
     return newData
@@ -121,18 +118,17 @@ class SessionService {
   ): Promise<void> {
     const sessionRepository = AppDataSource.getRepository(Session)
 
-    const value = sessionSchema.create.validateSync(formData, {
-      abortEarly: false,
-      stripUnknown: true,
-    })
+    const value = sessionSchema.create.validateSync(formData, optionsYup)
 
     const data = await sessionRepository.findOne({
       where: { UserId: value.UserId },
     })
 
     if (!data) {
+      // create
       await this.create(formData)
     } else {
+      // update
       await sessionRepository.save({ ...data, ...value })
     }
   }
