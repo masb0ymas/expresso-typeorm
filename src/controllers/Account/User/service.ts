@@ -3,6 +3,7 @@ import { i18nConfig } from '@config/i18nextConfig'
 import { AppDataSource } from '@database/data-source'
 import { User, UserAttributes } from '@database/entities/User'
 import { validateEmpty, validateUUID } from '@expresso/helpers/Formatter'
+import { optionsYup } from '@expresso/helpers/Validation'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
@@ -10,6 +11,7 @@ import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
 import { TOptions } from 'i18next'
 import _ from 'lodash'
+import { SelectQueryBuilder } from 'typeorm'
 import userSchema from './schema'
 
 interface DtoPaginate extends DtoFindAll {
@@ -105,10 +107,7 @@ class UserService {
     const userRepository = AppDataSource.getRepository(User)
     const data = new User()
 
-    const value = userSchema.create.validateSync(formData, {
-      abortEarly: false,
-      stripUnknown: true,
-    })
+    const value = userSchema.create.validateSync(formData, optionsYup)
 
     const newFormData = {
       ...data,
@@ -146,7 +145,7 @@ class UserService {
 
     const value = userSchema.create.validateSync(
       { ...data, ...formData },
-      { abortEarly: false, stripUnknown: true }
+      optionsYup
     )
 
     const newFormData = {
@@ -210,10 +209,10 @@ class UserService {
    * @param ids
    * @param options
    */
-  public static async multipleRestore(
+  private static multipleGetByIds(
     ids: string[],
     options?: ReqOptions
-  ): Promise<void> {
+  ): SelectQueryBuilder<User> {
     const userRepository = AppDataSource.getRepository(User)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
@@ -224,8 +223,21 @@ class UserService {
 
     const query = userRepository
       .createQueryBuilder()
-      .withDeleted()
       .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+
+    return query
+  }
+
+  /**
+   *
+   * @param ids
+   * @param options
+   */
+  public static async multipleRestore(
+    ids: string[],
+    options?: ReqOptions
+  ): Promise<void> {
+    const query = this.multipleGetByIds(ids, options).withDeleted()
 
     // restore record
     await query.restore().execute()
@@ -240,17 +252,7 @@ class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const userRepository = AppDataSource.getRepository(User)
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
-    if (_.isEmpty(ids)) {
-      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
-      throw new ResponseError.BadRequest(`ids ${message}`)
-    }
-
-    const query = userRepository
-      .createQueryBuilder()
-      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+    const query = this.multipleGetByIds(ids, options)
 
     // soft delete record
     await query.softDelete().execute()
@@ -265,17 +267,7 @@ class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const userRepository = AppDataSource.getRepository(User)
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
-    if (_.isEmpty(ids)) {
-      const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
-      throw new ResponseError.BadRequest(`ids ${message}`)
-    }
-
-    const query = userRepository
-      .createQueryBuilder()
-      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+    const query = this.multipleGetByIds(ids, options)
 
     // delete record
     await query.delete().execute()
