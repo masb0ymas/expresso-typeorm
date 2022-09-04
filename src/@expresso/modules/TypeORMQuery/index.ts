@@ -26,15 +26,18 @@ export function queryFiltered<T>(
     for (let i = 0; i < parseFiltered.length; i += 1) {
       const item = parseFiltered[i]
 
-      if (uuidValidate(item.value)) {
-        // case UUID
+      const checkUUID = uuidValidate(item.value)
+      const checkNumber = _.isNumber(Number(item.value))
+
+      // case UUID or Number
+      if (checkUUID || checkNumber) {
         // example : query.andWhere('User.RoleId' = :RoleId, { RoleId: 'anyValue' })
         query.andWhere(`${entity}.${item.id} = :${item.id}`, {
           [`${item.id}`]: `${item.value}`,
         })
       } else {
         // default query LIKE
-        // example : query.andWhere('User.RoleId' ILIKE :RoleId, { RoleId: '%anyValue%' })
+        // example : query.andWhere('User.email' ILIKE :email, { email: '%anyValue%' })
         query.andWhere(`${entity}.${item.id} ILIKE :${item.id}`, {
           [`${item.id}`]: `%${item.value}%`,
         })
