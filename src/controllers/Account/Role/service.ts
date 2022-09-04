@@ -158,6 +158,7 @@ class RoleService {
    *
    * @param ids
    * @param options
+   * @returns
    */
   private static multipleGetByIds(
     ids: string[],

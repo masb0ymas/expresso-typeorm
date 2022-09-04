@@ -33,7 +33,7 @@ class SessionService {
 
     const query = sessionRepository
       .createQueryBuilder()
-      .leftJoinAndSelect('Session.User', 'User')
+      .leftJoinAndSelect(`${this.entity}.User`, 'User')
     const newQuery = queryFiltered(this.entity, query, req)
 
     const data = await newQuery

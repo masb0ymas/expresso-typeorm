@@ -35,8 +35,8 @@ class UserService {
 
     const query = userRepository
       .createQueryBuilder()
-      .leftJoinAndSelect('User.Role', 'Role')
-      .leftJoinAndSelect('User.Sessions', 'Session')
+      .leftJoinAndSelect(`${this.entity}.Role`, 'Role')
+      .leftJoinAndSelect(`${this.entity}.Sessions`, 'Session')
     const newQuery = queryFiltered(this.entity, query, req)
 
     const data = await newQuery
@@ -208,6 +208,7 @@ class UserService {
    *
    * @param ids
    * @param options
+   * @returns
    */
   private static multipleGetByIds(
     ids: string[],
