@@ -84,7 +84,7 @@
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.5.0",
     "typeorm": "^0.3.7",
-    "typeorm-extension": "^2.1.9",
+    "typeorm-extension": "^2.1.10",
     "uuid": "^8.3.2",
     "winston": "^3.8.1",
     "yup": "^0.32.11"
@@ -93,7 +93,7 @@
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "@swc/cli": "^0.1.57",
-    "@swc/core": "^1.2.242",
+    "@swc/core": "^1.3.1",
     "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.2",
     "@types/convert-excel-to-json": "^1.7.1",
