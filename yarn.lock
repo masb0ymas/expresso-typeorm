@@ -1167,10 +1167,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@faker-js/faker@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-7.4.0.tgz#cac720d860a89d487b47e55e66a4fd114f1d3fe5"
-  integrity sha512-xDd3Tvkt2jgkx1LkuwwxpNBy/Oe+LkZBTwkgEFTiWpVSZgQ5sc/LenbHKRHbFl0dq/KFeeq/szyyPtpJRKY0fg==
+"@faker-js/faker@^7.5.0":
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-7.5.0.tgz#8e8265f65f5b68d2a57886d59b03788eeb676264"
+  integrity sha512-8wNUCCUHvfvI0gQpDUho/3gPzABffnCn5um65F8dzQ86zz6dlt4+nmAA7PQUc8L+eH+9RgR/qzy5N/8kN0Ozdw==
 
 "@fast-csv/format@4.3.5":
   version "4.3.5"
@@ -7563,12 +7563,12 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typeorm-extension@^2.1.9:
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.1.9.tgz#fd18c103f2d759bc6a9697caee06e896e61a78c5"
-  integrity sha512-Ghxpf0aNnIAPMqa6ck2SrtHH2lt9OFc012oBRofqxiTJcvWArF0yYpFiv30RoJ0mOZuwKE3zdXSohYkuZ461aA==
+typeorm-extension@^2.1.10:
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.1.10.tgz#3fe0b67bf9a873dd93255c84e2ffc4bfaf663ad6"
+  integrity sha512-yH9KiBnUKpJQzCapgVlzoswM3y6BLl/LJxeQV2xNINNcx7L4Dl04/jMVXoANpCE92kWBcnfRPsLxCKiWksQpPw==
   dependencies:
-    "@faker-js/faker" "^7.4.0"
+    "@faker-js/faker" "^7.5.0"
     locter "^0.2.2"
     rapiq "^0.0.4"
     reflect-metadata "^0.1.13"
