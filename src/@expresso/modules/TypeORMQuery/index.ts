@@ -1,9 +1,9 @@
 import { Request } from 'express'
 import _ from 'lodash'
-import { SelectQueryBuilder } from 'typeorm'
+import { ObjectLiteral, SelectQueryBuilder } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
 
-export function queryFiltered<T>(
+export function queryFiltered<T extends ObjectLiteral>(
   entity: string,
   query: SelectQueryBuilder<T>,
   req: Request
@@ -27,10 +27,9 @@ export function queryFiltered<T>(
       const item = parseFiltered[i]
 
       const checkUUID = uuidValidate(item.value)
-      const checkNumber = _.isNumber(Number(item.value))
 
       // case UUID or Number
-      if (checkUUID || checkNumber) {
+      if (checkUUID) {
         // example : query.andWhere('User.RoleId' = :RoleId, { RoleId: 'anyValue' })
         query.andWhere(`${entity}.${item.id} = :${item.id}`, {
           [`${item.id}`]: `${item.value}`,
