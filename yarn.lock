@@ -3663,10 +3663,10 @@ eslint-config-prettier@^8.5.0:
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.5.0.tgz#5a81680ec934beca02c7b1a61cf8ca34b66feab1"
   integrity sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==
 
-eslint-config-standard-with-typescript@^22.0.0:
-  version "22.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-standard-with-typescript/-/eslint-config-standard-with-typescript-22.0.0.tgz#5b91941797da779e17fcb3ba418e3a3ab31fdb2f"
-  integrity sha512-VA36U7UlFpwULvkdnh6MQj5GAV2Q+tT68ALLAwJP0ZuNXU2m0wX07uxX4qyLRdHgSzH4QJ73CveKBuSOYvh7vQ==
+eslint-config-standard-with-typescript@^23.0.0:
+  version "23.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-standard-with-typescript/-/eslint-config-standard-with-typescript-23.0.0.tgz#aa4b656740bbb2592d4cadec735d41e36245a44b"
+  integrity sha512-iaaWifImn37Z1OXbNW1es7KI+S7D408F9ys0bpaQf2temeBWlvb0Nc5qHkOgYaRb5QxTZT32GGeN1gtswASOXA==
   dependencies:
     "@typescript-eslint/parser" "^5.0.0"
     eslint-config-standard "17.0.0"
@@ -4565,10 +4565,10 @@ googleapis-common@^6.0.0:
     url-template "^2.0.8"
     uuid "^9.0.0"
 
-googleapis@^107.0.0:
-  version "107.0.0"
-  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-107.0.0.tgz#f3595d6311f4dc3c4538f15d16fc0101422b3cf6"
-  integrity sha512-emMvsOEPvE9/DxrOVCMblQzKAhaar37c5JPAqYXoo+hxPpzFefkpN5ayIJFgatDpUWCSMvWtP3CcEWfFhFA7QA==
+googleapis@^108.0.0:
+  version "108.0.0"
+  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-108.0.0.tgz#3c8626d0c693b10193e81f33b716e84a6118d844"
+  integrity sha512-wQuBzCObtjpfg3CksOfUlX3yT8clw/vJFdGSfs9cpn84WSxNK3U5sxYxEH3mPM+d+SrA8znKM9G8sOuwQceGIA==
   dependencies:
     google-auth-library "^8.0.2"
     googleapis-common "^6.0.0"
@@ -4664,10 +4664,10 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-helmet@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/helmet/-/helmet-5.1.1.tgz#609823c5c2e78aea62dd9afc8f544ca409da5e85"
-  integrity sha512-/yX0oVZBggA9cLJh8aw3PPCfedBnbd7J2aowjzsaWwZh7/UFY0nccn/aHAggIgWUFfnykX8GKd3a1pSbrmlcVQ==
+helmet@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-6.0.0.tgz#8e183820ddccd7729a206ad73c577b264f495595"
+  integrity sha512-FO9RpR1wNJepH/GbLPQVtkE2eESglXL641p7SdyoT4LngHFJcZheHMoyUcjCZF4qpuMMO1u5q6RK0l9Ux8JBcg==
 
 highlight.js@^10.7.1:
   version "10.7.3"
