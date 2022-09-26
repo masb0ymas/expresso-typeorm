@@ -6428,10 +6428,10 @@ rapiq@^0.0.4:
   dependencies:
     minimatch "^5.1.0"
 
-rate-limiter-flexible@^2.3.8:
-  version "2.3.10"
-  resolved "https://registry.yarnpkg.com/rate-limiter-flexible/-/rate-limiter-flexible-2.3.10.tgz#3d707b165b06fa4f193e0d3c6c5684f6e3acd1d3"
-  integrity sha512-bXqRBBb85WmnJemw9+xLdA7ezLXwZ+hXcOD8ZzfGMhbus4jHRrjTMXZ1kJqpKnpGu34scZc6f0qYNSxBwO7yrg==
+rate-limiter-flexible@^2.3.11:
+  version "2.3.11"
+  resolved "https://registry.yarnpkg.com/rate-limiter-flexible/-/rate-limiter-flexible-2.3.11.tgz#558cf388a3785f286ae7e1c345d719c04c43b8ca"
+  integrity sha512-MFLtfs1llUNBkJxeTkSZD7oAxVg1nZ79bevE2TmqQMbmKGoi8DBua3VAZFz5bsjEr0A6Mbr9AJuf5lvYSCok2Q==
 
 raw-body@2.5.1:
   version "2.5.1"
