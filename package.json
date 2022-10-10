@@ -24,6 +24,7 @@
     "db:sync": "npm run typeorm -- schema:sync -d ./src/database/data-source.ts",
     "db:drop": "npm run typeorm -- schema:drop -d ./src/database/data-source.ts",
     "db:create": "npx ts-node ./src/scripts/createDB.ts",
+    "db:destroy": "npx ts-node ./src/scripts/dropDB.ts",
     "db:reset": "yarn && npm-run-all db:drop db:sync",
     "release": "standard-version",
     "release:pre": "npm run release -- --prerelease",
