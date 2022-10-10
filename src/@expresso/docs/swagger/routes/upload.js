@@ -3,7 +3,6 @@ module.exports = {
     get: {
       tags: ['Upload'],
       summary: 'Get All Upload',
-      produces: ['application/json'],
       security: [
         {
           auth_token: [],
@@ -50,11 +49,8 @@ module.exports = {
               type: 'object',
               properties: {
                 fileUpload: {
-                  type: 'file',
-                  items: {
-                    type: 'string',
-                    format: 'binary',
-                  },
+                  type: 'string',
+                  format: 'binary',
                 },
               },
               required: ['fileUpload'],
@@ -224,7 +220,6 @@ module.exports = {
     get: {
       tags: ['Upload'],
       summary: 'Get Upload By Id',
-      produces: ['application/json'],
       security: [
         {
           auth_token: [],
@@ -280,11 +275,8 @@ module.exports = {
               type: 'object',
               properties: {
                 fileUpload: {
-                  type: 'file',
-                  items: {
-                    type: 'string',
-                    format: 'binary',
-                  },
+                  type: 'string',
+                  format: 'binary',
                 },
               },
               required: ['fileUpload'],
@@ -308,7 +300,6 @@ module.exports = {
           auth_token: [],
         },
       ],
-      produces: ['application/json'],
       parameters: [
         {
           in: 'path',
@@ -339,7 +330,6 @@ module.exports = {
           auth_token: [],
         },
       ],
-      produces: ['application/json'],
       parameters: [
         {
           in: 'path',
@@ -370,7 +360,6 @@ module.exports = {
           auth_token: [],
         },
       ],
-      produces: ['application/json'],
       parameters: [
         {
           in: 'path',

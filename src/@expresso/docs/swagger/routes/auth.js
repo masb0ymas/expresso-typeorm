@@ -83,7 +83,6 @@ module.exports = {
     get: {
       tags: ['Auth'],
       summary: 'Verify Session',
-      produces: ['application/json'],
       security: [
         {
           auth_token: [],
@@ -100,7 +99,6 @@ module.exports = {
     post: {
       tags: ['Auth'],
       summary: 'Logout',
-      produces: ['application/json'],
       security: [
         {
           auth_token: [],

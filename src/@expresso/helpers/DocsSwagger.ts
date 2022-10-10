@@ -112,27 +112,27 @@ export const swaggerOptions = {
         page: {
           in: 'query',
           name: 'page',
+          schema: { type: 'string' },
           required: false,
-          default: 1,
         },
         pageSize: {
           in: 'query',
           name: 'pageSize',
+          schema: { type: 'string' },
           required: false,
-          default: 10,
         },
         filtered: {
           in: 'query',
           name: 'filtered',
+          schema: { type: 'string' },
           required: false,
-          default: [],
           description: 'Example: [{"id": "email", "value": "anyValue"}]',
         },
         sorted: {
           in: 'query',
           name: 'sorted',
+          schema: { type: 'string' },
           required: false,
-          default: [],
           description: 'Example: [{"id": "createdAt", "desc": true}]',
         },
         lang: {

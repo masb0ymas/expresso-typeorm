@@ -3,7 +3,6 @@ module.exports = {
     get: {
       tags: ['Role'],
       summary: 'Get All Role',
-      produces: ['application/json'],
       security: [
         {
           auth_token: [],
@@ -163,7 +162,6 @@ module.exports = {
     get: {
       tags: ['Role'],
       summary: 'Get Role By Id',
-      produces: ['application/json'],
       security: [
         {
           auth_token: [],
@@ -237,7 +235,6 @@ module.exports = {
           auth_token: [],
         },
       ],
-      produces: ['application/json'],
       parameters: [
         {
           in: 'path',
@@ -265,7 +262,6 @@ module.exports = {
           auth_token: [],
         },
       ],
-      produces: ['application/json'],
       parameters: [
         {
           in: 'path',
@@ -293,7 +289,6 @@ module.exports = {
           auth_token: [],
         },
       ],
-      produces: ['application/json'],
       parameters: [
         {
           in: 'path',
