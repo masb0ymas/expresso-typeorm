@@ -1,5 +1,5 @@
 module.exports = {
-  Role: {
+  Upload: {
     type: 'object',
     properties: {
       id: { type: 'string' },
