@@ -14,10 +14,6 @@ import _ from 'lodash'
 import { SelectQueryBuilder } from 'typeorm'
 import userSchema from './schema'
 
-interface DtoPaginate extends DtoFindAll {
-  data: User[]
-}
-
 class UserService {
   private static readonly entity = 'User'
 
@@ -26,7 +22,7 @@ class UserService {
    * @param req
    * @returns
    */
-  public static async findAll(req: Request): Promise<DtoPaginate> {
+  public static async findAll(req: Request): Promise<DtoFindAll<User>> {
     const userRepository = AppDataSource.getRepository(User)
     const { lang } = req.getQuery()
 

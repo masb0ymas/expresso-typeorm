@@ -27,10 +27,6 @@ import { SelectQueryBuilder } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
 import uploadSchema from './schema'
 
-interface DtoPaginate extends DtoFindAll {
-  data: Upload[]
-}
-
 interface DtoUploadWithSignedUrlEntity {
   dataAwsS3: PutObjectCommandOutput
   resUpload: Upload
@@ -44,7 +40,7 @@ class UploadService {
    * @param req
    * @returns
    */
-  public static async findAll(req: Request): Promise<DtoPaginate> {
+  public static async findAll(req: Request): Promise<DtoFindAll<Upload>> {
     const uploadRepository = AppDataSource.getRepository(Upload)
     const { lang } = req.getQuery()
 

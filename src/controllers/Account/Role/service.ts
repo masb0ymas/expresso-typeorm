@@ -14,10 +14,6 @@ import _ from 'lodash'
 import { SelectQueryBuilder } from 'typeorm'
 import roleSchema from './schema'
 
-interface DtoPaginate extends DtoFindAll {
-  data: Role[]
-}
-
 class RoleService {
   private static readonly entity = 'Role'
 
@@ -26,7 +22,7 @@ class RoleService {
    * @param req
    * @returns
    */
-  public static async findAll(req: Request): Promise<DtoPaginate> {
+  public static async findAll(req: Request): Promise<DtoFindAll<Role>> {
     const roleRepository = AppDataSource.getRepository(Role)
     const { lang } = req.getQuery()
 
