@@ -2,15 +2,15 @@ import { i18nConfig } from '@config/i18nextConfig'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import { TOptions } from 'i18next'
 
-type DataResponseEntity<T> = {
+type DataResponseEntity<TData> = {
   message?: string
   code?: number
-} & T
+} & TData
 
-type DtoHttpResponse<T> = {
+type DtoHttpResponse<TData> = {
   code: number
   message: string
-} & Omit<DataResponseEntity<T>, 'message' | 'code'>
+} & Omit<DataResponseEntity<TData>, 'message' | 'code'>
 
 class HttpResponse {
   /**
@@ -18,9 +18,9 @@ class HttpResponse {
    * @param dataResponse
    * @returns
    */
-  private static baseResponse<T>(
-    dataResponse: DataResponseEntity<T>
-  ): DtoHttpResponse<T> {
+  private static baseResponse<TData>(
+    dataResponse: DataResponseEntity<TData>
+  ): DtoHttpResponse<TData> {
     const {
       message = 'data has been received',
       code = 200,
@@ -36,10 +36,10 @@ class HttpResponse {
    * @param options
    * @returns
    */
-  public static get<T>(
-    dataResponse: DataResponseEntity<T>,
+  public static get<TData>(
+    dataResponse: DataResponseEntity<TData>,
     options?: ReqOptions
-  ): DtoHttpResponse<T> {
+  ): DtoHttpResponse<TData> {
     const i18nOpt: string | TOptions = { lng: options?.lang }
     const message = i18nConfig.t('success.data_received', i18nOpt)
 
@@ -52,10 +52,10 @@ class HttpResponse {
    * @param options
    * @returns
    */
-  public static created<T>(
-    dataResponse: DataResponseEntity<T>,
+  public static created<TData>(
+    dataResponse: DataResponseEntity<TData>,
     options?: ReqOptions
-  ): DtoHttpResponse<T> {
+  ): DtoHttpResponse<TData> {
     const i18nOpt: string | TOptions = { lng: options?.lang }
     const message = i18nConfig.t('success.data_added', i18nOpt)
 
@@ -68,10 +68,10 @@ class HttpResponse {
    * @param options
    * @returns
    */
-  public static updated<T>(
-    dataResponse: DataResponseEntity<T>,
+  public static updated<TData>(
+    dataResponse: DataResponseEntity<TData>,
     options?: ReqOptions
-  ): DtoHttpResponse<T> {
+  ): DtoHttpResponse<TData> {
     const i18nOpt: string | TOptions = { lng: options?.lang }
     const message = i18nConfig.t('success.data_updated', i18nOpt)
 
@@ -84,10 +84,10 @@ class HttpResponse {
    * @param options
    * @returns
    */
-  public static deleted<T>(
-    dataResponse: DataResponseEntity<T>,
+  public static deleted<TData>(
+    dataResponse: DataResponseEntity<TData>,
     options?: ReqOptions
-  ): DtoHttpResponse<T> {
+  ): DtoHttpResponse<TData> {
     const i18nOpt: string | TOptions = { lng: options?.lang }
     const message = i18nConfig.t('success.data_deleted', i18nOpt)
 
