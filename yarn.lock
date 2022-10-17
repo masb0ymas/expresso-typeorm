@@ -1203,10 +1203,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@faker-js/faker@^7.5.0":
-  version "7.5.0"
-  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-7.5.0.tgz#8e8265f65f5b68d2a57886d59b03788eeb676264"
-  integrity sha512-8wNUCCUHvfvI0gQpDUho/3gPzABffnCn5um65F8dzQ86zz6dlt4+nmAA7PQUc8L+eH+9RgR/qzy5N/8kN0Ozdw==
+"@faker-js/faker@^7.6.0":
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-7.6.0.tgz#9ea331766084288634a9247fcd8b84f16ff4ba07"
+  integrity sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==
 
 "@fast-csv/format@4.3.5":
   version "4.3.5"
@@ -5476,10 +5476,10 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-locter@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/locter/-/locter-0.3.1.tgz#02bf1123daaf868e742385edcf8fef889631dcb4"
-  integrity sha512-K62EoaH1RQmEhXk17WVVpI4/CPuFXmHPY0zgxdIv4ty9m7wgiVT7bo3fF585Ks6hwye0vqIHtb0OEo+brBJq4g==
+locter@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/locter/-/locter-0.3.2.tgz#6cb60e0ab6a7904e3c941d3eedd535566efe4c4d"
+  integrity sha512-+mHgnARlKkuIXGLw0o52c0PLzhG/gTcWzsMtkfZ80zri6TYlYd/jomMz48WWTn3lFBnieUvIanZ9nXbsI04ICQ==
   dependencies:
     glob "^8.0.3"
 
@@ -7610,13 +7610,13 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typeorm-extension@^2.1.13:
-  version "2.1.13"
-  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.1.13.tgz#9fd8fd3d54e10b6ad2222780b1ad73346e7c06b1"
-  integrity sha512-bY4D3MrDG2w/tFqhbfLtBzuwN/eRuiUVgsVoXFvDe39zpG8xGQQ6XZQfB1rwUbqvcYsXUZVCXAUKy7lT0ih9dg==
+typeorm-extension@^2.1.15:
+  version "2.1.15"
+  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.1.15.tgz#6734273f832da8d0b68272203a88aff00515e772"
+  integrity sha512-r/TSIIoUaQkMVhC5IPu/g/a2uBtkGUKBkBahHyzPfndauNFXeLq0RgJ0GRoQ768QnKDwHDMVigY+b0tJesIdQw==
   dependencies:
-    "@faker-js/faker" "^7.5.0"
-    locter "^0.3.1"
+    "@faker-js/faker" "^7.6.0"
+    locter "^0.3.2"
     rapiq "^0.0.6"
     reflect-metadata "^0.1.13"
     yargs "^17.6.0"
@@ -8008,20 +8008,7 @@ yargs@^16.0.0, yargs@^16.2.0:
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
 
-yargs@^17.0.0, yargs@^17.3.1:
-  version "17.5.1"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.5.1.tgz#e109900cab6fcb7fd44b1d8249166feb0b36e58e"
-  integrity sha512-t6YAJcxDkNX7NFYiVtKvWUz8l+PaKTLiL63mJYWR2GnHq2gjEWISzsLp9wg3aY36dY1j+gfIEL3pIF+XlJJfbA==
-  dependencies:
-    cliui "^7.0.2"
-    escalade "^3.1.1"
-    get-caller-file "^2.0.5"
-    require-directory "^2.1.1"
-    string-width "^4.2.3"
-    y18n "^5.0.5"
-    yargs-parser "^21.0.0"
-
-yargs@^17.6.0:
+yargs@^17.0.0, yargs@^17.3.1, yargs@^17.6.0:
   version "17.6.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.6.0.tgz#e134900fc1f218bc230192bdec06a0a5f973e46c"
   integrity sha512-8H/wTDqlSwoSnScvV2N/JHfLWOKuh5MVla9hqLjK3nsfyy6Y4kDSYSvkU5YCUEPOSnRXfIyx3Sq+B/IWudTo4g==
