@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.1](https://github.com/masb0ymas/expresso-typeorm/compare/v2.4.0...v2.4.1) (2022-10-17)
+
+
+### Bug Fixes
+
+* allowed port client ([12cfdaa](https://github.com/masb0ymas/expresso-typeorm/commit/12cfdaa959a3fdb56631fba19b3b4111137601d6))
+* docs swagger ([7f8235c](https://github.com/masb0ymas/expresso-typeorm/commit/7f8235caf2f91a022d35ef1445ca804639aad996))
+* entity relation ([e6a5911](https://github.com/masb0ymas/expresso-typeorm/commit/e6a5911ba6a87d7d7e4009f52e7b7ee5d39b3b7e))
+* improve typing dto find all ([919a494](https://github.com/masb0ymas/expresso-typeorm/commit/919a49432e1d40170e578d411ae4e9411b4aebd4))
+* **improve:** translation http response ([23141fd](https://github.com/masb0ymas/expresso-typeorm/commit/23141fdba7cfda6e36dd9f89acce748f906b0cb1))
+* mapping schema docs swagger ([52fdc27](https://github.com/masb0ymas/expresso-typeorm/commit/52fdc27d7c1ee38b87ecde828859a00f79983223))
+* query check uuid & number ([f9f9101](https://github.com/masb0ymas/expresso-typeorm/commit/f9f9101527d631e2c20bf714b157a69802221a14))
+* query filtered typeorm ([cb69a44](https://github.com/masb0ymas/expresso-typeorm/commit/cb69a44e73a50812287e9ce5f16ca8cfa144e359))
+* script destroy ([b5648f7](https://github.com/masb0ymas/expresso-typeorm/commit/b5648f7679b15c87e854bba511394da08694768c))
+* script drop db ([6fadda2](https://github.com/masb0ymas/expresso-typeorm/commit/6fadda22edcb4c1492e261d6b8240dfe14e56b5e))
+* Send mail helper ([3e2d311](https://github.com/masb0ymas/expresso-typeorm/commit/3e2d31121eba34bcc3f97e56df88b00ff3e4b192))
+* Token helper ([c4222b5](https://github.com/masb0ymas/expresso-typeorm/commit/c4222b5145056919aeace489082b85aff50c7c68))
+* typing http response ([7b33245](https://github.com/masb0ymas/expresso-typeorm/commit/7b33245629f05e551cf0759fb5044c0df39c33b9))
+* typo schema upload ([5bdb81d](https://github.com/masb0ymas/expresso-typeorm/commit/5bdb81d87a9e1950b9a024021e2998c44b3b3eb2))
+
 ## [2.4.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.3.1...v2.4.0) (2022-08-25)
 
 
