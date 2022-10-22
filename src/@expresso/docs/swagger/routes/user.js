@@ -19,6 +19,9 @@ module.exports = {
           $ref: '#/components/parameters/filtered',
         },
         {
+          $ref: '#/components/parameters/sorted',
+        },
+        {
           $ref: '#/components/parameters/lang',
         },
       ],

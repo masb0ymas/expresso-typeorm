@@ -150,7 +150,7 @@ export const swaggerOptions = {
           name: 'sorted',
           schema: { type: 'string' },
           required: false,
-          description: 'Example: [{"id": "createdAt", "desc": true}]',
+          description: 'Example: [{"sort": "createdAt", "order": "DESC"}]',
         },
         lang: {
           in: 'query',
