@@ -32,9 +32,7 @@ class RoleService {
     const query = roleRepository.createQueryBuilder()
     const newQuery = queryFiltered(this.entity, query, req)
 
-    const data = await newQuery
-      .orderBy(`${this.entity}.createdAt`, 'DESC')
-      .getMany()
+    const data = await newQuery.getMany()
     const total = await newQuery.getCount()
 
     const message = i18nConfig.t('success.data_received', i18nOpt)
