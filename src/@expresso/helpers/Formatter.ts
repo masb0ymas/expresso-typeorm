@@ -24,7 +24,7 @@ const invalidValues = [
  * @param arrayData
  * @returns
  */
-function arrayFormatter(arrayData: string | string[]): any[] {
+export function arrayFormatter(arrayData: string | string[]): any[] {
   // check if data not empty
   if (!_.isEmpty(arrayData)) {
     // check if data is array, format: ['1', '2']
@@ -49,7 +49,7 @@ function arrayFormatter(arrayData: string | string[]): any[] {
  * @param value
  * @returns
  */
-function validateEmpty(value: any): any {
+export function validateEmpty(value: any): any | null {
   const emptyValues = [null, undefined, '', 'null', 'undefined']
 
   if (emptyValues.includes(value)) {
@@ -59,7 +59,12 @@ function validateEmpty(value: any): any {
   return value
 }
 
-function validateBoolean(value: string | boolean | number | any): boolean {
+/**
+ *
+ * @param value
+ * @returns
+ */
+export function validateBoolean(value: any): boolean {
   if (invalidValues.includes(value)) {
     return false
   }
@@ -73,7 +78,7 @@ function validateBoolean(value: string | boolean | number | any): boolean {
  * @param options
  * @returns
  */
-function validateUUID(value: string, options?: ReqOptions): string {
+export function validateUUID(value: string, options?: ReqOptions): string {
   const i18nOpt: string | TOptions = { lng: options?.lang }
 
   if (!uuidValidate(value)) {
@@ -86,11 +91,20 @@ function validateUUID(value: string, options?: ReqOptions): string {
 
 /**
  *
+ * @param value
+ * @returns
+ */
+export function isNumeric(value: any): boolean {
+  return !_.isNaN(parseFloat(value)) && _.isFinite(value)
+}
+
+/**
+ *
  * @param type
  * @param message
  * @returns
  */
-function logServer(type: string, message: string): string {
+export function logServer(type: string, message: string): string {
   const logErr = `${LOG_SERVER} ${chalk.blue(type)} ${chalk.green(message)}`
   return logErr
 }
@@ -101,16 +115,7 @@ function logServer(type: string, message: string): string {
  * @param message
  * @returns
  */
-function logErrServer(type: string, message: string): string {
+export function logErrServer(type: string, message: string): string {
   const logErr = `${LOG_SERVER} ${chalk.red(type)} ${chalk.green(message)}`
   return logErr
-}
-
-export {
-  arrayFormatter,
-  validateEmpty,
-  validateBoolean,
-  validateUUID,
-  logServer,
-  logErrServer,
 }
