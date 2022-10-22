@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.4.1...v2.5.0) (2022-10-22)
+
+
+### Features
+
+* add validate is numberic ([ec5f903](https://github.com/masb0ymas/expresso-typeorm/commit/ec5f9037992408bf648d6221aa052fead39162c9))
+
+
+### Bug Fixes
+
+* implementation docs swagger query sorted ([920fb2d](https://github.com/masb0ymas/expresso-typeorm/commit/920fb2dace5fb1639f5bc1fc35969d79b7be74ad))
+* implementation global sorted query ([3a3e01b](https://github.com/masb0ymas/expresso-typeorm/commit/3a3e01bcb71d550bc9eeeb9aa102dabeb268973f))
+* improve query typeorm & add sorted query ([00404cd](https://github.com/masb0ymas/expresso-typeorm/commit/00404cd0b3e53aa2d8c3e7bee9742ef4c611a6bb))
+* script package ([b20996d](https://github.com/masb0ymas/expresso-typeorm/commit/b20996d6f8c3d644000b13ec0c3df229a4a72ab7))
+
 ### [2.4.1](https://github.com/masb0ymas/expresso-typeorm/compare/v2.4.0...v2.4.1) (2022-10-17)
 
 
