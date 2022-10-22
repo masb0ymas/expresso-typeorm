@@ -16,7 +16,7 @@ interface SortedQueryEntity {
   order: 'ASC' | 'DESC'
 }
 
-export function queryFiltered<T extends ObjectLiteral>(
+export function useQuery<T extends ObjectLiteral>(
   entity: string,
   query: SelectQueryBuilder<T>,
   req: Request
