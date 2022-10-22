@@ -4,10 +4,10 @@ import { AppDataSource } from '@database/data-source'
 import { User, UserAttributes } from '@database/entities/User'
 import { validateEmpty, validateUUID } from '@expresso/helpers/Formatter'
 import { optionsYup } from '@expresso/helpers/Validation'
+import { useQuery } from '@expresso/hooks/useQuery'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
-import { queryFiltered } from '@expresso/modules/TypeORMQuery'
 import { Request } from 'express'
 import { TOptions } from 'i18next'
 import _ from 'lodash'
@@ -33,7 +33,7 @@ class UserService {
       .createQueryBuilder()
       .leftJoinAndSelect(`${this.entity}.Role`, 'Role')
       .leftJoinAndSelect(`${this.entity}.Sessions`, 'Session')
-    const newQuery = queryFiltered(this.entity, query, req)
+    const newQuery = useQuery(this.entity, query, req)
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()
