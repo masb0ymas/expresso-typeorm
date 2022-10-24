@@ -6703,10 +6703,10 @@ rapiq@^0.0.6:
   dependencies:
     minimatch "^5.1.0"
 
-rate-limiter-flexible@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/rate-limiter-flexible/-/rate-limiter-flexible-2.4.0.tgz#b03310e14ab013ccdd030c6258a8853ba85f4a10"
-  integrity sha512-NDRxvXvm+KAjD8wUacJNPxomuu0CpD58DBTDIa8+JaPkMTDbI+DzGdg6vlMRqYySp8A8WsmXY7Qt8h9kYxN5qQ==
+rate-limiter-flexible@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/rate-limiter-flexible/-/rate-limiter-flexible-2.4.1.tgz#c74cfe36ac2cbfe56f68ded9a3b4b2fde1963c41"
+  integrity sha512-dgH4T44TzKVO9CLArNto62hJOwlWJMLUjVVr/ii0uUzZXEXthDNr7/yefW5z/1vvHAfycc1tnuiYyNJ8CTRB3g==
 
 raw-body@2.5.1:
   version "2.5.1"
