@@ -9,13 +9,12 @@ import {
   OneToMany,
   Unique,
 } from 'typeorm'
-import { Base } from './Base'
+import { Base, IBaseEntity } from './Base'
 import { Role } from './Role'
 import { Session } from './Session'
 import { Upload } from './Upload'
 
-interface UserEntity {
-  id?: string
+interface UserEntity extends IBaseEntity {
   fullName: string
   email: string
   newPassword?: string | null
@@ -27,9 +26,6 @@ interface UserEntity {
   isBlocked?: boolean | null
   UploadId?: string | null
   RoleId: string
-  createdAt: Date
-  updatedAt: Date
-  deletedAt?: Date | null
 }
 
 export interface UserLoginAttributes {

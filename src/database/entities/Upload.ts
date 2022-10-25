@@ -1,17 +1,13 @@
 import { Column, DeleteDateColumn, Entity } from 'typeorm'
-import { Base } from './Base'
+import { Base, IBaseEntity } from './Base'
 
-interface UploadEntity {
-  id?: string
+interface UploadEntity extends IBaseEntity {
   keyFile: string
   filename: string
   mimetype: string
   size: number
   signedURL: string
   expiryDateURL: Date
-  createdAt: Date
-  updatedAt: Date
-  deletedAt?: Date | null
 }
 
 export type UploadAttributes = Omit<

@@ -1,12 +1,8 @@
 import { Column, DeleteDateColumn, Entity } from 'typeorm'
-import { Base } from './Base'
+import { Base, IBaseEntity } from './Base'
 
-interface RoleEntity {
-  id?: string
+interface RoleEntity extends IBaseEntity {
   name: string
-  createdAt: Date
-  updatedAt: Date
-  deletedAt?: Date | null
 }
 
 export type RoleAttributes = Omit<

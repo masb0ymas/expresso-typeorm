@@ -6,6 +6,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
+export interface IBaseEntity {
+  id?: string
+  createdAt: Date
+  updatedAt: Date
+  deletedAt?: Date | null
+}
+
 @Entity()
 export abstract class Base extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
