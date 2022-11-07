@@ -6668,12 +6668,13 @@ range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
-rapiq@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/rapiq/-/rapiq-0.0.6.tgz#41e449bb4ba8d99dc9fa05f43573f1bb1f23b5f4"
-  integrity sha512-9Z5r7zlOBrNhlvCiNXj8Vs9JKAdoPDXFBIBaOUGYv8WaRFKxzjMgeN4rjD6KMoEh926yir2vu/fGo5JWnQDNww==
+rapiq@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/rapiq/-/rapiq-0.4.1.tgz#e32a52f312640c0e516e6704de325ea212aa723f"
+  integrity sha512-0U9uDbBitAyUEnm0ZS+8nwIB137hth0aVAMUXMn1KxRCs8edelehmhpdes360sNk9AEMTx9AZaBLLlsywKS8lQ==
   dependencies:
     minimatch "^5.1.0"
+    smob "^0.0.6"
 
 rate-limiter-flexible@^2.4.1:
   version "2.4.1"
@@ -7110,6 +7111,11 @@ slugify@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.6.5.tgz#c8f5c072bf2135b80703589b39a3d41451fbe8c8"
   integrity sha512-8mo9bslnBO3tr5PEVFzMPIWwWnipGS0xVbYf65zxDqfNwmzYn1LpiKNrR6DlClusuvo+hDHd1zKpmfAe83NQSQ==
+
+smob@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/smob/-/smob-0.0.6.tgz#09b268fea916158a2781c152044c6155adbb8aa1"
+  integrity sha512-V21+XeNni+tTyiST1MHsa84AQhT1aFZipzPpOFAVB8DkHzwJyjjAmt9bgwnuZiZWnIbMo2duE29wybxv/7HWUw==
 
 source-map@^0.6.1, source-map@~0.6.1:
   version "0.6.1"
@@ -7647,16 +7653,16 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typeorm-extension@^2.1.15:
-  version "2.1.15"
-  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.1.15.tgz#6734273f832da8d0b68272203a88aff00515e772"
-  integrity sha512-r/TSIIoUaQkMVhC5IPu/g/a2uBtkGUKBkBahHyzPfndauNFXeLq0RgJ0GRoQ768QnKDwHDMVigY+b0tJesIdQw==
+typeorm-extension@^2.2.12:
+  version "2.2.12"
+  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.2.12.tgz#7486ccc0f0ded7cf6d0f6ba3d07cef549628eb9f"
+  integrity sha512-uWLJUy/65Wal+rRuLAyi3OHGhECRksygbYWNcioV5FECIxy2NJTYF/D3Ox/WLPxSz/WijTUGTbWG99KarDxVTQ==
   dependencies:
     "@faker-js/faker" "^7.6.0"
     locter "^0.3.2"
-    rapiq "^0.0.6"
+    rapiq "^0.4.1"
     reflect-metadata "^0.1.13"
-    yargs "^17.6.0"
+    yargs "^17.6.2"
 
 typeorm@^0.3.10:
   version "0.3.10"
@@ -8020,7 +8026,7 @@ yargs-parser@^20.2.2, yargs-parser@^20.2.3:
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
   integrity sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==
 
-yargs-parser@^21.0.0:
+yargs-parser@^21.1.1:
   version "21.1.1"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-21.1.1.tgz#9096bceebf990d21bb31fa9516e0ede294a77d35"
   integrity sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==
@@ -8045,23 +8051,10 @@ yargs@^16.0.0, yargs@^16.2.0:
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
 
-yargs@^17.0.0, yargs@^17.3.1:
-  version "17.5.1"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.5.1.tgz#e109900cab6fcb7fd44b1d8249166feb0b36e58e"
-  integrity sha512-t6YAJcxDkNX7NFYiVtKvWUz8l+PaKTLiL63mJYWR2GnHq2gjEWISzsLp9wg3aY36dY1j+gfIEL3pIF+XlJJfbA==
-  dependencies:
-    cliui "^7.0.2"
-    escalade "^3.1.1"
-    get-caller-file "^2.0.5"
-    require-directory "^2.1.1"
-    string-width "^4.2.3"
-    y18n "^5.0.5"
-    yargs-parser "^21.0.0"
-
-yargs@^17.6.0:
-  version "17.6.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.6.0.tgz#e134900fc1f218bc230192bdec06a0a5f973e46c"
-  integrity sha512-8H/wTDqlSwoSnScvV2N/JHfLWOKuh5MVla9hqLjK3nsfyy6Y4kDSYSvkU5YCUEPOSnRXfIyx3Sq+B/IWudTo4g==
+yargs@^17.0.0, yargs@^17.3.1, yargs@^17.6.2:
+  version "17.6.2"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.6.2.tgz#2e23f2944e976339a1ee00f18c77fedee8332541"
+  integrity sha512-1/9UrdHjDZc0eOU0HxOHoS78C69UD3JRMvzlJ7S79S2nTaWRA/whGCTV8o9e/N/1Va9YIV7Q4sOxD8VV4pCWOw==
   dependencies:
     cliui "^8.0.1"
     escalade "^3.1.1"
@@ -8069,7 +8062,7 @@ yargs@^17.6.0:
     require-directory "^2.1.1"
     string-width "^4.2.3"
     y18n "^5.0.5"
-    yargs-parser "^21.0.0"
+    yargs-parser "^21.1.1"
 
 yn@3.1.1:
   version "3.1.1"
