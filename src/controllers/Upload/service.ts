@@ -126,16 +126,16 @@ class UploadService {
 
   /**
    *
-   * @param keyFile
+   * @param key_file
    * @returns
    */
   public static async deleteObjectS3(
-    keyFile: string
+    key_file: string
   ): Promise<DeleteObjectCommandOutput> {
     const dataAwsS3 = await clientS3.send(
       new DeleteObjectCommand({
         Bucket: AWS_BUCKET_NAME,
-        Key: keyFile,
+        Key: key_file,
       })
     )
 
@@ -185,7 +185,7 @@ class UploadService {
     const data = await this.findById(id, { ...options })
 
     // delete file from aws s3
-    await this.deleteObjectS3(data.keyFile)
+    await this.deleteObjectS3(data.key_file)
 
     await uploadRepository.delete(data.id)
   }
@@ -263,7 +263,7 @@ class UploadService {
         const item = getUpload[i]
 
         // delete file from aws s3
-        await this.deleteObjectS3(item.keyFile)
+        await this.deleteObjectS3(item.key_file)
       }
     }
 
@@ -273,20 +273,20 @@ class UploadService {
 
   /**
    *
-   * @param keyFile
+   * @param key_file
    * @returns
    */
-  public static async getSignedUrlS3(keyFile: string): Promise<string> {
+  public static async getSignedUrlS3(key_file: string): Promise<string> {
     // signed url from bucket S3
     const command = new GetObjectCommand({
       Bucket: AWS_BUCKET_NAME,
-      Key: keyFile,
+      Key: key_file,
     })
-    const signedURL = await getSignedUrl(clientS3, command, {
+    const signed_url = await getSignedUrl(clientS3, command, {
       expiresIn: s3ObjectExpired,
     })
 
-    return signedURL
+    return signed_url
   }
 
   /**
@@ -305,13 +305,13 @@ class UploadService {
 
     let resUpload
 
-    const keyFile = `${directory}/${fieldUpload.filename}`
+    const key_file = `${directory}/${fieldUpload.filename}`
 
     // send file upload to AWS S3
     const dataAwsS3 = await clientS3.send(
       new PutObjectCommand({
         Bucket: AWS_BUCKET_NAME,
-        Key: keyFile,
+        Key: key_file,
         Body: fs.createReadStream(fieldUpload.path),
         ContentType: fieldUpload.mimetype, // <-- this is what you need!
         ContentDisposition: `inline; filename=${fieldUpload.filename}`, // <-- and this !
@@ -323,13 +323,13 @@ class UploadService {
     // const expiresIn = sevenDays * 60 * 60
 
     // signed url from bucket S3
-    const signedURL = await this.getSignedUrlS3(keyFile)
+    const signed_url = await this.getSignedUrlS3(key_file)
 
     const formUpload = {
       ...fieldUpload,
-      keyFile,
-      signedURL,
-      expiryDateURL: s3ExpiresDate,
+      key_file,
+      signed_url,
+      expiry_date_url: s3ExpiresDate,
     }
 
     // check uuid
@@ -362,8 +362,8 @@ class UploadService {
 
     const query = uploadRepository
       .createQueryBuilder()
-      .where(`${this.entity}.expiryDateURL < :expiryDateURL`, {
-        expiryDateURL: endOfYesterday(),
+      .where(`${this.entity}.expiry_date_url < :expiry_date_url`, {
+        expiry_date_url: endOfYesterday(),
       })
 
     const getUploads = await query.getMany()
@@ -379,9 +379,9 @@ class UploadService {
           for (let i = 0; i < itemUploads.length; i += 1) {
             const item = itemUploads[i]
 
-            const signedURL = await this.getSignedUrlS3(item.keyFile)
+            const signed_url = await this.getSignedUrlS3(item.key_file)
 
-            const formUpload = { signedURL, expiryDateURL: s3ExpiresDate }
+            const formUpload = { signed_url, expiry_date_url: s3ExpiresDate }
 
             // update signed url & expires url
             await uploadRepository.save({ ...item, ...formUpload })

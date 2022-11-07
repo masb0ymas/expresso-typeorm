@@ -89,11 +89,11 @@ module.exports = {
             schema: {
               type: 'object',
               properties: {
-                keyFile: {
+                key_file: {
                   type: 'string',
                 },
               },
-              required: ['keyFile'],
+              required: ['key_file'],
             },
           },
         },

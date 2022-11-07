@@ -27,8 +27,8 @@ if (!_.isEmpty(data)) {
 
     formData.push({
       ...item,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      created_at: new Date(),
+      updated_at: new Date(),
     })
   }
 }
@@ -40,6 +40,6 @@ export class RoleSeeder1642501604297 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DELETE * FROM Role`)
+    await queryRunner.query(`DELETE * FROM role`)
   }
 }

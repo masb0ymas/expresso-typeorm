@@ -2,26 +2,26 @@ import * as yup from 'yup'
 
 const createPassword = yup
   .object({
-    newPassword: yup
+    new_password: yup
       .string()
       .min(8, 'at least 8 characters')
-      .oneOf([yup.ref('confirmNewPassword')], 'passwords are not the same'),
-    confirmNewPassword: yup
+      .oneOf([yup.ref('confirm_new_password')], 'passwords are not the same'),
+    confirm_new_password: yup
       .string()
       .min(8, 'at least 8 characters')
-      .oneOf([yup.ref('newPassword')], 'passwords are not the same'),
+      .oneOf([yup.ref('new_password')], 'passwords are not the same'),
   })
   .required()
 
 const create = yup.object({
   ...createPassword.fields,
-  fullName: yup.string().required('full name is required'),
+  fullname: yup.string().required('full name is required'),
   email: yup.string().email('invalid email').required('email is required'),
   phone: yup.string().nullable(),
-  tokenVerify: yup.string().nullable(),
-  UploadId: yup.string().nullable(),
-  isActive: yup.boolean().required('is active is required'),
-  RoleId: yup.string().required('role is required'),
+  token_verify: yup.string().nullable(),
+  upload_id: yup.string().nullable(),
+  is_active: yup.boolean().required('is active is required'),
+  role_id: yup.string().required('role is required'),
 })
 
 const register = yup

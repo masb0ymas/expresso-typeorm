@@ -1,37 +1,36 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
 import { Base } from './Base'
 import { User } from './User'
 
 interface SessionEntity {
-  id?: string
-  UserId: string
+  user_id: string
   token: string
-  ipAddress?: string | null
+  ip_address?: string | null
   device?: string | null
   platform?: string | null
-  createdAt: Date
-  updatedAt: Date
 }
 
 export type SessionAttributes = Omit<
   SessionEntity,
-  'id' | 'createdAt' | 'updatedAt'
+  'id' | 'created_at' | 'updated_at'
 >
 
 @Entity()
 export class Session extends Base {
   @ManyToOne(() => User, (User) => User.Sessions)
-  @JoinColumn({ name: 'UserId' })
+  @JoinColumn({ name: 'user_id' })
   User: User
 
+  @Index()
   @Column({ type: 'uuid' })
-  UserId: string
+  user_id: string
 
+  @Index()
   @Column({ type: 'text' })
   token: string
 
   @Column({ nullable: true })
-  ipAddress!: string
+  ip_address!: string
 
   @Column({ nullable: true })
   device!: string

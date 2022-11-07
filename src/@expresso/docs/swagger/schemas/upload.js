@@ -3,12 +3,12 @@ module.exports = {
     type: 'object',
     properties: {
       id: { type: 'string' },
-      keyFile: { type: 'string' },
+      key_file: { type: 'string' },
       filename: { type: 'string' },
       mimetype: { type: 'string' },
       size: { type: 'integer', format: 'int32' },
-      signedURL: { type: 'string' },
-      expiryDateURL: { type: 'string' },
+      signed_url: { type: 'string' },
+      expiry_date_url: { type: 'string' },
     },
   },
 }

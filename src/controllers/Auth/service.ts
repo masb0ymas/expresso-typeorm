@@ -34,8 +34,8 @@ class AuthService {
 
     const newFormData = {
       ...formData,
-      tokenVerify: randomToken.accessToken,
-      RoleId: ConstRole.ID_USER,
+      token_verify: randomToken.accessToken,
+      role_id: ConstRole.ID_USER,
     }
 
     const value = userSchema.register.validateSync(newFormData, optionsYup)
@@ -43,7 +43,7 @@ class AuthService {
     const formRegistration = {
       ...value,
       phone: validateEmpty(formData.phone),
-      password: value.confirmNewPassword,
+      password: value.confirm_new_password,
     }
 
     const data = new User()
@@ -56,7 +56,7 @@ class AuthService {
       // send email notification
       SendMail.AccountRegistration({
         email: value.email,
-        fullName: value.fullName,
+        fullName: value.fullname,
         token: randomToken.accessToken,
       })
     }
@@ -80,7 +80,7 @@ class AuthService {
     const value = userSchema.login.validateSync(formData, optionsYup)
 
     const getUser = await userRepository.findOne({
-      select: ['id', 'email', 'isActive', 'password', 'RoleId'],
+      select: ['id', 'email', 'is_active', 'password', 'role_id'],
       where: { email: value.email },
     })
 
@@ -91,7 +91,7 @@ class AuthService {
     }
 
     // check active account
-    if (!getUser.isActive) {
+    if (!getUser.is_active) {
       const message = i18nConfig.t('errors.please_check_your_email', i18nOpt)
       throw new ResponseError.BadRequest(message)
     }

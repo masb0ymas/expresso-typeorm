@@ -43,9 +43,9 @@ route.post(
 
     // create session
     await SessionService.createOrUpdate({
-      UserId: data.user.uid as unknown as string,
+      user_id: String(data.user.uid),
       token: data.accessToken,
-      ipAddress: req.clientIp?.replace('::ffff:', ''),
+      ip_address: req.clientIp?.replace('::ffff:', ''),
       device: userAgentHelper.currentDevice(req),
       platform: userAgentHelper.currentPlatform(req),
     })

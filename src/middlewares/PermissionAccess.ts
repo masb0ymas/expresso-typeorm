@@ -22,7 +22,7 @@ function PermissionAccess(roles: string[]) {
     const errType = `Permitted Access Error:`
     const errMessage = 'You are not allowed'
 
-    if (getUser && !roles.includes(getUser.RoleId)) {
+    if (getUser && !roles.includes(getUser.role_id)) {
       // log error
       console.log(logErrServer(errType, errMessage))
 

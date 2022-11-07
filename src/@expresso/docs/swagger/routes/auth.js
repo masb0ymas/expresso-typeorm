@@ -10,16 +10,16 @@ module.exports = {
             schema: {
               type: 'object',
               properties: {
-                fullName: {
+                fullname: {
                   type: 'string',
                 },
                 email: {
                   type: 'string',
                 },
-                newPassword: {
+                new_password: {
                   type: 'string',
                 },
-                confirmNewPassword: {
+                confirm_new_Password: {
                   type: 'string',
                 },
                 phone: {
@@ -27,10 +27,10 @@ module.exports = {
                 },
               },
               required: [
-                'fullName',
+                'fullname',
                 'email',
-                'newPassword',
-                'confirmNewPassword',
+                'new_password',
+                'confirm_new_Password',
               ],
             },
           },

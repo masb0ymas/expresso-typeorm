@@ -1,20 +1,23 @@
-import { Column, DeleteDateColumn, Entity } from 'typeorm'
+import { Column, DeleteDateColumn, Entity, Index } from 'typeorm'
 import { Base, IBaseEntity } from './Base'
 
 interface RoleEntity extends IBaseEntity {
+  deleted_at?: Date | null
   name: string
 }
 
 export type RoleAttributes = Omit<
   RoleEntity,
-  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
+  'id' | 'created_at' | 'updated_at' | 'deleted_at'
 >
 
 @Entity()
 export class Role extends Base {
+  @Index()
   @DeleteDateColumn({ nullable: true })
-  deletedAt!: Date
+  deleted_at!: Date
 
+  @Index()
   @Column()
   name: string
 }

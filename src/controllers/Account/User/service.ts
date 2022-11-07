@@ -107,7 +107,7 @@ class UserService {
       ...data,
       ...value,
       phone: validateEmpty(value?.phone),
-      password: validateEmpty(value?.confirmNewPassword),
+      password: validateEmpty(value?.confirm_new_password),
     }
 
     // @ts-expect-error
@@ -146,7 +146,7 @@ class UserService {
       ...data,
       ...value,
       phone: validateEmpty(value?.phone),
-      password: validateEmpty(value?.confirmNewPassword),
+      password: validateEmpty(value?.confirm_new_password),
     }
 
     // @ts-expect-error

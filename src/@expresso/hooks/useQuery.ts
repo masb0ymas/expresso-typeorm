@@ -98,7 +98,7 @@ export function useQuery<T extends ObjectLiteral>(
       query.addOrderBy(`${entity}.${item.sort}`, item.order)
     }
   } else {
-    query.orderBy(`${entity}.createdAt`, 'DESC')
+    query.orderBy(`${entity}.created_at`, 'DESC')
   }
 
   return query

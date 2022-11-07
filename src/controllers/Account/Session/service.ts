@@ -65,20 +65,20 @@ class SessionService {
 
   /**
    *
-   * @param UserId
+   * @param user_id
    * @param token
    * @param options
    * @returns
    */
   public static async findByUserToken(
-    UserId: string,
+    user_id: string,
     token: string,
     options?: ReqOptions
   ): Promise<Session> {
     const sessionRepository = AppDataSource.getRepository(Session)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const data = await sessionRepository.findOne({ where: { UserId, token } })
+    const data = await sessionRepository.findOne({ where: { user_id, token } })
 
     if (!data) {
       const message = i18nConfig.t('errors.session_ended', i18nOpt)
@@ -115,7 +115,7 @@ class SessionService {
     const value = sessionSchema.create.validateSync(formData, optionsYup)
 
     const data = await sessionRepository.findOne({
-      where: { UserId: value.UserId },
+      where: { user_id: value.user_id },
     })
 
     if (!data) {
@@ -129,17 +129,17 @@ class SessionService {
 
   /**
    *
-   * @param UserId
+   * @param user_id
    * @param token
    */
   public static async deleteByUserToken(
-    UserId: string,
+    user_id: string,
     token: string
   ): Promise<void> {
     const sessionRepository = AppDataSource.getRepository(Session)
 
     // delete record
-    await sessionRepository.delete({ UserId, token })
+    await sessionRepository.delete({ user_id, token })
   }
 
   /**
