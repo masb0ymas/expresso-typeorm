@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.6.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.5.0...v2.6.0) (2022-11-07)
+
+
+### Features
+
+* add interface base entity ([b0d1523](https://github.com/masb0ymas/expresso-typeorm/commit/b0d15233b40ce0a7c8678e2391e1dcb314132ce2))
+
+
+### Bug Fixes
+
+* implementation hook use query ([e241dc1](https://github.com/masb0ymas/expresso-typeorm/commit/e241dc14c81bce7bca8dd29d6f35627f6538c1b9))
+
+
+### Other Commit
+
+* move typeorm query to use query hooks ([01ae1b0](https://github.com/masb0ymas/expresso-typeorm/commit/01ae1b0c7d1839813b4469ac4f42356dbe9759a4))
+
 ## [2.5.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.4.1...v2.5.0) (2022-10-22)
 
 
