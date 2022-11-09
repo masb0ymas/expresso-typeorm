@@ -23,7 +23,7 @@ RUN yarn
 COPY . .
 
 # copy environment
-RUN cp .env.docker-production .env
+RUN cp .env.docker-staging .env
 
 # build code base
 RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
@@ -66,5 +66,5 @@ RUN node ./dist/scripts/generate.js
 # This container exposes port 8000 to the outside world
 EXPOSE 8000
 
-# Run for production
-CMD ["yarn", "serve:production-docker"]
+# Run for staging
+CMD ["yarn", "serve:staging-docker"]
