@@ -1,6 +1,26 @@
 /* eslint-disable prettier/prettier */
 import 'dotenv/config'
 
+const invalidValues = [
+  null,
+  undefined,
+  '',
+  false,
+  0,
+  'false',
+  '0',
+  'null',
+  'undefined',
+]
+
+export function validateBoolean(value: any): boolean {
+  if (invalidValues.includes(value)) {
+    return false
+  }
+
+  return true
+}
+
 // node env
 export const NODE_ENV = process.env.NODE_ENV ?? 'development'
 
@@ -43,9 +63,9 @@ export const TYPEORM_PORT = Number(process.env.TYPEORM_PORT) ?? 5432
 export const TYPEORM_DATABASE = process.env.TYPEORM_DATABASE ?? 'expresso'
 export const TYPEORM_USERNAME = process.env.TYPEORM_USERNAME ?? 'postgres'
 export const TYPEORM_PASSWORD = process.env.TYPEORM_PASSWORD ?? 'postgres'
-export const TYPEORM_SYNCHRONIZE = Boolean(process.env.TYPEORM_SYNCHRONIZE) ?? true
-export const TYPEORM_LOGGING = Boolean(process.env.TYPEORM_LOGGING) ?? true
-export const TYPEORM_MIGRATIONS_RUN = Boolean(process.env.TYPEORM_MIGRATIONS_RUN) ?? true
+export const TYPEORM_SYNCHRONIZE = validateBoolean(process.env.TYPEORM_SYNCHRONIZE) ?? true
+export const TYPEORM_LOGGING = validateBoolean(process.env.TYPEORM_LOGGING) ?? true
+export const TYPEORM_MIGRATIONS_RUN = validateBoolean(process.env.TYPEORM_MIGRATIONS_RUN) ?? true
 
 // smtp
 export const MAIL_DRIVER = process.env.MAIL_DRIVER ?? 'smtp'
