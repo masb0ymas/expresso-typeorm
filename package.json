@@ -15,7 +15,7 @@
     "test:types-watch": "npm run test:types -- --watch",
     "prebuild": "npm-run-all clean test:lint test:types",
     "build": "npx swc src -d dist",
-    "build:ts": "npx tsc -p .",
+    "build:ts": "npm run prebuild && npx tsc -p .",
     "deploy": "npm run build && pm2 reload ecosystem.config.js",
     "serve:staging": "NODE_ENV=staging node ./dist/server.js",
     "serve:production": "NODE_ENV=production node ./dist/server.js",
