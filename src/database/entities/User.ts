@@ -8,6 +8,7 @@ import {
   JoinTable,
   ManyToOne,
   OneToMany,
+  Relation,
   Unique,
 } from 'typeorm'
 import { Base, IBaseEntity } from './Base'
@@ -81,7 +82,7 @@ export class User extends Base {
 
   @ManyToOne(() => Role, (role) => role)
   @JoinColumn({ name: 'role_id' })
-  Role: Role
+  Role: Relation<Role>
 
   @Column({ type: 'uuid' })
   role_id: string
@@ -95,7 +96,7 @@ export class User extends Base {
 
   @OneToMany(() => Session, (Session) => Session.User)
   @JoinTable()
-  Sessions: Session[]
+  Sessions: Array<Relation<Session>>
 
   async comparePassword(currentPassword: string): Promise<boolean> {
     return await bcrypt.compare(currentPassword, this.password)

@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
+import { Column, Entity, Index, JoinColumn, ManyToOne, Relation } from 'typeorm'
 import { Base } from './Base'
 import { User } from './User'
 
@@ -19,7 +19,7 @@ export type SessionAttributes = Omit<
 export class Session extends Base {
   @ManyToOne(() => User, (User) => User.Sessions)
   @JoinColumn({ name: 'user_id' })
-  User: User
+  User: Relation<User>
 
   @Index()
   @Column({ type: 'uuid' })
