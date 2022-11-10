@@ -1,4 +1,5 @@
-FROM node:16.18-alpine as build_base
+# Install dependencies only when needed
+FROM node:16.18-alpine as deps
 LABEL author="masb0ymas"
 LABEL name="expresso"
 
@@ -12,12 +13,23 @@ RUN npm install --quiet node-gyp -g
 RUN apk add --update --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community --repository http://dl-3.alpinelinux.org/alpine/edge/main vips-dev
 
 # Set the Temp Working Directory inside the container
-WORKDIR /temp-build
+WORKDIR /temp-deps
 
 # copy package json
-COPY ["package.json", "yarn.lock", "./"]
+COPY package.json ./
 
-RUN yarn
+# COPY ["package.json", "yarn.lock", "./"]
+
+RUN yarn install --frozen-lockfile
+
+FROM node:16.18-alpine as build_base
+LABEL author="masb0ymas"
+LABEL name="expresso"
+
+# Set the Temp Working Directory inside the container
+WORKDIR /temp-build
+
+RUN export NODE_OPTIONS=\"--max_old_space_size=4096\"
 
 # copy base code
 COPY . .
@@ -25,7 +37,7 @@ COPY . .
 # copy environment
 RUN cp .env.docker-staging .env
 
-# build code base
+COPY --from=deps /temp-deps/node_modules ./node_modules
 RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
 
 # image runner app
@@ -42,6 +54,8 @@ RUN npm i -g pm2
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
+
+ENV NODE_ENV staging
 
 # Setup Timezone
 RUN apk add tzdata
