@@ -38,6 +38,8 @@ COPY . .
 RUN cp .env.docker-production .env
 
 COPY --from=deps /temp-deps/node_modules ./node_modules
+
+# prune devDependencies
 RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
 
 # image runner app
