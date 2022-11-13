@@ -8,8 +8,11 @@ import { useQuery } from '@expresso/hooks/useQuery'
 import { DtoFindAll } from '@expresso/interfaces/Paginate'
 import { ReqOptions } from '@expresso/interfaces/ReqOptions'
 import ResponseError from '@expresso/modules/Response/ResponseError'
+import { subDays } from 'date-fns'
 import { Request } from 'express'
 import { TOptions } from 'i18next'
+import _ from 'lodash'
+import { LessThanOrEqual } from 'typeorm'
 import sessionSchema from './schema'
 
 class SessionService {
@@ -152,6 +155,26 @@ class SessionService {
 
     const data = await this.findById(id, { ...options })
     await sessionRepository.delete(data.id)
+  }
+
+  /**
+   * Delete Expired Session
+   */
+  public static async deleteExpiredSession(): Promise<void> {
+    const sessionRepository = AppDataSource.getRepository(Session)
+
+    const subSevenDays = subDays(new Date(), 7)
+
+    const condition = {
+      created_at: LessThanOrEqual(subSevenDays),
+    }
+
+    const getSession = await sessionRepository.find({ where: condition })
+
+    if (!_.isEmpty(getSession)) {
+      // remove session
+      await sessionRepository.delete(condition)
+    }
   }
 }
 
