@@ -16,9 +16,7 @@ RUN apk add --update --no-cache --repository http://dl-3.alpinelinux.org/alpine/
 WORKDIR /temp-deps
 
 # copy package json
-COPY package.json ./
-
-# COPY ["package.json", "yarn.lock", "./"]
+COPY ["package.json", "yarn.lock", "./"]
 
 RUN yarn install --frozen-lockfile
 
