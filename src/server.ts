@@ -2,31 +2,19 @@ import 'module-alias/register'
 import './pathAlias'
 
 import initialAwsS3 from '@config/clientS3'
-import { AWS_ACCESS_KEY, AWS_SECRET_KEY } from '@config/env'
+import {
+  AWS_ACCESS_KEY,
+  AWS_SECRET_KEY,
+  GCP_PROJECT_ID,
+  GCS_BUCKET_NAME,
+} from '@config/env'
+import { initialGCS } from '@config/googleCloudStorage'
+import { AppDataSource } from '@database/data-source'
 import { logErrServer, logServer } from '@expresso/helpers/Formatter'
 import chalk from 'chalk'
+import _ from 'lodash'
 import App from './app'
 import initialJobs from './jobs'
-import { AppDataSource } from '@database/data-source'
-import _ from 'lodash'
-
-// const pathEnv = path.resolve('.env')
-
-// if (!fs.existsSync(pathEnv)) {
-//   throw new Error(
-//     'Missing env!!!\nCopy / Duplicate ".env.example" root directory to ".env"'
-//   )
-// }
-
-// // read file service account firebase
-// const serviceAccountKey = path.resolve('./serviceAccountKey.json')
-// console.log(logServer('Service Account Key', serviceAccountKey))
-
-// if (!fs.existsSync(serviceAccountKey)) {
-//   throw new Error(
-//     'Missing serviceAccountKey!!!\nCopy serviceAccountKey from your console firebase to root directory "serviceAccountKey.json"'
-//   )
-// }
 
 const Server = new App()
 
@@ -54,11 +42,11 @@ if (AWS_ACCESS_KEY && AWS_SECRET_KEY) {
   void initialAwsS3()
 }
 
-// initial firebase admin
-// admin.initializeApp({ credential: admin.credential.cert(serviceAccountKey) })
-
-// initial firebase
-// initializeApp(initialFirebase)
+// check if exist gcp project id & bucket
+if (GCP_PROJECT_ID && GCS_BUCKET_NAME) {
+  // initial google cloud storage
+  void initialGCS()
+}
 
 // initial jobs
 initialJobs()
