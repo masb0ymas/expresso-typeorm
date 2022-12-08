@@ -18,9 +18,11 @@ module.exports = {
                 },
                 new_password: {
                   type: 'string',
+                  format: 'password',
                 },
                 confirm_new_Password: {
                   type: 'string',
+                  format: 'password',
                 },
                 phone: {
                   type: 'string',
@@ -59,6 +61,7 @@ module.exports = {
                 },
                 password: {
                   type: 'string',
+                  format: 'password',
                 },
                 latitude: {
                   type: 'string',
