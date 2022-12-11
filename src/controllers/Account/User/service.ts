@@ -33,7 +33,7 @@ class UserService {
       .createQueryBuilder()
       .leftJoinAndSelect(`${this.entity}.Role`, 'Role')
       .leftJoinAndSelect(`${this.entity}.Sessions`, 'Session')
-    const newQuery = useQuery(this.entity, query, req)
+    const newQuery = useQuery({ entity: this.entity, query, req })
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()

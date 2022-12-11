@@ -16,11 +16,17 @@ interface SortedQueryEntity {
   order: 'ASC' | 'DESC'
 }
 
-export function useQuery<T extends ObjectLiteral>(
-  entity: string,
-  query: SelectQueryBuilder<T>,
+interface UseQueryEntity<T extends ObjectLiteral> {
+  entity: string
+  query: SelectQueryBuilder<T>
   req: Request
+}
+
+export function useQuery<T extends ObjectLiteral>(
+  values: UseQueryEntity<T>
 ): SelectQueryBuilder<T> {
+  const { entity, query, req } = values
+
   const reqQuery = req.getQuery()
 
   // pagination

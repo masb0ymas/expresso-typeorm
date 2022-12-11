@@ -30,7 +30,7 @@ class RoleService {
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
     const query = roleRepository.createQueryBuilder('role')
-    const newQuery = useQuery(this.entity, query, req)
+    const newQuery = useQuery({ entity: this.entity, query, req })
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()

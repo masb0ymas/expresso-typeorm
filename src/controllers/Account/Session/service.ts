@@ -33,7 +33,7 @@ class SessionService {
     const query = sessionRepository
       .createQueryBuilder()
       .leftJoinAndSelect(`${this.entity}.User`, 'User')
-    const newQuery = useQuery(this.entity, query, req)
+    const newQuery = useQuery({ entity: this.entity, query, req })
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()
