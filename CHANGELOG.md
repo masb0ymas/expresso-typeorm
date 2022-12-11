@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.6.0...v2.7.0) (2022-12-11)
+
+
+### Features
+
+* add init google cloud storage ([6d6418d](https://github.com/masb0ymas/expresso-typeorm/commit/6d6418d85099ae7669a46298a40261509922298c))
+* add session job ([b3f7c97](https://github.com/masb0ymas/expresso-typeorm/commit/b3f7c9795f0a5b88f4e4891ef47b4f8692aec196))
+
+
+### Bug Fixes
+
+* change field table camelCase to snake_case ([74fad6f](https://github.com/masb0ymas/expresso-typeorm/commit/74fad6f44b1d789f878cedbd51a722649d03ee5d))
+* config client aws s3 ([b7b9edc](https://github.com/masb0ymas/expresso-typeorm/commit/b7b9edc8c747f79693a6888708e1c972e554e791))
+* config dockerfile ([75ed083](https://github.com/masb0ymas/expresso-typeorm/commit/75ed0836251e52398e87ee11708b71e3e2c53f35))
+* config env docker prod ([4a0d687](https://github.com/masb0ymas/expresso-typeorm/commit/4a0d68789a40f72573c3ef2c4901430eb19e949a))
+* config swc ([9d95e15](https://github.com/masb0ymas/expresso-typeorm/commit/9d95e15c08e66dcbb1819e152d41033cee57dc31))
+* config ts ([21a192b](https://github.com/masb0ymas/expresso-typeorm/commit/21a192b2a269cd12bbab7102a9f7eb315260718e))
+* dockerfile ([f33187e](https://github.com/masb0ymas/expresso-typeorm/commit/f33187ede4a72c728a18550737710945c176301d))
+* docs swagger auth ([b370310](https://github.com/masb0ymas/expresso-typeorm/commit/b370310d5566cf750f4c8a796f143b997923b0d2))
+* env config ([8f6c946](https://github.com/masb0ymas/expresso-typeorm/commit/8f6c946564138affb75e021e801036bf29dd5ec8))
+* env config ([4c28d89](https://github.com/masb0ymas/expresso-typeorm/commit/4c28d89f4d47c1fba6d58948377999c8aa2c2596))
+* implementation use query entity ([bdc0462](https://github.com/masb0ymas/expresso-typeorm/commit/bdc0462a249ef1ee38e9e26648526bfc9c7fe177))
+* improve config dockerfile ([d09b752](https://github.com/masb0ymas/expresso-typeorm/commit/d09b7521b0f4faf9d8d35bceec7fdbe9ddb806f9))
+* improve endpoint upload ([5fd1dfa](https://github.com/masb0ymas/expresso-typeorm/commit/5fd1dfaff0d0110b08aec468587101197b014436))
+* initial server ([fa1f69e](https://github.com/masb0ymas/expresso-typeorm/commit/fa1f69e9c8c74c0e581be49b500cc725774bf37e))
+* script build:ts ([0f5d8c2](https://github.com/masb0ymas/expresso-typeorm/commit/0f5d8c28fb80f065a4ca0f25798295374e66866e))
+* typing fetcher ([990b912](https://github.com/masb0ymas/expresso-typeorm/commit/990b912c339c16532b1b342a32184228fadbaf20))
+* typing helper with state ([3b729ba](https://github.com/masb0ymas/expresso-typeorm/commit/3b729baf690282d1a9320506ebe34b189b2c236c))
+* typing relation model entity ([325cc5a](https://github.com/masb0ymas/expresso-typeorm/commit/325cc5a25e193da3127247b51ffbb66a3fc8fe4f))
+* typing with state ([c2eb4d2](https://github.com/masb0ymas/expresso-typeorm/commit/c2eb4d2fed84424260fc2e4b19ba5d86c36f2457))
+* upload job ([2e1e1b6](https://github.com/masb0ymas/expresso-typeorm/commit/2e1e1b699cdc8404a325ef20c6a3523fdb003645))
+
 ## [2.6.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.5.0...v2.6.0) (2022-11-07)
 
 
