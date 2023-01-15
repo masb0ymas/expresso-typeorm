@@ -33,7 +33,7 @@ type DtoVerifyAccessToken =
  * @param payload
  * @returns
  */
-function generateAccessToken(payload: any): PayloadAccessToken {
+export function generateAccessToken(payload: any): PayloadAccessToken {
   const getMilliSecondExpires = ms(JWT_ACCESS_TOKEN_EXPIRED)
   const expiresIn = Number(getMilliSecondExpires) / 1000
 
@@ -50,7 +50,7 @@ function generateAccessToken(payload: any): PayloadAccessToken {
  * @param headers
  * @returns
  */
-function getToken(headers: IncomingHttpHeaders): string | null | any {
+export function getToken(headers: IncomingHttpHeaders): string | null | any {
   if (headers?.authorization) {
     const parted = headers.authorization.split(' ')
 
@@ -74,7 +74,7 @@ function getToken(headers: IncomingHttpHeaders): string | null | any {
  * @param req
  * @returns
  */
-function currentToken(req: Request): string {
+export function currentToken(req: Request): string {
   const getCookie = req.getCookies()
   const getHeaders = req.getHeaders()
 
@@ -94,7 +94,7 @@ function currentToken(req: Request): string {
  * @param token
  * @returns
  */
-function verifyAccessToken(token: string): DtoVerifyAccessToken {
+export function verifyAccessToken(token: string): DtoVerifyAccessToken {
   try {
     if (!token) {
       return { data: null, message: 'Unauthorized!' }
@@ -119,5 +119,3 @@ function verifyAccessToken(token: string): DtoVerifyAccessToken {
     }
   }
 }
-
-export { generateAccessToken, getToken, currentToken, verifyAccessToken }

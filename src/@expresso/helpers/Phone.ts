@@ -6,7 +6,7 @@ import { E164Number, parsePhoneNumberFromString } from 'libphonenumber-js'
  * @param phone {string}
  * @returns {E164Number | undefined}
  */
-function formatPhone(phone: string): E164Number | undefined {
+export function formatPhone(phone: string): E164Number | undefined {
   let transformPhone = ''
 
   // indonesian phone format
@@ -33,7 +33,7 @@ function formatPhone(phone: string): E164Number | undefined {
  * @param phone {string}
  * @returns {string}
  */
-function formatPhoneWhatsApp(phone: string): string {
+export function formatPhoneWhatsApp(phone: string): string {
   let newPhone = ''
 
   if (phone.startsWith('08')) {
@@ -59,7 +59,7 @@ function formatPhoneWhatsApp(phone: string): string {
  * @param phone
  * @returns
  */
-function formatHidePhone(phone: string): string {
+export function formatHidePhone(phone: string): string {
   const newPhone = formatPhone(phone) as String
   const splitPhone = newPhone.split('+62') // ['+62', '81234567890']
 
@@ -75,5 +75,3 @@ function formatHidePhone(phone: string): string {
 
   return resultPhone
 }
-
-export { formatPhone, formatPhoneWhatsApp, formatHidePhone }
