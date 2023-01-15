@@ -1,8 +1,8 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, Relation } from 'typeorm'
-import { Base } from './Base'
+import { Base, IBaseEntity } from './Base'
 import { User } from './User'
 
-interface SessionEntity {
+interface SessionEntity extends IBaseEntity {
   user_id: string
   token: string
   ip_address?: string | null
