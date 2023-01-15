@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.7.1](https://github.com/masb0ymas/expresso-typeorm/compare/v2.7.0...v2.7.1) (2023-01-15)
+
+
+### Bug Fixes
+
+* compile with eslint ([5e83c27](https://github.com/masb0ymas/expresso-typeorm/commit/5e83c278f6ce23b2c4152b0925d019bf4e7e316c))
+* docker env ([ba83d5b](https://github.com/masb0ymas/expresso-typeorm/commit/ba83d5bd17ec642cc62b07c0c80fe3d807cd88e5))
+* export helper function ([c71f004](https://github.com/masb0ymas/expresso-typeorm/commit/c71f004a0829ce4a18536738033786c515a8d2be))
+* gcs config ([2c3bf6c](https://github.com/masb0ymas/expresso-typeorm/commit/2c3bf6ced6694ea5dbf27a699774780a86fdfb1c))
+* session entity ([ed77a90](https://github.com/masb0ymas/expresso-typeorm/commit/ed77a90d4db5ff9f19f68a2207ca48228e1a044b))
+* update upload ([1f8ca7b](https://github.com/masb0ymas/expresso-typeorm/commit/1f8ca7b517be3081abd2c723f6f73ff4ce7421ef))
+
 ## [2.7.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.6.0...v2.7.0) (2022-12-11)
 
 

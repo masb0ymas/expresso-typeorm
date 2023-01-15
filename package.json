@@ -1,6 +1,6 @@
 {
   "name": "expresso-typeorm",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "Express built in TypeORM",
   "main": "./src/server.ts",
   "scripts": {
