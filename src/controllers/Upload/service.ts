@@ -7,11 +7,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { clientS3, s3ExpiresDate, s3ObjectExpired } from '@config/clientS3'
 import { APP_LANG, AWS_BUCKET_NAME, GCS_BUCKET_NAME } from '@config/env'
-import {
-  gcsExpiresDate,
-  gcsObjectExpired,
-  storageClient,
-} from '@config/googleCloudStorage'
+import { gcsExpiresDate, storageClient } from '@config/googleCloudStorage'
 import { i18nConfig } from '@config/i18nextConfig'
 import { AppDataSource } from '@database/data-source'
 import { Upload, UploadAttributes } from '@database/entities/Upload'
@@ -302,7 +298,7 @@ class UploadService {
     const options: GetSignedUrlConfig = {
       version: 'v4',
       action: 'read',
-      expires: Date.now() + gcsObjectExpired, // 7 days
+      expires: gcsExpiresDate,
     }
 
     // signed url from bucket google cloud storage
@@ -492,8 +488,8 @@ class UploadService {
 
     const query = uploadRepository
       .createQueryBuilder()
-      .where(`${this.entity}.expiry_date_url < :expiry_date_url`, {
-        expiry_date_url: endOfYesterday(),
+      .where(`${this.entity}.updated_at < :updated_at`, {
+        updated_at: endOfYesterday(),
       })
 
     const getUploads = await query.getMany()
