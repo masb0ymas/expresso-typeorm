@@ -15,11 +15,12 @@ class UploadJob {
   public static getTask(): cron.ScheduledTask {
     // Run this job every 2:00 am
     const task = cron.schedule('*/15 2 * * *', async () => {
-      // Update Signed URL Aws S3
+      // Update Signed URL from Aws S3
       if (AWS_ACCESS_KEY && AWS_SECRET_KEY) {
         await UploadService.updateSignedUrlS3()
       }
 
+      // Update Signed URL from GCS
       if (GCP_PROJECT_ID && GCS_BUCKET_NAME) {
         await UploadService.updateSignedUrlGCS()
       }
