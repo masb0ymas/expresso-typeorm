@@ -1,14 +1,17 @@
 import 'module-alias/register'
 import './pathAlias'
 
-import initialAwsS3 from '@config/clientS3'
+import { initialAwsS3 } from '@config/clientS3'
 import {
   AWS_ACCESS_KEY,
   AWS_SECRET_KEY,
   GCP_PROJECT_ID,
   GCS_BUCKET_NAME,
+  MINIO_ACCESS_KEY,
+  MINIO_SECRET_KEY,
 } from '@config/env'
 import { initialGCS } from '@config/googleCloudStorage'
+import { initialMinIO } from '@config/minio'
 import { AppDataSource } from '@database/data-source'
 import { logErrServer, logServer } from '@expresso/helpers/Formatter'
 import chalk from 'chalk'
@@ -36,7 +39,7 @@ AppDataSource.initialize()
     console.log(logErrServer('TypeORM Error: ', message))
   })
 
-// check if exist access & secret key aws
+// check if exist access & secret key aws s3
 if (AWS_ACCESS_KEY && AWS_SECRET_KEY) {
   // initial client s3
   void initialAwsS3()
@@ -46,6 +49,11 @@ if (AWS_ACCESS_KEY && AWS_SECRET_KEY) {
 if (GCP_PROJECT_ID && GCS_BUCKET_NAME) {
   // initial google cloud storage
   void initialGCS()
+}
+
+// check if exist minio s3
+if (MINIO_ACCESS_KEY && MINIO_SECRET_KEY) {
+  void initialMinIO()
 }
 
 // initial jobs
