@@ -112,3 +112,11 @@ export const AWS_S3_EXPIRED = process.env.AWS_S3_EXPIRED ?? '7d'
 export const GCP_PROJECT_ID = process.env.GCP_PROJECT_ID ?? undefined
 export const GCS_BUCKET_NAME = process.env.GCS_BUCKET_NAME ?? 'expresso'
 export const GCS_EXPIRED = process.env.GCS_EXPIRED ?? '7d'
+
+// minio
+export const MINIO_HOST: any = process.env.MINIO_HOST ?? '127.0.0.1'
+export const MINIO_ACCESS_KEY: any = process.env.MINIO_ACCESS_KEY ?? undefined
+export const MINIO_SECRET_KEY: any = process.env.MINIO_SECRET_KEY ?? undefined
+export const MINIO_BUCKET_NAME = process.env.MINIO_BUCKET_NAME ?? 'expresso'
+export const MINIO_REGION = process.env.MINIO_REGION ?? 'ap-southeast-1'
+export const MINIO_S3_EXPIRED = process.env.MINIO_S3_EXPIRED ?? '7d'
