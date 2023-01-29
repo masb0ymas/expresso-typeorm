@@ -80,7 +80,7 @@ class AuthService {
     const value = userSchema.login.validateSync(formData, optionsYup)
 
     const getUser = await userRepository.findOne({
-      select: ['id', 'email', 'is_active', 'password', 'role_id'],
+      select: ['id', 'fullname', 'email', 'is_active', 'password', 'role_id'],
       where: { email: value.email },
     })
 
@@ -114,6 +114,7 @@ class AuthService {
       ...accessToken,
       tokenType: 'Bearer',
       user: payloadToken,
+      fullname: getUser.fullname,
     }
 
     return newData
