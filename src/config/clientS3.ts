@@ -25,46 +25,50 @@ export const clientS3 = new S3({
 
 const bucketName = chalk.cyan(AWS_BUCKET_NAME)
 
-// Create AWS S3 Bucket
-function createS3Bucket(): void {
+/**
+ * Create Bucket S3
+ */
+function createBucket(): void {
+  // s3 create bucket
   clientS3.createBucket({ Bucket: AWS_BUCKET_NAME }, function (err, data) {
-    if (err) {
-      console.log(logErrServer('Aws S3 Error:', err))
+    const msgType = `Aws S3`
 
+    if (err) {
+      console.log(logErrServer(`${msgType} - Error:`, err))
       process.exit(1)
     } else {
-      const msgType = `Aws S3`
       const message = `Success create bucket: ${bucketName}`
-
       console.log(logServer(msgType, message), data?.Location)
     }
   })
 }
 
-// Initial AWS S3
-const initialAwsS3 = async (): Promise<
+/**
+ * Initial Aws S3
+ * @returns
+ */
+export const initialAwsS3 = async (): Promise<
   GetBucketAclCommandOutput | undefined
 > => {
+  const msgType = `Aws S3`
+
   try {
     // initial bucket
     const data = await clientS3.send(
       new GetBucketAclCommand({ Bucket: AWS_BUCKET_NAME })
     )
 
-    const msgType = `Aws S3`
     const message = `Success Get Bucket: ${bucketName}`
-
     console.log(logServer(msgType, message), data.Grants)
 
     return data
   } catch (err) {
-    const errType = `Aws S3 Error:`
     const message = `${err}`
-
-    console.log(logErrServer(errType, message))
+    console.log(logErrServer(`${msgType} - Error:`, message))
 
     // create bucket if doesn't exist
-    createS3Bucket()
+    createBucket()
+    // s3 create bucket
   }
 }
 
@@ -75,5 +79,3 @@ export const s3ObjectExpired = ms(AWS_S3_EXPIRED) / 1000
 
 // S3 Expires in 7 days
 export const s3ExpiresDate = addDays(new Date(), Number(getNumberExpires))
-
-export default initialAwsS3
