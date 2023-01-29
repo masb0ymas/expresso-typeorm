@@ -3,6 +3,8 @@ import {
   AWS_SECRET_KEY,
   GCP_PROJECT_ID,
   GCS_BUCKET_NAME,
+  MINIO_ACCESS_KEY,
+  MINIO_SECRET_KEY,
 } from '@config/env'
 import UploadService from '@controllers/Upload/service'
 import { logServer } from '@expresso/helpers/Formatter'
@@ -14,7 +16,7 @@ class UploadJob {
    */
   public static getTask(): cron.ScheduledTask {
     // Run this job every 2:00 am
-    const task = cron.schedule('*/15 2 * * *', async () => {
+    const task = cron.schedule('*/30 * * * *', async () => {
       // Update Signed URL from Aws S3
       if (AWS_ACCESS_KEY && AWS_SECRET_KEY) {
         await UploadService.updateSignedUrlS3()
@@ -25,8 +27,13 @@ class UploadJob {
         await UploadService.updateSignedUrlGCS()
       }
 
+      // Update Signed URL from MinIO
+      if (MINIO_ACCESS_KEY && MINIO_SECRET_KEY) {
+        await UploadService.updateSignedUrlMinIO()
+      }
+
       const msgType = `Cron Job:`
-      const message = 'Running task every 15 minutes at 2:00 am'
+      const message = 'Running task every 30 minutes'
 
       console.log(logServer(msgType, message))
     })

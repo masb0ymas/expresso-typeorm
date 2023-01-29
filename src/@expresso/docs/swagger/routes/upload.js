@@ -53,8 +53,9 @@ module.exports = {
               properties: {
                 provider: {
                   type: 'string',
-                  enum: ['s3', 'gcs'],
-                  description: 's3: Aws S3, gcs: Google Cloud Storage',
+                  enum: ['s3', 'gcs', 'minio'],
+                  description:
+                    's3: Aws S3, gcs: Google Cloud Storage, minio: MinIO',
                 },
                 fileUpload: {
                   type: 'string',
@@ -76,7 +77,7 @@ module.exports = {
   '/upload/s3/presign-url': {
     post: {
       tags: ['Upload'],
-      summary: 'Create New Upload',
+      summary: 'Signed URL Upload from AWS S3',
       security: [
         {
           auth_token: [],
@@ -105,7 +106,7 @@ module.exports = {
       },
       responses: {
         201: {
-          description: 'Create New Upload',
+          description: 'Signed URL Upload from AWS S3',
         },
       },
     },
@@ -113,7 +114,7 @@ module.exports = {
   '/upload/gcs/presign-url': {
     post: {
       tags: ['Upload'],
-      summary: 'Create New Upload',
+      summary: 'Signed URL Upload from Google Cloud Storage',
       security: [
         {
           auth_token: [],
@@ -142,7 +143,44 @@ module.exports = {
       },
       responses: {
         201: {
-          description: 'Create New Upload',
+          description: 'Signed URL Upload from Google Cloud Storage',
+        },
+      },
+    },
+  },
+  '/upload/minio/presign-url': {
+    post: {
+      tags: ['Upload'],
+      summary: 'Signed URL Upload from MinIO',
+      security: [
+        {
+          auth_token: [],
+        },
+      ],
+      parameters: [
+        {
+          $ref: '#/components/parameters/lang',
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          'application/x-www-form-urlencoded': {
+            schema: {
+              type: 'object',
+              properties: {
+                keyFile: {
+                  type: 'string',
+                },
+              },
+              required: ['keyFile'],
+            },
+          },
+        },
+      },
+      responses: {
+        201: {
+          description: 'Signed URL Upload from MinIO',
         },
       },
     },
@@ -321,8 +359,9 @@ module.exports = {
               properties: {
                 provider: {
                   type: 'string',
-                  enum: ['s3', 'gcs'],
-                  description: 's3: Aws S3, gcs: Google Cloud Storage',
+                  enum: ['s3', 'gcs', 'minio'],
+                  description:
+                    's3: Aws S3, gcs: Google Cloud Storage, minio: MinIO',
                 },
                 fileUpload: {
                   type: 'string',

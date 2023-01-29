@@ -64,6 +64,20 @@ route.post(
   })
 )
 
+route.post(
+  '/upload/minio/presign-url',
+  Authorization,
+  asyncHandler(async function findById(req: Request, res: Response) {
+    const { keyFile } = req.getBody()
+
+    // Signed URL to MinIO Bucket
+    const signedUrl = await UploadService.getSignedUrlMinIO(keyFile)
+
+    const httpResponse = HttpResponse.get({ data: signedUrl })
+    res.status(200).json(httpResponse)
+  })
+)
+
 const uploadFile = useMulter({
   dest: 'public/upload/temp',
 }).fields([{ name: 'fileUpload', maxCount: 1 }])
@@ -91,6 +105,7 @@ route.post(
 
     let aws_s3_data
     let gcs_data
+    let minio_data
     let upload_data
 
     // Upload to AWS S3
@@ -123,6 +138,17 @@ route.post(
         upload_data = resUpload.upload_data
       }
 
+      // Upload to MinIO
+      if (formData.provider === 'minio') {
+        const resUpload = await UploadService.uploadFileMinIOWithSignedUrl({
+          fieldUpload,
+          directory,
+        })
+
+        minio_data = resUpload.minio_data
+        upload_data = resUpload.upload_data
+      }
+
       deleteFile(fieldUpload.path)
     }
 
@@ -130,6 +156,7 @@ route.post(
       data: upload_data,
       s3: aws_s3_data,
       gcs: gcs_data,
+      minio: minio_data,
     })
     res.status(201).json(httpResponse)
   })
@@ -148,6 +175,7 @@ route.put(
 
     let aws_s3_data
     let gcs_data
+    let minio_data
     let upload_data
 
     // Upload to AWS S3
@@ -182,6 +210,18 @@ route.put(
         upload_data = resUpload.upload_data
       }
 
+      // Upload to MinIO
+      if (formData.provider === 'minio') {
+        const resUpload = await UploadService.uploadFileMinIOWithSignedUrl({
+          fieldUpload,
+          directory,
+          UploadId: id,
+        })
+
+        minio_data = resUpload.minio_data
+        upload_data = resUpload.upload_data
+      }
+
       deleteFile(fieldUpload.path)
     } else {
       // get upload file
@@ -194,6 +234,7 @@ route.put(
       data: upload_data,
       s3: aws_s3_data,
       gcs: gcs_data,
+      minio: minio_data,
     })
     res.status(200).json(httpResponse)
   })

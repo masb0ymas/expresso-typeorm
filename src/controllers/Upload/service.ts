@@ -6,9 +6,15 @@ import {
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { clientS3, s3ExpiresDate, s3ObjectExpired } from '@config/clientS3'
-import { APP_LANG, AWS_BUCKET_NAME, GCS_BUCKET_NAME } from '@config/env'
+import {
+  APP_LANG,
+  AWS_BUCKET_NAME,
+  GCS_BUCKET_NAME,
+  MINIO_BUCKET_NAME,
+} from '@config/env'
 import { gcsExpiresDate, storageClient } from '@config/googleCloudStorage'
 import { i18nConfig } from '@config/i18nextConfig'
+import { minioClient, minioExpiresDate } from '@config/minio'
 import { AppDataSource } from '@database/data-source'
 import { Upload, UploadAttributes } from '@database/entities/Upload'
 import { logServer, validateUUID } from '@expresso/helpers/Formatter'
@@ -23,10 +29,11 @@ import { Request } from 'express'
 import fs from 'fs'
 import { TOptions } from 'i18next'
 import _ from 'lodash'
-import { SelectQueryBuilder } from 'typeorm'
+import { LessThanOrEqual, SelectQueryBuilder } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
 import {
   DtoUploadGCSWithSignedUrl,
+  DtoUploadMinIOWithSignedUrl,
   DtoUploadS3WithSignedUrl,
   UploadFileWithSignedURLEntity,
 } from './interface'
@@ -122,6 +129,42 @@ class UploadService {
     const newData = await uploadRepository.save({ ...data, ...value })
 
     return newData
+  }
+
+  /**
+   *
+   * @param formData
+   * @param UploadId
+   * @returns
+   */
+  private static async createOrUpdate(
+    formData: UploadAttributes,
+    UploadId?: string | null
+  ): Promise<Upload> {
+    const uploadRepository = AppDataSource.getRepository(Upload)
+
+    let resUpload
+
+    // check uuid
+    if (!_.isEmpty(UploadId) && uuidValidate(String(UploadId))) {
+      // find upload
+      const getUpload = await uploadRepository.findOne({
+        where: { id: String(UploadId) },
+      })
+
+      // update file upload
+      if (getUpload) {
+        resUpload = await uploadRepository.save({ ...getUpload, ...formData })
+      } else {
+        // create new file
+        resUpload = await this.create(formData)
+      }
+    } else {
+      // create new file
+      resUpload = await this.create(formData)
+    }
+
+    return resUpload
   }
 
   /**
@@ -313,6 +356,21 @@ class UploadService {
   }
 
   /**
+   * Get Signed URL from MinIO
+   * @param keyFile
+   * @returns
+   */
+  public static async getSignedUrlMinIO(keyFile: string): Promise<string> {
+    // signed url from bucket MinIO
+    const signed_url = await minioClient.presignedGetObject(
+      MINIO_BUCKET_NAME,
+      keyFile
+    )
+
+    return signed_url
+  }
+
+  /**
    * Upload File Aws S3 with Signed URL
    * @param values
    * @returns
@@ -320,11 +378,7 @@ class UploadService {
   public static async uploadFileS3WithSignedUrl(
     values: UploadFileWithSignedURLEntity
   ): Promise<DtoUploadS3WithSignedUrl> {
-    const uploadRepository = AppDataSource.getRepository(Upload)
-
     const { fieldUpload, directory, UploadId } = values
-
-    let resUpload
 
     const key_file = `${directory}/${fieldUpload.filename}`
 
@@ -353,25 +407,7 @@ class UploadService {
       expiry_date_url: s3ExpiresDate,
     }
 
-    // check uuid
-    if (!_.isEmpty(UploadId) && uuidValidate(String(UploadId))) {
-      // find upload
-      const getUpload = await uploadRepository.findOne({
-        where: { id: String(UploadId) },
-      })
-
-      // update file upload
-      if (getUpload) {
-        resUpload = await uploadRepository.save({ ...getUpload, ...formUpload })
-      } else {
-        // create new file
-        resUpload = await this.create(formUpload)
-      }
-    } else {
-      // create new file
-      resUpload = await this.create(formUpload)
-    }
-
+    const resUpload = await this.createOrUpdate(formUpload, UploadId)
     const data = { aws_s3_data: dataAwsS3, upload_data: resUpload }
 
     return data
@@ -385,11 +421,7 @@ class UploadService {
   public static async uploadFileGCSWithSignedUrl(
     values: UploadFileWithSignedURLEntity
   ): Promise<DtoUploadGCSWithSignedUrl> {
-    const uploadRepository = AppDataSource.getRepository(Upload)
-
     const { fieldUpload, directory, UploadId } = values
-
-    let resUpload
 
     const key_file = `${directory}/${fieldUpload.filename}`
 
@@ -419,26 +451,48 @@ class UploadService {
       expiry_date_url: gcsExpiresDate,
     }
 
-    // check uuid
-    if (!_.isEmpty(UploadId) && uuidValidate(String(UploadId))) {
-      // find upload
-      const getUpload = await uploadRepository.findOne({
-        where: { id: String(UploadId) },
-      })
+    const resUpload = await this.createOrUpdate(formUpload, UploadId)
+    const data = { gcs_data: gcsData[1], upload_data: resUpload }
 
-      // update file upload
-      if (getUpload) {
-        resUpload = await uploadRepository.save({ ...getUpload, ...formUpload })
-      } else {
-        // create new file
-        resUpload = await this.create(formUpload)
+    return data
+  }
+
+  /**
+   * Upload File MinIO With Signed URL
+   * @param values
+   * @returns
+   */
+  public static async uploadFileMinIOWithSignedUrl(
+    values: UploadFileWithSignedURLEntity
+  ): Promise<DtoUploadMinIOWithSignedUrl> {
+    const { fieldUpload, directory, UploadId } = values
+
+    const key_file = `${directory}/${fieldUpload.filename}`
+
+    // send file upload to google cloud storage
+    const minioData = await minioClient.fPutObject(
+      MINIO_BUCKET_NAME,
+      key_file,
+      fieldUpload.path,
+      {
+        ContentType: fieldUpload.mimetype, // <-- this is what you need!
+        ContentDisposition: `inline; filename=${fieldUpload.filename}`, // <-- and this !
+        ACL: 'public-read', // <-- this makes it public so people can see it
       }
-    } else {
-      // create new file
-      resUpload = await this.create(formUpload)
+    )
+
+    // signed url from bucket S3
+    const signed_url = await this.getSignedUrlMinIO(key_file)
+
+    const formUpload = {
+      ...fieldUpload,
+      key_file,
+      signed_url,
+      expiry_date_url: minioExpiresDate,
     }
 
-    const data = { gcs_data: gcsData[1], upload_data: resUpload }
+    const resUpload = await this.createOrUpdate(formUpload, UploadId)
+    const data = { minio_data: minioData, upload_data: resUpload }
 
     return data
   }
@@ -449,13 +503,11 @@ class UploadService {
   public static async updateSignedUrlS3(): Promise<void> {
     const uploadRepository = AppDataSource.getRepository(Upload)
 
-    const query = uploadRepository
-      .createQueryBuilder()
-      .where(`${this.entity}.expiry_date_url < :expiry_date_url`, {
-        expiry_date_url: endOfYesterday(),
-      })
+    // get uploads
+    const getUploads = await uploadRepository.find({
+      where: { expiry_date_url: LessThanOrEqual(endOfYesterday()) },
+    })
 
-    const getUploads = await query.getMany()
     const chunkUploads = _.chunk(getUploads, 50)
 
     // chunk uploads data
@@ -486,13 +538,11 @@ class UploadService {
   public static async updateSignedUrlGCS(): Promise<void> {
     const uploadRepository = AppDataSource.getRepository(Upload)
 
-    const query = uploadRepository
-      .createQueryBuilder()
-      .where(`${this.entity}.updated_at < :updated_at`, {
-        updated_at: endOfYesterday(),
-      })
+    // get uploads
+    const getUploads = await uploadRepository.find({
+      where: { updated_at: LessThanOrEqual(endOfYesterday()) },
+    })
 
-    const getUploads = await query.getMany()
     const chunkUploads = _.chunk(getUploads, 50)
 
     // chunk uploads data
@@ -508,6 +558,41 @@ class UploadService {
             const signed_url = await this.getSignedUrlGCS(item.key_file)
 
             const formUpload = { signed_url, expiry_date_url: gcsExpiresDate }
+
+            // update signed url & expires url
+            await uploadRepository.save({ ...item, ...formUpload })
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Update Signed URL MinIO
+   */
+  public static async updateSignedUrlMinIO(): Promise<void> {
+    const uploadRepository = AppDataSource.getRepository(Upload)
+
+    // get uploads
+    const getUploads = await uploadRepository.find({
+      where: { expiry_date_url: LessThanOrEqual(endOfYesterday()) },
+    })
+
+    const chunkUploads = _.chunk(getUploads, 50)
+
+    // chunk uploads data
+    if (!_.isEmpty(chunkUploads)) {
+      for (let i = 0; i < chunkUploads.length; i += 1) {
+        const itemUploads = chunkUploads[i]
+
+        // check uploads
+        if (!_.isEmpty(itemUploads)) {
+          for (let i = 0; i < itemUploads.length; i += 1) {
+            const item = itemUploads[i]
+
+            const signed_url = await this.getSignedUrlMinIO(item.key_file)
+
+            const formUpload = { signed_url, expiry_date_url: minioExpiresDate }
 
             // update signed url & expires url
             await uploadRepository.save({ ...item, ...formUpload })
