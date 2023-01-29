@@ -31,6 +31,9 @@ export const storageClient = new Storage({
 
 const bucketName = chalk.cyan(GCS_BUCKET_NAME)
 
+/**
+ * Create Bucket Google Cloud Storage
+ */
 async function createBucket(): Promise<void> {
   const msgType = `Google Cloud Storage`
 
@@ -48,7 +51,9 @@ async function createBucket(): Promise<void> {
   }
 }
 
-// initial google cloud storage
+/**
+ * Initial Google Cloud Storage
+ */
 export const initialGCS = async (): Promise<void> => {
   const msgType = `Google Cloud Storage`
 
@@ -60,7 +65,6 @@ export const initialGCS = async (): Promise<void> => {
     // check bucket
     if (getBucket[0]) {
       const message = `Success get bucket: ${bucketName}`
-
       console.log(logServer(msgType, message), getMetadata[0])
     }
   } catch (err) {
