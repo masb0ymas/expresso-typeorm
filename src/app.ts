@@ -48,6 +48,11 @@ class App {
     this.routes()
   }
 
+  // return application
+  public app(): Express.Application {
+    return this.application
+  }
+
   // Setup Plugin & Middleware
   private plugins(): void {
     this.application.use(Helmet())
