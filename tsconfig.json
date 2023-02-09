@@ -20,9 +20,10 @@
       "@middlewares/*": ["middlewares/*"],
       "@routes/*": ["routes/*"],
       "@scripts/*": ["scripts/*"],
-      "@views/*": ["views/*"],
+      "@views/*": ["views/*"]
     },
     "typeRoots": ["./src/types"],
+    "types": ["jest"],
 
     /* JavaScript Support */
     "allowJs": true,
