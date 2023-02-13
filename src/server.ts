@@ -3,7 +3,7 @@ import './pathAlias'
 
 import App from './app'
 
-const app = new App()
+const server = new App()
 
-// Run App
-app.run()
+// Run the Express App
+server.run()

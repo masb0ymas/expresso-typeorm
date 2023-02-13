@@ -1,6 +1,6 @@
 import { APP_NAME, APP_PORT, NODE_ENV } from '@config/env'
 import { i18nConfig } from '@config/i18n'
-import { winstonLogger, winstonStream } from '@config/loggers'
+import { winstonLogger, winstonStream } from '@config/logger'
 import Storage from '@config/storage'
 import { logServer } from '@core/helpers/formatter'
 import ResponseError from '@core/modules/response/ResponseError'
