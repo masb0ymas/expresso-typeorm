@@ -1,27 +1,23 @@
-import { logErrServer } from '@expresso/helpers/Formatter'
-import { currentToken, verifyAccessToken } from '@expresso/helpers/Token'
-import { NextFunction, Request, Response } from 'express'
-import _ from 'lodash'
+import { logErrServer } from '@core/helpers/formatter'
+import { extractToken, verifyToken } from '@core/helpers/token'
+import { type NextFunction, type Request, type Response } from 'express'
 
-async function Authorization(
+async function authorization(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<Response<any, Record<string, any>> | undefined> {
-  const getToken = currentToken(req)
-  const token = verifyAccessToken(getToken)
+  const getToken = extractToken(req)
+  const token = verifyToken(String(getToken))
 
-  if (_.isEmpty(token?.data)) {
-    console.log(logErrServer('Permission:', 'Unauthorized!'))
+  if (token?.data) {
+    console.log(logErrServer('Permission :', 'Unauthorized'))
 
-    return res.status(401).json({
-      code: 401,
-      message: token?.message,
-    })
+    return res.status(401).json({ code: 401, message: token.message })
   }
 
   req.setState({ userLogin: token?.data })
   next()
 }
 
-export default Authorization
+export default authorization

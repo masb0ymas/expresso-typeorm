@@ -1,119 +1,106 @@
-/* eslint-disable @typescript-eslint/no-throw-literal */
 import { APP_NAME, APP_PORT, NODE_ENV } from '@config/env'
-import { i18nConfig } from '@config/i18nextConfig'
-import winstonLogger, { winstonStream } from '@config/Logger'
-import allowedOrigins from '@expresso/constants/ConstAllowedOrigins'
-import { logServer } from '@expresso/helpers/Formatter'
-import withState from '@expresso/helpers/withState'
-import ResponseError from '@expresso/modules/Response/ResponseError'
-import { optionsSwaggerUI, swaggerSpec } from '@expresso/helpers/DocsSwagger'
-import ExpressErrorResponse from '@middlewares/ExpressErrorResponse'
-import ExpressErrorTypeOrm from '@middlewares/ExpressErrorTypeOrm'
-import ExpressErrorYup from '@middlewares/ExpressErrorYup'
-import ExpressRateLimit from '@middlewares/ExpressRateLimit'
-import indexRoutes from '@routes/index'
+import { i18nConfig } from '@config/i18n'
+import { winstonLogger, winstonStream } from '@config/logger'
+import Storage from '@config/storage'
+import { logServer } from '@core/helpers/formatter'
+import ResponseError from '@core/modules/response/ResponseError'
+import expressErrorResponse from '@middlewares/expressErrorResponses'
+import { expressRateLimit } from '@middlewares/expressRateLimits'
+import { expressWithState } from '@middlewares/expressWithState'
 import chalk from 'chalk'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
-import Cors from 'cors'
-import Express, { Application, NextFunction, Request, Response } from 'express'
-import UserAgent from 'express-useragent'
-import Helmet from 'helmet'
+import cors from 'cors'
+import Express, { type Application, type Request, type Response } from 'express'
+import userAgent from 'express-useragent'
+import helmet from 'helmet'
 import hpp from 'hpp'
 import http from 'http'
 import i18nextMiddleware from 'i18next-http-middleware'
-import Logger from 'morgan'
+import logger from 'morgan'
 import path from 'path'
 import requestIp from 'request-ip'
-import swaggerUI from 'swagger-ui-express'
-
-const optCors: Cors.CorsOptions = {
-  origin: allowedOrigins,
-}
+import indexRoutes from './routes'
 
 class App {
   private readonly application: Application
   private readonly port: number | string
 
   constructor() {
-    this.port = APP_PORT
     this.application = Express()
+    this.port = APP_PORT
+
+    // enabled
     this.plugins()
-
-    // docs swagger disable for production mode
-    if (NODE_ENV !== 'production') {
-      this.docsSwagger()
-    }
-
+    this.initialProvider()
     this.routes()
   }
 
-  // return application
-  public app(): Express.Application {
-    return this.application
-  }
-
-  // Setup Plugin & Middleware
+  /**
+   * Express Plugins
+   */
   private plugins(): void {
-    this.application.use(Helmet())
-    this.application.use(Cors(optCors))
-    this.application.use(Logger('combined', { stream: winstonStream }))
-    this.application.use(Express.urlencoded({ extended: true }))
+    this.application.use(helmet())
+    this.application.use(cors())
+    this.application.use(logger('combined', { stream: winstonStream }))
     this.application.use(
-      Express.json({
-        limit: '200mb',
-        type: 'application/json',
-      })
+      Express.json({ limit: '200mb', type: 'application/json' })
     )
+    this.application.use(Express.urlencoded({ extended: true }))
     this.application.use(cookieParser())
     this.application.use(compression())
     this.application.use(Express.static(path.resolve(`${__dirname}/../public`)))
     this.application.use(hpp())
     this.application.use(requestIp.mw())
-    this.application.use(UserAgent.express())
+    this.application.use(userAgent.express())
     this.application.use(i18nextMiddleware.handle(i18nConfig))
-    this.application.use(ExpressRateLimit)
-    this.application.use(function (
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ) {
-      new withState(req)
-      next()
-    })
+    this.application.use(expressRateLimit())
+    this.application.use(expressWithState())
   }
 
-  // Setup Docs Swagger
-  private docsSwagger(): void {
-    this.application.get('/v1/api-docs.json', (req: Request, res: Response) => {
-      res.setHeader('Content-Type', 'application/json')
-      res.send(swaggerSpec)
-    })
+  /**
+   * Initial Provider
+   */
+  private initialProvider(): void {
+    const storage = new Storage('minio')
 
-    this.application.use('/v1/api-docs', swaggerUI.serve)
-    this.application.get(
-      '/v1/api-docs',
-      swaggerUI.setup(swaggerSpec, optionsSwaggerUI)
-    )
+    // initial storage
+    void storage.initial()
   }
 
-  // Setup Routes
+  /**
+   * Setup Routes
+   */
   private routes(): void {
     this.application.use(indexRoutes)
 
     // Catch error 404 endpoint not found
-    this.application.use('*', function (req: Request, res: Response) {
+    this.application.use('*', function (req: Request, _res: Response) {
+      const method = req.method
+      const url = req.originalUrl
+      const host = req.hostname
+
+      const endpoint = `${host}${url}`
+
       throw new ResponseError.NotFound(
-        `Sorry, HTTP resource you are looking for was not found.`
+        `Sorry, the ${endpoint} HTTP method ${method} resource you are looking for was not found.`
       )
     })
   }
 
-  // Run App
+  /**
+   * Return Application Config
+   * @returns
+   */
+  public app(): Application {
+    return this.application
+  }
+
+  /**
+   * Run Express App
+   */
   public run(): void {
-    this.application.use(ExpressErrorTypeOrm)
-    this.application.use(ExpressErrorYup)
-    this.application.use(ExpressErrorResponse)
+    this.application.use(expressErrorResponse)
 
     // Error handler
     this.application.use(function (err: any, req: Request, res: Response) {
@@ -139,7 +126,7 @@ class App {
 
     const onError = (error: { syscall: string; code: string }): void => {
       if (error.syscall !== 'listen') {
-        throw error
+        throw new Error()
       }
 
       const bind =
@@ -158,7 +145,7 @@ class App {
           process.exit(1)
           break
         default:
-          throw error
+          throw new Error()
       }
     }
 
@@ -167,11 +154,10 @@ class App {
       const bind = typeof addr === 'string' ? `${addr}` : `${addr?.port}`
 
       const host = chalk.cyan(`http://localhost:${bind}`)
+      const env = chalk.blue(NODE_ENV)
 
       const msgType = `${APP_NAME}`
-      const message = `Server listening on ${host} & ENV: ${chalk.blue(
-        NODE_ENV
-      )}`
+      const message = `Server listening on ${host} ⚡️ & Env: ${env} 🚀`
 
       console.log(logServer(msgType, message))
     }
