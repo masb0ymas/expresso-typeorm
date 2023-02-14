@@ -2,6 +2,7 @@ import { APP_NAME, APP_PORT, NODE_ENV } from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import { winstonLogger, winstonStream } from '@config/logger'
 import Storage from '@config/storage'
+import allowedOrigins from '@core/constants/allowedOrigins'
 import { logServer } from '@core/helpers/formatter'
 import ResponseError from '@core/modules/response/ResponseError'
 import expressErrorResponse from '@middlewares/expressErrorResponse'
@@ -24,6 +25,10 @@ import path from 'path'
 import requestIp from 'request-ip'
 import indexRoutes from './routes'
 
+const optCors: cors.CorsOptions = {
+  origin: allowedOrigins,
+}
+
 class App {
   private readonly application: Application
   private readonly port: number | string
@@ -43,7 +48,7 @@ class App {
    */
   private plugins(): void {
     this.application.use(helmet())
-    this.application.use(cors())
+    this.application.use(cors(optCors))
     this.application.use(logger('combined', { stream: winstonStream }))
     this.application.use(
       Express.json({ limit: '200mb', type: 'application/json' })
