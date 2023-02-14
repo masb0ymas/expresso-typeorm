@@ -31,6 +31,22 @@ export const URL_CLIENT_PRODUCTION =
 export const URL_SERVER_PRODUCTION =
   process.env.URL_SERVER_PRODUCTION ?? 'https://api.example.com'
 
+export const MAIL_DRIVER = process.env.MAIL_DRIVER ?? 'smtp'
+export const MAIL_HOST = process.env.MAIL_HOST ?? 'smtp.mailtrap.io'
+export const MAIL_PORT = Number(process.env.MAIL_PORT) ?? 2525
+export const MAIL_AUTH_TYPE = process.env.MAIL_AUTH_TYPE ?? undefined
+export const MAIL_USERNAME = process.env.MAIL_USERNAME ?? undefined
+export const MAIL_PASSWORD = process.env.MAIL_PASSWORD ?? undefined
+export const MAIL_ENCRYPTION = process.env.MAIL_ENCRYPTION ?? undefined
+
+export const MAILGUN_API_KEY = process.env.MAILGUN_API_KEY ?? undefined
+export const MAILGUN_DOMAIN = process.env.MAILGUN_DOMAIN ?? undefined
+
+export const OAUTH_CLIENT_ID = process.env.OAUTH_CLIENT_ID ?? undefined
+export const OAUTH_CLIENT_SECRET = process.env.OAUTH_CLIENT_SECRET ?? undefined
+export const OAUTH_REDIRECT_URL = process.env.OAUTH_REDIRECT_URL ?? undefined
+export const OAUTH_REFRESH_TOKEN = process.env.OAUTH_REFRESH_TOKEN ?? undefined
+
 // redis
 export const REDIS_HOST = process.env.REDIS_HOST ?? '127.0.0.1'
 export const REDIS_PORT = Number(process.env.REDIS_PORT) ?? 6379
