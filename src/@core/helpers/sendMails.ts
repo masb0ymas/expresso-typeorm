@@ -1,0 +1,71 @@
+import { APP_NAME } from '@config/env'
+import MailProvider from '@config/mail'
+import { type AccountRegistrationEntity } from '@core/interface/SendMail'
+import ResponseError from '@core/modules/response/ResponseError'
+import fs from 'fs'
+import Handlebars from 'handlebars'
+import path from 'path'
+import { readHTMLFile } from './files'
+import { logServer } from './formatter'
+
+const mailProvider = new MailProvider()
+
+class SendMail {
+  /**
+   * Get Template Path
+   * @param htmlPath
+   * @returns
+   */
+  private static _getPath(htmlPath: string): string {
+    const templatePath = path.resolve(
+      `${process.cwd()}/public/templates/emails/${htmlPath}`
+    )
+
+    console.log(logServer('Template Email :', `${templatePath}`))
+
+    return templatePath
+  }
+
+  /**
+   * Send Template Mail
+   * @param _path
+   * @param mailTo
+   * @param subject
+   * @param data
+   */
+  private static _sendTemplateMail(
+    _path: string,
+    mailTo: string,
+    subject: string,
+    data: string | any
+  ): void {
+    if (!fs.existsSync(_path)) {
+      throw new ResponseError.BadRequest('invalid template path ')
+    }
+
+    readHTMLFile(_path, (err: Error, html: any) => {
+      if (err) console.log(err)
+
+      const template = Handlebars.compile(html)
+      const htmlToSend = template(data)
+
+      mailProvider.send(mailTo, subject, htmlToSend)
+    })
+  }
+
+  /**
+   * Send Mail with Account Registration Template
+   * @param values
+   */
+  public static AccountRegistration(values: AccountRegistrationEntity): void {
+    const _path = this._getPath('register.html')
+
+    const { fullname, email } = values
+    const subject = `${fullname}, Thank you for registering on the ${APP_NAME} App`
+
+    const data = { ...values }
+    this._sendTemplateMail(_path, email, subject, data)
+  }
+}
+
+export default SendMail
