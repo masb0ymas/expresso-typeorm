@@ -5,6 +5,8 @@ import Storage from '@config/storage'
 import { logServer } from '@core/helpers/formatter'
 import ResponseError from '@core/modules/response/ResponseError'
 import expressErrorResponse from '@middlewares/expressErrorResponse'
+import expressErrorTypeORM from '@middlewares/expressErrorTypeORMs'
+import expressErrorYup from '@middlewares/expressErrorYups'
 import { expressRateLimit } from '@middlewares/expressRateLimit'
 import { expressWithState } from '@middlewares/expressWithState'
 import chalk from 'chalk'
@@ -100,6 +102,8 @@ class App {
    * Run Express App
    */
   public run(): void {
+    this.application.use(expressErrorYup)
+    this.application.use(expressErrorTypeORM)
     this.application.use(expressErrorResponse)
 
     // Error handler
