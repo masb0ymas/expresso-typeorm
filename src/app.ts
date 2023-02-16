@@ -1,7 +1,7 @@
 import { APP_NAME, APP_PORT, NODE_ENV } from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import { winstonLogger, winstonStream } from '@config/logger'
-import Storage from '@config/storage'
+import StorageProvider from '@config/storage'
 import allowedOrigins from '@core/constants/allowedOrigins'
 import { logServer } from '@core/helpers/formatter'
 import ResponseError from '@core/modules/response/ResponseError'
@@ -69,7 +69,7 @@ class App {
    * Initial Provider
    */
   private initialProvider(): void {
-    const storage = new Storage('minio')
+    const storage = new StorageProvider('minio')
 
     // initial storage
     void storage.initial()

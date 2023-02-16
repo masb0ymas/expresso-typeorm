@@ -20,7 +20,7 @@ interface DtoExpiresObject {
   expiryDate: Date
 }
 
-class Storage {
+class StorageProvider {
   private readonly type: string
   private readonly _clientS3: S3 | undefined
   private readonly _clientMinio: Minio.Client | undefined
@@ -271,4 +271,4 @@ class Storage {
   }
 }
 
-export default Storage
+export default StorageProvider
