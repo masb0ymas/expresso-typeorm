@@ -74,7 +74,7 @@ export function validateUUID(value: string): string {
  * @param value
  * @returns
  */
-function isNumeric(value: any): boolean {
+export function isNumeric(value: any): boolean {
   return !_.isNaN(parseFloat(value)) && _.isFinite(value)
 }
 
