@@ -33,38 +33,38 @@ class SendMail {
    * @param subject
    * @param data
    */
-  private static _sendTemplateMail(
+  private static async _sendTemplateMail(
     _path: string,
     mailTo: string,
     subject: string,
     data: string | any
-  ): void {
+  ): Promise<void> {
     if (!fs.existsSync(_path)) {
       throw new ResponseError.BadRequest('invalid template path ')
     }
 
-    readHTMLFile(_path, (err: Error, html: any) => {
-      if (err) console.log(err)
+    const html = await readHTMLFile(_path)
 
-      const template = Handlebars.compile(html)
-      const htmlToSend = template(data)
+    const template = Handlebars.compile(html)
+    const htmlToSend = template(data)
 
-      mailProvider.send(mailTo, subject, htmlToSend)
-    })
+    mailProvider.send(mailTo, subject, htmlToSend)
   }
 
   /**
    * Send Mail with Account Registration Template
    * @param values
    */
-  public static AccountRegistration(values: AccountRegistrationEntity): void {
+  public static async AccountRegistration(
+    values: AccountRegistrationEntity
+  ): Promise<void> {
     const _path = this._getPath('register.html')
 
     const { fullname, email } = values
     const subject = `${fullname}, Thank you for registering on the ${APP_NAME} App`
 
     const data = { ...values }
-    this._sendTemplateMail(_path, email, subject, data)
+    await this._sendTemplateMail(_path, email, subject, data)
   }
 }
 
