@@ -2,6 +2,9 @@
 /node_modules
 /coverage
 /logs
+/public/output
+/public/temp
+/public/uploads
 
 package-lock.json
 pnpm-lock.yml
