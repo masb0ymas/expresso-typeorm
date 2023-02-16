@@ -33,6 +33,7 @@
       "@core/*": ["@core/*"],
       "@config/*": ["config/*"],
       "@controllers/*": ["controllers/*"],
+      "@database/*": ["database/*"],
       "@middlewares/*": ["middlewares/*"],
       "@routes/*": ["routes/*"],
     },                                                   /* Specify a set of entries that re-map imports to additional lookup locations. */

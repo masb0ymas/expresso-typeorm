@@ -54,6 +54,7 @@
     "nodemailer-mailgun-transport": "^2.1.5",
     "npm-run-all": "^4.1.5",
     "request-ip": "^3.3.0",
+    "slugify": "^1.6.5",
     "typeorm": "^0.3.12",
     "uuid": "^9.0.0",
     "winston": "^3.8.2",
@@ -106,6 +107,7 @@
     "@core/*": "dist/@core/*",
     "@config/*": "dist/config/*",
     "@controllers/*": "dist/controllers/*",
+    "@database/*": "dist/database/*",
     "@middlewares/*": "dist/middlewares/*",
     "@routes/*": "dist/routes/*"
   }

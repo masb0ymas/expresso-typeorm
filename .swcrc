@@ -11,6 +11,7 @@
       "@core/*": ["dist/@core/*"],
       "@config/*": ["dist/config/*"],
       "@controllers/*": ["dist/controllers/*"],
+      "@database/*": ["dist/database/*"],
       "@middlewares/*": ["dist/middlewares/*"],
       "@routes/*": ["dist/routes/*"]
     },

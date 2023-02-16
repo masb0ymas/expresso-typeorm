@@ -10,6 +10,7 @@ module.exports = {
     '^@core(.*)$': '<rootDir>/src/@core$1',
     '^@config(.*)$': '<rootDir>/src/config$1',
     '^@controllers(.*)$': '<rootDir>/src/controllers$1',
+    '^@database(.*)$': '<rootDir>/src/database$1',
     '^@middlewares(.*)$': '<rootDir>/src/middlewares$1',
     '^@routes(.*)$': '<rootDir>/src/routes$1',
   },
