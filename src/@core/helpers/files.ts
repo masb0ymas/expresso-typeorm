@@ -40,9 +40,9 @@ export async function writeFileStream(
  * Create Dir If Not Exist
  * @param _path
  */
-export async function createDirNotExist(_path: string): Promise<void> {
+export function createDirNotExist(_path: string): void {
   if (!nodeFs.existsSync(path.resolve(_path))) {
-    await fs.mkdir(_path, { recursive: true })
+    nodeFs.mkdirSync(_path, { recursive: true })
     console.log(logServer('Dir Path ', `created directory => ${_path}`))
   }
 }

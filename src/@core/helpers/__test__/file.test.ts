@@ -23,7 +23,7 @@ describe('helpers file test', () => {
     const outputPath = path.resolve(`${process.cwd()}/public/output`)
     const anyContent = 'Any Content For Testing'
 
-    await createDirNotExist(outputPath)
+    createDirNotExist(outputPath)
     await writeFileStream(`${outputPath}/test.txt`, Buffer.from(anyContent))
 
     // Result Value from Write file
