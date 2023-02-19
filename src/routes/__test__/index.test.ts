@@ -39,6 +39,22 @@ describe('index routes test', () => {
     expect(response.status).toEqual(403)
   })
 
+  test('should docs swagger route', async () => {
+    const response = await request(app)
+      .get('/v1/api-docs')
+      .set('Accept', 'application/json')
+
+    expect(response.status).toEqual(301)
+  })
+
+  test('should docs swagger route json', async () => {
+    const response = await request(app)
+      .get('/v1/api-docs.json')
+      .set('Accept', 'application/json')
+
+    expect(response.status).toEqual(200)
+  })
+
   test('should any route', async () => {
     const response = await request(app)
       .get('/any-route')
