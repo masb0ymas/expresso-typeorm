@@ -3,6 +3,7 @@ import { i18nConfig } from '@config/i18n'
 import { winstonLogger, winstonStream } from '@config/logger'
 import StorageProvider from '@config/storage'
 import allowedOrigins from '@core/constants/allowedOrigins'
+import { optionsSwaggerUI, swaggerSpec } from '@core/helpers/docsSwagger'
 import { logServer } from '@core/helpers/formatter'
 import ResponseError from '@core/modules/response/ResponseError'
 import expressErrorResponse from '@middlewares/expressErrorResponse'
@@ -23,6 +24,7 @@ import i18nextMiddleware from 'i18next-http-middleware'
 import logger from 'morgan'
 import path from 'path'
 import requestIp from 'request-ip'
+import swaggerUI from 'swagger-ui-express'
 import indexRoutes from './routes'
 
 const optCors: cors.CorsOptions = {
@@ -40,6 +42,12 @@ class App {
     // enabled
     this.plugins()
     this.initialProvider()
+
+    // docs swagger disable for production mode
+    if (NODE_ENV !== 'production') {
+      this.docsSwagger()
+    }
+
     this.routes()
   }
 
@@ -73,6 +81,22 @@ class App {
 
     // initial storage
     void storage.initial()
+  }
+
+  /**
+   * Docs Swaggers
+   */
+  private docsSwagger(): void {
+    this.application.get('/v1/api-docs.json', (req: Request, res: Response) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.send(swaggerSpec)
+    })
+
+    this.application.use('/v1/api-docs', swaggerUI.serve)
+    this.application.get(
+      '/v1/api-docs',
+      swaggerUI.setup(swaggerSpec, optionsSwaggerUI)
+    )
   }
 
   /**
