@@ -4,13 +4,16 @@
   "description": "expresso typeorm, postgesql, redis, aws s3",
   "main": "server.ts",
   "scripts": {
-    "clean": "rm -rf ./dist",
+    "clean": "rimraf dist coverage",
     "typecheck": "tsc --noEmit",
     "lint": "npx eslint '*/**/*.{js,jsx,ts,tsx}' --quiet --fix",
     "prebuild": "npm-run-all clean lint typecheck",
     "build": "npx swc src -d dist",
     "start": "nodemon --exec node ./dist/server.js",
     "dev": "yarn && npm-run-all build start",
+    "db:sync": "npx typeorm schema:sync -d ./dist/database/data-source.js",
+    "db:drop": "npx typeorm schema:drop -d ./dist/database/data-source.js",
+    "db:reset": "yarn && npm-run-all db:drop db:sync",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },
@@ -107,6 +110,7 @@
     "jest": "^29.4.2",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.4",
+    "rimraf": "^4.1.2",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",
     "typescript": "^4.9.5"
