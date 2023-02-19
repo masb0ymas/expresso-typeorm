@@ -5,8 +5,8 @@ import _ from 'lodash'
 import path from 'path'
 import swaggerJSDoc from 'swagger-jsdoc'
 
-const baseRouteDocs = path.resolve(`${__dirname}/../docs/swagger/routes`)
-const baseSchemaDocs = path.resolve(`${__dirname}/../docs/swagger/schemas`)
+const baseRouteDocs = path.resolve(`${__dirname}/../docs/routes`)
+const baseSchemaDocs = path.resolve(`${__dirname}/../docs/schemas`)
 
 /**
  * Get Route Docs
