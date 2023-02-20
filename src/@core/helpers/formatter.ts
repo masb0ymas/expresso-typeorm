@@ -1,4 +1,8 @@
+import { i18nConfig } from '@config/i18n'
+import { type ReqOptions } from '@core/interface/ReqOptions'
+import ResponseError from '@core/modules/response/ResponseError'
 import chalk from 'chalk'
+import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { validate as uuidValidate } from 'uuid'
 
@@ -61,9 +65,12 @@ export function validateBoolean(value: any): boolean {
  * @param value
  * @returns
  */
-export function validateUUID(value: string): string {
+export function validateUUID(value: string, options?: ReqOptions): string {
+  const i18nOpt: string | TOptions = { lng: options?.lang }
+
   if (!uuidValidate(value)) {
-    throw new Error('incorrect uuid format')
+    const message = i18nConfig.t('errors.incorrect_UUID_format', i18nOpt)
+    throw new ResponseError.BadRequest(message)
   }
 
   return value

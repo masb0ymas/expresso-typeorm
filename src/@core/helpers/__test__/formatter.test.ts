@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@jest/globals'
+import { describe, test, expect, afterAll } from '@jest/globals'
 import {
   arrayFormatter,
   logErrServer,
@@ -10,6 +10,14 @@ import {
 } from '../formatter'
 
 describe('helpers formatter test', () => {
+  afterAll(async () => {
+    await new Promise<void>((resolve) =>
+      setTimeout(() => {
+        resolve()
+      }, 500)
+    ) // avoid jest open handle error
+  })
+
   test('should array formatter test from json parse', () => {
     const anyValue = '["any_1", "any_2"]'
     const expectValue = ['any_1', 'any_2']
@@ -62,7 +70,7 @@ describe('helpers formatter test', () => {
 
   test('should validate uuid with wrong value', () => {
     const anyValue = 'anyUUIDValue'
-    const expectValue = 'incorrect uuid format'
+    const expectValue = 'errors.incorrect_UUID_format'
 
     expect(() => validateUUID(anyValue)).toThrow(expectValue)
   })
