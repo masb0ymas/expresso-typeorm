@@ -3,7 +3,7 @@ import { BASE_URL_SERVER } from '@core/constants/baseURL'
 import { formatDateTime } from '@core/helpers/date'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import ResponseError from '@core/modules/response/ResponseError'
-// import v1Routes from '@routes/v1'
+import v1Routes from '@routes/v1'
 import Express, { type Request, type Response } from 'express'
 
 const route = Express.Router()
@@ -61,6 +61,6 @@ route.get('/v1', function (req: Request, res: Response) {
 })
 
 // Using Route v1
-// route.use('/v1', v1Routes)
+route.use('/v1', v1Routes)
 
 export default route

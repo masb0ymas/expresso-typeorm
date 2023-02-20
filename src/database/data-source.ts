@@ -22,7 +22,7 @@ export const AppDataSource = new DataSource({
   synchronize: TYPEORM_SYNCHRONIZE,
   logging: TYPEORM_LOGGING,
   migrationsRun: TYPEORM_MIGRATIONS_RUN,
-  entities: [`${process.cwd()}/dist/database/entities/**/*{.ts,.js}`],
-  migrations: [`${process.cwd()}/dist/database/migrations/**/*{.ts,.js}`],
-  subscribers: [`${process.cwd()}/dist/database/subscribers/**/*{.ts,.js}`],
+  entities: [`${process.cwd()}/dist/database/entities/**/*{.js,.ts}`],
+  migrations: [`${process.cwd()}/dist/database/migrations/**/*{.js,.ts}`],
+  subscribers: [`${process.cwd()}/dist/database/subscribers/**/*{.js,.ts}`],
 })
