@@ -7,7 +7,7 @@ import jwt, {
   TokenExpiredError,
 } from 'jsonwebtoken'
 import ms from 'ms'
-import { logErrServer } from './formatter'
+import { logErrServer, logServer } from './formatter'
 
 interface DtoGenerateToken {
   token: string
@@ -57,11 +57,13 @@ export function extractToken(req: Request): string | null {
 
   // extract from query
   if (query?.token) {
+    console.log(logServer('Auth', 'Extract from Query'))
     return query.token
   }
 
   // extract from cookie
   if (cookie?.token) {
+    console.log(logServer('Auth', 'Extract from Cookie'))
     return cookie?.token
   }
 
@@ -72,6 +74,7 @@ export function extractToken(req: Request): string | null {
 
     if (splitAuthorize.length === 2) {
       if (allowedAuthorize.includes(splitAuthorize[0])) {
+        console.log(logServer('Auth', 'Extract from Header Authorization'))
         return splitAuthorize[1]
       }
     }
@@ -99,7 +102,6 @@ export function verifyToken(token: string, secretKey?: string): DtoVerifyToken {
   } catch (err) {
     if (err instanceof TokenExpiredError) {
       const errType = 'jwt expired error'
-
       console.log(logErrServer(`${errType} :`, err.message))
 
       return { data: null, message: `${errType} : ${err.message}` }
@@ -107,7 +109,6 @@ export function verifyToken(token: string, secretKey?: string): DtoVerifyToken {
 
     if (err instanceof JsonWebTokenError) {
       const errType = 'jwt token error'
-
       console.log(logErrServer(`${errType} :`, err.message))
 
       return { data: null, message: `${errType} : ${err.message}` }
@@ -115,7 +116,6 @@ export function verifyToken(token: string, secretKey?: string): DtoVerifyToken {
 
     if (err instanceof NotBeforeError) {
       const errType = 'jwt not before error'
-
       console.log(logErrServer(`${errType} :`, err.message))
 
       return { data: null, message: `${errType} : ${err.message}` }
