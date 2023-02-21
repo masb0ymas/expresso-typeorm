@@ -29,7 +29,7 @@ class RoleService {
     const defaultLang = lang ?? APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
-    const query = roleRepository.createQueryBuilder('role')
+    const query = roleRepository.createQueryBuilder()
     const newQuery = useQuery({ entity: this.entity, query, req })
 
     const data = await newQuery.getMany()
