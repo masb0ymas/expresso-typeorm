@@ -11,6 +11,8 @@
     "build": "npx swc src -d dist",
     "start": "nodemon --exec node ./dist/server.js",
     "dev": "yarn && npm-run-all build start",
+    "db:create": "node ./dist/scripts/createDB.js",
+    "db:destroy": "node ./dist/scripts/dropDB.js",
     "db:sync": "npx typeorm schema:sync -d ./dist/database/data-source.js",
     "db:drop": "npx typeorm schema:drop -d ./dist/database/data-source.js",
     "db:reset": "yarn && npm-run-all db:drop db:sync",
@@ -64,6 +66,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.0",
     "typeorm": "^0.3.12",
+    "typeorm-extension": "^2.5.2",
     "uuid": "^9.0.0",
     "winston": "^3.8.2",
     "yup": "^1.0.0"
