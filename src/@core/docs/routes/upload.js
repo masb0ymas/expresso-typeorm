@@ -68,10 +68,10 @@ module.exports = {
       },
     },
   },
-  '/upload/s3/presign-url': {
+  '/upload/presign-url': {
     post: {
       tags: ['Upload'],
-      summary: 'Signed URL Upload from AWS S3',
+      summary: 'Presigned URL from Storage Provider',
       security: [
         {
           auth_token: [],
@@ -100,81 +100,7 @@ module.exports = {
       },
       responses: {
         201: {
-          description: 'Signed URL Upload from AWS S3',
-        },
-      },
-    },
-  },
-  '/upload/gcs/presign-url': {
-    post: {
-      tags: ['Upload'],
-      summary: 'Signed URL Upload from Google Cloud Storage',
-      security: [
-        {
-          auth_token: [],
-        },
-      ],
-      parameters: [
-        {
-          $ref: '#/components/parameters/lang',
-        },
-      ],
-      requestBody: {
-        required: true,
-        content: {
-          'application/x-www-form-urlencoded': {
-            schema: {
-              type: 'object',
-              properties: {
-                keyFile: {
-                  type: 'string',
-                },
-              },
-              required: ['keyFile'],
-            },
-          },
-        },
-      },
-      responses: {
-        201: {
-          description: 'Signed URL Upload from Google Cloud Storage',
-        },
-      },
-    },
-  },
-  '/upload/minio/presign-url': {
-    post: {
-      tags: ['Upload'],
-      summary: 'Signed URL Upload from MinIO',
-      security: [
-        {
-          auth_token: [],
-        },
-      ],
-      parameters: [
-        {
-          $ref: '#/components/parameters/lang',
-        },
-      ],
-      requestBody: {
-        required: true,
-        content: {
-          'application/x-www-form-urlencoded': {
-            schema: {
-              type: 'object',
-              properties: {
-                keyFile: {
-                  type: 'string',
-                },
-              },
-              required: ['keyFile'],
-            },
-          },
-        },
-      },
-      responses: {
-        201: {
-          description: 'Signed URL Upload from MinIO',
+          description: 'Presigned URL from Storage Provider',
         },
       },
     },

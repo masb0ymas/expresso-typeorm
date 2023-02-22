@@ -1,0 +1,221 @@
+import { APP_LANG } from '@config/env'
+import ConstRole from '@core/constants/ConstRole'
+import asyncHandler from '@core/helpers/asyncHandler'
+import { arrayFormatter } from '@core/helpers/formatter'
+import useMulter from '@core/hooks/useMulter'
+import { type FileAttributes } from '@core/interface/File'
+import HttpResponse from '@core/modules/response/HttpResponse'
+import authorization from '@middlewares/authorization'
+import permissionAccess from '@middlewares/permissionAccess'
+import route from '@routes/v1'
+import { type NextFunction, type Request, type Response } from 'express'
+import _ from 'lodash'
+import UploadService from './service'
+
+route.get(
+  '/upload',
+  authorization,
+  asyncHandler(async function findAll(req: Request, res: Response) {
+    const data = await UploadService.findAll(req)
+
+    const httpResponse = HttpResponse.get(data)
+    res.status(200).json(httpResponse)
+  })
+)
+
+route.get(
+  '/upload/:id',
+  authorization,
+  asyncHandler(async function findById(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
+    const { id } = req.getParams()
+    const data = await UploadService.findById(id, { lang: defaultLang })
+
+    const httpResponse = HttpResponse.get({ data })
+    res.status(200).json(httpResponse)
+  })
+)
+
+const uploadFile = useMulter({
+  dest: 'public/temp',
+}).fields([{ name: 'fileUpload', maxCount: 1 }])
+
+const setFileToBody = asyncHandler(async function setFileToBody(
+  req: Request,
+  res,
+  next: NextFunction
+) {
+  const fileUpload = req.pickSingleFieldMulter(['fileUpload'])
+
+  req.setBody(fileUpload)
+  next()
+})
+
+route.post(
+  '/upload',
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  uploadFile,
+  setFileToBody,
+  asyncHandler(async function create(req: Request, res: Response) {
+    const formData = req.getBody()
+
+    const fieldUpload = _.get(formData, 'fileUpload', {}) as FileAttributes
+
+    let data
+
+    if (!_.isEmpty(fieldUpload) && !_.isEmpty(fieldUpload.path)) {
+      const directory = formData.type ?? 'uploads'
+
+      data = await UploadService.uploadFile({
+        fieldUpload,
+        directory,
+      })
+    }
+
+    const httpResponse = HttpResponse.created({
+      data: data?.uploadResponse,
+      storage: data?.storageResponse,
+    })
+
+    res.status(201).json(httpResponse)
+  })
+)
+
+route.post(
+  '/upload/presign-url',
+  authorization,
+  asyncHandler(async function presignedURL(req: Request, res: Response) {
+    const formData = req.getBody()
+
+    const data = await UploadService.getPresignedURL(formData.keyFile)
+
+    const httpResponse = HttpResponse.updated({ data })
+    res.status(200).json(httpResponse)
+  })
+)
+
+route.put(
+  '/upload/:id',
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  asyncHandler(async function update(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
+    const { id } = req.getParams()
+    const formData = req.getBody()
+
+    const data = await UploadService.update(id, formData, { lang: defaultLang })
+
+    const httpResponse = HttpResponse.updated({ data })
+    res.status(200).json(httpResponse)
+  })
+)
+
+route.put(
+  '/upload/restore/:id',
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  asyncHandler(async function restore(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
+    const { id } = req.getParams()
+
+    await UploadService.restore(id, { lang: defaultLang })
+
+    const httpResponse = HttpResponse.updated({})
+    res.status(200).json(httpResponse)
+  })
+)
+
+route.delete(
+  '/upload/soft-delete/:id',
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  asyncHandler(async function softDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
+    const { id } = req.getParams()
+
+    await UploadService.softDelete(id, { lang: defaultLang })
+
+    const httpResponse = HttpResponse.deleted({})
+    res.status(200).json(httpResponse)
+  })
+)
+
+route.delete(
+  '/upload/force-delete/:id',
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  asyncHandler(async function forceDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
+    const { id } = req.getParams()
+
+    await UploadService.forceDelete(id, { lang: defaultLang })
+
+    const httpResponse = HttpResponse.deleted({})
+    res.status(200).json(httpResponse)
+  })
+)
+
+route.post(
+  '/upload/multiple/restore',
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  asyncHandler(async function multipleRestore(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
+    const formData = req.getBody()
+    const arrayIds = arrayFormatter(formData.ids)
+
+    await UploadService.multipleRestore(arrayIds, { lang: defaultLang })
+
+    const httpResponse = HttpResponse.updated({})
+    res.status(200).json(httpResponse)
+  })
+)
+
+route.post(
+  '/upload/multiple/soft-delete',
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
+    const formData = req.getBody()
+    const arrayIds = arrayFormatter(formData.ids)
+
+    await UploadService.multipleSoftDelete(arrayIds, { lang: defaultLang })
+
+    const httpResponse = HttpResponse.deleted({})
+    res.status(200).json(httpResponse)
+  })
+)
+
+route.post(
+  '/upload/multiple/force-delete',
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
+    const formData = req.getBody()
+    const arrayIds = arrayFormatter(formData.ids)
+
+    await UploadService.multipleForceDelete(arrayIds, { lang: defaultLang })
+
+    const httpResponse = HttpResponse.deleted({})
+    res.status(200).json(httpResponse)
+  })
+)
