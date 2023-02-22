@@ -11,24 +11,26 @@ import {
   Relation,
   Unique,
 } from 'typeorm'
-import { Base, IBaseEntity } from './Base'
+import { Base, type IBaseEntity } from './Base'
 import { Role } from './Role'
 import { Session } from './Session'
 import { Upload } from './Upload'
 
 interface UserEntity extends IBaseEntity {
-  deleted_at?: Date | null
+  deletedAt?: Date | null
   fullname: string
   email: string
-  new_password?: string | null
-  confirm_new_password?: string | null
   password?: string | null
   phone?: string | null
-  token_verify?: string | null
-  is_active?: boolean | null
-  is_blocked?: boolean | null
-  upload_id?: string | null
-  role_id: string
+  tokenVerify?: string | null
+  isActive?: boolean | null
+  isBlocked?: boolean | null
+  UploadId?: string | null
+  RoleId: string
+
+  // virtual
+  newPassword?: string | null
+  confirmNewPassword?: string | null
 }
 
 export interface UserLoginAttributes {
@@ -37,14 +39,14 @@ export interface UserLoginAttributes {
 
 export type CreatePassword = Pick<
   UserEntity,
-  'new_password' | 'confirm_new_password'
+  'newPassword' | 'confirmNewPassword'
 >
 
 export type LoginAttributes = Pick<UserEntity, 'email' | 'password'>
 
 export type UserAttributes = Omit<
   UserEntity,
-  'id' | 'created_at' | 'updated_at' | 'deleted_at'
+  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >
 
 @Entity()
@@ -52,7 +54,7 @@ export type UserAttributes = Omit<
 export class User extends Base {
   @Index()
   @DeleteDateColumn({ nullable: true })
-  deleted_at!: Date
+  deletedAt!: Date
 
   @Index()
   @Column()
@@ -70,29 +72,29 @@ export class User extends Base {
   phone!: string
 
   @Column({ type: 'text', nullable: true })
-  token_verify!: string
+  tokenVerify!: string
 
   @Index()
   @Column({ type: 'boolean', default: false })
-  is_active: boolean
+  isActive: boolean
 
   @Index()
   @Column({ type: 'boolean', default: false })
-  is_blocked: boolean
+  isBlocked: boolean
 
   @ManyToOne(() => Role, (role) => role)
-  @JoinColumn({ name: 'role_id' })
+  @JoinColumn({ name: 'RoleId' })
   Role: Relation<Role>
 
   @Column({ type: 'uuid' })
-  role_id: string
+  RoleId: string
 
   @ManyToOne(() => Upload, (upload) => upload)
-  @JoinColumn({ name: 'upload_id' })
+  @JoinColumn({ name: 'UploadId' })
   Upload: Upload
 
   @Column({ type: 'uuid', nullable: true })
-  upload_id!: string
+  UploadId!: string
 
   @OneToMany(() => Session, (Session) => Session.User)
   @JoinTable()

@@ -1,17 +1,17 @@
 import { APP_LANG } from '@config/env'
-import { i18nConfig } from '@config/i18nextConfig'
+import { i18nConfig } from '@config/i18n'
+import { validateEmpty, validateUUID } from '@core/helpers/formatter'
+import { optionsYup } from '@core/helpers/yup'
+import { useQuery } from '@core/hooks/useQuery'
+import { type DtoFindAll } from '@core/interface/Paginate'
+import { type ReqOptions } from '@core/interface/ReqOptions'
+import ResponseError from '@core/modules/response/ResponseError'
 import { AppDataSource } from '@database/data-source'
-import { User, UserAttributes } from '@database/entities/User'
-import { validateEmpty, validateUUID } from '@expresso/helpers/Formatter'
-import { optionsYup } from '@expresso/helpers/Validation'
-import { useQuery } from '@expresso/hooks/useQuery'
-import { DtoFindAll } from '@expresso/interfaces/Paginate'
-import { ReqOptions } from '@expresso/interfaces/ReqOptions'
-import ResponseError from '@expresso/modules/Response/ResponseError'
-import { Request } from 'express'
-import { TOptions } from 'i18next'
+import { User, type UserAttributes } from '@database/entities/User'
+import { type Request } from 'express'
+import { type TOptions } from 'i18next'
 import _ from 'lodash'
-import { SelectQueryBuilder } from 'typeorm'
+import { type SelectQueryBuilder } from 'typeorm'
 import userSchema from './schema'
 
 class UserService {
@@ -107,13 +107,13 @@ class UserService {
       ...data,
       ...value,
       phone: validateEmpty(value?.phone),
-      password: validateEmpty(value?.confirm_new_password),
+      password: validateEmpty(value?.confirmNewPassword),
     }
 
-    // @ts-expect-error
+    // @ts-expect-error: Unreachable code error
     const newData = await userRepository.save(newFormData)
 
-    // @ts-expect-error
+    // @ts-expect-error: Unreachable code error
     return newData
   }
 
@@ -146,13 +146,13 @@ class UserService {
       ...data,
       ...value,
       phone: validateEmpty(value?.phone),
-      password: validateEmpty(value?.confirm_new_password),
+      password: validateEmpty(value?.confirmNewPassword),
     }
 
-    // @ts-expect-error
+    // @ts-expect-error: Unreachable code error
     const newData = await userRepository.save(newFormData)
 
-    // @ts-expect-error
+    // @ts-expect-error: Unreachable code error
     return newData
   }
 

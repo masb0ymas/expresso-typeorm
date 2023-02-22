@@ -1,36 +1,36 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, Relation } from 'typeorm'
-import { Base, IBaseEntity } from './Base'
+import { Base, type IBaseEntity } from './Base'
 import { User } from './User'
 
 interface SessionEntity extends IBaseEntity {
-  user_id: string
+  UserId: string
   token: string
-  ip_address?: string | null
+  ipAddress?: string | null
   device?: string | null
   platform?: string | null
 }
 
 export type SessionAttributes = Omit<
   SessionEntity,
-  'id' | 'created_at' | 'updated_at'
+  'id' | 'createdAt' | 'updatedAt'
 >
 
 @Entity()
 export class Session extends Base {
   @ManyToOne(() => User, (User) => User.Sessions)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'UserId' })
   User: Relation<User>
 
   @Index()
   @Column({ type: 'uuid' })
-  user_id: string
+  UserId: string
 
   @Index()
   @Column({ type: 'text' })
   token: string
 
   @Column({ nullable: true })
-  ip_address!: string
+  ipAddress!: string
 
   @Column({ nullable: true })
   device!: string

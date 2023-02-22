@@ -1,4 +1,4 @@
-import { getRoutes } from '@expresso/helpers/Routing'
+import { getRoutes } from '@core/helpers/routing'
 import Express from 'express'
 import path from 'path'
 

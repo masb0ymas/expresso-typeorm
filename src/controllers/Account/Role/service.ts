@@ -1,17 +1,17 @@
 import { APP_LANG } from '@config/env'
-import { i18nConfig } from '@config/i18nextConfig'
+import { i18nConfig } from '@config/i18n'
+import { validateUUID } from '@core/helpers/formatter'
+import { optionsYup } from '@core/helpers/yup'
+import { useQuery } from '@core/hooks/useQuery'
+import { type DtoFindAll } from '@core/interface/Paginate'
+import { type ReqOptions } from '@core/interface/ReqOptions'
+import ResponseError from '@core/modules/response/ResponseError'
 import { AppDataSource } from '@database/data-source'
-import { Role, RoleAttributes } from '@database/entities/Role'
-import { validateUUID } from '@expresso/helpers/Formatter'
-import { optionsYup } from '@expresso/helpers/Validation'
-import { useQuery } from '@expresso/hooks/useQuery'
-import { DtoFindAll } from '@expresso/interfaces/Paginate'
-import { ReqOptions } from '@expresso/interfaces/ReqOptions'
-import ResponseError from '@expresso/modules/Response/ResponseError'
-import { Request } from 'express'
-import { TOptions } from 'i18next'
+import { Role, type RoleAttributes } from '@database/entities/Role'
+import { type Request } from 'express'
+import { type TOptions } from 'i18next'
 import _ from 'lodash'
-import { SelectQueryBuilder } from 'typeorm'
+import { type SelectQueryBuilder } from 'typeorm'
 import roleSchema from './schema'
 
 class RoleService {
@@ -29,7 +29,7 @@ class RoleService {
     const defaultLang = lang ?? APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
-    const query = roleRepository.createQueryBuilder('role')
+    const query = roleRepository.createQueryBuilder()
     const newQuery = useQuery({ entity: this.entity, query, req })
 
     const data = await newQuery.getMany()

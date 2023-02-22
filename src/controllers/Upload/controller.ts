@@ -1,21 +1,20 @@
-import ConstRole from '@expresso/constants/ConstRole'
-import asyncHandler from '@expresso/helpers/asyncHandler'
-import { deleteFile } from '@expresso/helpers/File'
-import { arrayFormatter } from '@expresso/helpers/Formatter'
-import useMulter from '@expresso/hooks/useMulter'
-import { FileAttributes } from '@expresso/interfaces/Files'
-import HttpResponse from '@expresso/modules/Response/HttpResponse'
-import ResponseError from '@expresso/modules/Response/ResponseError'
-import Authorization from '@middlewares/Authorization'
-import PermissionAccess from '@middlewares/PermissionAccess'
+import { APP_LANG } from '@config/env'
+import ConstRole from '@core/constants/ConstRole'
+import asyncHandler from '@core/helpers/asyncHandler'
+import { arrayFormatter } from '@core/helpers/formatter'
+import useMulter from '@core/hooks/useMulter'
+import { type FileAttributes } from '@core/interface/File'
+import HttpResponse from '@core/modules/response/HttpResponse'
+import authorization from '@middlewares/authorization'
+import permissionAccess from '@middlewares/permissionAccess'
 import route from '@routes/v1'
-import { NextFunction, Request, Response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 import _ from 'lodash'
 import UploadService from './service'
 
 route.get(
   '/upload',
-  Authorization,
+  authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
     const data = await UploadService.findAll(req)
 
@@ -26,60 +25,21 @@ route.get(
 
 route.get(
   '/upload/:id',
-  Authorization,
+  authorization,
   asyncHandler(async function findById(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
-    const data = await UploadService.findById(id)
+    const data = await UploadService.findById(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.get({ data })
     res.status(200).json(httpResponse)
   })
 )
 
-route.post(
-  '/upload/s3/presign-url',
-  Authorization,
-  asyncHandler(async function findById(req: Request, res: Response) {
-    const { keyFile } = req.getBody()
-
-    // Signed URL to S3 Bucket
-    const signedUrl = await UploadService.getSignedUrlS3(keyFile)
-
-    const httpResponse = HttpResponse.get({ data: signedUrl })
-    res.status(200).json(httpResponse)
-  })
-)
-
-route.post(
-  '/upload/gcs/presign-url',
-  Authorization,
-  asyncHandler(async function findById(req: Request, res: Response) {
-    const { keyFile } = req.getBody()
-
-    // Signed URL to GCS Bucket
-    const signedUrl = await UploadService.getSignedUrlGCS(keyFile)
-
-    const httpResponse = HttpResponse.get({ data: signedUrl })
-    res.status(200).json(httpResponse)
-  })
-)
-
-route.post(
-  '/upload/minio/presign-url',
-  Authorization,
-  asyncHandler(async function findById(req: Request, res: Response) {
-    const { keyFile } = req.getBody()
-
-    // Signed URL to MinIO Bucket
-    const signedUrl = await UploadService.getSignedUrlMinIO(keyFile)
-
-    const httpResponse = HttpResponse.get({ data: signedUrl })
-    res.status(200).json(httpResponse)
-  })
-)
-
 const uploadFile = useMulter({
-  dest: 'public/upload/temp',
+  dest: 'public/temp',
 }).fields([{ name: 'fileUpload', maxCount: 1 }])
 
 const setFileToBody = asyncHandler(async function setFileToBody(
@@ -95,7 +55,8 @@ const setFileToBody = asyncHandler(async function setFileToBody(
 
 route.post(
   '/upload',
-  Authorization,
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   uploadFile,
   setFileToBody,
   asyncHandler(async function create(req: Request, res: Response) {
@@ -103,151 +64,68 @@ route.post(
 
     const fieldUpload = _.get(formData, 'fileUpload', {}) as FileAttributes
 
-    let aws_s3_data
-    let gcs_data
-    let minio_data
-    let upload_data
+    let data
 
-    // Upload to AWS S3
     if (!_.isEmpty(fieldUpload) && !_.isEmpty(fieldUpload.path)) {
-      const directory = formData.type ?? 'upload'
+      const directory = formData.type ?? 'uploads'
 
-      if (_.isEmpty(formData.provider)) {
-        throw new ResponseError.BadRequest('please choose upload provider')
-      }
-
-      // Upload to AWS S3
-      if (formData.provider === 's3') {
-        const resUpload = await UploadService.uploadFileS3WithSignedUrl({
-          fieldUpload,
-          directory,
-        })
-
-        aws_s3_data = resUpload.aws_s3_data
-        upload_data = resUpload.upload_data
-      }
-
-      // Upload to Google Cloud Storage
-      if (formData.provider === 'gcs') {
-        const resUpload = await UploadService.uploadFileGCSWithSignedUrl({
-          fieldUpload,
-          directory,
-        })
-
-        gcs_data = resUpload.gcs_data
-        upload_data = resUpload.upload_data
-      }
-
-      // Upload to MinIO
-      if (formData.provider === 'minio') {
-        const resUpload = await UploadService.uploadFileMinIOWithSignedUrl({
-          fieldUpload,
-          directory,
-        })
-
-        minio_data = resUpload.minio_data
-        upload_data = resUpload.upload_data
-      }
-
-      deleteFile(fieldUpload.path)
+      data = await UploadService.uploadFile({
+        fieldUpload,
+        directory,
+      })
     }
 
     const httpResponse = HttpResponse.created({
-      data: upload_data,
-      s3: aws_s3_data,
-      gcs: gcs_data,
-      minio: minio_data,
+      data: data?.uploadResponse,
+      storage: data?.storageResponse,
     })
+
     res.status(201).json(httpResponse)
+  })
+)
+
+route.post(
+  '/upload/presign-url',
+  authorization,
+  asyncHandler(async function presignedURL(req: Request, res: Response) {
+    const formData = req.getBody()
+
+    const data = await UploadService.getPresignedURL(formData.keyFile)
+
+    const httpResponse = HttpResponse.updated({ data })
+    res.status(200).json(httpResponse)
   })
 )
 
 route.put(
   '/upload/:id',
-  Authorization,
-  uploadFile,
-  setFileToBody,
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function update(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
     const formData = req.getBody()
 
-    const fieldUpload = _.get(formData, 'fileUpload', {}) as FileAttributes
+    const data = await UploadService.update(id, formData, { lang: defaultLang })
 
-    let aws_s3_data
-    let gcs_data
-    let minio_data
-    let upload_data
-
-    // Upload to AWS S3
-    if (!_.isEmpty(fieldUpload) && !_.isEmpty(fieldUpload.path)) {
-      const directory = formData.type ?? 'upload'
-
-      if (_.isEmpty(formData.provider)) {
-        throw new ResponseError.BadRequest('please choose upload provider')
-      }
-
-      // Upload to AWS S3
-      if (formData.provider === 's3') {
-        const resUpload = await UploadService.uploadFileS3WithSignedUrl({
-          fieldUpload,
-          directory,
-          UploadId: id,
-        })
-
-        aws_s3_data = resUpload.aws_s3_data
-        upload_data = resUpload.upload_data
-      }
-
-      // Upload to Google Cloud Storage
-      if (formData.provider === 'gcs') {
-        const resUpload = await UploadService.uploadFileGCSWithSignedUrl({
-          fieldUpload,
-          directory,
-          UploadId: id,
-        })
-
-        gcs_data = resUpload.gcs_data
-        upload_data = resUpload.upload_data
-      }
-
-      // Upload to MinIO
-      if (formData.provider === 'minio') {
-        const resUpload = await UploadService.uploadFileMinIOWithSignedUrl({
-          fieldUpload,
-          directory,
-          UploadId: id,
-        })
-
-        minio_data = resUpload.minio_data
-        upload_data = resUpload.upload_data
-      }
-
-      deleteFile(fieldUpload.path)
-    } else {
-      // get upload file
-      const getUpload = await UploadService.findById(id)
-
-      upload_data = getUpload
-    }
-
-    const httpResponse = HttpResponse.updated({
-      data: upload_data,
-      s3: aws_s3_data,
-      gcs: gcs_data,
-      minio: minio_data,
-    })
+    const httpResponse = HttpResponse.updated({ data })
     res.status(200).json(httpResponse)
   })
 )
 
 route.put(
   '/upload/restore/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function restore(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
 
-    await UploadService.restore(id)
+    await UploadService.restore(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.updated({})
     res.status(200).json(httpResponse)
@@ -256,12 +134,15 @@ route.put(
 
 route.delete(
   '/upload/soft-delete/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function softDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
 
-    await UploadService.softDelete(id)
+    await UploadService.softDelete(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
@@ -270,12 +151,15 @@ route.delete(
 
 route.delete(
   '/upload/force-delete/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function forceDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const { id } = req.getParams()
 
-    await UploadService.forceDelete(id)
+    await UploadService.forceDelete(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
@@ -284,13 +168,16 @@ route.delete(
 
 route.post(
   '/upload/multiple/restore',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UploadService.multipleRestore(arrayIds)
+    await UploadService.multipleRestore(arrayIds, { lang: defaultLang })
 
     const httpResponse = HttpResponse.updated({})
     res.status(200).json(httpResponse)
@@ -299,13 +186,16 @@ route.post(
 
 route.post(
   '/upload/multiple/soft-delete',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UploadService.multipleSoftDelete(arrayIds)
+    await UploadService.multipleSoftDelete(arrayIds, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
@@ -314,13 +204,16 @@ route.post(
 
 route.post(
   '/upload/multiple/force-delete',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UploadService.multipleForceDelete(arrayIds)
+    await UploadService.multipleForceDelete(arrayIds, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)

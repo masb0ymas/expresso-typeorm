@@ -9,8 +9,8 @@ RUN apk add --update --no-cache curl py-pip
 RUN apk add --no-cache make python3 g++ gcc libgcc libstdc++
 RUN npm install --quiet node-gyp -g
 
-# install for sharp library
-RUN apk add --update --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community --repository http://dl-3.alpinelinux.org/alpine/edge/main vips-dev
+# Installing libvips-dev for sharp Compatibility
+RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev
 
 # Set the Temp Working Directory inside the container
 WORKDIR /temp-deps
@@ -71,8 +71,8 @@ COPY --from=build_base /temp-build/tsconfig.json ./tsconfig.json
 COPY --from=build_base /temp-build/.swcrc ./.swcrc
 COPY --from=build_base /temp-build/logs ./logs
 COPY --from=build_base /temp-build/dist ./dist
-COPY --from=build_base /temp-build/src ./src
 COPY --from=build_base /temp-build/.env ./.env
+# COPY --from=build_base /temp-build/src ./src
 
 # initial app
 RUN node ./dist/scripts/generate.js

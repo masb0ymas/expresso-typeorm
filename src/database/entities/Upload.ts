@@ -1,30 +1,30 @@
 import { Column, DeleteDateColumn, Entity, Index } from 'typeorm'
-import { Base, IBaseEntity } from './Base'
+import { Base, type IBaseEntity } from './Base'
 
 interface UploadEntity extends IBaseEntity {
-  deleted_at?: Date | null
-  key_file: string
+  deletedAt?: Date | null
+  keyFile: string
   filename: string
   mimetype: string
   size: number
-  signed_url: string
-  expiry_date_url: Date
+  signedURL: string
+  expiryDateURL: Date
 }
 
 export type UploadAttributes = Omit<
   UploadEntity,
-  'id' | 'created_at' | 'updated_at' | 'deleted_at'
+  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >
 
 @Entity()
 export class Upload extends Base {
   @Index()
   @DeleteDateColumn({ nullable: true })
-  deleted_at!: Date
+  deletedAt!: Date
 
   @Index()
   @Column({ type: 'text' })
-  key_file: string
+  keyFile: string
 
   @Column({ type: 'text' })
   filename: string
@@ -36,9 +36,9 @@ export class Upload extends Base {
   size: number
 
   @Column({ type: 'text' })
-  signed_url: string
+  signedURL: string
 
   @Index()
   @Column()
-  expiry_date_url: Date
+  expiryDateURL: Date
 }

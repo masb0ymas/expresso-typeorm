@@ -1,8 +1,8 @@
+import ConstRole from '@core/constants/ConstRole'
 import { AppDataSource } from '@database/data-source'
 import { User } from '@database/entities/User'
-import ConstRole from '@expresso/constants/ConstRole'
 import _ from 'lodash'
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import { type MigrationInterface, type QueryRunner } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 
 const defaultPass = 'Padang123'
@@ -11,17 +11,17 @@ const data = [
   {
     fullname: 'Super Admin',
     email: 'super.admin@mail.com',
-    role_id: ConstRole.ID_SUPER_ADMIN,
+    RoleId: ConstRole.ID_SUPER_ADMIN,
   },
   {
     fullname: 'Admin',
     email: 'admin@mail.com',
-    role_id: ConstRole.ID_ADMIN,
+    RoleId: ConstRole.ID_ADMIN,
   },
   {
     fullname: 'User',
     email: 'user@mail.com',
-    role_id: ConstRole.ID_USER,
+    RoleId: ConstRole.ID_USER,
   },
 ]
 
@@ -34,10 +34,10 @@ if (!_.isEmpty(data)) {
     formData.push({
       ...item,
       id: uuidv4(),
-      is_active: true,
+      isActive: true,
       password: defaultPass,
-      created_at: new Date(),
-      updated_at: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     })
   }
 }

@@ -1,14 +1,14 @@
 import { APP_LANG } from '@config/env'
-import asyncHandler from '@expresso/helpers/asyncHandler'
-import HttpResponse from '@expresso/modules/Response/HttpResponse'
-import Authorization from '@middlewares/Authorization'
+import asyncHandler from '@core/helpers/asyncHandler'
+import HttpResponse from '@core/modules/response/HttpResponse'
+import authorization from '@middlewares/authorization'
 import route from '@routes/v1'
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 import SessionService from './service'
 
 route.get(
   '/session',
-  Authorization,
+  authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
     const data = await SessionService.findAll(req)
 
@@ -19,7 +19,7 @@ route.get(
 
 route.get(
   '/session/:id',
-  Authorization,
+  authorization,
   asyncHandler(async function findById(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -34,7 +34,7 @@ route.get(
 
 route.post(
   '/session',
-  Authorization,
+  authorization,
   asyncHandler(async function create(req: Request, res: Response) {
     const formData = req.getBody()
     const data = await SessionService.create(formData)
@@ -46,7 +46,7 @@ route.post(
 
 route.delete(
   '/session/:id',
-  Authorization,
+  authorization,
   asyncHandler(async function forceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG

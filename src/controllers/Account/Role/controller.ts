@@ -1,17 +1,17 @@
 import { APP_LANG } from '@config/env'
-import ConstRole from '@expresso/constants/ConstRole'
-import asyncHandler from '@expresso/helpers/asyncHandler'
-import { arrayFormatter } from '@expresso/helpers/Formatter'
-import HttpResponse from '@expresso/modules/Response/HttpResponse'
-import Authorization from '@middlewares/Authorization'
-import PermissionAccess from '@middlewares/PermissionAccess'
+import ConstRole from '@core/constants/ConstRole'
+import asyncHandler from '@core/helpers/asyncHandler'
+import { arrayFormatter } from '@core/helpers/formatter'
+import HttpResponse from '@core/modules/response/HttpResponse'
+import authorization from '@middlewares/authorization'
+import permissionAccess from '@middlewares/permissionAccess'
 import route from '@routes/v1'
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 import RoleService from './service'
 
 route.get(
   '/role',
-  Authorization,
+  authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
     const data = await RoleService.findAll(req)
 
@@ -22,7 +22,7 @@ route.get(
 
 route.get(
   '/role/:id',
-  Authorization,
+  authorization,
   asyncHandler(async function findById(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -37,8 +37,8 @@ route.get(
 
 route.post(
   '/role',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function create(req: Request, res: Response) {
     const formData = req.getBody()
     const data = await RoleService.create(formData)
@@ -50,8 +50,8 @@ route.post(
 
 route.put(
   '/role/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function update(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -68,8 +68,8 @@ route.put(
 
 route.put(
   '/role/restore/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function restore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -85,8 +85,8 @@ route.put(
 
 route.delete(
   '/role/soft-delete/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function softDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -102,8 +102,8 @@ route.delete(
 
 route.delete(
   '/role/force-delete/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function forceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -119,8 +119,8 @@ route.delete(
 
 route.post(
   '/role/multiple/restore',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -137,8 +137,8 @@ route.post(
 
 route.post(
   '/role/multiple/soft-delete',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -155,8 +155,8 @@ route.post(
 
 route.post(
   '/role/multiple/force-delete',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG

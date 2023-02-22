@@ -1,8 +1,8 @@
+import ConstRole from '@core/constants/ConstRole'
 import { AppDataSource } from '@database/data-source'
 import { Role } from '@database/entities/Role'
-import ConstRole from '@expresso/constants/ConstRole'
 import _ from 'lodash'
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import { type MigrationInterface, type QueryRunner } from 'typeorm'
 
 const data = [
   {
@@ -27,8 +27,8 @@ if (!_.isEmpty(data)) {
 
     formData.push({
       ...item,
-      created_at: new Date(),
-      updated_at: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     })
   }
 }

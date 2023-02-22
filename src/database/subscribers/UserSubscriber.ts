@@ -2,10 +2,10 @@ import { User } from '@database/entities/User'
 import * as bcrypt from 'bcrypt'
 import _ from 'lodash'
 import {
-  EntitySubscriberInterface,
+  type EntitySubscriberInterface,
   EventSubscriber,
-  InsertEvent,
-  UpdateEvent,
+  type InsertEvent,
+  type UpdateEvent,
 } from 'typeorm'
 
 const saltRound = 10
@@ -30,8 +30,8 @@ export class UserSubscriber implements EntitySubscriberInterface<any> {
     // check entity from request
     if (!_.isEmpty(event.entity?.password)) {
       if (event.entity?.password !== event.databaseEntity?.password) {
-        // @ts-expect-error
-        await this.hashPassword(event.entity)
+        // @ts-expect-error: Unreachable code error
+        await this.hashPassword(event?.entity)
       }
     }
   }

@@ -9,8 +9,8 @@ import {
 
 export interface IBaseEntity {
   id?: string
-  created_at: Date
-  updated_at: Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 @Entity()
@@ -21,8 +21,8 @@ export abstract class Base extends BaseEntity {
 
   @Index()
   @CreateDateColumn({ nullable: false })
-  created_at!: Date
+  createdAt!: Date
 
   @UpdateDateColumn({ nullable: false })
-  updated_at!: Date
+  updatedAt!: Date
 }

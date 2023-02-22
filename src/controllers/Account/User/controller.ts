@@ -1,17 +1,17 @@
 import { APP_LANG } from '@config/env'
-import ConstRole from '@expresso/constants/ConstRole'
-import asyncHandler from '@expresso/helpers/asyncHandler'
-import { arrayFormatter } from '@expresso/helpers/Formatter'
-import HttpResponse from '@expresso/modules/Response/HttpResponse'
-import Authorization from '@middlewares/Authorization'
-import PermissionAccess from '@middlewares/PermissionAccess'
+import ConstRole from '@core/constants/ConstRole'
+import asyncHandler from '@core/helpers/asyncHandler'
+import { arrayFormatter } from '@core/helpers/formatter'
+import HttpResponse from '@core/modules/response/HttpResponse'
+import authorization from '@middlewares/authorization'
+import permissionAccess from '@middlewares/permissionAccess'
 import route from '@routes/v1'
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 import UserService from './service'
 
 route.get(
   '/user',
-  Authorization,
+  authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
     const data = await UserService.findAll(req)
 
@@ -22,7 +22,7 @@ route.get(
 
 route.get(
   '/user/:id',
-  Authorization,
+  authorization,
   asyncHandler(async function findById(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -37,8 +37,8 @@ route.get(
 
 route.post(
   '/user',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function create(req: Request, res: Response) {
     const formData = req.getBody()
 
@@ -51,8 +51,8 @@ route.post(
 
 route.put(
   '/user/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function udpate(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -69,14 +69,13 @@ route.put(
 
 route.put(
   '/user/restore/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function restore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
     const { id } = req.getParams()
-
     await UserService.restore(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.updated({})
@@ -86,14 +85,13 @@ route.put(
 
 route.delete(
   '/user/soft-delete/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function softDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
     const { id } = req.getParams()
-
     await UserService.softDelete(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
@@ -103,14 +101,13 @@ route.delete(
 
 route.delete(
   '/user/force-delete/:id',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function forceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
     const { id } = req.getParams()
-
     await UserService.forceDelete(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
@@ -120,8 +117,8 @@ route.delete(
 
 route.post(
   '/user/multiple/restore',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -138,8 +135,8 @@ route.post(
 
 route.post(
   '/user/multiple/soft-delete',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
@@ -156,8 +153,8 @@ route.post(
 
 route.post(
   '/user/multiple/force-delete',
-  Authorization,
-  PermissionAccess(ConstRole.ROLE_ADMIN),
+  authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG

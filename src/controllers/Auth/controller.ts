@@ -1,16 +1,16 @@
 import { APP_LANG } from '@config/env'
-import { i18nConfig } from '@config/i18nextConfig'
+import { i18nConfig } from '@config/i18n'
 import SessionService from '@controllers/Account/Session/service'
-import { UserLoginAttributes } from '@database/entities/User'
-import asyncHandler from '@expresso/helpers/asyncHandler'
-import { currentToken } from '@expresso/helpers/Token'
-import userAgentHelper from '@expresso/helpers/userAgent'
-import HttpResponse from '@expresso/modules/Response/HttpResponse'
-import ResponseError from '@expresso/modules/Response/ResponseError'
-import Authorization from '@middlewares/Authorization'
+import asyncHandler from '@core/helpers/asyncHandler'
+import { extractToken } from '@core/helpers/token'
+import { type DtoUserAgent } from '@core/interface/UserAgent'
+import HttpResponse from '@core/modules/response/HttpResponse'
+import ResponseError from '@core/modules/response/ResponseError'
+import { type UserLoginAttributes } from '@database/entities/User'
+import authorization from '@middlewares/authorization'
 import route from '@routes/v1'
-import { Request, Response } from 'express'
-import { TOptions } from 'i18next'
+import { type Request, type Response } from 'express'
+import { type TOptions } from 'i18next'
 import AuthService from './service'
 
 route.post(
@@ -36,6 +36,7 @@ route.post(
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
+    const userAgent = req.getState('userAgent') as DtoUserAgent
     const formData = req.getBody()
 
     const data = await AuthService.signIn(formData, { lang: defaultLang })
@@ -43,11 +44,11 @@ route.post(
 
     // create session
     await SessionService.createOrUpdate({
-      user_id: String(data.user.uid),
+      UserId: String(data.user.uid),
       token: data.accessToken,
-      ip_address: req.clientIp?.replace('::ffff:', ''),
-      device: userAgentHelper.currentDevice(req),
-      platform: userAgentHelper.currentPlatform(req),
+      ipAddress: req.clientIp?.replace('::ffff:', ''),
+      device: userAgent.os,
+      platform: userAgent.platform,
     })
 
     res
@@ -64,15 +65,15 @@ route.post(
 
 route.get(
   '/auth/verify-session',
-  Authorization,
+  authorization,
   asyncHandler(async function verifySession(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
-    const getToken = currentToken(req)
+    const token = extractToken(req)
     const userLogin = req.getState('userLogin') as UserLoginAttributes
 
-    const data = await AuthService.verifySession(userLogin.uid, getToken, {
+    const data = await AuthService.verifySession(userLogin.uid, String(token), {
       lang: defaultLang,
     })
 
@@ -83,22 +84,23 @@ route.get(
 
 route.post(
   '/logout',
-  Authorization,
+  authorization,
   asyncHandler(async function logout(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
     const formData = req.getBody()
-    const getToken = currentToken(req)
+    const token = extractToken(req)
     const userLogin = req.getState('userLogin') as UserLoginAttributes
 
+    // check user login not same user id at formData
     if (userLogin.uid !== formData.UserId) {
       const message = i18nConfig.t('errors.invalid_user_login', i18nOpt)
       throw new ResponseError.BadRequest(message)
     }
 
-    const message = await AuthService.logout(userLogin.uid, getToken, {
+    const message = await AuthService.logout(userLogin.uid, String(token), {
       lang: defaultLang,
     })
 

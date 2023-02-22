@@ -1,26 +1,26 @@
 import { MAIL_PASSWORD, MAIL_USERNAME } from '@config/env'
-import { i18nConfig } from '@config/i18nextConfig'
+import { i18nConfig } from '@config/i18n'
 import SessionService from '@controllers/Account/Session/service'
 import userSchema from '@controllers/Account/User/schema'
 import UserService from '@controllers/Account/User/service'
+import ConstRole from '@core/constants/ConstRole'
+import { validateEmpty } from '@core/helpers/formatter'
+import SendMail from '@core/helpers/sendMails'
+import { generateToken, verifyToken } from '@core/helpers/token'
+import { optionsYup } from '@core/helpers/yup'
+import { type ReqOptions } from '@core/interface/ReqOptions'
+import ResponseError from '@core/modules/response/ResponseError'
 import { AppDataSource } from '@database/data-source'
 import {
-  LoginAttributes,
   User,
-  UserAttributes,
-  UserLoginAttributes,
+  type LoginAttributes,
+  type UserAttributes,
+  type UserLoginAttributes,
 } from '@database/entities/User'
-import ConstRole from '@expresso/constants/ConstRole'
-import { validateEmpty } from '@expresso/helpers/Formatter'
-import SendMail from '@expresso/helpers/SendMail'
-import { generateAccessToken, verifyAccessToken } from '@expresso/helpers/Token'
-import { optionsYup } from '@expresso/helpers/Validation'
-import { ReqOptions } from '@expresso/interfaces/ReqOptions'
-import ResponseError from '@expresso/modules/Response/ResponseError'
-import { TOptions } from 'i18next'
+import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
-import { DtoLogin } from './interface'
+import { type DtoLogin } from './interface'
 
 class AuthService {
   /**
@@ -29,45 +29,44 @@ class AuthService {
    * @returns
    */
   public static async signUp(formData: UserAttributes): Promise<User> {
-    const userRepository = AppDataSource.getRepository(User)
-    const randomToken = generateAccessToken({ uuid: uuidv4() })
+    const userRepository = AppDataSource.manager.getRepository(User)
+
+    const uid = uuidv4()
+    const { token } = generateToken({ token: uid })
 
     const newFormData = {
       ...formData,
-      token_verify: randomToken.accessToken,
-      role_id: ConstRole.ID_USER,
+      isActive: false,
+      phone: validateEmpty(formData.phone),
+      tokenVerify: token,
+      RoleId: ConstRole.ID_USER,
     }
 
     const value = userSchema.register.validateSync(newFormData, optionsYup)
 
-    const formRegistration = {
+    const formRegister: any = {
       ...value,
-      phone: validateEmpty(formData.phone),
-      password: value.confirm_new_password,
+      password: value.confirmNewPassword,
     }
 
     const data = new User()
+    const newData = await userRepository.save({ ...data, ...formRegister })
 
-    // @ts-expect-error
-    const newData = await userRepository.save({ ...data, ...formRegistration })
-
-    // check if exist mail_username & mail_password
+    // send mail if mail username & password exists
     if (MAIL_USERNAME && MAIL_PASSWORD) {
-      // send email notification
-      SendMail.AccountRegistration({
-        email: value.email,
-        fullName: value.fullname,
-        token: randomToken.accessToken,
+      await SendMail.AccountRegistration({
+        email: formData.email,
+        fullname: formData.fullname,
       })
     }
 
-    // @ts-expect-error
     return newData
   }
 
   /**
    *
    * @param formData
+   * @param options
    * @returns
    */
   public static async signIn(
@@ -80,7 +79,7 @@ class AuthService {
     const value = userSchema.login.validateSync(formData, optionsYup)
 
     const getUser = await userRepository.findOne({
-      select: ['id', 'fullname', 'email', 'is_active', 'password', 'role_id'],
+      select: ['id', 'fullname', 'email', 'isActive', 'password', 'RoleId'],
       where: { email: value.email },
     })
 
@@ -91,7 +90,7 @@ class AuthService {
     }
 
     // check active account
-    if (!getUser.is_active) {
+    if (!getUser.isActive) {
       const message = i18nConfig.t('errors.please_check_your_email', i18nOpt)
       throw new ResponseError.BadRequest(message)
     }
@@ -105,13 +104,14 @@ class AuthService {
     }
 
     const payloadToken = { uid: getUser.id }
-    const accessToken = generateAccessToken(payloadToken)
+    const { token, expiresIn } = generateToken(payloadToken)
 
     const message = i18nConfig.t('success.login', i18nOpt)
 
     const newData = {
       message,
-      ...accessToken,
+      accessToken: token,
+      expiresIn,
       tokenType: 'Bearer',
       user: payloadToken,
       fullname: getUser.fullname,
@@ -133,9 +133,9 @@ class AuthService {
     options?: ReqOptions
   ): Promise<User | null> {
     const getSession = await SessionService.findByUserToken(UserId, token)
-    const verifyToken = verifyAccessToken(getSession.token)
+    const validateToken = verifyToken(getSession.token)
 
-    const userToken = verifyToken?.data as UserLoginAttributes
+    const userToken = validateToken?.data as UserLoginAttributes
 
     if (!_.isEmpty(userToken.uid)) {
       const getUser = await UserService.findById(userToken.uid, { ...options })
@@ -169,5 +169,4 @@ class AuthService {
     return message
   }
 }
-
 export default AuthService

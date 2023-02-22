@@ -1,16 +1,16 @@
 import { APP_LANG } from '@config/env'
-import { i18nConfig } from '@config/i18nextConfig'
+import { i18nConfig } from '@config/i18n'
+import { validateUUID } from '@core/helpers/formatter'
+import { optionsYup } from '@core/helpers/yup'
+import { useQuery } from '@core/hooks/useQuery'
+import { type DtoFindAll } from '@core/interface/Paginate'
+import { type ReqOptions } from '@core/interface/ReqOptions'
+import ResponseError from '@core/modules/response/ResponseError'
 import { AppDataSource } from '@database/data-source'
-import { Session, SessionAttributes } from '@database/entities/Session'
-import { validateUUID } from '@expresso/helpers/Formatter'
-import { optionsYup } from '@expresso/helpers/Validation'
-import { useQuery } from '@expresso/hooks/useQuery'
-import { DtoFindAll } from '@expresso/interfaces/Paginate'
-import { ReqOptions } from '@expresso/interfaces/ReqOptions'
-import ResponseError from '@expresso/modules/Response/ResponseError'
+import { Session, type SessionAttributes } from '@database/entities/Session'
 import { subDays } from 'date-fns'
-import { Request } from 'express'
-import { TOptions } from 'i18next'
+import { type Request } from 'express'
+import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { LessThanOrEqual } from 'typeorm'
 import sessionSchema from './schema'
@@ -68,20 +68,20 @@ class SessionService {
 
   /**
    *
-   * @param user_id
+   * @param UserId
    * @param token
    * @param options
    * @returns
    */
   public static async findByUserToken(
-    user_id: string,
+    UserId: string,
     token: string,
     options?: ReqOptions
   ): Promise<Session> {
     const sessionRepository = AppDataSource.getRepository(Session)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const data = await sessionRepository.findOne({ where: { user_id, token } })
+    const data = await sessionRepository.findOne({ where: { UserId, token } })
 
     if (!data) {
       const message = i18nConfig.t('errors.session_ended', i18nOpt)
@@ -118,7 +118,7 @@ class SessionService {
     const value = sessionSchema.create.validateSync(formData, optionsYup)
 
     const data = await sessionRepository.findOne({
-      where: { user_id: value.user_id },
+      where: { UserId: value.UserId },
     })
 
     if (!data) {
@@ -132,17 +132,17 @@ class SessionService {
 
   /**
    *
-   * @param user_id
+   * @param UserId
    * @param token
    */
   public static async deleteByUserToken(
-    user_id: string,
+    UserId: string,
     token: string
   ): Promise<void> {
     const sessionRepository = AppDataSource.getRepository(Session)
 
     // delete record
-    await sessionRepository.delete({ user_id, token })
+    await sessionRepository.delete({ UserId, token })
   }
 
   /**
@@ -166,7 +166,7 @@ class SessionService {
     const subSevenDays = subDays(new Date(), 7)
 
     const condition = {
-      created_at: LessThanOrEqual(subSevenDays),
+      createdAt: LessThanOrEqual(subSevenDays),
     }
 
     const getSession = await sessionRepository.find({ where: condition })

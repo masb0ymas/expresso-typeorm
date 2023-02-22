@@ -12,15 +12,12 @@
     "moduleResolution": "node",
     "baseUrl": "./src",
     "paths": {
-      "@expresso/*": ["@expresso/*"],
+      "@core/*": ["@core/*"],
       "@config/*": ["config/*"],
       "@controllers/*": ["controllers/*"],
       "@database/*": ["database/*"],
-      "@jobs/*": ["jobs/*"],
       "@middlewares/*": ["middlewares/*"],
-      "@routes/*": ["routes/*"],
-      "@scripts/*": ["scripts/*"],
-      "@views/*": ["views/*"]
+      "@routes/*": ["routes/*"]
     },
     "typeRoots": ["./src/types"],
     "types": ["jest"],
