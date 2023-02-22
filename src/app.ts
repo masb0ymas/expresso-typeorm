@@ -11,6 +11,7 @@ import expressErrorTypeORM from '@middlewares/expressErrorTypeORMs'
 import expressErrorYup from '@middlewares/expressErrorYups'
 import { expressRateLimit } from '@middlewares/expressRateLimit'
 import { expressWithState } from '@middlewares/expressWithState'
+import { expressUserAgent } from '@middlewares/userAgent'
 import chalk from 'chalk'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
@@ -71,6 +72,7 @@ class App {
     this.application.use(i18nextMiddleware.handle(i18nConfig))
     this.application.use(expressRateLimit())
     this.application.use(expressWithState())
+    this.application.use(expressUserAgent())
   }
 
   /**

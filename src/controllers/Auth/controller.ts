@@ -1,7 +1,9 @@
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18n'
+import SessionService from '@controllers/Account/Session/service'
 import asyncHandler from '@core/helpers/asyncHandler'
 import { extractToken } from '@core/helpers/token'
+import { type DtoUserAgent } from '@core/interface/UserAgent'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import ResponseError from '@core/modules/response/ResponseError'
 import { type UserLoginAttributes } from '@database/entities/User'
@@ -34,10 +36,20 @@ route.post(
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
+    const userAgent = req.getState('userAgent') as DtoUserAgent
     const formData = req.getBody()
 
     const data = await AuthService.signIn(formData, { lang: defaultLang })
     const httpResponse = HttpResponse.get(data)
+
+    // create session
+    await SessionService.createOrUpdate({
+      UserId: String(data.user.uid),
+      token: data.accessToken,
+      ipAddress: req.clientIp?.replace('::ffff:', ''),
+      device: userAgent.os,
+      platform: userAgent.platform,
+    })
 
     res
       .status(200)
