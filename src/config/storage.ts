@@ -1,6 +1,19 @@
-import { GetBucketAclCommand, S3 } from '@aws-sdk/client-s3'
+import {
+  GetBucketAclCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+  type PutObjectCommandOutput,
+  S3,
+} from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { logErrServer, logServer } from '@core/helpers/formatter'
-import { Storage as GoogleCloudStorage } from '@google-cloud/storage'
+import { type FileAttributes } from '@core/interface/File'
+import {
+  type GetSignedUrlConfig,
+  Storage as GoogleCloudStorage,
+  type UploadOptions,
+  type UploadResponse,
+} from '@google-cloud/storage'
 import chalk from 'chalk'
 import { addDays } from 'date-fns'
 import fs from 'fs'
@@ -16,7 +29,7 @@ import {
 } from './env'
 
 interface DtoExpiresObject {
-  expires: number
+  expiresIn: number
   expiryDate: Date
 }
 
@@ -86,10 +99,10 @@ class StorageProvider {
   public expiresObject(): DtoExpiresObject {
     const getExpired = STORAGE_SIGN_EXPIRED.replace(/[^0-9]/g, '')
 
-    const expires = ms(getExpired) / 1000
+    const expiresIn = ms(getExpired) / 1000
     const expiryDate = addDays(new Date(), Number(getExpired))
 
-    return { expires, expiryDate }
+    return { expiresIn, expiryDate }
   }
 
   /**
@@ -268,6 +281,221 @@ class StorageProvider {
     if (this.type === 'gcs') {
       await this._initialGCS()
     }
+  }
+
+  /**
+   * Get Presigned URL from AWS S3
+   * @param keyFile
+   * @returns
+   */
+  private async _getPresignedURLS3(keyFile: string): Promise<string> {
+    const command = new GetObjectCommand({
+      Bucket: STORAGE_BUCKET_NAME,
+      Key: keyFile,
+    })
+
+    const { expiresIn } = this.expiresObject()
+
+    // @ts-expect-error: Unreachable code error
+    const signedURL = await getSignedUrl(this._clientS3, command, {
+      expiresIn,
+    })
+
+    return signedURL
+  }
+
+  /**
+   * Get Presigned URL from MinIO
+   * @param keyFile
+   * @returns
+   */
+  private async _getPresignedURLMinIO(keyFile: string): Promise<string> {
+    const signedURL = await this._clientMinio?.presignedGetObject(
+      STORAGE_BUCKET_NAME,
+      keyFile
+    )
+
+    return String(signedURL)
+  }
+
+  /**
+   * Get Presigned URL from Google Cloud Storage
+   * @param keyFile
+   * @returns
+   */
+  private async _getPresignedURLGCS(keyFile: string): Promise<string> {
+    const { expiresIn } = this.expiresObject()
+
+    const options: GetSignedUrlConfig = {
+      version: 'v4',
+      action: 'read',
+      expires: expiresIn,
+    }
+
+    // signed url from bucket google cloud storage
+    const data = await this._clientGCS
+      ?.bucket(STORAGE_BUCKET_NAME)
+      .file(keyFile)
+      .getSignedUrl(options)
+
+    const signedURL = String(data?.[0])
+
+    return signedURL
+  }
+
+  /**
+   * Get Presigned URL
+   * @param keyFile
+   * @returns
+   */
+  public async getPresignedURL(keyFile: string): Promise<string> {
+    let signedURL: string = ''
+
+    if (this.type === 's3') {
+      signedURL = await this._getPresignedURLS3(keyFile)
+    }
+
+    if (this.type === 'minio') {
+      signedURL = await this._getPresignedURLMinIO(keyFile)
+    }
+
+    if (this.type === 'gcs') {
+      signedURL = await this._getPresignedURLGCS(keyFile)
+    }
+
+    return signedURL
+  }
+
+  /**
+   * Upload File from AWS S3
+   * @param fieldUpload
+   * @param directory
+   * @returns
+   */
+  private async _uploadFileS3(
+    fieldUpload: FileAttributes,
+    directory: string
+  ): Promise<{
+    data: PutObjectCommandOutput | undefined
+    signedURL: string
+  }> {
+    const keyFile = `${directory}/${fieldUpload.filename}`
+
+    // send file upload to AWS S3
+    const data = await this._clientS3?.send(
+      new PutObjectCommand({
+        Bucket: STORAGE_BUCKET_NAME,
+        Key: keyFile,
+        Body: fs.createReadStream(fieldUpload.path),
+        ContentType: fieldUpload.mimetype, // <-- this is what you need!
+        ContentDisposition: `inline; filename=${fieldUpload.filename}`, // <-- and this !
+        ACL: 'public-read', // <-- this makes it public so people can see it
+      })
+    )
+
+    const signedURL = await this.getPresignedURL(keyFile)
+    const result = { data, signedURL }
+
+    return result
+  }
+
+  /**
+   * Upload File from MinIO
+   * @param fieldUpload
+   * @param directory
+   * @returns
+   */
+  private async _uploadFileMinIO(
+    fieldUpload: FileAttributes,
+    directory: string
+  ): Promise<{
+    data: Minio.UploadedObjectInfo | undefined
+    signedURL: string
+  }> {
+    const keyFile = `${directory}/${fieldUpload.filename}`
+
+    const data = await this._clientMinio?.fPutObject(
+      STORAGE_BUCKET_NAME,
+      keyFile,
+      fieldUpload.path,
+      {
+        ContentType: fieldUpload.mimetype, // <-- this is what you need!
+        ContentDisposition: `inline; filename=${fieldUpload.filename}`, // <-- and this !
+        ACL: 'public-read', // <-- this makes it public so people can see it
+      }
+    )
+
+    const signedURL = await this.getPresignedURL(keyFile)
+    const result = { data, signedURL }
+
+    return result
+  }
+
+  /**
+   * Upload File from Google Cloud Storage
+   * @param fieldUpload
+   * @param directory
+   * @returns
+   */
+  private async _uploadFileGCS(
+    fieldUpload: FileAttributes,
+    directory: string
+  ): Promise<{
+    data: UploadResponse | undefined
+    signedURL: string
+  }> {
+    const keyFile = `${directory}/${fieldUpload.filename}`
+
+    // For a destination object that does not yet exist,
+    // set the ifGenerationMatch precondition to 0
+    // If the destination object already exists in your bucket, set instead a
+    // generation-match precondition using its generation number.
+    const generationMatchPrecondition = 0
+
+    const options: UploadOptions = {
+      destination: keyFile,
+      preconditionOpts: { ifGenerationMatch: generationMatchPrecondition },
+    }
+
+    // send file upload to google cloud storage
+    const data = await this._clientGCS
+      ?.bucket(STORAGE_BUCKET_NAME)
+      .upload(fieldUpload.path, options)
+
+    const signedURL = await this.getPresignedURL(keyFile)
+    const result = { data: data?.[1], signedURL }
+
+    return result
+  }
+
+  /**
+   * Upload File to Storage Provider
+   * @param fieldUpload
+   * @param directory
+   * @returns
+   */
+  public async uploadFile<T>(
+    fieldUpload: FileAttributes,
+    directory: string
+  ): Promise<{ data: T; signedURL: string }> {
+    let result: { data: T | any; signedURL: string } = {
+      data: '',
+      signedURL: '',
+    }
+
+    if (this.type === 's3') {
+      result = await this._uploadFileS3(fieldUpload, directory)
+    }
+
+    if (this.type === 'minio') {
+      result = await this._uploadFileMinIO(fieldUpload, directory)
+    }
+
+    if (this.type === 'gcs') {
+      result = await this._uploadFileGCS(fieldUpload, directory)
+    }
+
+    return result
   }
 }
 
