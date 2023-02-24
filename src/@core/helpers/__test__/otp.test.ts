@@ -1,16 +1,10 @@
 import { describe, test, expect } from '@jest/globals'
 import Redis from 'ioredis-mock'
-import { createHashOTP, getRandomOTP, takeOverOTP, verifyHashOTP } from '../otp'
+import { createHashOTP, takeOverOTP, verifyHashOTP } from '../otp'
 
 const redis = new Redis()
 
 describe('helpers OTP Test', () => {
-  test('should get random otp', () => {
-    const data = getRandomOTP()
-
-    expect(data).toHaveLength(6)
-  })
-
   test('should create hash otp', () => {
     const anyPhone = '081234567890'
     const anyOTP = '123456'
