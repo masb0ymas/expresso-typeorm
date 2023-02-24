@@ -21,6 +21,12 @@ export const JWT_SECRET_ACCESS_TOKEN =
 export const JWT_ACCESS_TOKEN_EXPIRED =
   process.env.JWT_ACCESS_TOKEN_EXPIRED ?? '1d'
 
+// jwt refresh
+export const JWT_SECRET_REFRESH_TOKEN =
+  process.env.JWT_SECRET_REFRESH_TOKEN ?? undefined
+export const JWT_REFRESH_TOKEN_EXPIRED =
+  process.env.JWT_REFRESH_TOKEN_EXPIRED ?? '30d'
+
 // url staging
 export const URL_CLIENT_STAGING =
   process.env.URL_CLIENT_STAGING ?? 'https://sandbox.example.com'
