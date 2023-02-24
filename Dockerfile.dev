@@ -69,10 +69,8 @@ COPY --from=build_base /temp-build/node_modules ./node_modules
 COPY --from=build_base /temp-build/package.json ./package.json
 COPY --from=build_base /temp-build/tsconfig.json ./tsconfig.json
 COPY --from=build_base /temp-build/.swcrc ./.swcrc
-COPY --from=build_base /temp-build/logs ./logs
 COPY --from=build_base /temp-build/dist ./dist
 COPY --from=build_base /temp-build/.env ./.env
-# COPY --from=build_base /temp-build/src ./src
 
 # initial app
 RUN node ./dist/scripts/generate.js
