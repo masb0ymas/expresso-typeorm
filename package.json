@@ -4,6 +4,7 @@
   "description": "expresso typeorm, postgesql, redis, aws s3",
   "main": "server.ts",
   "scripts": {
+    "key:generate": "node ./dist/scripts/generate.js",
     "clean": "rimraf dist coverage",
     "typecheck": "tsc --noEmit",
     "lint": "npx eslint '*/**/*.{js,jsx,ts,tsx}' --quiet --fix",

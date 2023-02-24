@@ -5,6 +5,7 @@ import { validateBoolean } from '@core/helpers/formatter'
 export const NODE_ENV = process.env.NODE_ENV ?? 'development'
 
 // app
+export const APP_KEY = process.env.APP_KEY ?? undefined
 export const APP_NAME = process.env.APP_NAME ?? 'expresso'
 export const APP_LANG = process.env.APP_LANG ?? 'id'
 export const APP_PORT = Number(process.env.APP_PORT) ?? 8000
@@ -20,6 +21,12 @@ export const JWT_SECRET_ACCESS_TOKEN =
   process.env.JWT_SECRET_ACCESS_TOKEN ?? undefined
 export const JWT_ACCESS_TOKEN_EXPIRED =
   process.env.JWT_ACCESS_TOKEN_EXPIRED ?? '1d'
+
+// jwt refresh
+export const JWT_SECRET_REFRESH_TOKEN =
+  process.env.JWT_SECRET_REFRESH_TOKEN ?? undefined
+export const JWT_REFRESH_TOKEN_EXPIRED =
+  process.env.JWT_REFRESH_TOKEN_EXPIRED ?? '30d'
 
 // url staging
 export const URL_CLIENT_STAGING =

@@ -15,22 +15,6 @@ interface VerifyHashOTPEntity extends HashOTPEntity {
 const redisProvider = new RedisProvider()
 
 /**
- * Get Random OTP
- * @returns
- */
-export function getRandomOTP(): string {
-  // which stores all digits
-  const digits = '0123456789'
-  let otp = ''
-
-  for (let i = 0; i < 6; i += 1) {
-    otp += digits[Math.floor(Math.random() * 10)]
-  }
-
-  return otp
-}
-
-/**
  *
  * @param params
  * @returns
