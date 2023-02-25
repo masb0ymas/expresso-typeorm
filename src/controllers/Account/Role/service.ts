@@ -15,7 +15,7 @@ import { type SelectQueryBuilder } from 'typeorm'
 import roleSchema from './schema'
 
 class RoleService {
-  private static readonly entity = 'Role'
+  private static readonly _entity = 'Role'
 
   /**
    *
@@ -30,7 +30,7 @@ class RoleService {
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
     const query = roleRepository.createQueryBuilder()
-    const newQuery = useQuery({ entity: this.entity, query, req })
+    const newQuery = useQuery({ entity: this._entity, query, req })
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()
@@ -154,7 +154,7 @@ class RoleService {
    * @param options
    * @returns
    */
-  private static multipleGetByIds(
+  private static _multipleGetByIds(
     ids: string[],
     options?: ReqOptions
   ): SelectQueryBuilder<Role> {
@@ -169,7 +169,7 @@ class RoleService {
     // query by ids
     const query = roleRepository
       .createQueryBuilder()
-      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+      .where(`${this._entity}.id IN (:...ids)`, { ids: [...ids] })
 
     return query
   }
@@ -183,7 +183,7 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this.multipleGetByIds(ids, options).withDeleted()
+    const query = this._multipleGetByIds(ids, options).withDeleted()
 
     // restore record
     await query.restore().execute()
@@ -198,7 +198,7 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this.multipleGetByIds(ids, options)
+    const query = this._multipleGetByIds(ids, options)
 
     // soft delete record
     await query.softDelete().execute()
@@ -213,7 +213,7 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this.multipleGetByIds(ids, options)
+    const query = this._multipleGetByIds(ids, options)
 
     // delete record
     await query.delete().execute()

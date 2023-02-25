@@ -21,7 +21,7 @@ import uploadSchema from './schema'
 const storage = new StorageProvider(STORAGE_PROVIDER)
 
 class UploadService {
-  private static readonly entity = 'Upload'
+  private static readonly _entity = 'Upload'
 
   /**
    *
@@ -36,7 +36,7 @@ class UploadService {
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
     const query = uploadRepository.createQueryBuilder()
-    const newQuery = useQuery({ entity: this.entity, query, req })
+    const newQuery = useQuery({ entity: this._entity, query, req })
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()
@@ -196,7 +196,7 @@ class UploadService {
    * @param options
    * @returns
    */
-  private static multipleGetByIds(
+  private static _multipleGetByIds(
     ids: string[],
     options?: ReqOptions
   ): SelectQueryBuilder<Upload> {
@@ -211,7 +211,7 @@ class UploadService {
     // query by ids
     const query = uploadRepository
       .createQueryBuilder()
-      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+      .where(`${this._entity}.id IN (:...ids)`, { ids: [...ids] })
 
     return query
   }
@@ -225,7 +225,7 @@ class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this.multipleGetByIds(ids, options).withDeleted()
+    const query = this._multipleGetByIds(ids, options).withDeleted()
 
     // restore record
     await query.restore().execute()
@@ -240,7 +240,7 @@ class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this.multipleGetByIds(ids, options)
+    const query = this._multipleGetByIds(ids, options)
 
     // soft delete record
     await query.softDelete().execute()
@@ -255,7 +255,7 @@ class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this.multipleGetByIds(ids, options)
+    const query = this._multipleGetByIds(ids, options)
 
     // delete record
     await query.delete().execute()

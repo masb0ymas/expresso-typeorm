@@ -15,7 +15,7 @@ import { type SelectQueryBuilder } from 'typeorm'
 import userSchema from './schema'
 
 class UserService {
-  private static readonly entity = 'User'
+  private static readonly _entity = 'User'
 
   /**
    *
@@ -31,9 +31,9 @@ class UserService {
 
     const query = userRepository
       .createQueryBuilder()
-      .leftJoinAndSelect(`${this.entity}.Role`, 'Role')
-      .leftJoinAndSelect(`${this.entity}.Sessions`, 'Session')
-    const newQuery = useQuery({ entity: this.entity, query, req })
+      .leftJoinAndSelect(`${this._entity}.Role`, 'Role')
+      .leftJoinAndSelect(`${this._entity}.Sessions`, 'Session')
+    const newQuery = useQuery({ entity: this._entity, query, req })
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()
@@ -204,7 +204,7 @@ class UserService {
    * @param options
    * @returns
    */
-  private static multipleGetByIds(
+  private static _multipleGetByIds(
     ids: string[],
     options?: ReqOptions
   ): SelectQueryBuilder<User> {
@@ -218,7 +218,7 @@ class UserService {
 
     const query = userRepository
       .createQueryBuilder()
-      .where(`${this.entity}.id IN (:...ids)`, { ids: [...ids] })
+      .where(`${this._entity}.id IN (:...ids)`, { ids: [...ids] })
 
     return query
   }
@@ -232,7 +232,7 @@ class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this.multipleGetByIds(ids, options).withDeleted()
+    const query = this._multipleGetByIds(ids, options).withDeleted()
 
     // restore record
     await query.restore().execute()
@@ -247,7 +247,7 @@ class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this.multipleGetByIds(ids, options)
+    const query = this._multipleGetByIds(ids, options)
 
     // soft delete record
     await query.softDelete().execute()
@@ -262,7 +262,7 @@ class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this.multipleGetByIds(ids, options)
+    const query = this._multipleGetByIds(ids, options)
 
     // delete record
     await query.delete().execute()
