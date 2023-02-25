@@ -4805,15 +4805,27 @@ express@^4.18.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-expresso-core@^0.0.1-alpha.1:
-  version "0.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.0.1-alpha.1.tgz#d91c54b8aeee0fa0e1cd4c23918ca2cfbff4adb9"
-  integrity sha512-SPNqiLtlk0DY1jxiIhCkFQkRPLHD7LIEFR90M0X38tEEquCm/GVxIVwysmsy4eUF9j9r082n1YgNqaaiuWwWMw==
+expresso-core@^0.0.1-alpha.2:
+  version "0.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.0.1-alpha.2.tgz#d2c2db74b94dc50aec0a97de524cd671d0daeb80"
+  integrity sha512-Q7cwhGSEwrydsvmnFRQXduw8LubeQVTSMqXKVfzKxOgHgjRTgvcqt3dlsXUlqKeIFUcxGaMkHDrIo7bIMfW1Xg==
 
-expresso-hooks@^0.0.1-alpha.1:
-  version "0.0.1-alpha.1"
-  resolved "https://registry.yarnpkg.com/expresso-hooks/-/expresso-hooks-0.0.1-alpha.1.tgz#446bd9144506363958258cc7888df923e05827a9"
-  integrity sha512-HPkNN2W+AIUp5ExJru9kHSF1TKlvOji13AAGHeMf18yqAfbmIf5RUvKa5Lgtq2fieiO1rLVnsEUw6HQGceG0/w==
+expresso-hooks@^0.0.1-alpha.2:
+  version "0.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/expresso-hooks/-/expresso-hooks-0.0.1-alpha.2.tgz#c32892d6228e7f8f25c0c5bbaac6755c3a3b5abf"
+  integrity sha512-1En0JVWwedraCHUMFcwPcn5B698wqVOQKCL9YMtRi+ZyBPMrO4ytNljI68MGNpj/ed4h20a6Q7Znab36Gs1Nvg==
+  dependencies:
+    express "^4.18.2"
+    multer "^1.4.5-lts.1"
+
+expresso-query@^0.0.1-alpha.2:
+  version "0.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/expresso-query/-/expresso-query-0.0.1-alpha.2.tgz#b37dc2f85f92ea27d03104e298f7a966288a1ff2"
+  integrity sha512-hRrJGtKfxEy4O7lg5qJRgUIiImP5WGnAILUnloz1qeyAJRbqpuYJqn1J0sjeaymjx2BQa6hD+yi7xv4ZJDOd+w==
+  dependencies:
+    lodash "^4.17.21"
+    typeorm "^0.3.12"
+    uuid "^9.0.0"
 
 ext-list@^2.0.0:
   version "2.2.2"
