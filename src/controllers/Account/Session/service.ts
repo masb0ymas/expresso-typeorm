@@ -16,7 +16,7 @@ import { LessThanOrEqual } from 'typeorm'
 import sessionSchema from './schema'
 
 class SessionService {
-  private static readonly entity = 'Session'
+  private static readonly _entity = 'Session'
 
   /**
    *
@@ -32,8 +32,8 @@ class SessionService {
 
     const query = sessionRepository
       .createQueryBuilder()
-      .leftJoinAndSelect(`${this.entity}.User`, 'User')
-    const newQuery = useQuery({ entity: this.entity, query, req })
+      .leftJoinAndSelect(`${this._entity}.User`, 'User')
+    const newQuery = useQuery({ entity: this._entity, query, req })
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()
