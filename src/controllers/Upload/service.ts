@@ -1,4 +1,4 @@
-import { APP_LANG } from '@config/env'
+import { APP_LANG, STORAGE_PROVIDER } from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import StorageProvider from '@config/storage'
 import { validateUUID } from '@core/helpers/formatter'
@@ -18,7 +18,7 @@ import { validate as uuidValidate } from 'uuid'
 import { type UploadFileEntity } from './interface'
 import uploadSchema from './schema'
 
-const storage = new StorageProvider('minio')
+const storage = new StorageProvider(STORAGE_PROVIDER)
 
 class UploadService {
   private static readonly entity = 'Upload'

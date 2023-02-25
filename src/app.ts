@@ -1,4 +1,4 @@
-import { APP_NAME, APP_PORT, NODE_ENV } from '@config/env'
+import { APP_NAME, APP_PORT, NODE_ENV, STORAGE_PROVIDER } from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import { winstonLogger, winstonStream } from '@config/logger'
 import StorageProvider from '@config/storage'
@@ -79,7 +79,7 @@ class App {
    * Initial Provider
    */
   private initialProvider(): void {
-    const storage = new StorageProvider('minio')
+    const storage = new StorageProvider(STORAGE_PROVIDER)
 
     // initial storage
     void storage.initial()
