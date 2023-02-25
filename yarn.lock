@@ -4805,6 +4805,16 @@ express@^4.18.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
+expresso-core@^0.0.1-alpha.1:
+  version "0.0.1-alpha.1"
+  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.0.1-alpha.1.tgz#d91c54b8aeee0fa0e1cd4c23918ca2cfbff4adb9"
+  integrity sha512-SPNqiLtlk0DY1jxiIhCkFQkRPLHD7LIEFR90M0X38tEEquCm/GVxIVwysmsy4eUF9j9r082n1YgNqaaiuWwWMw==
+
+expresso-hooks@^0.0.1-alpha.1:
+  version "0.0.1-alpha.1"
+  resolved "https://registry.yarnpkg.com/expresso-hooks/-/expresso-hooks-0.0.1-alpha.1.tgz#446bd9144506363958258cc7888df923e05827a9"
+  integrity sha512-HPkNN2W+AIUp5ExJru9kHSF1TKlvOji13AAGHeMf18yqAfbmIf5RUvKa5Lgtq2fieiO1rLVnsEUw6HQGceG0/w==
+
 ext-list@^2.0.0:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/ext-list/-/ext-list-2.2.2.tgz#0b98e64ed82f5acf0f2931babf69212ef52ddd37"
