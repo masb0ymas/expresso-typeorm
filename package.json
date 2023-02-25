@@ -2,7 +2,7 @@
   "name": "expresso-typeorm",
   "version": "3.0.0",
   "description": "expresso typeorm, postgesql, redis, aws s3",
-  "main": "server.ts",
+  "main": "./dist/server.js",
   "private": true,
   "scripts": {
     "key:generate": "node ./dist/scripts/generate.js",
