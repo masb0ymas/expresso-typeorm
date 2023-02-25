@@ -2,13 +2,13 @@ import { APP_LANG } from '@config/env'
 import ConstRole from '@core/constants/ConstRole'
 import asyncHandler from '@core/helpers/asyncHandler'
 import { arrayFormatter } from '@core/helpers/formatter'
-import useMulter from '@core/hooks/useMulter'
 import { type FileAttributes } from '@core/interface/File'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import authorization from '@middlewares/authorization'
 import permissionAccess from '@middlewares/permissionAccess'
 import route from '@routes/v1'
 import { type NextFunction, type Request, type Response } from 'express'
+import { useMulter } from 'expresso-hooks'
 import _ from 'lodash'
 import UploadService from './service'
 
@@ -39,7 +39,7 @@ route.get(
 )
 
 const uploadFile = useMulter({
-  dest: 'public/temp',
+  dest: 'public/uploads',
 }).fields([{ name: 'fileUpload', maxCount: 1 }])
 
 const setFileToBody = asyncHandler(async function setFileToBody(

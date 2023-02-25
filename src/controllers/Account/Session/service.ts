@@ -25,15 +25,15 @@ class SessionService {
    */
   public static async findAll(req: Request): Promise<DtoFindAll<Session>> {
     const sessionRepository = AppDataSource.getRepository(Session)
-    const { lang } = req.getQuery()
+    const reqQuery = req.getQuery()
 
-    const defaultLang = lang ?? APP_LANG
+    const defaultLang = reqQuery.lang ?? APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
     const query = sessionRepository
       .createQueryBuilder()
       .leftJoinAndSelect(`${this._entity}.User`, 'User')
-    const newQuery = useQuery({ entity: this._entity, query, req })
+    const newQuery = useQuery({ entity: this._entity, query, reqQuery })
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()
