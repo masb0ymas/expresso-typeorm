@@ -1,6 +1,6 @@
 import { logServer } from '@core/helpers/formatter'
-import { getRandom } from '@core/helpers/randomString'
 import chalk from 'chalk'
+import { randomString } from 'expresso-core'
 import fs from 'fs'
 import path from 'path'
 
@@ -18,7 +18,7 @@ function generateEnv(value: string, regExp: RegExp): void {
 
   const contentEnv = fs.readFileSync(pathRes, { encoding: 'utf-8' })
 
-  const uniqueCode = getRandom()
+  const uniqueCode = randomString.generate()
   const valueEnv = `${value}=${uniqueCode}`
 
   if (contentEnv.includes(`${value}=`)) {
