@@ -54,7 +54,7 @@ class AuthService {
 
     // send mail if mail username & password exists
     if (MAIL_USERNAME && MAIL_PASSWORD) {
-      await SendMail.AccountRegistration({
+      await SendMail.accountRegistration({
         email: formData.email,
         fullname: formData.fullname,
       })

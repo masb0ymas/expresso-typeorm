@@ -55,7 +55,7 @@ class SendMail {
    * Send Mail with Account Registration Template
    * @param values
    */
-  public static async AccountRegistration(
+  public static async accountRegistration(
     values: AccountRegistrationEntity
   ): Promise<void> {
     const _path = this._getPath('register.html')
