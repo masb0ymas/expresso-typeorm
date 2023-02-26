@@ -13,33 +13,18 @@ const baseSchemaDocs = path.resolve(`${__dirname}/../docs/schemas`)
  * @param _path
  * @returns
  */
-function getRouteDocs(_path: string | Buffer): Record<string, unknown> {
+function getDocsSwaggers(_path: string | Buffer): Record<string, unknown> {
   return fs.readdirSync(_path).reduce((acc, file) => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const data = require(`${baseRouteDocs}/${file}`)
+    const data = require(`${_path}/${file}`)
     acc = { ...acc, ...data }
 
     return acc
   }, {})
 }
 
-/**
- * Get Schema Docs
- * @param _path
- * @returns
- */
-function getSchemaDocs(_path: string | Buffer): Record<string, unknown> {
-  return fs.readdirSync(_path).reduce((acc, file) => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const data = require(`${baseSchemaDocs}/${file}`)
-    acc = { ...acc, ...data }
-
-    return acc
-  }, {})
-}
-
-const docsRoutes = getRouteDocs(baseRouteDocs)
-const docsSchemas = getSchemaDocs(baseSchemaDocs)
+const docsRoutes = getDocsSwaggers(baseRouteDocs)
+const docsSchemas = getDocsSwaggers(baseSchemaDocs)
 
 const baseURLServer = [
   {
