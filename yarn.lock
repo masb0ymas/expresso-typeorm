@@ -4805,23 +4805,29 @@ express@^4.18.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-expresso-core@^0.0.1-alpha.2:
-  version "0.0.1-alpha.2"
-  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.0.1-alpha.2.tgz#d2c2db74b94dc50aec0a97de524cd671d0daeb80"
-  integrity sha512-Q7cwhGSEwrydsvmnFRQXduw8LubeQVTSMqXKVfzKxOgHgjRTgvcqt3dlsXUlqKeIFUcxGaMkHDrIo7bIMfW1Xg==
+expresso-core@^0.0.2-alpha.0:
+  version "0.0.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.0.2-alpha.0.tgz#e6caa41f20ac798ff7635e76efdae369ee8711a7"
+  integrity sha512-qHQHM64tTLu8cqLXfo53kJ66ae2hFA2K5PgUzqupGInyhujQkebtqG0IjDrqbAue7Lklzyi263H6w58rxWhi8g==
+  dependencies:
+    dotenv "^16.0.3"
+    googleapis "^111.0.0"
+    handlebars "^4.7.7"
+    nodemailer "^6.9.1"
+    nodemailer-mailgun-transport "^2.1.5"
 
-expresso-hooks@^0.0.1-alpha.2:
-  version "0.0.1-alpha.2"
-  resolved "https://registry.yarnpkg.com/expresso-hooks/-/expresso-hooks-0.0.1-alpha.2.tgz#c32892d6228e7f8f25c0c5bbaac6755c3a3b5abf"
-  integrity sha512-1En0JVWwedraCHUMFcwPcn5B698wqVOQKCL9YMtRi+ZyBPMrO4ytNljI68MGNpj/ed4h20a6Q7Znab36Gs1Nvg==
+expresso-hooks@^0.0.2-alpha.0:
+  version "0.0.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/expresso-hooks/-/expresso-hooks-0.0.2-alpha.0.tgz#adacf1c268fb2fb8cf6d428c4b78aa63f7d41faa"
+  integrity sha512-FQNQD4lPA56YmnARcMwIWojrw0SNpCdZyhNo5aaZkNv0dyxxZUz3M/d9jqg3kGqCR4oqBmms4LfiWmRzvz87sw==
   dependencies:
     express "^4.18.2"
     multer "^1.4.5-lts.1"
 
-expresso-query@^0.0.1-alpha.2:
-  version "0.0.1-alpha.2"
-  resolved "https://registry.yarnpkg.com/expresso-query/-/expresso-query-0.0.1-alpha.2.tgz#b37dc2f85f92ea27d03104e298f7a966288a1ff2"
-  integrity sha512-hRrJGtKfxEy4O7lg5qJRgUIiImP5WGnAILUnloz1qeyAJRbqpuYJqn1J0sjeaymjx2BQa6hD+yi7xv4ZJDOd+w==
+expresso-query@^0.0.2-alpha.0:
+  version "0.0.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/expresso-query/-/expresso-query-0.0.2-alpha.0.tgz#bfa391e3fb64b7552261960832a4ac499b826ebc"
+  integrity sha512-HLt21Wj01yGxYgejzidsviDMu6Y2HC2oUrPEkLLi5vmrL8Gmu5gp8ZzSZMo6BLxYU5xRU/n3uOMNA9Ma75ausg==
   dependencies:
     lodash "^4.17.21"
     typeorm "^0.3.12"
