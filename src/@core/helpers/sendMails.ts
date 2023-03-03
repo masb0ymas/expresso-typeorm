@@ -1,5 +1,5 @@
 import { APP_NAME } from '@config/env'
-import MailProvider from '@config/mail'
+import { mailService } from '@config/mail'
 import { type AccountRegistrationEntity } from '@core/interface/SendMail'
 import ResponseError from '@core/modules/response/ResponseError'
 import fs from 'fs'
@@ -7,8 +7,6 @@ import Handlebars from 'handlebars'
 import path from 'path'
 import { readHTMLFile } from './files'
 import { logServer } from './formatter'
-
-const mailProvider = new MailProvider()
 
 class SendMail {
   /**
@@ -48,14 +46,14 @@ class SendMail {
     const template = Handlebars.compile(html)
     const htmlToSend = template(data)
 
-    mailProvider.send(mailTo, subject, htmlToSend)
+    mailService().send(mailTo, subject, htmlToSend)
   }
 
   /**
    * Send Mail with Account Registration Template
    * @param values
    */
-  public static async AccountRegistration(
+  public static async accountRegistration(
     values: AccountRegistrationEntity
   ): Promise<void> {
     const _path = this._getPath('register.html')

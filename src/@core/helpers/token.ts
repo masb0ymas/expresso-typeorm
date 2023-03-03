@@ -1,4 +1,8 @@
 import { JWT_ACCESS_TOKEN_EXPIRED, JWT_SECRET_ACCESS_TOKEN } from '@config/env'
+import {
+  type DtoGenerateToken,
+  type DtoVerifyToken,
+} from '@core/interface/Token'
 import { type Request } from 'express'
 import { type IncomingHttpHeaders } from 'http'
 import jwt, {
@@ -8,22 +12,6 @@ import jwt, {
 } from 'jsonwebtoken'
 import ms from 'ms'
 import { logErrServer, logServer } from './formatter'
-
-interface DtoGenerateToken {
-  token: string
-  expiresIn: number
-}
-
-type DtoVerifyToken =
-  | {
-      data: null
-      message: string
-    }
-  | {
-      data: string | jwt.JwtPayload
-      message: string
-    }
-  | undefined
 
 /**
  *
