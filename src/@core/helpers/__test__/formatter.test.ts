@@ -3,6 +3,7 @@ import {
   arrayFormatter,
   logErrServer,
   logServer,
+  ms,
   validateBoolean,
   validateEmpty,
   validateNumber,
@@ -111,6 +112,14 @@ describe('helpers formatter test', () => {
     const expectValue = `\x1B[32m[server]:\x1B[39m \x1B[31manyType\x1B[39m \x1B[32manyMessage\x1B[39m`
 
     const data = logErrServer('anyType', 'anyMessage')
+
+    expect(data).toBe(expectValue)
+  })
+
+  test('should convert ms', () => {
+    const expectValue = 24 * 60 * 60 * 1000
+
+    const data = ms('1d')
 
     expect(data).toBe(expectValue)
   })

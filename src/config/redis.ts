@@ -1,5 +1,5 @@
+import { ms } from '@core/helpers/formatter'
 import Redis, { type Redis as RedisClient } from 'ioredis'
-import ms from 'ms'
 import { REDIS_HOST, REDIS_PASSWORD, REDIS_PORT } from './env'
 
 interface RedisOptionsProps {

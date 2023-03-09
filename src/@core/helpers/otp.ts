@@ -1,7 +1,7 @@
 import { EXPIRED_OTP, SECRET_OTP } from '@config/env'
 import RedisProvider from '@config/redis'
 import crypto from 'crypto'
-import ms from 'ms'
+import { ms } from './formatter'
 
 interface HashOTPEntity {
   phone: string

@@ -6,7 +6,7 @@ import {
   S3,
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { logErrServer, logServer } from '@core/helpers/formatter'
+import { logErrServer, logServer, ms } from '@core/helpers/formatter'
 import { type FileAttributes } from '@core/interface/File'
 import {
   type GetSignedUrlConfig,
@@ -18,7 +18,6 @@ import chalk from 'chalk'
 import { addDays } from 'date-fns'
 import fs from 'fs'
 import * as Minio from 'minio'
-import ms from 'ms'
 import path from 'path'
 import {
   STORAGE_ACCESS_KEY,
@@ -99,7 +98,7 @@ class StorageProvider {
   public expiresObject(): DtoExpiresObject {
     const getExpired = STORAGE_SIGN_EXPIRED.replace(/[^0-9]/g, '')
 
-    const expiresIn = ms(getExpired) / 1000
+    const expiresIn = ms(STORAGE_SIGN_EXPIRED)
     const expiryDate = addDays(new Date(), Number(getExpired))
 
     return { expiresIn, expiryDate }
@@ -295,10 +294,11 @@ class StorageProvider {
     })
 
     const { expiresIn } = this.expiresObject()
+    const newExpiresIn = expiresIn / 1000
 
     // @ts-expect-error: Unreachable code error
     const signedURL = await getSignedUrl(this._clientS3, command, {
-      expiresIn,
+      expiresIn: newExpiresIn,
     })
 
     return signedURL
@@ -329,7 +329,8 @@ class StorageProvider {
     const options: GetSignedUrlConfig = {
       version: 'v4',
       action: 'read',
-      expires: expiresIn,
+      virtualHostedStyle: true,
+      expires: Date.now() + expiresIn,
     }
 
     // signed url from bucket google cloud storage
