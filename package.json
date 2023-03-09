@@ -1,6 +1,6 @@
 {
   "name": "expresso-typeorm",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "expresso typeorm, postgesql, redis, aws s3",
   "main": "./dist/server.js",
   "private": true,

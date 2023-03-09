@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/masb0ymas/expresso-typeorm/compare/v3.0.0...v3.0.1) (2023-03-09)
+
+
+### Bug Fixes
+
+* add lib expresso ([69ef2f4](https://github.com/masb0ymas/expresso-typeorm/commit/69ef2f48954312e9286584b37cf090ba385f58b5))
+* add package expresso-query ([250ce40](https://github.com/masb0ymas/expresso-typeorm/commit/250ce40f7ef9bf8fe0c1efcf731902296499d0f2))
+* default translate ([b96ddfb](https://github.com/masb0ymas/expresso-typeorm/commit/b96ddfbab93eee988fb61d4e57e1dca2cbb61c39))
+* function get docs swaggers ([d2b1380](https://github.com/masb0ymas/expresso-typeorm/commit/d2b1380717c2c6e8339d3f4770961723ac957df2))
+* function sendmail ([47f9d54](https://github.com/masb0ymas/expresso-typeorm/commit/47f9d544dafe4e8f73803d1656c1bb49691e888f))
+* helper token ([4390cff](https://github.com/masb0ymas/expresso-typeorm/commit/4390cff985c7f3ad6caf3c383deb7868353f288d))
+* implementation helper ms ([98f6405](https://github.com/masb0ymas/expresso-typeorm/commit/98f640592060391244f1b2994c3637c9d38e417d))
+* implementation lib expresso ([1dca8fd](https://github.com/masb0ymas/expresso-typeorm/commit/1dca8fd70fe3ce003262ae718f3b970dcefcde86))
+* implementation new query instance ([850373b](https://github.com/masb0ymas/expresso-typeorm/commit/850373bd006dbb0b89f517638363003cdd14ccdb))
+* implementation storage provider ([25b2ab0](https://github.com/masb0ymas/expresso-typeorm/commit/25b2ab087f980a9364d6c481ccf6a57e880c7f8c))
+* improve config mail service ([cc3e3a4](https://github.com/masb0ymas/expresso-typeorm/commit/cc3e3a4f24078394be1276ff8f92b2117b73adf8))
+* move helper to lib expresso-core ([0da18a0](https://github.com/masb0ymas/expresso-typeorm/commit/0da18a03d9951bb4995429555f01eb911f574307))
+* move helper to lib expresso-hooks ([6888748](https://github.com/masb0ymas/expresso-typeorm/commit/6888748ce5ea17a4d03daed4c06a9e177e42f497))
+* naming private function or string in class service ([1548cd0](https://github.com/masb0ymas/expresso-typeorm/commit/1548cd03e15b852fcfbd6fef5abf4cac7e75ebdb))
+* variable email template ([bb4f435](https://github.com/masb0ymas/expresso-typeorm/commit/bb4f4354ac24a5cb4153ae68fadc35fb80509201))
+
 ## [3.0.0](https://github.com/masb0ymas/expresso-typeorm/compare/v2.7.1...v3.0.0) (2023-02-24)
 
 
