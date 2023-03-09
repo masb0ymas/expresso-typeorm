@@ -4,8 +4,8 @@ import i18nextBackend from 'i18next-fs-backend'
 
 void i18next.use(i18nextBackend).init(
   {
-    lng: 'en',
-    fallbackLng: 'en',
+    lng: 'id',
+    fallbackLng: 'id',
     preload: ['en', 'id'],
     ns: ['translation'],
     defaultNS: 'translation',
