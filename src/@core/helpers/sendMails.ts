@@ -46,7 +46,7 @@ class SendMail {
     const template = Handlebars.compile(html)
     const htmlToSend = template(data)
 
-    mailService().send(mailTo, subject, htmlToSend)
+    mailService.send(mailTo, subject, htmlToSend)
   }
 
   /**
