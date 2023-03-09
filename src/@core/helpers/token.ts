@@ -10,8 +10,7 @@ import jwt, {
   NotBeforeError,
   TokenExpiredError,
 } from 'jsonwebtoken'
-import ms from 'ms'
-import { logErrServer, logServer } from './formatter'
+import { logErrServer, logServer, ms } from './formatter'
 
 /**
  *
