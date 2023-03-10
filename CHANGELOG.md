@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.2](https://github.com/masb0ymas/expresso-typeorm/compare/v3.0.1...v3.0.2) (2023-03-10)
+
+
+### Bug Fixes
+
+* implementation provider service ([7c1a9d1](https://github.com/masb0ymas/expresso-typeorm/commit/7c1a9d12919a8971d13270e3c6237a622a2a08c1))
+* mail config ([99c6c0a](https://github.com/masb0ymas/expresso-typeorm/commit/99c6c0a27c0a0fbec05bf68a647421bdab4f5520))
+* redis config ([71e5af5](https://github.com/masb0ymas/expresso-typeorm/commit/71e5af57254da14e3264f2c4d456cf5e2a6bb221))
+* storage config ([c62ccfd](https://github.com/masb0ymas/expresso-typeorm/commit/c62ccfdd5a951bddd6e3c2063bd9dba7d52d28a1))
+* template register ([3cfdae5](https://github.com/masb0ymas/expresso-typeorm/commit/3cfdae520227893a595382a0ee68ff0e531282f1))
+
 ### [3.0.1](https://github.com/masb0ymas/expresso-typeorm/compare/v3.0.0...v3.0.1) (2023-03-09)
 
 
