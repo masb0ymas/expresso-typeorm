@@ -87,7 +87,7 @@ class App {
    */
   private initializeProvider(): void {
     // initialize storage service
-    storageService.initialize()
+    void storageService.initialize()
 
     // initialize mail service
     if (MAIL_USERNAME && MAIL_PASSWORD) {
