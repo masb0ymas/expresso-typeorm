@@ -1,10 +1,9 @@
-import { APP_LANG, STORAGE_PROVIDER } from '@config/env'
+import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18n'
-import StorageProvider from '@config/storage'
+import { storageService } from '@config/storage'
 import { validateUUID } from '@core/helpers/formatter'
 import { optionsYup } from '@core/helpers/yup'
 import { useQuery } from '@core/hooks/useQuery'
-import type * as Minio from 'minio'
 import { type DtoFindAll } from '@core/interface/Paginate'
 import { type ReqOptions } from '@core/interface/ReqOptions'
 import ResponseError from '@core/modules/response/ResponseError'
@@ -13,12 +12,11 @@ import { Upload, type UploadAttributes } from '@database/entities/Upload'
 import { type Request } from 'express'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
+import type * as Minio from 'minio'
 import { type SelectQueryBuilder } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
 import { type UploadFileEntity } from './interface'
 import uploadSchema from './schema'
-
-const storage = new StorageProvider(STORAGE_PROVIDER)
 
 class UploadService {
   private static readonly _entity = 'Upload'
@@ -267,7 +265,7 @@ class UploadService {
    * @returns
    */
   public static async getPresignedURL(keyFile: string): Promise<string> {
-    const signedURL = await storage.getPresignedURL(keyFile)
+    const signedURL = await storageService.getPresignedURL(keyFile)
 
     return signedURL
   }
@@ -285,11 +283,11 @@ class UploadService {
     storageResponse: any
     uploadResponse: Upload
   }> {
-    const { expiryDate } = storage.expiresObject()
+    const { expiryDate } = storageService.expiresObject()
     const keyFile = `${directory}/${fieldUpload.filename}`
 
     const { data: storageResponse, signedURL } =
-      await storage.uploadFile<Minio.Client>(fieldUpload, directory)
+      await storageService.uploadFile<Minio.Client>(fieldUpload, directory)
 
     const formUpload = {
       ...fieldUpload,

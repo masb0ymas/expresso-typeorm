@@ -1,7 +1,14 @@
-import { APP_NAME, APP_PORT, NODE_ENV, STORAGE_PROVIDER } from '@config/env'
+import {
+  APP_NAME,
+  APP_PORT,
+  MAIL_PASSWORD,
+  MAIL_USERNAME,
+  NODE_ENV,
+} from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import { winstonLogger, winstonStream } from '@config/logger'
-import StorageProvider from '@config/storage'
+import { mailService } from '@config/mail'
+import { storageService } from '@config/storage'
 import allowedOrigins from '@core/constants/allowedOrigins'
 import { optionsSwaggerUI, swaggerSpec } from '@core/helpers/docsSwagger'
 import { logServer } from '@core/helpers/formatter'
@@ -76,13 +83,16 @@ class App {
   }
 
   /**
-   * Initial Provider
+   * Initialize Service Provider
    */
   private initialProvider(): void {
-    const storage = new StorageProvider(STORAGE_PROVIDER)
+    // initialize storage service
+    void storageService.initialize()
 
-    // initial storage
-    void storage.initial()
+    // initialize mail service
+    if (MAIL_USERNAME && MAIL_PASSWORD) {
+      mailService.initialize()
+    }
   }
 
   /**
