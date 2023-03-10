@@ -49,7 +49,7 @@ class App {
 
     // enabled
     this.plugins()
-    this.initialProvider()
+    this.initializeProvider()
 
     // docs swagger disable for production mode
     if (NODE_ENV !== 'production') {
@@ -85,9 +85,9 @@ class App {
   /**
    * Initialize Service Provider
    */
-  private initialProvider(): void {
+  private initializeProvider(): void {
     // initialize storage service
-    void storageService.initialize()
+    storageService.initialize()
 
     // initialize mail service
     if (MAIL_USERNAME && MAIL_PASSWORD) {
