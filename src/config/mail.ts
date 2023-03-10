@@ -1,4 +1,4 @@
-import { MailProvider } from 'expresso-core'
+import { Mail } from 'expresso-provider'
 import {
   APP_NAME,
   MAIL_DRIVER,
@@ -10,7 +10,7 @@ import {
 
 const mailDriver = MAIL_DRIVER as 'smtp' | 'gmail'
 
-const mailConfig = new MailProvider({
+export const mailService = new Mail({
   appName: APP_NAME,
   driver: mailDriver,
   host: MAIL_HOST,
@@ -18,7 +18,3 @@ const mailConfig = new MailProvider({
   username: String(MAIL_USERNAME),
   password: MAIL_PASSWORD,
 })
-
-export function mailService(): MailProvider {
-  return mailConfig
-}

@@ -4,9 +4,8 @@ import axios, { type AxiosError, type AxiosInstance } from 'axios'
 import chalk from 'chalk'
 import _ from 'lodash'
 import { AXIOS_TIMEOUT } from './env'
-import RedisProvider from './redis'
+import { redisService } from './redis'
 
-const redisProvider = new RedisProvider()
 const timeout = ms(AXIOS_TIMEOUT)
 
 /**
@@ -21,7 +20,7 @@ function createAxios(baseURL: string): AxiosInstance {
   axiosInstance.interceptors.request.use(async (config) => {
     const currentConfig = { ...config }
 
-    const storeToken = await redisProvider.get<string>('token')
+    const storeToken = await redisService.get<string>('token')
 
     if (storeToken) {
       currentConfig.headers.Authorization = storeToken

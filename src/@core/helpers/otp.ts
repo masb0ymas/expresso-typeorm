@@ -1,5 +1,5 @@
 import { EXPIRED_OTP, SECRET_OTP } from '@config/env'
-import RedisProvider from '@config/redis'
+import { redisService } from '@config/redis'
 import crypto from 'crypto'
 import { ms } from './formatter'
 
@@ -11,8 +11,6 @@ interface HashOTPEntity {
 interface VerifyHashOTPEntity extends HashOTPEntity {
   hash: string
 }
-
-const redisProvider = new RedisProvider()
 
 /**
  *
@@ -72,7 +70,7 @@ export async function takeOverOTP(params: HashOTPEntity): Promise<void> {
   const expires = ms('10m')
   const limit = 5
 
-  const getRedis: string | null = await redisProvider.get(keyRedis)
+  const getRedis: string | null = await redisService.get(keyRedis)
 
   let storeRedis = []
 
@@ -93,9 +91,7 @@ export async function takeOverOTP(params: HashOTPEntity): Promise<void> {
   console.log({ storeRedis })
 
   // Set Redis
-  await redisProvider.set({
-    key: keyRedis,
-    data: JSON.stringify(storeRedis),
-    options: { timeout: expires },
+  await redisService.set(keyRedis, JSON.stringify(storeRedis), {
+    timeout: expires,
   })
 }
