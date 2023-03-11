@@ -4962,10 +4962,10 @@ express@^4.18.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-expresso-core@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.3.0.tgz#07b5ea613abe3a8ab1cf88675df14128f19acb30"
-  integrity sha512-PteVYz4NWbQlw2bfDjo1s2IRQ6M2qks2gSup7CCRGjk/fC9n3eGN8gArIBHRoX/6u4HDOn0p6tgh1b1ZWiYzhQ==
+expresso-core@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.3.1.tgz#61db1dd626a505f6fb0de5639885c1a8ecc54245"
+  integrity sha512-g/4204fMVTKnT5ypEiPB7N5xNtlTgavVWrw3h0PnjxxUUK+AQ2E6LYMk+AIYbAMBwSeRWHT6UZnT11nb7T4K9A==
   dependencies:
     chalk "~4.1.2"
     lodash "^4.17.21"
@@ -4978,10 +4978,10 @@ expresso-hooks@^0.3.0:
     express "^4.18.2"
     multer "^1.4.5-lts.1"
 
-expresso-provider@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/expresso-provider/-/expresso-provider-0.3.0.tgz#f941b0f9fbc2e8a30f8457f42f407ae051bfcbea"
-  integrity sha512-ChLTQLBDKFDT7kmAXnAqIzjx6jt24kbpOsAJ3TAcm5MHdXN68qjvB2GMMUPRJ/x7IDio6ukhTqkRtzhA8r3dKA==
+expresso-provider@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/expresso-provider/-/expresso-provider-0.3.1.tgz#59669271059eca137e9c05ad5737e70988f5b3f6"
+  integrity sha512-qNtnkaER8i2lDOjABD3QB3kmDkYhshDMvX76ovkZT9L6KIXjpSgV0/G6Ynf7oS+0HjN/9JsjMPetllHMqT/s2g==
   dependencies:
     "@aws-sdk/client-s3" "^3.287.0"
     "@aws-sdk/s3-request-presigner" "^3.287.0"
