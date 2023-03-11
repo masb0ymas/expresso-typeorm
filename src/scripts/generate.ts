@@ -1,6 +1,5 @@
-import { logServer } from '@core/helpers/formatter'
 import chalk from 'chalk'
-import { randomString } from 'expresso-core'
+import { printLog, randomString } from 'expresso-core'
 import fs from 'fs'
 import path from 'path'
 
@@ -26,13 +25,15 @@ function generateEnv(value: string, regExp: RegExp): void {
     const replaceContent = contentEnv.replace(regExp, valueEnv)
     fs.writeFileSync(`${pathRes}`, replaceContent)
 
-    console.log(logServer(`Refresh ${value}`, `= ${uniqueCode}`))
+    const logMessage = printLog(`Refresh ${value}`, `= ${uniqueCode}`)
+    console.log(logMessage)
   } else {
     // Generate value
     const extraContent = `${valueEnv}\n\n${contentEnv}`
     fs.writeFileSync(`${pathRes}`, extraContent)
 
-    console.log(logServer(`Generate ${value}`, `= ${uniqueCode}`))
+    const logMessage = printLog(`Generate ${value}`, `= ${uniqueCode}`)
+    console.log(logMessage)
   }
 }
 

@@ -1,21 +1,8 @@
 import ResponseError from '@core/modules/response/ResponseError'
+import { printLog } from 'expresso-core'
 import * as nodeFs from 'fs'
 import fs from 'fs/promises'
 import path from 'path'
-import { logServer } from './formatter'
-
-/**
- * Read HTML File
- * @param _path
- */
-export async function readHTMLFile(_path: string): Promise<string> {
-  try {
-    const result = await fs.readFile(_path, { encoding: 'utf-8' })
-    return result
-  } catch (err) {
-    throw new ResponseError.BadRequest('invalid html path')
-  }
-}
 
 /**
  * Write File Stream
@@ -29,21 +16,17 @@ export async function writeFileStream(
   try {
     await fs.writeFile(_path, streamFile)
 
-    console.log(logServer(`File : ${_path}`, 'generate file successfully'))
-  } catch (err) {
-    console.log(err)
-    throw new ResponseError.BadRequest('failed to generate write file stream')
-  }
-}
+    const msgType = `File : ${_path}`
+    const message = 'generate file successfully'
+    const logMessage = printLog(msgType, message)
 
-/**
- * Create Dir If Not Exist
- * @param _path
- */
-export function createDirNotExist(_path: string): void {
-  if (!nodeFs.existsSync(path.resolve(_path))) {
-    nodeFs.mkdirSync(_path, { recursive: true })
-    console.log(logServer('Dir Path ', `created directory => ${_path}`))
+    console.log(logMessage)
+  } catch (err) {
+    const msgType = `File : ${_path}`
+    const logMessage = printLog(msgType, String(err))
+
+    console.log(logMessage)
+    throw new ResponseError.BadRequest('failed to generate write file stream')
   }
 }
 
@@ -54,11 +37,19 @@ export function createDirNotExist(_path: string): void {
 export function deleteFile(_path: string): void {
   const filePath = path.resolve(_path)
 
+  const msgType = `File : ${filePath}`
+
   if (_path && nodeFs.existsSync(filePath)) {
-    console.log(logServer(`File : ${filePath}`, `has been deleted`))
+    const message = 'has been deleted'
+    const logMessage = printLog(msgType, message)
+
+    console.log(logMessage)
 
     nodeFs.unlinkSync(path.resolve(filePath))
   } else {
-    console.log(logServer(`File : ${filePath}`, `not exist`))
+    const message = 'not exist'
+    const logMessage = printLog(msgType, message)
+
+    console.log(logMessage)
   }
 }

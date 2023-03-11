@@ -1,7 +1,6 @@
 import { i18nConfig } from '@config/i18n'
 import { type ReqOptions } from '@core/interface/ReqOptions'
 import ResponseError from '@core/modules/response/ResponseError'
-import chalk from 'chalk'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { validate as uuidValidate } from 'uuid'
@@ -96,38 +95,6 @@ export function validateNumber(value: any): number {
   }
 
   return 0
-}
-
-/**
- *
- * @param type
- * @param message
- * @returns
- */
-export function logServer(type: string, message: string): string {
-  const logName = chalk.green('[server]:')
-  const newType = chalk.blue(type)
-  const newMessage = chalk.green(message)
-
-  const result = `${logName} ${newType} ${newMessage}`
-
-  return result
-}
-
-/**
- *
- * @param type
- * @param message
- * @returns
- */
-export function logErrServer(type: string, message: string): string {
-  const logName = chalk.green('[server]:')
-  const newType = chalk.red(type)
-  const newMessage = chalk.green(message)
-
-  const result = `${logName} ${newType} ${newMessage}`
-
-  return result
 }
 
 /**

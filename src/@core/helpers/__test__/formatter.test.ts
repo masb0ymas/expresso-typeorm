@@ -1,8 +1,6 @@
 import { describe, test, expect, afterAll } from '@jest/globals'
 import {
   arrayFormatter,
-  logErrServer,
-  logServer,
   ms,
   validateBoolean,
   validateEmpty,
@@ -98,22 +96,6 @@ describe('helpers formatter test', () => {
     const data = validateNumber(anyValue)
 
     expect(data).toBe(27)
-  })
-
-  test('should log server format', () => {
-    const expectValue = `\x1B[32m[server]:\x1B[39m \x1B[34manyType\x1B[39m \x1B[32manyMessage\x1B[39m`
-
-    const data = logServer('anyType', 'anyMessage')
-
-    expect(data).toBe(expectValue)
-  })
-
-  test('should log error server format', () => {
-    const expectValue = `\x1B[32m[server]:\x1B[39m \x1B[31manyType\x1B[39m \x1B[32manyMessage\x1B[39m`
-
-    const data = logErrServer('anyType', 'anyMessage')
-
-    expect(data).toBe(expectValue)
   })
 
   test('should convert ms', () => {
