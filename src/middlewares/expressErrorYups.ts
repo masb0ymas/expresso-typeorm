@@ -1,5 +1,5 @@
-import { logErrServer } from '@core/helpers/formatter'
 import { type NextFunction, type Request, type Response } from 'express'
+import { printLog } from 'expresso-core'
 import { ValidationError } from 'yup'
 
 async function expressErrorYup(
@@ -12,7 +12,8 @@ async function expressErrorYup(
     const errType = `Yup Validation Error:`
     const message = err.errors.join('<br/>') || 'Yup Validation Error !'
 
-    console.log(logErrServer(errType, message))
+    const logMessage = printLog(errType, message, { label: 'error' })
+    console.log(logMessage)
 
     const error = {
       code: 422,
