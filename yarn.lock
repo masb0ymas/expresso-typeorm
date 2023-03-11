@@ -4962,25 +4962,26 @@ express@^4.18.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-expresso-core@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.2.1.tgz#bfc207ccdd911c3436f77fffdfe02edf02c5b1b5"
-  integrity sha512-xuinuCUh+i6t5XWQbaMTjzm76Ap8Lhx14ijiutiCcf6HvTR6zMAaeQW5hYkKTXcjBcEBeggM7Vws+oFxStDrUQ==
+expresso-core@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.3.0.tgz#07b5ea613abe3a8ab1cf88675df14128f19acb30"
+  integrity sha512-PteVYz4NWbQlw2bfDjo1s2IRQ6M2qks2gSup7CCRGjk/fC9n3eGN8gArIBHRoX/6u4HDOn0p6tgh1b1ZWiYzhQ==
   dependencies:
+    chalk "~4.1.2"
     lodash "^4.17.21"
 
-expresso-hooks@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/expresso-hooks/-/expresso-hooks-0.2.1.tgz#c8c0003c3d2666a5db24bd157a4cc86a0f011241"
-  integrity sha512-7L4WEf4Flsv2ROLmHZQfjFRFSrI3+lnH6KwpcOIDj2KVIW+bJIkvi43H19ngig0R9NCpkMU3yLM7XUWj8oloWg==
+expresso-hooks@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/expresso-hooks/-/expresso-hooks-0.3.0.tgz#50388d6bcf37401a9462cb56cc9753dff0592f54"
+  integrity sha512-b5/8FwGRP/MNn4rOrbYFfcND4XgkiMbf58gF2GR8kJxe9c0mu9wUb7GUVdRqjGQKJTBS1KlPYekUxQnAo+X8wQ==
   dependencies:
     express "^4.18.2"
     multer "^1.4.5-lts.1"
 
-expresso-provider@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/expresso-provider/-/expresso-provider-0.2.1.tgz#0ee6e7ebb609d98982cbac4a46835a7fc256a286"
-  integrity sha512-5KlUGNa/A3uDQpiyPDHKA6wrsHSd3P2QhLZ9IivEyB/55bBPaUPEWfkjXCT7VLDDMaOf9jGgJs6qhAajVoBl9Q==
+expresso-provider@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/expresso-provider/-/expresso-provider-0.3.0.tgz#f941b0f9fbc2e8a30f8457f42f407ae051bfcbea"
+  integrity sha512-ChLTQLBDKFDT7kmAXnAqIzjx6jt24kbpOsAJ3TAcm5MHdXN68qjvB2GMMUPRJ/x7IDio6ukhTqkRtzhA8r3dKA==
   dependencies:
     "@aws-sdk/client-s3" "^3.287.0"
     "@aws-sdk/s3-request-presigner" "^3.287.0"
@@ -4996,10 +4997,10 @@ expresso-provider@^0.2.1:
     nodemailer "^6.9.1"
     nodemailer-mailgun-transport "^2.1.5"
 
-expresso-query@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/expresso-query/-/expresso-query-0.2.1.tgz#cab21da99eb54601ad89250537dc170803d9ef78"
-  integrity sha512-VpVnedTX3C5pT8p13HyApNMecX5CvpilE8Kvr83Te/I0HDHUuySsgIKN/RnTdRFYg3GtG354IovOngifjGpPPA==
+expresso-query@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/expresso-query/-/expresso-query-0.3.0.tgz#0fe76f90bf47427c2fb8d3ef79291b601d688444"
+  integrity sha512-eSA/B5nDjg7SEeoxnnlEGk1vKhRdFVQUJVjFmmU/c7Oe0VA3D0lgowLkYL3cVOhX4MpVlRym7Msk9ObNbbZ9Dg==
   dependencies:
     lodash "^4.17.21"
     typeorm "^0.3.12"
