@@ -1,11 +1,16 @@
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18n'
-import { logErrServer } from '@core/helpers/formatter'
 import { AppDataSource } from '@database/data-source'
 import { User, type UserLoginAttributes } from '@database/entities/User'
 import { type NextFunction, type Request, type Response } from 'express'
+import { printLog } from 'expresso-core'
 import { type TOptions } from 'i18next'
 
+/**
+ * Not Permitted Access
+ * @param roles
+ * @returns
+ */
 function notPermittedAccess(roles: string[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const { lang } = req.getQuery()
@@ -24,7 +29,8 @@ function notPermittedAccess(roles: string[]) {
 
     if (getUser && roles.includes(getUser.RoleId)) {
       // log error
-      console.log(logErrServer(errType, errMessage))
+      const logMessage = printLog(errType, errMessage, { label: 'error' })
+      console.log(logMessage)
 
       const message = i18nConfig.t('errors.permission_access', i18nOpt)
 

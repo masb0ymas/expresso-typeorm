@@ -1,4 +1,4 @@
-import { logServer } from '@core/helpers/formatter'
+import { printLog } from 'expresso-core'
 import i18next from 'i18next'
 import i18nextBackend from 'i18next-fs-backend'
 
@@ -19,7 +19,8 @@ void i18next.use(i18nextBackend).init(
       return
     }
 
-    console.log(logServer('i18next', 'is ready...'))
+    const logMessage = printLog('i18next', 'is ready...')
+    console.log(logMessage)
   }
 )
 

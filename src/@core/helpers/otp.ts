@@ -1,7 +1,7 @@
 import { EXPIRED_OTP, SECRET_OTP } from '@config/env'
 import { redisService } from '@config/redis'
 import crypto from 'crypto'
-import { ms } from './formatter'
+import { ms } from 'expresso-core'
 
 interface HashOTPEntity {
   phone: string

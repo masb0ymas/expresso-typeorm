@@ -1,8 +1,15 @@
-import { logErrServer } from '@core/helpers/formatter'
 import { extractToken, verifyToken } from '@core/helpers/token'
 import { type NextFunction, type Request, type Response } from 'express'
+import { printLog } from 'expresso-core'
 import _ from 'lodash'
 
+/**
+ * Authorization
+ * @param req
+ * @param res
+ * @param next
+ * @returns
+ */
 async function authorization(
   req: Request,
   res: Response,
@@ -12,7 +19,10 @@ async function authorization(
   const token = verifyToken(String(getToken))
 
   if (_.isEmpty(token?.data)) {
-    console.log(logErrServer('Permission :', 'Unauthorized'))
+    const logMessage = printLog('Permission :', 'Unauthorized', {
+      label: 'error',
+    })
+    console.log(logMessage)
 
     return res.status(401).json({ code: 401, message: token?.message })
   }

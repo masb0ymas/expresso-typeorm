@@ -1,6 +1,6 @@
-import fs from 'fs'
 import chalk from 'chalk'
-import { logServer } from './formatter'
+import { printLog } from 'expresso-core'
+import fs from 'fs'
 import _ from 'lodash'
 
 /**
@@ -16,7 +16,9 @@ function getController(controllerPath: string, filePath: string): void {
     const routeDir = chalk.cyan(filePath)
     const message = `Controller ${routeDir} Registered`
 
-    console.log(logServer(msgType, message))
+    const logMessage = printLog(msgType, message)
+
+    console.log(logMessage)
 
     // require controller
     require(controllerPath)
@@ -29,7 +31,9 @@ function getController(controllerPath: string, filePath: string): void {
     const routeDir = chalk.cyan(filePath)
     const message = `Controller ${routeDir} Registered`
 
-    console.log(logServer(msgType, message))
+    const logMessage = printLog(msgType, message)
+
+    console.log(logMessage)
 
     // require controller
     require(controllerPath)

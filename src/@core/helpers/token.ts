@@ -4,13 +4,13 @@ import {
   type DtoVerifyToken,
 } from '@core/interface/Token'
 import { type Request } from 'express'
+import { ms, printLog } from 'expresso-core'
 import { type IncomingHttpHeaders } from 'http'
 import jwt, {
   JsonWebTokenError,
   NotBeforeError,
   TokenExpiredError,
 } from 'jsonwebtoken'
-import { logErrServer, logServer, ms } from './formatter'
 
 /**
  *
@@ -44,13 +44,17 @@ export function extractToken(req: Request): string | null {
 
   // extract from query
   if (query?.token) {
-    console.log(logServer('Auth', 'Extract from Query'))
+    const logMessage = printLog('Auth', 'Extract from Query')
+    console.log(logMessage)
+
     return query.token
   }
 
   // extract from cookie
   if (cookie?.token) {
-    console.log(logServer('Auth', 'Extract from Cookie'))
+    const logMessage = printLog('Auth', 'Extract from Cookie')
+    console.log(logMessage)
+
     return cookie?.token
   }
 
@@ -61,7 +65,9 @@ export function extractToken(req: Request): string | null {
 
     if (splitAuthorize.length === 2) {
       if (allowedAuthorize.includes(splitAuthorize[0])) {
-        console.log(logServer('Auth', 'Extract from Header Authorization'))
+        const logMessage = printLog('Auth', 'Extract from Header Authorization')
+        console.log(logMessage)
+
         return splitAuthorize[1]
       }
     }
@@ -87,23 +93,35 @@ export function verifyToken(token: string, secretKey?: string): DtoVerifyToken {
     const result = jwt.verify(token, newSecretKey)
     return { data: result, message: 'token is verify' }
   } catch (err) {
+    // Error Token Expired
     if (err instanceof TokenExpiredError) {
       const errType = 'jwt expired error'
-      console.log(logErrServer(`${errType} :`, err.message))
+      const message = err.message ?? err
+
+      const logMessage = printLog(errType, message, { label: 'error' })
+      console.log(logMessage)
 
       return { data: null, message: `${errType} : ${err.message}` }
     }
 
+    // Error JWT Web Token
     if (err instanceof JsonWebTokenError) {
       const errType = 'jwt token error'
-      console.log(logErrServer(`${errType} :`, err.message))
+      const message = err.message ?? err
+
+      const logMessage = printLog(errType, message, { label: 'error' })
+      console.log(logMessage)
 
       return { data: null, message: `${errType} : ${err.message}` }
     }
 
+    // Error Not Before
     if (err instanceof NotBeforeError) {
       const errType = 'jwt not before error'
-      console.log(logErrServer(`${errType} :`, err.message))
+      const message = err.message ?? err
+
+      const logMessage = printLog(errType, message, { label: 'error' })
+      console.log(logMessage)
 
       return { data: null, message: `${errType} : ${err.message}` }
     }

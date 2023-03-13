@@ -1,7 +1,7 @@
-import { logErrServer, ms } from '@core/helpers/formatter'
 import ResponseError from '@core/modules/response/ResponseError'
 import axios, { type AxiosError, type AxiosInstance } from 'axios'
 import chalk from 'chalk'
+import { ms, printLog } from 'expresso-core'
 import _ from 'lodash'
 import { AXIOS_TIMEOUT } from './env'
 import { redisService } from './redis'
@@ -42,27 +42,37 @@ function createAxios(baseURL: string): AxiosInstance {
       const errAxios = (type: string): string => chalk.red(`Axios Err: ${type}`)
 
       if (statusCode === 401) {
-        console.log(logErrServer(errAxios('Unauhtorized'), String(message)))
-        throw new ResponseError.Unauthorized(String(message))
+        const errType = errAxios('Unauhtorized')
+        const logMessage = printLog(errType, `${message}`, { label: 'error' })
+        console.log(logMessage)
+
+        throw new ResponseError.Unauthorized(`${message}`)
       }
 
       if (statusCode === 400) {
-        console.log(logErrServer(errAxios('Bad Request'), String(message)))
-        throw new ResponseError.BadRequest(String(message))
+        const errType = errAxios('Bad Request')
+        const logMessage = printLog(errType, `${message}`, { label: 'error' })
+        console.log(logMessage)
+
+        throw new ResponseError.BadRequest(`${message}`)
       }
 
       if (statusCode === 404) {
-        console.log(logErrServer(errAxios('Not Found'), String(message)))
-        throw new ResponseError.NotFound(String(message))
+        const errType = errAxios('Not Found')
+        const logMessage = printLog(errType, `${message}`, { label: 'error' })
+        console.log(logMessage)
+
+        throw new ResponseError.NotFound(`${message}`)
       }
 
       const handleError = error?.response?.headers?.handleError
 
       if (!handleError) {
         if (error.code === 'ECONNREFUSED') {
-          console.log(
-            logErrServer(errAxios('Service Unavailable'), String(message))
-          )
+          const errType = errAxios('Service Unavailable')
+          const logMessage = printLog(errType, `${message}`, { label: 'error' })
+          console.log(logMessage)
+
           throw new ResponseError.InternalServer('Service Unavailable')
         }
 

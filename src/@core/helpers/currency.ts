@@ -1,5 +1,6 @@
+import { currency } from 'expresso-core'
+
 const locale = 'id-ID'
-const currency = 'IDR'
 
 /**
  *
@@ -7,19 +8,12 @@ const currency = 'IDR'
  * @returns
  */
 export function formatCurrencyIDR(value: string | number): string {
-  if (value || Number(value)) {
-    const data = new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    }).format(Number(value))
+  const data = currency.format({
+    nominal: value,
+    options: { locale: 'id-ID', currency: 'IDR' },
+  })
 
-    const result = data.replace(/\u00A0/, ' ')
-    return result
-  }
-
-  return '-'
+  return data
 }
 
 /**
@@ -28,17 +22,9 @@ export function formatCurrencyIDR(value: string | number): string {
  * @returns
  */
 export function formatCurrency(value: string | number): string {
-  if (value || Number(value)) {
-    const data = new Intl.NumberFormat(locale, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    }).format(Number(value))
+  const data = currency.format({ nominal: value })
 
-    const result = data.replace(/\u00A0/, ' ')
-    return result
-  }
-
-  return '-'
+  return data
 }
 
 /**

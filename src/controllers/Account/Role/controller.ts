@@ -1,12 +1,12 @@
 import { APP_LANG } from '@config/env'
 import ConstRole from '@core/constants/ConstRole'
 import asyncHandler from '@core/helpers/asyncHandler'
-import { arrayFormatter } from '@core/helpers/formatter'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import authorization from '@middlewares/authorization'
 import permissionAccess from '@middlewares/permissionAccess'
 import route from '@routes/v1'
 import { type Request, type Response } from 'express'
+import { arrayFormatter } from 'expresso-core'
 import RoleService from './service'
 
 route.get(

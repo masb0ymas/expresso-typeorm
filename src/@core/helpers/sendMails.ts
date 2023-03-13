@@ -2,11 +2,10 @@ import { APP_NAME } from '@config/env'
 import { mailService } from '@config/mail'
 import { type AccountRegistrationEntity } from '@core/interface/SendMail'
 import ResponseError from '@core/modules/response/ResponseError'
+import { printLog, readHTMLFile } from 'expresso-core'
 import fs from 'fs'
 import Handlebars from 'handlebars'
 import path from 'path'
-import { readHTMLFile } from './files'
-import { logServer } from './formatter'
 
 class SendMail {
   /**
@@ -19,7 +18,10 @@ class SendMail {
       `${process.cwd()}/public/templates/emails/${htmlPath}`
     )
 
-    console.log(logServer('Template Email :', `${templatePath}`))
+    const msgType = 'Template Email :'
+    const logMessage = printLog(msgType, `${templatePath}`)
+
+    console.log(logMessage)
 
     return templatePath
   }

@@ -6,6 +6,10 @@ import {
   type RateLimitRequestHandler,
 } from 'express-rate-limit'
 
+/**
+ * Express Rate Limit
+ * @returns
+ */
 export const expressRateLimit = (): RateLimitRequestHandler => {
   return rateLimit({
     windowMs: 15 * 60 * 100, // 15 minutes

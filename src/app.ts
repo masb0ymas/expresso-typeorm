@@ -11,7 +11,6 @@ import { mailService } from '@config/mail'
 import { storageService } from '@config/storage'
 import allowedOrigins from '@core/constants/allowedOrigins'
 import { optionsSwaggerUI, swaggerSpec } from '@core/helpers/docsSwagger'
-import { logServer } from '@core/helpers/formatter'
 import ResponseError from '@core/modules/response/ResponseError'
 import expressErrorResponse from '@middlewares/expressErrorResponse'
 import expressErrorTypeORM from '@middlewares/expressErrorTypeORMs'
@@ -25,6 +24,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import Express, { type Application, type Request, type Response } from 'express'
 import userAgent from 'express-useragent'
+import { printLog } from 'expresso-core'
 import helmet from 'helmet'
 import hpp from 'hpp'
 import http from 'http'
@@ -49,7 +49,7 @@ class App {
 
     // enabled
     this.plugins()
-    this.initialProvider()
+    this.initializeProvider()
 
     // docs swagger disable for production mode
     if (NODE_ENV !== 'production') {
@@ -85,7 +85,7 @@ class App {
   /**
    * Initialize Service Provider
    */
-  private initialProvider(): void {
+  private initializeProvider(): void {
     // initialize storage service
     void storageService.initialize()
 
@@ -204,7 +204,8 @@ class App {
       const msgType = `${APP_NAME}`
       const message = `Server listening on ${host} ⚡️ & Env: ${env} 🚀`
 
-      console.log(logServer(msgType, message))
+      const logMessage = printLog(msgType, message)
+      console.log(logMessage)
     }
 
     // Run listener

@@ -4,7 +4,6 @@ import SessionService from '@controllers/Account/Session/service'
 import userSchema from '@controllers/Account/User/schema'
 import UserService from '@controllers/Account/User/service'
 import ConstRole from '@core/constants/ConstRole'
-import { validateEmpty } from '@core/helpers/formatter'
 import SendMail from '@core/helpers/sendMails'
 import { generateToken, verifyToken } from '@core/helpers/token'
 import { optionsYup } from '@core/helpers/yup'
@@ -14,9 +13,9 @@ import { AppDataSource } from '@database/data-source'
 import {
   User,
   type LoginAttributes,
-  type UserAttributes,
   type UserLoginAttributes,
 } from '@database/entities/User'
+import { validateEmpty } from 'expresso-core'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
@@ -28,18 +27,25 @@ class AuthService {
    * @param formData
    * @returns
    */
-  public static async signUp(formData: UserAttributes): Promise<User> {
+  public static async signUp(formData: any): Promise<User> {
     const userRepository = AppDataSource.manager.getRepository(User)
 
     const uid = uuidv4()
     const { token } = generateToken({ token: uid })
+
+    let RoleId = ConstRole.ID_USER
+
+    // check role
+    if (formData.roleAs === 'USER') {
+      RoleId = ConstRole.ID_USER
+    }
 
     const newFormData = {
       ...formData,
       isActive: false,
       phone: validateEmpty(formData.phone),
       tokenVerify: token,
-      RoleId: ConstRole.ID_USER,
+      RoleId,
     }
 
     const value = userSchema.register.validateSync(newFormData, optionsYup)

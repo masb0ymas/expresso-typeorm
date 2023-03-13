@@ -1,7 +1,15 @@
-import { logErrServer } from '@core/helpers/formatter'
 import { type NextFunction, type Request, type Response } from 'express'
+import { printLog } from 'expresso-core'
 import { QueryFailedError } from 'typeorm'
 
+/**
+ * Express Error TypeORM
+ * @param err
+ * @param req
+ * @param res
+ * @param next
+ * @returns
+ */
 async function expressErrorTypeORM(
   err: any,
   req: Request,
@@ -10,8 +18,10 @@ async function expressErrorTypeORM(
 ): Promise<Response<any, Record<string, any>> | undefined> {
   if (err instanceof QueryFailedError) {
     const errType = 'TypeORM Error:'
+    const message = err.message ?? err
 
-    console.log(logErrServer(errType, err.message))
+    const logMessage = printLog(errType, message, { label: 'error' })
+    console.log(logMessage)
 
     return res.status(400).json({
       code: 400,

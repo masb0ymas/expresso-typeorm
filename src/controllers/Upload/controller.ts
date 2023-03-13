@@ -1,13 +1,13 @@
 import { APP_LANG } from '@config/env'
 import ConstRole from '@core/constants/ConstRole'
 import asyncHandler from '@core/helpers/asyncHandler'
-import { arrayFormatter } from '@core/helpers/formatter'
 import { type FileAttributes } from '@core/interface/File'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import authorization from '@middlewares/authorization'
 import permissionAccess from '@middlewares/permissionAccess'
 import route from '@routes/v1'
 import { type NextFunction, type Request, type Response } from 'express'
+import { arrayFormatter, deleteFile } from 'expresso-core'
 import { useMulter } from 'expresso-hooks'
 import _ from 'lodash'
 import UploadService from './service'
@@ -73,6 +73,9 @@ route.post(
         fieldUpload,
         directory,
       })
+
+      // delete file after upload to object storage
+      deleteFile(fieldUpload.path)
     }
 
     const httpResponse = HttpResponse.created({
@@ -101,16 +104,33 @@ route.put(
   '/upload/:id',
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
+  uploadFile,
+  setFileToBody,
   asyncHandler(async function update(req: Request, res: Response) {
-    const { lang } = req.getQuery()
-    const defaultLang = lang ?? APP_LANG
-
     const { id } = req.getParams()
     const formData = req.getBody()
 
-    const data = await UploadService.update(id, formData, { lang: defaultLang })
+    const fieldUpload = _.get(formData, 'fileUpload', {}) as FileAttributes
 
-    const httpResponse = HttpResponse.updated({ data })
+    let data
+
+    if (!_.isEmpty(fieldUpload) && !_.isEmpty(fieldUpload.path)) {
+      const directory = formData.type ?? 'uploads'
+
+      data = await UploadService.uploadFile({
+        fieldUpload,
+        directory,
+        UploadId: id,
+      })
+
+      // delete file after upload to object storage
+      deleteFile(fieldUpload.path)
+    }
+
+    const httpResponse = HttpResponse.updated({
+      data: data?.uploadResponse,
+      storage: data?.storageResponse,
+    })
     res.status(200).json(httpResponse)
   })
 )
