@@ -72,6 +72,32 @@ class UploadService {
 
   /**
    *
+   * @param keyFile
+   * @param options
+   * @returns
+   */
+  public static async findByKeyFile(
+    keyFile: string,
+    options?: ReqOptions
+  ): Promise<Upload> {
+    const uploadRepository = AppDataSource.getRepository(Upload)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+
+    const data = await uploadRepository.findOne({
+      where: { keyFile },
+      withDeleted: options?.withDeleted,
+    })
+
+    if (!data) {
+      const message = i18nConfig.t('errors.not_found', i18nOpt)
+      throw new ResponseError.NotFound(`upload ${message}`)
+    }
+
+    return data
+  }
+
+  /**
+   *
    * @param formData
    * @returns
    */
@@ -262,12 +288,26 @@ class UploadService {
   /**
    *
    * @param keyFile
+   * @param options
    * @returns
    */
-  public static async getPresignedURL(keyFile: string): Promise<string> {
+  public static async getPresignedURL(
+    keyFile: string,
+    options?: ReqOptions
+  ): Promise<Upload> {
+    const uploadRepository = AppDataSource.getRepository(Upload)
+    const data = await this.findByKeyFile(keyFile, { ...options })
+
     const signedURL = await storageService.getPresignedURL(keyFile)
 
-    return signedURL
+    const value = uploadSchema.create.validateSync(
+      { ...data, signedURL },
+      optionsYup
+    )
+
+    const newData = await uploadRepository.save({ ...data, ...value })
+
+    return newData
   }
 
   /**
