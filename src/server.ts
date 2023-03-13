@@ -32,6 +32,5 @@ AppDataSource.initialize()
     const message = `Unable to connect to the database: ${err}`
 
     const logMessage = printLog(msgType, message, { label: 'error' })
-
     console.log(logMessage)
   })

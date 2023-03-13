@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { validateBoolean } from '@core/helpers/formatter'
+import { validateBoolean } from 'expresso-core'
 
 // node env
 export const NODE_ENV = process.env.NODE_ENV ?? 'development'

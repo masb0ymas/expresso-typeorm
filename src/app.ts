@@ -203,8 +203,8 @@ class App {
 
       const msgType = `${APP_NAME}`
       const message = `Server listening on ${host} ⚡️ & Env: ${env} 🚀`
-      const logMessage = printLog(msgType, message)
 
+      const logMessage = printLog(msgType, message)
       console.log(logMessage)
     }
 

@@ -46,7 +46,7 @@ function createAxios(baseURL: string): AxiosInstance {
         const logMessage = printLog(errType, `${message}`, { label: 'error' })
         console.log(logMessage)
 
-        throw new ResponseError.Unauthorized(String(message))
+        throw new ResponseError.Unauthorized(`${message}`)
       }
 
       if (statusCode === 400) {
@@ -54,7 +54,7 @@ function createAxios(baseURL: string): AxiosInstance {
         const logMessage = printLog(errType, `${message}`, { label: 'error' })
         console.log(logMessage)
 
-        throw new ResponseError.BadRequest(String(message))
+        throw new ResponseError.BadRequest(`${message}`)
       }
 
       if (statusCode === 404) {
@@ -62,7 +62,7 @@ function createAxios(baseURL: string): AxiosInstance {
         const logMessage = printLog(errType, `${message}`, { label: 'error' })
         console.log(logMessage)
 
-        throw new ResponseError.NotFound(String(message))
+        throw new ResponseError.NotFound(`${message}`)
       }
 
       const handleError = error?.response?.headers?.handleError
