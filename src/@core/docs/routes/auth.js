@@ -27,12 +27,17 @@ module.exports = {
                 phone: {
                   type: 'string',
                 },
+                roleAs: {
+                  type: 'string',
+                  enum: ['USER'],
+                },
               },
               required: [
                 'fullname',
                 'email',
                 'newPassword',
                 'confirmNewPassword',
+                'roleAs',
               ],
             },
           },
