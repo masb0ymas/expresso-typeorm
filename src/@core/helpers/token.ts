@@ -93,34 +93,34 @@ export function verifyToken(token: string, secretKey?: string): DtoVerifyToken {
     const result = jwt.verify(token, newSecretKey)
     return { data: result, message: 'token is verify' }
   } catch (err) {
+    // Error Token Expired
     if (err instanceof TokenExpiredError) {
       const errType = 'jwt expired error'
+      const message = err.message ?? err
 
-      const logMessage = printLog(`${errType} :`, err.message, {
-        label: 'error',
-      })
+      const logMessage = printLog(errType, message, { label: 'error' })
       console.log(logMessage)
 
       return { data: null, message: `${errType} : ${err.message}` }
     }
 
+    // Error JWT Web Token
     if (err instanceof JsonWebTokenError) {
       const errType = 'jwt token error'
+      const message = err.message ?? err
 
-      const logMessage = printLog(`${errType} :`, err.message, {
-        label: 'error',
-      })
+      const logMessage = printLog(errType, message, { label: 'error' })
       console.log(logMessage)
 
       return { data: null, message: `${errType} : ${err.message}` }
     }
 
+    // Error Not Before
     if (err instanceof NotBeforeError) {
       const errType = 'jwt not before error'
+      const message = err.message ?? err
 
-      const logMessage = printLog(`${errType} :`, err.message, {
-        label: 'error',
-      })
+      const logMessage = printLog(errType, message, { label: 'error' })
       console.log(logMessage)
 
       return { data: null, message: `${errType} : ${err.message}` }
