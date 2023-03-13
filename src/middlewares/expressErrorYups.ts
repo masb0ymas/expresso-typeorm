@@ -2,6 +2,14 @@ import { type NextFunction, type Request, type Response } from 'express'
 import { printLog } from 'expresso-core'
 import { ValidationError } from 'yup'
 
+/**
+ * Express Error Yup
+ * @param err
+ * @param req
+ * @param res
+ * @param next
+ * @returns
+ */
 async function expressErrorYup(
   err: any,
   req: Request,

@@ -1,6 +1,10 @@
 import { type NextFunction, type Request, type Response } from 'express'
 import { type Details } from 'express-useragent'
 
+/**
+ * Express User Agent
+ * @returns
+ */
 export const expressUserAgent = () => {
   return function (req: Request, _res: Response, next: NextFunction) {
     // check is user agent

@@ -6,6 +6,11 @@ import { type NextFunction, type Request, type Response } from 'express'
 import { printLog } from 'expresso-core'
 import { type TOptions } from 'i18next'
 
+/**
+ * Permission Access
+ * @param roles
+ * @returns
+ */
 function permissionAccess(roles: string[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const { lang } = req.getQuery()

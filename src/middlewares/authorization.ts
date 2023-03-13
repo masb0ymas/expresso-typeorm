@@ -3,6 +3,13 @@ import { type NextFunction, type Request, type Response } from 'express'
 import { printLog } from 'expresso-core'
 import _ from 'lodash'
 
+/**
+ * Authorization
+ * @param req
+ * @param res
+ * @param next
+ * @returns
+ */
 async function authorization(
   req: Request,
   res: Response,
