@@ -6682,7 +6682,7 @@ jest@^29.5.0:
     import-local "^3.0.2"
     jest-cli "^29.5.0"
 
-jiti@^1.17.1:
+jiti@^1.17.2:
   version "1.17.2"
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.17.2.tgz#9e193d171c76b1c518a46c243c410c0462fe22d1"
   integrity sha512-Xf0nU8+8wuiQpLcqdb2HRyHqYwGk2Pd+F7kstyp20ZuqTyCmB9dqpX2NxaxFc1kovraa2bG6c1RL3W7XfapiZg==
@@ -7013,14 +7013,14 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-locter@^1.0.3:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/locter/-/locter-1.0.7.tgz#965032ed7a4214af44a72d57d1f35b0b72a6b60f"
-  integrity sha512-6QOic28EXw/sS3jd8itA0ouZ4q/6ttrA6NuQwrr2l4ST9P256TYq08lZlH7G9iMrl9tu6vuBALqTqEAY/0fWxw==
+locter@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/locter/-/locter-1.0.9.tgz#6c13ae5bcb5d2dd9cea053324a29799b14bc8635"
+  integrity sha512-UKL9xeIlmZl41fpsgSkeydFunq8BBlnbsSaAbFEwCU0tEHmd3wfKO/BIkF3ZHvHmR8bcwips6CcdQONWGRcHAA==
   dependencies:
     ebec "^0.2.1"
     glob "^9.0.1"
-    jiti "^1.17.1"
+    jiti "^1.17.2"
 
 lodash.camelcase@^4.3.0:
   version "4.3.0"
@@ -9748,16 +9748,16 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typeorm-extension@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.5.2.tgz#56dc182ea5aa0dc148ee08dfe05d8d7de6368914"
-  integrity sha512-r7WAFFG00Zu3L/FiE3697w4PLjzfGpkelq5geQJE27do2Deja9UwdyqVIWT3owL8IbEPpqk1O2x1dJynoEumOw==
+typeorm-extension@^2.5.4:
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.5.4.tgz#0d3149553c667a3711608059c570174d528bbffc"
+  integrity sha512-Z636oNsXD6Xy0zbRL3aJHYB9c9HW2bhm5ikLdaiilrg0tEJXp4HOtUlkZMM/nnIwQ4Ih71Afo6iIbEUCnbImgg==
   dependencies:
     "@faker-js/faker" "^7.6.0"
-    locter "^1.0.3"
+    locter "^1.0.9"
     rapiq "^0.8.0"
     reflect-metadata "^0.1.13"
-    yargs "^17.6.2"
+    yargs "^17.7.1"
 
 typeorm@^0.3.12:
   version "0.3.12"
@@ -10187,7 +10187,7 @@ yargs@^16.0.0, yargs@^16.2.0:
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
 
-yargs@^17.0.0, yargs@^17.3.1, yargs@^17.6.2:
+yargs@^17.0.0, yargs@^17.3.1, yargs@^17.6.2, yargs@^17.7.1:
   version "17.7.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.7.1.tgz#34a77645201d1a8fc5213ace787c220eabbd0967"
   integrity sha512-cwiTb08Xuv5fqF4AovYacTFNxk62th7LKJ6BL9IGUpTJrWoU7/7WdQGTP2SjKf1dUNBGzDd28p/Yfs/GI6JrLw==
