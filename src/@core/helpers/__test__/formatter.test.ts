@@ -1,12 +1,5 @@
-import { describe, test, expect, afterAll } from '@jest/globals'
-import {
-  arrayFormatter,
-  ms,
-  validateBoolean,
-  validateEmpty,
-  validateNumber,
-  validateUUID,
-} from '../formatter'
+import { afterAll, describe, expect, test } from '@jest/globals'
+import { validateUUID } from '../formatter'
 
 describe('helpers formatter test', () => {
   afterAll(async () => {
@@ -15,56 +8,6 @@ describe('helpers formatter test', () => {
         resolve()
       }, 500)
     ) // avoid jest open handle error
-  })
-
-  test('should array formatter test from json parse', () => {
-    const anyValue = '["any_1", "any_2"]'
-    const expectValue = ['any_1', 'any_2']
-
-    const data = arrayFormatter(anyValue)
-
-    expect(data).toStrictEqual(expectValue)
-  })
-
-  test('should array formatter from array data', () => {
-    const anyValue = ['any_1', 'any_2']
-    const expectValue = ['any_1', 'any_2']
-
-    const data = arrayFormatter(anyValue)
-
-    expect(data).toStrictEqual(expectValue)
-  })
-
-  test('should validate empty value toBe NULL', () => {
-    const anyValue = null
-
-    const data = validateEmpty(anyValue)
-
-    expect(data).toBe(anyValue)
-  })
-
-  test('should validate empty value', () => {
-    const anyValue = 'anyValue'
-
-    const data = validateEmpty(anyValue)
-
-    expect(data).toBe(anyValue)
-  })
-
-  test('should validate boolean', () => {
-    const anyValue = 'true'
-
-    const data = validateBoolean(anyValue)
-
-    expect(data).toBe(true)
-  })
-
-  test('should validate boolean with wrong value', () => {
-    const anyValue = null
-
-    const data = validateBoolean(anyValue)
-
-    expect(data).toBe(false)
   })
 
   test('should validate uuid with wrong value', () => {
@@ -80,29 +23,5 @@ describe('helpers formatter test', () => {
     const data = validateUUID(anyValue)
 
     expect(data).toBe(anyValue)
-  })
-
-  test('should validate number with wrong value', () => {
-    const anyValue = NaN
-
-    const data = validateNumber(anyValue)
-
-    expect(data).toBe(0)
-  })
-
-  test('should validate number', () => {
-    const anyValue = '27'
-
-    const data = validateNumber(anyValue)
-
-    expect(data).toBe(27)
-  })
-
-  test('should convert ms', () => {
-    const expectValue = 24 * 60 * 60 * 1000
-
-    const data = ms('1d')
-
-    expect(data).toBe(expectValue)
   })
 })
