@@ -7,8 +7,8 @@
 /public/uploads
 
 package-lock.json
-pnpm-lock.yml
+yarn-error.log
 .idea/
 .DS_Store
 .env
-gcp-serviceAccount.json
+
