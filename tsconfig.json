@@ -12,11 +12,10 @@
     "moduleResolution": "node",
     "baseUrl": "./src",
     "paths": {
-      "@core/*": ["@core/*"],
+      "@apps/*": ["apps/*"],
+      "@core/*": ["core/*"],
       "@config/*": ["config/*"],
-      "@controllers/*": ["controllers/*"],
       "@database/*": ["database/*"],
-      "@middlewares/*": ["middlewares/*"],
       "@routes/*": ["routes/*"]
     },
     "typeRoots": ["./src/types"],
