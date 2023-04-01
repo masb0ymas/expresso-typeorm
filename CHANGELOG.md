@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/masb0ymas/expresso-typeorm/compare/v3.0.3...v4.0.0) (2023-04-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* improve code base to repository architecture
+
+### Bug Fixes
+
+* config dockerfile ([3a71b42](https://github.com/masb0ymas/expresso-typeorm/commit/3a71b42e7224cc97037dbfa22b63c60fa296289b))
+* **core:** change directory core ([dbff963](https://github.com/masb0ymas/expresso-typeorm/commit/dbff963e3c61e08de4eee6881826fc2b6380a6e3))
+* gitignore ([6345793](https://github.com/masb0ymas/expresso-typeorm/commit/6345793bbdede256893792d36e38e83768fc9323))
+* update config file ([70003ee](https://github.com/masb0ymas/expresso-typeorm/commit/70003ee976d5b4997f771d530ee012de4ce8f74f))
+
+
+### Other Commit
+
+* improve code base to repository architecture ([f3dd5b1](https://github.com/masb0ymas/expresso-typeorm/commit/f3dd5b1898e7a840edddf17607de21a188c8cdd0))
+
 ### [3.0.3](https://github.com/masb0ymas/expresso-typeorm/compare/v3.0.2...v3.0.3) (2023-03-13)
 
 
