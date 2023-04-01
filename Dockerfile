@@ -1,7 +1,9 @@
-# Install dependencies only when needed
-FROM node:16.18-alpine as deps
+FROM node:18-alpine AS base
 LABEL author="masb0ymas"
 LABEL name="expresso"
+
+# Install dependencies only when needed
+FROM base as deps
 
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
@@ -20,9 +22,7 @@ COPY ["package.json", "yarn.lock", "./"]
 
 RUN yarn install --frozen-lockfile
 
-FROM node:16.18-alpine as build_base
-LABEL author="masb0ymas"
-LABEL name="expresso"
+FROM base as builder
 
 # Set the Temp Working Directory inside the container
 WORKDIR /temp-build
@@ -41,16 +41,7 @@ COPY --from=deps /temp-deps/node_modules ./node_modules
 RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
 
 # image runner app
-FROM node:16.18-alpine as runner
-LABEL author="masb0ymas"
-LABEL name="expresso"
-
-RUN apk add ca-certificates
-
-# install global package for runner
-RUN npm config set scripts-prepend-node-path true
-RUN npm i -g typescript
-RUN npm i -g pm2
+FROM base as runner
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -64,13 +55,11 @@ ENV TZ=Asia/Jakarta
 # editor cli with nano
 RUN apk add nano
 
-COPY --from=build_base /temp-build/public ./public
-COPY --from=build_base /temp-build/node_modules ./node_modules
-COPY --from=build_base /temp-build/package.json ./package.json
-COPY --from=build_base /temp-build/tsconfig.json ./tsconfig.json
-COPY --from=build_base /temp-build/.swcrc ./.swcrc
-COPY --from=build_base /temp-build/dist ./dist
-COPY --from=build_base /temp-build/.env ./.env
+COPY --from=builder /temp-build/public ./public
+COPY --from=builder /temp-build/node_modules ./node_modules
+COPY --from=builder /temp-build/package.json ./package.json
+COPY --from=builder /temp-build/dist ./dist
+COPY --from=builder /temp-build/.env ./.env
 
 # initial app
 RUN node ./dist/scripts/generate.js
