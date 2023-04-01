@@ -4,19 +4,20 @@
 [![maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/masb0ymas/expresso-typeorm/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/masb0ymas/expresso-typeorm/blob/master/LICENSE.md)
 
-[![version](https://img.shields.io/badge/Version-2.7.1-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso-typeorm/releases/tag/v2.7.1)
+[![version](https://img.shields.io/badge/Version-4.0.0-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso-typeorm/releases/tag/v4.0.0)
 [![Express](https://img.shields.io/badge/Express-4.18.2-informational?logo=express&color=22272E)](https://expressjs.com/)
 ![Node](https://badges.aleen42.com/src/node.svg)
 ![Eslint](https://badges.aleen42.com/src/eslint.svg)
 ![TypeScript](https://badges.aleen42.com/src/typescript.svg)
+![Docker](https://badges.aleen42.com/src/docker.svg)
 
 ## Feature
 
-- [TypeScript](https://github.com/microsoft/TypeScript) `4.x`
+- [TypeScript](https://github.com/microsoft/TypeScript) `4.9.x`
 - [TypeORM](https://github.com/typeorm/typeorm) `0.3.x`
 - [Nodemailer](https://github.com/nodemailer/nodemailer) `6.x`
 - [Handlebars](https://github.com/wycats/handlebars.js) for templating HTML
-- [Yup](https://github.com/jquense/yup) for validation schema `0.32.x`
+- [Yup](https://github.com/jquense/yup) for validation schema `1.x`
 - JavaScript Style [Standard with TypeScript](https://github.com/standard/eslint-config-standard-with-typescript)
 - Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier) and [TypeScript Eslint](https://github.com/typescript-eslint/typescript-eslint#readme)
 - Using [Module Alias](https://github.com/ilearnio/module-alias) for simplify the require/import paths
@@ -34,7 +35,7 @@
 
 ## Author
 
-👤 [**masb0ymas** (Resume)](https://masb0ymas.netlify.app/)
+[**masb0ymas** (Resume)](https://resume.masb0ymas.com)
 
 [![Github](https://badges.aleen42.com/src/github.svg)](https://github.com/masb0ymas)
 [![Twitter](https://badges.aleen42.com/src/twitter.svg)](https://twitter.com/masb0ymas)
