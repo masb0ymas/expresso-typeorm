@@ -1,8 +1,8 @@
+import { type DtoLogin } from '@apps/interfaces/Dto'
+import { UserRepository } from '@apps/repositories/user.repository'
+import userSchema from '@apps/schemas/user.schema'
 import { MAIL_PASSWORD, MAIL_USERNAME } from '@config/env'
 import { i18nConfig } from '@config/i18n'
-import SessionService from '@controllers/Account/Session/service'
-import userSchema from '@controllers/Account/User/schema'
-import UserService from '@controllers/Account/User/service'
 import ConstRole from '@core/constants/ConstRole'
 import SendMail from '@core/helpers/sendMails'
 import { generateToken, verifyToken } from '@core/helpers/token'
@@ -19,17 +19,23 @@ import { validateEmpty } from 'expresso-core'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
-import { type DtoLogin } from './interface'
+import SessionService from './session.service'
+import UserService from './user.service'
 
-class AuthService {
+const userRepository = new UserRepository({
+  entity: 'User',
+  repository: AppDataSource.getRepository(User),
+})
+
+export default class AuthService {
+  private static readonly _userRepository = userRepository
+
   /**
    *
    * @param formData
    * @returns
    */
   public static async signUp(formData: any): Promise<User> {
-    const userRepository = AppDataSource.manager.getRepository(User)
-
     const uid = uuidv4()
     const { token } = generateToken({ token: uid })
 
@@ -56,7 +62,10 @@ class AuthService {
     }
 
     const data = new User()
-    const newData = await userRepository.save({ ...data, ...formRegister })
+    const newData = await this._userRepository.save({
+      ...data,
+      ...formRegister,
+    })
 
     // send mail if mail username & password exists
     if (MAIL_USERNAME && MAIL_PASSWORD) {
@@ -79,12 +88,11 @@ class AuthService {
     formData: LoginAttributes,
     options?: ReqOptions
   ): Promise<DtoLogin> {
-    const userRepository = AppDataSource.getRepository(User)
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     const value = userSchema.login.validateSync(formData, optionsYup)
 
-    const getUser = await userRepository.findOne({
+    const getUser = await this._userRepository.findOne({
       select: ['id', 'fullname', 'email', 'isActive', 'password', 'RoleId'],
       where: { email: value.email },
     })
@@ -175,4 +183,3 @@ class AuthService {
     return message
   }
 }
-export default AuthService

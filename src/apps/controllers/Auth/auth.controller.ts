@@ -1,17 +1,17 @@
+import authorization from '@apps/middlewares/authorization'
+import AuthService from '@apps/services/auth.service'
+import SessionService from '@apps/services/session.service'
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18n'
-import SessionService from '@controllers/Account/Session/service'
 import asyncHandler from '@core/helpers/asyncHandler'
 import { extractToken } from '@core/helpers/token'
 import { type DtoUserAgent } from '@core/interface/UserAgent'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import ResponseError from '@core/modules/response/ResponseError'
 import { type UserLoginAttributes } from '@database/entities/User'
-import authorization from '@middlewares/authorization'
 import route from '@routes/v1'
 import { type Request, type Response } from 'express'
 import { type TOptions } from 'i18next'
-import AuthService from './service'
 
 route.post(
   '/auth/sign-up',
@@ -22,10 +22,10 @@ route.post(
 
     const formData = req.getBody()
 
-    const data = await AuthService.signUp(formData)
+    await AuthService.signUp(formData)
     const message = i18nConfig.t('success.register', i18nOpt)
 
-    const httpResponse = HttpResponse.get({ data, message })
+    const httpResponse = HttpResponse.get({ message })
     res.status(200).json(httpResponse)
   })
 )

@@ -1,10 +1,10 @@
+import authorization from '@apps/middlewares/authorization'
+import SessionService from '@apps/services/session.service'
 import { APP_LANG } from '@config/env'
 import asyncHandler from '@core/helpers/asyncHandler'
 import HttpResponse from '@core/modules/response/HttpResponse'
-import authorization from '@middlewares/authorization'
 import route from '@routes/v1'
 import { type Request, type Response } from 'express'
-import SessionService from './service'
 
 route.get(
   '/session',
@@ -20,11 +20,12 @@ route.get(
 route.get(
   '/session/:id',
   authorization,
-  asyncHandler(async function findById(req: Request, res: Response) {
+  asyncHandler(async function findOne(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
     const { id } = req.getParams()
+
     const data = await SessionService.findById(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.get({ data })
@@ -37,6 +38,7 @@ route.post(
   authorization,
   asyncHandler(async function create(req: Request, res: Response) {
     const formData = req.getBody()
+
     const data = await SessionService.create(formData)
 
     const httpResponse = HttpResponse.created({ data })

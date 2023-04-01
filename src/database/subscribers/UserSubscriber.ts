@@ -29,8 +29,9 @@ export class UserSubscriber implements EntitySubscriberInterface<any> {
   async beforeUpdate(event: UpdateEvent<User>): Promise<void> {
     // check entity from request
     if (!_.isEmpty(event.entity?.password)) {
+      // check password entity
       if (event.entity?.password !== event.databaseEntity?.password) {
-        // @ts-expect-error: Unreachable code error
+        // @ts-expect-error
         await this.hashPassword(event?.entity)
       }
     }

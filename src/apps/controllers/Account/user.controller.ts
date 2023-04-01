@@ -1,22 +1,20 @@
+import authorization from '@apps/middlewares/authorization'
+import permissionAccess from '@apps/middlewares/permissionAccess'
+import UserService from '@apps/services/user.service'
 import { APP_LANG } from '@config/env'
 import ConstRole from '@core/constants/ConstRole'
 import asyncHandler from '@core/helpers/asyncHandler'
-import { type FileAttributes } from '@core/interface/File'
 import HttpResponse from '@core/modules/response/HttpResponse'
-import authorization from '@middlewares/authorization'
-import permissionAccess from '@middlewares/permissionAccess'
 import route from '@routes/v1'
-import { type NextFunction, type Request, type Response } from 'express'
-import { arrayFormatter, deleteFile } from 'expresso-core'
-import { useMulter } from 'expresso-hooks'
-import _ from 'lodash'
-import UploadService from './service'
+import { type Request, type Response } from 'express'
+import { arrayFormatter } from 'expresso-core'
 
 route.get(
-  '/upload',
+  '/user',
   authorization,
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function findAll(req: Request, res: Response) {
-    const data = await UploadService.findAll(req)
+    const data = await UserService.findAll(req)
 
     const httpResponse = HttpResponse.get(data)
     res.status(200).json(httpResponse)
@@ -24,76 +22,48 @@ route.get(
 )
 
 route.get(
-  '/upload/:id',
+  '/user/:id',
   authorization,
-  asyncHandler(async function findById(req: Request, res: Response) {
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  asyncHandler(async function findOne(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
     const { id } = req.getParams()
-    const data = await UploadService.findById(id, { lang: defaultLang })
+
+    const data = await UserService.findById(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.get({ data })
     res.status(200).json(httpResponse)
   })
 )
 
-const uploadFile = useMulter({
-  dest: 'public/uploads',
-}).fields([{ name: 'fileUpload', maxCount: 1 }])
-
-const setFileToBody = asyncHandler(async function setFileToBody(
-  req: Request,
-  res,
-  next: NextFunction
-) {
-  const fileUpload = req.pickSingleFieldMulter(['fileUpload'])
-
-  req.setBody(fileUpload)
-  next()
-})
-
 route.post(
-  '/upload',
+  '/user',
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
-  uploadFile,
-  setFileToBody,
   asyncHandler(async function create(req: Request, res: Response) {
     const formData = req.getBody()
 
-    const fieldUpload = _.get(formData, 'fileUpload', {}) as FileAttributes
+    const data = await UserService.create(formData)
 
-    let data
-
-    if (!_.isEmpty(fieldUpload) && !_.isEmpty(fieldUpload.path)) {
-      const directory = formData.type ?? 'uploads'
-
-      data = await UploadService.uploadFile({
-        fieldUpload,
-        directory,
-      })
-
-      // delete file after upload to object storage
-      deleteFile(fieldUpload.path)
-    }
-
-    const httpResponse = HttpResponse.created({
-      data: data?.uploadResponse,
-      storage: data?.storageResponse,
-    })
-
+    const httpResponse = HttpResponse.created({ data })
     res.status(201).json(httpResponse)
   })
 )
 
-route.post(
-  '/upload/presign-url',
+route.put(
+  '/user/:id',
   authorization,
-  asyncHandler(async function presignedURL(req: Request, res: Response) {
+  permissionAccess(ConstRole.ROLE_ADMIN),
+  asyncHandler(async function update(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+
+    const { id } = req.getParams()
     const formData = req.getBody()
 
-    const data = await UploadService.getPresignedURL(formData.keyFile)
+    const data = await UserService.update(id, formData, { lang: defaultLang })
 
     const httpResponse = HttpResponse.updated({ data })
     res.status(200).json(httpResponse)
@@ -101,42 +71,7 @@ route.post(
 )
 
 route.put(
-  '/upload/:id',
-  authorization,
-  permissionAccess(ConstRole.ROLE_ADMIN),
-  uploadFile,
-  setFileToBody,
-  asyncHandler(async function update(req: Request, res: Response) {
-    const { id } = req.getParams()
-    const formData = req.getBody()
-
-    const fieldUpload = _.get(formData, 'fileUpload', {}) as FileAttributes
-
-    let data
-
-    if (!_.isEmpty(fieldUpload) && !_.isEmpty(fieldUpload.path)) {
-      const directory = formData.type ?? 'uploads'
-
-      data = await UploadService.uploadFile({
-        fieldUpload,
-        directory,
-        UploadId: id,
-      })
-
-      // delete file after upload to object storage
-      deleteFile(fieldUpload.path)
-    }
-
-    const httpResponse = HttpResponse.updated({
-      data: data?.uploadResponse,
-      storage: data?.storageResponse,
-    })
-    res.status(200).json(httpResponse)
-  })
-)
-
-route.put(
-  '/upload/restore/:id',
+  '/user/restore/:id',
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function restore(req: Request, res: Response) {
@@ -145,7 +80,7 @@ route.put(
 
     const { id } = req.getParams()
 
-    await UploadService.restore(id, { lang: defaultLang })
+    await UserService.restore(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.updated({})
     res.status(200).json(httpResponse)
@@ -153,7 +88,7 @@ route.put(
 )
 
 route.delete(
-  '/upload/soft-delete/:id',
+  '/user/soft-delete/:id',
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function softDelete(req: Request, res: Response) {
@@ -162,7 +97,7 @@ route.delete(
 
     const { id } = req.getParams()
 
-    await UploadService.softDelete(id, { lang: defaultLang })
+    await UserService.softDelete(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
@@ -170,7 +105,7 @@ route.delete(
 )
 
 route.delete(
-  '/upload/force-delete/:id',
+  '/user/force-delete/:id',
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function forceDelete(req: Request, res: Response) {
@@ -179,7 +114,7 @@ route.delete(
 
     const { id } = req.getParams()
 
-    await UploadService.forceDelete(id, { lang: defaultLang })
+    await UserService.forceDelete(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
@@ -187,7 +122,7 @@ route.delete(
 )
 
 route.post(
-  '/upload/multiple/restore',
+  '/user/multiple/restore',
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
@@ -197,7 +132,7 @@ route.post(
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UploadService.multipleRestore(arrayIds, { lang: defaultLang })
+    await UserService.multipleRestore(arrayIds, { lang: defaultLang })
 
     const httpResponse = HttpResponse.updated({})
     res.status(200).json(httpResponse)
@@ -205,7 +140,7 @@ route.post(
 )
 
 route.post(
-  '/upload/multiple/soft-delete',
+  '/user/multiple/soft-delete',
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
@@ -215,7 +150,7 @@ route.post(
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UploadService.multipleSoftDelete(arrayIds, { lang: defaultLang })
+    await UserService.multipleSoftDelete(arrayIds, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)
@@ -223,7 +158,7 @@ route.post(
 )
 
 route.post(
-  '/upload/multiple/force-delete',
+  '/user/multiple/force-delete',
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
@@ -233,7 +168,7 @@ route.post(
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UploadService.multipleForceDelete(arrayIds, { lang: defaultLang })
+    await UserService.multipleForceDelete(arrayIds, { lang: defaultLang })
 
     const httpResponse = HttpResponse.deleted({})
     res.status(200).json(httpResponse)

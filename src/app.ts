@@ -1,3 +1,10 @@
+import { Jobs } from '@apps/jobs'
+import expressErrorResponse from '@apps/middlewares/expressErrorResponse'
+import expressErrorTypeORM from '@apps/middlewares/expressErrorTypeORMs'
+import expressErrorYup from '@apps/middlewares/expressErrorYups'
+import { expressRateLimit } from '@apps/middlewares/expressRateLimit'
+import { expressWithState } from '@apps/middlewares/expressWithState'
+import { expressUserAgent } from '@apps/middlewares/userAgent'
 import {
   APP_NAME,
   APP_PORT,
@@ -12,12 +19,6 @@ import { storageService } from '@config/storage'
 import allowedOrigins from '@core/constants/allowedOrigins'
 import { optionsSwaggerUI, swaggerSpec } from '@core/helpers/docsSwagger'
 import ResponseError from '@core/modules/response/ResponseError'
-import expressErrorResponse from '@middlewares/expressErrorResponse'
-import expressErrorTypeORM from '@middlewares/expressErrorTypeORMs'
-import expressErrorYup from '@middlewares/expressErrorYups'
-import { expressRateLimit } from '@middlewares/expressRateLimit'
-import { expressWithState } from '@middlewares/expressWithState'
-import { expressUserAgent } from '@middlewares/userAgent'
 import chalk from 'chalk'
 import compression from 'compression'
 import cookieParser from 'cookie-parser'
@@ -93,6 +94,9 @@ class App {
     if (MAIL_USERNAME && MAIL_PASSWORD) {
       mailService.initialize()
     }
+
+    // initialize jobs
+    Jobs.initialize()
   }
 
   /**

@@ -1,8 +1,7 @@
+import { RoleRepository } from '@apps/repositories/role.repository'
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import { validateUUID } from '@core/helpers/formatter'
-import { optionsYup } from '@core/helpers/yup'
-import { useQuery } from '@core/hooks/useQuery'
 import { type DtoFindAll } from '@core/interface/Paginate'
 import { type ReqOptions } from '@core/interface/ReqOptions'
 import ResponseError from '@core/modules/response/ResponseError'
@@ -11,11 +10,14 @@ import { Role, type RoleAttributes } from '@database/entities/Role'
 import { type Request } from 'express'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
-import { type SelectQueryBuilder } from 'typeorm'
-import roleSchema from './schema'
 
-class RoleService {
-  private static readonly _entity = 'Role'
+const roleRepository = new RoleRepository({
+  entity: 'Role',
+  repository: AppDataSource.getRepository(Role),
+})
+
+export default class RoleService {
+  private static readonly _repository = roleRepository
 
   /**
    *
@@ -23,17 +25,15 @@ class RoleService {
    * @returns
    */
   public static async findAll(req: Request): Promise<DtoFindAll<Role>> {
-    const roleRepository = AppDataSource.getRepository(Role)
     const reqQuery = req.getQuery()
 
     const defaultLang = reqQuery.lang ?? APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
-    const query = roleRepository.createQueryBuilder()
-    const newQuery = useQuery({ entity: this._entity, query, reqQuery })
+    const query = this._repository.findQuery(reqQuery)
 
-    const data = await newQuery.getMany()
-    const total = await newQuery.getCount()
+    const data = await query.getMany()
+    const total = await query.getCount()
 
     const message = i18nConfig.t('success.data_received', i18nOpt)
     return { message: `${total} ${message}`, data, total }
@@ -49,19 +49,8 @@ class RoleService {
     id: string,
     options?: ReqOptions
   ): Promise<Role> {
-    const roleRepository = AppDataSource.getRepository(Role)
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
     const newId = validateUUID(id, { ...options })
-    const data = await roleRepository.findOne({
-      where: { id: newId },
-      withDeleted: options?.withDeleted,
-    })
-
-    if (!data) {
-      const message = i18nConfig.t('errors.not_found', i18nOpt)
-      throw new ResponseError.NotFound(`role ${message}`)
-    }
+    const data = await this._repository.findById(newId, options)
 
     return data
   }
@@ -72,13 +61,9 @@ class RoleService {
    * @returns
    */
   public static async create(formData: RoleAttributes): Promise<Role> {
-    const roleRepository = AppDataSource.getRepository(Role)
-    const data = new Role()
+    const data = await this._repository.create(formData)
 
-    const value = roleSchema.create.validateSync(formData, optionsYup)
-    const newData = await roleRepository.save({ ...data, ...value })
-
-    return newData
+    return data
   }
 
   /**
@@ -90,18 +75,10 @@ class RoleService {
    */
   public static async update(
     id: string,
-    formData: Partial<RoleAttributes>,
+    formData: RoleAttributes,
     options?: ReqOptions
-  ): Promise<Role> {
-    const roleRepository = AppDataSource.getRepository(Role)
-    const data = await this.findById(id, { ...options })
-
-    const value = roleSchema.create.validateSync(
-      { ...data, ...formData },
-      optionsYup
-    )
-
-    const newData = await roleRepository.save({ ...data, ...value })
+  ): Promise<Role | undefined> {
+    const newData = await this._repository.update(id, formData, options)
 
     return newData
   }
@@ -112,10 +89,9 @@ class RoleService {
    * @param options
    */
   public static async restore(id: string, options?: ReqOptions): Promise<void> {
-    const roleRepository = AppDataSource.getRepository(Role)
-
     const data = await this.findById(id, { withDeleted: true, ...options })
-    await roleRepository.restore(data.id)
+
+    await this._repository.restore(data.id)
   }
 
   /**
@@ -127,10 +103,9 @@ class RoleService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = AppDataSource.getRepository(Role)
+    const data = await this.findById(id, options)
 
-    const data = await this.findById(id, { ...options })
-    await roleRepository.softDelete(data.id)
+    await this._repository.softDelete(data.id)
   }
 
   /**
@@ -142,36 +117,23 @@ class RoleService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = AppDataSource.getRepository(Role)
+    const data = await this.findById(id, options)
 
-    const data = await this.findById(id, { ...options })
-    await roleRepository.delete(data.id)
+    await this._repository.forceDelete(data.id)
   }
 
   /**
    *
    * @param ids
    * @param options
-   * @returns
    */
-  private static _multipleGetByIds(
-    ids: string[],
-    options?: ReqOptions
-  ): SelectQueryBuilder<Role> {
-    const roleRepository = AppDataSource.getRepository(Role)
+  private static _validateGetByIds(ids: string[], options?: ReqOptions): void {
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     if (_.isEmpty(ids)) {
       const message = i18nConfig.t('errors.cant_be_empty', i18nOpt)
       throw new ResponseError.BadRequest(`ids ${message}`)
     }
-
-    // query by ids
-    const query = roleRepository
-      .createQueryBuilder()
-      .where(`${this._entity}.id IN (:...ids)`, { ids: [...ids] })
-
-    return query
   }
 
   /**
@@ -183,10 +145,9 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this._multipleGetByIds(ids, options).withDeleted()
+    this._validateGetByIds(ids, options)
 
-    // restore record
-    await query.restore().execute()
+    await this._repository.multipleRestore(ids)
   }
 
   /**
@@ -198,10 +159,9 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this._multipleGetByIds(ids, options)
+    this._validateGetByIds(ids, options)
 
-    // soft delete record
-    await query.softDelete().execute()
+    await this._repository.multipleSoftDelete(ids)
   }
 
   /**
@@ -213,11 +173,8 @@ class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const query = this._multipleGetByIds(ids, options)
+    this._validateGetByIds(ids, options)
 
-    // delete record
-    await query.delete().execute()
+    await this._repository.multipleForceDelete(ids)
   }
 }
-
-export default RoleService

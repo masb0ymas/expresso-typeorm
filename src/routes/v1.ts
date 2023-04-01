@@ -4,7 +4,7 @@ import path from 'path'
 
 const route = Express.Router()
 
-const baseRoutes = path.resolve(`${__dirname}/../controllers`)
+const baseRoutes = path.resolve(`${__dirname}/../apps/controllers`)
 
 export default route
 

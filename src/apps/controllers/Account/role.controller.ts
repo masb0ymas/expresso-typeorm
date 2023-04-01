@@ -1,13 +1,13 @@
+import authorization from '@apps/middlewares/authorization'
+import permissionAccess from '@apps/middlewares/permissionAccess'
+import RoleService from '@apps/services/role.service'
 import { APP_LANG } from '@config/env'
 import ConstRole from '@core/constants/ConstRole'
 import asyncHandler from '@core/helpers/asyncHandler'
 import HttpResponse from '@core/modules/response/HttpResponse'
-import authorization from '@middlewares/authorization'
-import permissionAccess from '@middlewares/permissionAccess'
 import route from '@routes/v1'
 import { type Request, type Response } from 'express'
 import { arrayFormatter } from 'expresso-core'
-import RoleService from './service'
 
 route.get(
   '/role',
@@ -23,11 +23,12 @@ route.get(
 route.get(
   '/role/:id',
   authorization,
-  asyncHandler(async function findById(req: Request, res: Response) {
+  asyncHandler(async function findOne(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
     const { id } = req.getParams()
+
     const data = await RoleService.findById(id, { lang: defaultLang })
 
     const httpResponse = HttpResponse.get({ data })
@@ -41,6 +42,7 @@ route.post(
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function create(req: Request, res: Response) {
     const formData = req.getBody()
+
     const data = await RoleService.create(formData)
 
     const httpResponse = HttpResponse.created({ data })
