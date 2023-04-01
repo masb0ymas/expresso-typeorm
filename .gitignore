@@ -10,5 +10,5 @@ package-lock.json
 yarn-error.log
 .idea/
 .DS_Store
-.env
 
+.env
