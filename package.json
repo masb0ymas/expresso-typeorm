@@ -35,7 +35,7 @@
   "author": "masb0ymas",
   "license": "MIT",
   "engines": {
-    "node": ">= 14.x"
+    "node": ">= 16.x"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.304.0",
