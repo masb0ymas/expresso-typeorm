@@ -81,6 +81,7 @@ specifiers:
   pg-hstore: ^2.3.4
   pm2: ^5.3.0
   prettier: ^2.8.7
+  reflect-metadata: ^0.1.13
   request-ip: ^3.3.0
   rimraf: ^4.4.1
   slugify: ^1.6.6
@@ -135,6 +136,7 @@ dependencies:
   pg: 8.10.0
   pg-hstore: 2.3.4
   pm2: 5.3.0
+  reflect-metadata: 0.1.13
   request-ip: 3.3.0
   slugify: 1.6.6
   swagger-jsdoc: 6.2.8_openapi-types@12.1.0
