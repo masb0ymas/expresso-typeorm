@@ -65,7 +65,7 @@
     "i18next-http-middleware": "^3.3.0",
     "ioredis": "^5.3.1",
     "jsonwebtoken": "^9.0.0",
-    "libphonenumber-js": "^1.10.24",
+    "libphonenumber-js": "^1.10.26",
     "lodash": "^4.17.21",
     "minio": "^7.0.33",
     "module-alias": "^2.2.2",
