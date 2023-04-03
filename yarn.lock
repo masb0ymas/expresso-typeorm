@@ -134,10 +134,10 @@
   dependencies:
     tslib "^2.5.0"
 
-"@aws-sdk/client-s3@^3.303.0", "@aws-sdk/client-s3@^3.304.0":
-  version "3.304.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-s3/-/client-s3-3.304.0.tgz#946a8f3c074f3f0a70dc1ae6be094cd6ea910a09"
-  integrity sha512-KBtkcFR47AQj8cqEhVsuJZaYRRox8e97H6cF2fnzGZLSwL9eW2tLaXKhwHmM5JPoNdye3f8ZFFFX/cySJ9COnA==
+"@aws-sdk/client-s3@^3.303.0", "@aws-sdk/client-s3@^3.305.0":
+  version "3.305.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-s3/-/client-s3-3.305.0.tgz#99fb39007f30551ccc18b965327f51447cd91514"
+  integrity sha512-cE5JbACL5DQFF+yE4CDcRN6a5ttf8e1Atrh3wEbaDoUaUF8i7oz47ju/GXzikS56ZgS2r3DWH4QS9INmuB0jRQ==
   dependencies:
     "@aws-crypto/sha1-browser" "3.0.0"
     "@aws-crypto/sha256-browser" "3.0.0"
@@ -799,19 +799,12 @@
     "@aws-sdk/types" "3.303.0"
     tslib "^2.5.0"
 
-"@aws-sdk/types@3.303.0":
+"@aws-sdk/types@3.303.0", "@aws-sdk/types@^3.222.0":
   version "3.303.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.303.0.tgz#6ac0e4ea2fec9d82e4e8a18d31f5c4767b222a21"
   integrity sha512-H+Cy8JDTsK87MID6MJbV9ad5xdS9YvaLZSeveC2Zs1WNu2Rp6X9j+mg3EqDSmBKUQVAFRy2b+CSKkH3nnBMedw==
   dependencies:
     tslib "^2.5.0"
-
-"@aws-sdk/types@^3.222.0":
-  version "3.272.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.272.0.tgz#83670e4009c2e72f1fdf55816c55c9f8b5935e0a"
-  integrity sha512-MmmL6vxMGP5Bsi+4wRx4mxYlU/LX6M0noOXrDh/x5FfG7/4ZOar/nDxqDadhJtNM88cuWVHZWY59P54JzkGWmA==
-  dependencies:
-    tslib "^2.3.1"
 
 "@aws-sdk/url-parser@3.303.0":
   version "3.303.0"
