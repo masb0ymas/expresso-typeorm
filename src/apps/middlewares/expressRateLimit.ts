@@ -1,8 +1,9 @@
+import { RATE_LIMIT } from '@config/env'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import { type NextFunction, type Request, type Response } from 'express'
 import {
-  type Options,
   rateLimit,
+  type Options,
   type RateLimitRequestHandler,
 } from 'express-rate-limit'
 
@@ -13,7 +14,7 @@ import {
 export const expressRateLimit = (): RateLimitRequestHandler => {
   return rateLimit({
     windowMs: 15 * 60 * 100, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per `window`
+    max: RATE_LIMIT, // Limit each IP to 100 requests per `window`
     handler: (
       _req: Request,
       res: Response,

@@ -11,6 +11,7 @@ export const APP_LANG = process.env.APP_LANG ?? 'id'
 export const APP_PORT = Number(process.env.APP_PORT) ?? 8000
 
 export const AXIOS_TIMEOUT = process.env.AXIOS_TIMEOUT ?? '5m'
+export const RATE_LIMIT = Number(process.env.RATE_LIMIT) ?? 100
 
 // otp
 export const SECRET_OTP = process.env.SECRET_OTP ?? undefined
