@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.1](https://github.com/masb0ymas/expresso-typeorm/compare/v4.0.0...v4.0.1) (2023-04-04)
+
+
+### Bug Fixes
+
+* add rate limit ([c783775](https://github.com/masb0ymas/expresso-typeorm/commit/c78377558870c79da93ae5780b2d225c595e6950))
+* interface query filtered ([6512981](https://github.com/masb0ymas/expresso-typeorm/commit/6512981f0ea5b927a8afa0f7b41dd28dcfc9a554))
+
 ## [4.0.0](https://github.com/masb0ymas/expresso-typeorm/compare/v3.0.3...v4.0.0) (2023-04-01)
 
 
