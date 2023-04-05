@@ -15,7 +15,7 @@
     "account_not_found": "Account not found or not registered",
     "block_policy": "Your account has been blocked for violating policy",
     "cant_be_empty": "can't be empty",
-    "not_found": "data not found or has been deleted",
+    "not_found": "{{entity}} data not found or has been deleted",
     "mail_template": "Invalid template path for email registration",
     "too_many_request": "Too Many Requests",
     "please_check_your_email": "Please check your email account to verify your email and continue the registration process"
