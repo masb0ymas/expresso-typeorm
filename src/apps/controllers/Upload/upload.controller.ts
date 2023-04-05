@@ -1,24 +1,29 @@
-import UploadService from '@apps/services/upload.service'
-import { APP_LANG } from '@config/env'
-import asyncHandler from '@core/helpers/asyncHandler'
-import HttpResponse from '@core/modules/response/HttpResponse'
-import route from '@routes/v1'
-import { useMulter } from 'expresso-hooks'
-import { type NextFunction, type Request, type Response } from 'express'
-import { arrayFormatter, deleteFile } from 'expresso-core'
-import _ from 'lodash'
-import { type FileAttributes } from 'expresso-provider/lib/interface'
 import authorization from '@apps/middlewares/authorization'
 import permissionAccess from '@apps/middlewares/permissionAccess'
+import UploadService from '@apps/services/upload.service'
+import { APP_LANG } from '@config/env'
 import ConstRole from '@core/constants/ConstRole'
+import asyncHandler from '@core/helpers/asyncHandler'
+import { type ReqOptions } from '@core/interface/ReqOptions'
+import HttpResponse from '@core/modules/response/HttpResponse'
+import route from '@routes/v1'
+import { type NextFunction, type Request, type Response } from 'express'
+import { arrayFormatter, deleteFile } from 'expresso-core'
+import { useMulter } from 'expresso-hooks'
+import { type FileAttributes } from 'expresso-provider/lib/interface'
+import _ from 'lodash'
 
 route.get(
   '/upload',
   authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
+
     const data = await UploadService.findAll(req)
 
-    const httpResponse = HttpResponse.get(data)
+    const httpResponse = HttpResponse.get(data, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -29,12 +34,13 @@ route.get(
   asyncHandler(async function findOne(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    const data = await UploadService.findById(id, { lang: defaultLang })
+    const data = await UploadService.findById(id, options)
 
-    const httpResponse = HttpResponse.get({ data })
+    const httpResponse = HttpResponse.get({ data }, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -61,6 +67,10 @@ route.post(
   uploadFile,
   setFileToBody,
   asyncHandler(async function create(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
+
     const formData = req.getBody()
 
     const fieldUpload = _.get(formData, 'fileUpload', {}) as FileAttributes
@@ -79,10 +89,13 @@ route.post(
       deleteFile(fieldUpload.path)
     }
 
-    const httpResponse = HttpResponse.created({
-      data: data?.uploadResponse,
-      storage: data?.storageResponse,
-    })
+    const httpResponse = HttpResponse.created(
+      {
+        data: data?.uploadResponse,
+        storage: data?.storageResponse,
+      },
+      options
+    )
     res.status(201).json(httpResponse)
   })
 )
@@ -92,11 +105,15 @@ route.post(
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function presignedURL(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
+
     const { keyFile } = req.getBody()
 
-    const data = await UploadService.getPresignedURL(keyFile)
+    const data = await UploadService.getPresignedURL(keyFile, options)
 
-    const httpResponse = HttpResponse.updated({ data })
+    const httpResponse = HttpResponse.updated({ data }, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -108,6 +125,10 @@ route.put(
   uploadFile,
   setFileToBody,
   asyncHandler(async function update(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
+
     const { id } = req.getParams()
     const formData = req.getBody()
 
@@ -128,10 +149,13 @@ route.put(
       deleteFile(fieldUpload.path)
     }
 
-    const httpResponse = HttpResponse.updated({
-      data: data?.uploadResponse,
-      storage: data?.storageResponse,
-    })
+    const httpResponse = HttpResponse.updated(
+      {
+        data: data?.uploadResponse,
+        storage: data?.storageResponse,
+      },
+      options
+    )
     res.status(200).json(httpResponse)
   })
 )
@@ -143,12 +167,13 @@ route.put(
   asyncHandler(async function restore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    await UploadService.restore(id, { lang: defaultLang })
+    await UploadService.restore(id, options)
 
-    const httpResponse = HttpResponse.updated({})
+    const httpResponse = HttpResponse.updated({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -160,12 +185,13 @@ route.delete(
   asyncHandler(async function softDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    await UploadService.softDelete(id, { lang: defaultLang })
+    await UploadService.softDelete(id, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -177,12 +203,13 @@ route.delete(
   asyncHandler(async function forceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    await UploadService.forceDelete(id, { lang: defaultLang })
+    await UploadService.forceDelete(id, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -194,13 +221,14 @@ route.post(
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UploadService.multipleRestore(arrayIds, { lang: defaultLang })
+    await UploadService.multipleRestore(arrayIds, options)
 
-    const httpResponse = HttpResponse.updated({})
+    const httpResponse = HttpResponse.updated({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -212,13 +240,14 @@ route.post(
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UploadService.multipleSoftDelete(arrayIds, { lang: defaultLang })
+    await UploadService.multipleSoftDelete(arrayIds, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -230,13 +259,14 @@ route.post(
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UploadService.multipleForceDelete(arrayIds, { lang: defaultLang })
+    await UploadService.multipleForceDelete(arrayIds, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )

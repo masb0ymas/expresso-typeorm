@@ -23,8 +23,11 @@ export class SessionRepository extends TypeOrmRepository<Session> {
     })
 
     if (!data) {
-      const message = i18nConfig.t('errors.not_found', i18nOpt)
-      throw new ResponseError.NotFound(`session ${message}`)
+      const message = i18nConfig.t('errors.not_found', {
+        ...i18nOpt,
+        entity: 'session',
+      })
+      throw new ResponseError.NotFound(message)
     }
 
     return data

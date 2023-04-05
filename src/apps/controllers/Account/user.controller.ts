@@ -4,6 +4,7 @@ import UserService from '@apps/services/user.service'
 import { APP_LANG } from '@config/env'
 import ConstRole from '@core/constants/ConstRole'
 import asyncHandler from '@core/helpers/asyncHandler'
+import { type ReqOptions } from '@core/interface/ReqOptions'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import route from '@routes/v1'
 import { type Request, type Response } from 'express'
@@ -14,9 +15,13 @@ route.get(
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function findAll(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
+
     const data = await UserService.findAll(req)
 
-    const httpResponse = HttpResponse.get(data)
+    const httpResponse = HttpResponse.get(data, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -28,12 +33,13 @@ route.get(
   asyncHandler(async function findOne(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    const data = await UserService.findById(id, { lang: defaultLang })
+    const data = await UserService.findById(id, options)
 
-    const httpResponse = HttpResponse.get({ data })
+    const httpResponse = HttpResponse.get({ data }, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -43,11 +49,15 @@ route.post(
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function create(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
+
     const formData = req.getBody()
 
     const data = await UserService.create(formData)
 
-    const httpResponse = HttpResponse.created({ data })
+    const httpResponse = HttpResponse.created({ data }, options)
     res.status(201).json(httpResponse)
   })
 )
@@ -59,13 +69,14 @@ route.put(
   asyncHandler(async function update(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
     const formData = req.getBody()
 
-    const data = await UserService.update(id, formData, { lang: defaultLang })
+    const data = await UserService.update(id, formData, options)
 
-    const httpResponse = HttpResponse.updated({ data })
+    const httpResponse = HttpResponse.updated({ data }, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -77,12 +88,13 @@ route.put(
   asyncHandler(async function restore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    await UserService.restore(id, { lang: defaultLang })
+    await UserService.restore(id, options)
 
-    const httpResponse = HttpResponse.updated({})
+    const httpResponse = HttpResponse.updated({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -94,12 +106,13 @@ route.delete(
   asyncHandler(async function softDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    await UserService.softDelete(id, { lang: defaultLang })
+    await UserService.softDelete(id, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -111,12 +124,13 @@ route.delete(
   asyncHandler(async function forceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    await UserService.forceDelete(id, { lang: defaultLang })
+    await UserService.forceDelete(id, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -128,13 +142,14 @@ route.post(
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UserService.multipleRestore(arrayIds, { lang: defaultLang })
+    await UserService.multipleRestore(arrayIds, options)
 
-    const httpResponse = HttpResponse.updated({})
+    const httpResponse = HttpResponse.updated({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -146,13 +161,14 @@ route.post(
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UserService.multipleSoftDelete(arrayIds, { lang: defaultLang })
+    await UserService.multipleSoftDelete(arrayIds, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -164,13 +180,14 @@ route.post(
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await UserService.multipleForceDelete(arrayIds, { lang: defaultLang })
+    await UserService.multipleForceDelete(arrayIds, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )

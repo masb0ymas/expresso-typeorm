@@ -4,6 +4,7 @@ import RoleService from '@apps/services/role.service'
 import { APP_LANG } from '@config/env'
 import ConstRole from '@core/constants/ConstRole'
 import asyncHandler from '@core/helpers/asyncHandler'
+import { type ReqOptions } from '@core/interface/ReqOptions'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import route from '@routes/v1'
 import { type Request, type Response } from 'express'
@@ -13,9 +14,13 @@ route.get(
   '/role',
   authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
+
     const data = await RoleService.findAll(req)
 
-    const httpResponse = HttpResponse.get(data)
+    const httpResponse = HttpResponse.get(data, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -26,12 +31,13 @@ route.get(
   asyncHandler(async function findOne(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    const data = await RoleService.findById(id, { lang: defaultLang })
+    const data = await RoleService.findById(id, options)
 
-    const httpResponse = HttpResponse.get({ data })
+    const httpResponse = HttpResponse.get({ data }, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -41,11 +47,15 @@ route.post(
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function create(req: Request, res: Response) {
+    const { lang } = req.getQuery()
+    const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
+
     const formData = req.getBody()
 
     const data = await RoleService.create(formData)
 
-    const httpResponse = HttpResponse.created({ data })
+    const httpResponse = HttpResponse.created({ data }, options)
     res.status(201).json(httpResponse)
   })
 )
@@ -57,13 +67,14 @@ route.put(
   asyncHandler(async function update(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
     const formData = req.getBody()
 
-    const data = await RoleService.update(id, formData, { lang: defaultLang })
+    const data = await RoleService.update(id, formData, options)
 
-    const httpResponse = HttpResponse.updated({ data })
+    const httpResponse = HttpResponse.updated({ data }, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -75,12 +86,13 @@ route.put(
   asyncHandler(async function restore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    await RoleService.restore(id, { lang: defaultLang })
+    await RoleService.restore(id, options)
 
-    const httpResponse = HttpResponse.updated({})
+    const httpResponse = HttpResponse.updated({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -92,12 +104,13 @@ route.delete(
   asyncHandler(async function softDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    await RoleService.softDelete(id, { lang: defaultLang })
+    await RoleService.softDelete(id, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -109,12 +122,13 @@ route.delete(
   asyncHandler(async function forceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const { id } = req.getParams()
 
-    await RoleService.forceDelete(id, { lang: defaultLang })
+    await RoleService.forceDelete(id, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -126,13 +140,14 @@ route.post(
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await RoleService.multipleRestore(arrayIds, { lang: defaultLang })
+    await RoleService.multipleRestore(arrayIds, options)
 
-    const httpResponse = HttpResponse.updated({})
+    const httpResponse = HttpResponse.updated({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -144,13 +159,14 @@ route.post(
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await RoleService.multipleSoftDelete(arrayIds, { lang: defaultLang })
+    await RoleService.multipleSoftDelete(arrayIds, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
@@ -162,13 +178,14 @@ route.post(
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
+    const options: ReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await RoleService.multipleForceDelete(arrayIds, { lang: defaultLang })
+    await RoleService.multipleForceDelete(arrayIds, options)
 
-    const httpResponse = HttpResponse.deleted({})
+    const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )

@@ -25,8 +25,11 @@ export class UploadRepository extends TypeOrmRepository<Upload> {
     })
 
     if (!data) {
-      const message = i18nConfig.t('errors.not_found', i18nOpt)
-      throw new ResponseError.NotFound(`upload ${message}`)
+      const message = i18nConfig.t('errors.not_found', {
+        ...i18nOpt,
+        entity: 'upload',
+      })
+      throw new ResponseError.NotFound(message)
     }
 
     return data
@@ -50,8 +53,11 @@ export class UploadRepository extends TypeOrmRepository<Upload> {
     })
 
     if (!data) {
-      const message = i18nConfig.t('errors.not_found', i18nOpt)
-      throw new ResponseError.NotFound(`upload ${message}`)
+      const message = i18nConfig.t('errors.not_found', {
+        ...i18nOpt,
+        entity: 'upload',
+      })
+      throw new ResponseError.NotFound(message)
     }
 
     return data

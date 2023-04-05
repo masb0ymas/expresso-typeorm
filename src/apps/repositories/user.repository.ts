@@ -25,8 +25,11 @@ export class UserRepository extends TypeOrmRepository<User> {
     })
 
     if (!data) {
-      const message = i18nConfig.t('errors.not_found', i18nOpt)
-      throw new ResponseError.NotFound(`user ${message}`)
+      const message = i18nConfig.t('errors.not_found', {
+        ...i18nOpt,
+        entity: 'user',
+      })
+      throw new ResponseError.NotFound(message)
     }
 
     return data

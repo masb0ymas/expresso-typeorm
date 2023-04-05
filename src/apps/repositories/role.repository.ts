@@ -23,8 +23,11 @@ export class RoleRepository extends TypeOrmRepository<Role> {
     })
 
     if (!data) {
-      const message = i18nConfig.t('errors.not_found', i18nOpt)
-      throw new ResponseError.NotFound(`role ${message}`)
+      const message = i18nConfig.t('errors.not_found', {
+        ...i18nOpt,
+        entity: 'role',
+      })
+      throw new ResponseError.NotFound(message)
     }
 
     return data
