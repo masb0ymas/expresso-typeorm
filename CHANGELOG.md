@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.2](https://github.com/masb0ymas/expresso-typeorm/compare/v4.0.1...v4.0.2) (2023-04-06)
+
+
+### Bug Fixes
+
+* change dir translation ([0d4769e](https://github.com/masb0ymas/expresso-typeorm/commit/0d4769e83061b14f8c53e79f698b3cb39fea3a49))
+* change import useQuery ([1ebd541](https://github.com/masb0ymas/expresso-typeorm/commit/1ebd5418230a1c1a816d1e6f788031db0b15cd24))
+* interpolation translation ([32d4c9b](https://github.com/masb0ymas/expresso-typeorm/commit/32d4c9b928bfedccf835bed22f7e4b80294a66c2))
+
 ### [4.0.1](https://github.com/masb0ymas/expresso-typeorm/compare/v4.0.0...v4.0.1) (2023-04-04)
 
 
