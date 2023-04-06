@@ -1,6 +1,6 @@
 import { TYPEORM_CONNECTION } from '@config/env'
-import { useQueryTypeORM } from 'expresso-query'
-import { type UseQueryEntity } from 'expresso-query/lib/interface'
+import { useTypeOrm } from 'expresso-query'
+import { type UseTypeOrmQuery } from 'expresso-query/lib/interface'
 import { type SelectQueryBuilder, type ObjectLiteral } from 'typeorm'
 
 type ConnectType = 'postgres' | 'mysql' | 'mariadb'
@@ -11,9 +11,9 @@ type ConnectType = 'postgres' | 'mysql' | 'mariadb'
  * @returns
  */
 export function useQuery<T extends ObjectLiteral>(
-  params: UseQueryEntity<T>
+  params: UseTypeOrmQuery<T>
 ): SelectQueryBuilder<T> {
   const connectType = TYPEORM_CONNECTION as ConnectType
 
-  return useQueryTypeORM(params, { type: connectType })
+  return useTypeOrm.queryBuilder(params, { type: connectType })
 }
