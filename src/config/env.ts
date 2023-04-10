@@ -86,3 +86,6 @@ export const STORAGE_SECRET_KEY = process.env.STORAGE_SECRET_KEY ?? undefined
 export const STORAGE_BUCKET_NAME = process.env.STORAGE_BUCKET_NAME ?? 'expresso'
 export const STORAGE_REGION = process.env.STORAGE_REGION ?? 'ap-southeast-1'
 export const STORAGE_SIGN_EXPIRED = process.env.STORAGE_SIGN_EXPIRED ?? '7d'
+
+export const OPEN_STREET_MAP_URL =
+  process.env.OPEN_STREET_MAP_URL ?? 'https://nominatim.openstreetmap.org'
