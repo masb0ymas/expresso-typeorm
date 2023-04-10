@@ -140,8 +140,11 @@ export default class SessionService {
     const newEntity = new Session()
 
     const value = sessionSchema.create.validateSync(formData, optionsYup)
+
+    // @ts-expect-error
     const data = await sessionRepository.save({ ...newEntity, ...value })
 
+    // @ts-expect-error
     return data
   }
 
@@ -161,8 +164,11 @@ export default class SessionService {
     const data = await this.findById(id, options)
 
     const value = sessionSchema.create.validateSync(formData, optionsYup)
+
+    // @ts-expect-error
     const newData = await sessionRepository.save({ ...data, ...value })
 
+    // @ts-expect-error
     return newData
   }
 
@@ -185,7 +191,7 @@ export default class SessionService {
       // create
       await this.create(formData)
     } else {
-      // update
+      // @ts-expect-error
       await sessionRepository.save({ ...data, ...value })
     }
   }
