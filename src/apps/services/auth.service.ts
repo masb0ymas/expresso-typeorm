@@ -1,5 +1,4 @@
 import { type DtoLogin } from '@apps/interfaces/Dto'
-import { UserRepository } from '@apps/repositories/user.repository'
 import userSchema from '@apps/schemas/user.schema'
 import { MAIL_PASSWORD, MAIL_USERNAME } from '@config/env'
 import { i18nConfig } from '@config/i18n'
@@ -18,17 +17,25 @@ import {
 import { validateEmpty } from 'expresso-core'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
+import { type Repository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 import SessionService from './session.service'
 import UserService from './user.service'
 
-const userRepository = new UserRepository({
-  entity: 'User',
-  repository: AppDataSource.getRepository(User),
-})
+interface AuthRepository {
+  user: Repository<User>
+}
 
 export default class AuthService {
-  private static readonly _userRepository = userRepository
+  /**
+   * Collect Repository
+   * @returns
+   */
+  private static _repository(): AuthRepository {
+    const user = AppDataSource.getRepository(User)
+
+    return { user }
+  }
 
   /**
    *
@@ -36,6 +43,9 @@ export default class AuthService {
    * @returns
    */
   public static async signUp(formData: any): Promise<User> {
+    // declare repository
+    const userRepository = this._repository().user
+
     const uid = uuidv4()
     const { token } = generateToken({ token: uid })
 
@@ -62,7 +72,7 @@ export default class AuthService {
     }
 
     const data = new User()
-    const newData = await this._userRepository.save({
+    const newData = await userRepository.save({
       ...data,
       ...formRegister,
     })
@@ -88,11 +98,13 @@ export default class AuthService {
     formData: LoginAttributes,
     options?: ReqOptions
   ): Promise<DtoLogin> {
+    // declare repository
+    const userRepository = this._repository().user
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     const value = userSchema.login.validateSync(formData, optionsYup)
 
-    const getUser = await this._userRepository.findOne({
+    const getUser = await userRepository.findOne({
       select: ['id', 'fullname', 'email', 'isActive', 'password', 'RoleId'],
       where: { email: value.email },
     })
