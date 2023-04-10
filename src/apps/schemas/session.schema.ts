@@ -7,6 +7,8 @@ const create = yup
     ipAddress: yup.string().required('ip address is required'),
     device: yup.string().required('device is required'),
     platform: yup.string().required('platform is required'),
+    latitude: yup.string().nullable(),
+    longitude: yup.string().nullable(),
   })
   .required()
 
