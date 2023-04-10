@@ -11,6 +11,7 @@ import ResponseError from '@core/modules/response/ResponseError'
 import { type UserLoginAttributes } from '@database/entities/User'
 import route from '@routes/v1'
 import { type Request, type Response } from 'express'
+import { validateEmpty } from 'expresso-core'
 import { type TOptions } from 'i18next'
 
 route.post(
@@ -49,6 +50,8 @@ route.post(
       ipAddress: req.clientIp?.replace('::ffff:', ''),
       device: userAgent.os,
       platform: userAgent.platform,
+      latitude: validateEmpty(formData.latitude),
+      longitude: validateEmpty(formData.longitude),
     })
 
     res

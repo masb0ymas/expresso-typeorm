@@ -29,6 +29,8 @@ const login = yup
   .object({
     email: yup.string().email('invalid email').required('email is required'),
     password: yup.string().required('password is required'),
+    latitude: yup.string().nullable(),
+    longitude: yup.string().nullable(),
   })
   .required()
 

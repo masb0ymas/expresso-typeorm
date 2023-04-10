@@ -21,6 +21,7 @@ import { type Repository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 import SessionService from './session.service'
 import UserService from './user.service'
+import OpenStreetMapService from './Provider/osm.service'
 
 interface AuthRepository {
   user: Repository<User>
@@ -129,7 +130,21 @@ export default class AuthService {
       throw new ResponseError.BadRequest(message)
     }
 
-    const payloadToken = { uid: getUser.id }
+    const UserId = getUser.id
+
+    if (value.latitude && value.longitude) {
+      // get address from lat long maps
+      const response = await OpenStreetMapService.getByCoordinate(
+        String(value.latitude),
+        String(value.longitude)
+      )
+      const address = _.get(response, 'display_name', '')
+
+      // update address
+      await userRepository.update({ id: UserId }, { address })
+    }
+
+    const payloadToken = { uid: UserId }
     const { token, expiresIn } = generateToken(payloadToken)
 
     const message = i18nConfig.t('success.login', i18nOpt)
