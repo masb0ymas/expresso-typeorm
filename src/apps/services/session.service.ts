@@ -241,4 +241,19 @@ export default class SessionService {
       await sessionRepository.delete(condition)
     }
   }
+
+  /**
+   *
+   * @param token
+   * @returns
+   */
+  public static async getByToken(token: string): Promise<Session[]> {
+    const sessionRepository = this._repository().session
+
+    const data = await sessionRepository.find({
+      where: { token },
+    })
+
+    return data
+  }
 }
