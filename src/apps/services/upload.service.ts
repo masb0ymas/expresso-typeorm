@@ -1,30 +1,45 @@
 import { type UploadFileEntity } from '@apps/interfaces/Upload'
-import { UploadRepository } from '@apps/repositories/upload.repository'
 import uploadSchema from '@apps/schemas/upload.schema'
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import { storageService } from '@config/storage'
 import { validateUUID } from '@core/helpers/formatter'
 import { optionsYup } from '@core/helpers/yup'
+import { useQuery } from '@core/hooks/useQuery'
 import { type DtoFindAll } from '@core/interface/Paginate'
 import { type ReqOptions } from '@core/interface/ReqOptions'
 import ResponseError from '@core/modules/response/ResponseError'
 import { AppDataSource } from '@database/data-source'
 import { Upload, type UploadAttributes } from '@database/entities/Upload'
+import { sub } from 'date-fns'
 import { type Request } from 'express'
 import { type TOptions } from 'i18next'
-import type * as Minio from 'minio'
 import _ from 'lodash'
-import { LessThanOrEqual } from 'typeorm'
-import { sub } from 'date-fns'
+import type * as Minio from 'minio'
+import {
+  In,
+  LessThanOrEqual,
+  type FindOneOptions,
+  type Repository,
+} from 'typeorm'
+import { validate as uuidValidate } from 'uuid'
 
-const uploadRepository = new UploadRepository({
-  entity: 'Upload',
-  repository: AppDataSource.getRepository(Upload),
-})
+interface UploadRepository {
+  upload: Repository<Upload>
+}
 
 export default class UploadService {
-  private static readonly _repository = uploadRepository
+  private static readonly _entity = 'Upload'
+
+  /**
+   * Collect Repository
+   * @returns
+   */
+  private static _repository(): UploadRepository {
+    const upload = AppDataSource.getRepository(Upload)
+
+    return { upload }
+  }
 
   /**
    *
@@ -32,18 +47,52 @@ export default class UploadService {
    * @returns
    */
   public static async findAll(req: Request): Promise<DtoFindAll<Upload>> {
+    // declare repository
+    const uploadRepository = this._repository().upload
+
     const reqQuery = req.getQuery()
 
     const defaultLang = reqQuery.lang ?? APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
-    const query = this._repository.findQuery(reqQuery)
+    // create query builder
+    const query = uploadRepository.createQueryBuilder()
 
-    const data = await query.getMany()
-    const total = await query.getCount()
+    // use query
+    const newQuery = useQuery({ entity: this._entity, query, reqQuery })
+
+    const data = await newQuery.getMany()
+    const total = await newQuery.getCount()
 
     const message = i18nConfig.t('success.data_received', i18nOpt)
     return { message: `${total} ${message}`, data, total }
+  }
+
+  /**
+   *
+   * @param options
+   * @returns
+   */
+  private static async _findOne<T>(
+    options: FindOneOptions<T> & { lang?: string }
+  ): Promise<Upload> {
+    const uploadRepository = this._repository().upload
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+
+    const data = await uploadRepository.findOne({
+      where: options.where,
+      relations: options.relations,
+      withDeleted: options.withDeleted,
+    })
+
+    if (!data) {
+      const options = { ...i18nOpt, entity: 'upload' }
+      const message = i18nConfig.t('errors.not_found', options)
+
+      throw new ResponseError.NotFound(message)
+    }
+
+    return data
   }
 
   /**
@@ -57,7 +106,28 @@ export default class UploadService {
     options?: ReqOptions
   ): Promise<Upload> {
     const newId = validateUUID(id, { ...options })
-    const data = await this._repository.findById(newId, options)
+    const data = await this._findOne<Upload>({
+      where: { id: newId },
+      lang: options?.lang,
+    })
+
+    return data
+  }
+
+  /**
+   *
+   * @param keyFile
+   * @param options
+   * @returns
+   */
+  public static async findByKeyfile(
+    keyFile: string,
+    options?: ReqOptions
+  ): Promise<Upload> {
+    const data = await this._findOne<Upload>({
+      where: { keyFile },
+      lang: options?.lang,
+    })
 
     return data
   }
@@ -68,7 +138,11 @@ export default class UploadService {
    * @returns
    */
   public static async create(formData: UploadAttributes): Promise<Upload> {
-    const data = await this._repository.create(formData)
+    const uploadRepository = this._repository().upload
+    const newEntity = new Upload()
+
+    const value = uploadSchema.create.validateSync(formData, optionsYup)
+    const data = await uploadRepository.save({ ...newEntity, ...value })
 
     return data
   }
@@ -84,10 +158,47 @@ export default class UploadService {
     id: string,
     formData: UploadAttributes,
     options?: ReqOptions
-  ): Promise<Upload | undefined> {
-    const newData = await this._repository.update(id, formData, options)
+  ): Promise<Upload> {
+    const uploadRepository = this._repository().upload
+    const data = await this.findById(id, options)
+
+    const value = uploadSchema.create.validateSync(formData, optionsYup)
+    const newData = await uploadRepository.save({ ...data, ...value })
 
     return newData
+  }
+
+  /**
+   *
+   * @param formData
+   * @param UploadId
+   * @returns
+   */
+  public static async createOrUpdate(
+    formData: UploadAttributes,
+    UploadId?: string
+  ): Promise<Upload> {
+    const uploadRepository = this._repository().upload
+    let data
+
+    if (!_.isEmpty(UploadId) && uuidValidate(String(UploadId))) {
+      const getUpload = await uploadRepository.findOne({
+        where: { id: UploadId },
+      })
+
+      if (getUpload) {
+        // update
+        data = await uploadRepository.save({ ...getUpload, ...formData })
+      } else {
+        // create
+        data = await this.create(formData)
+      }
+    } else {
+      // create
+      data = await this.create(formData)
+    }
+
+    return data
   }
 
   /**
@@ -96,9 +207,11 @@ export default class UploadService {
    * @param options
    */
   public static async restore(id: string, options?: ReqOptions): Promise<void> {
+    const uploadRepository = this._repository().upload
+
     const data = await this.findById(id, { withDeleted: true, ...options })
 
-    await this._repository.restore(data.id)
+    await uploadRepository.restore(data.id)
   }
 
   /**
@@ -110,9 +223,11 @@ export default class UploadService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
+    const uploadRepository = this._repository().upload
+
     const data = await this.findById(id, options)
 
-    await this._repository.softDelete(data.id)
+    await uploadRepository.softDelete(data.id)
   }
 
   /**
@@ -124,9 +239,11 @@ export default class UploadService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
+    const uploadRepository = this._repository().upload
+
     const data = await this.findById(id, options)
 
-    await this._repository.forceDelete(data.id)
+    await uploadRepository.delete(data.id)
   }
 
   /**
@@ -152,9 +269,11 @@ export default class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
+    const uploadRepository = this._repository().upload
+
     this._validateGetByIds(ids, options)
 
-    await this._repository.multipleRestore(ids)
+    await uploadRepository.restore({ id: In(ids) })
   }
 
   /**
@@ -166,9 +285,11 @@ export default class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
+    const uploadRepository = this._repository().upload
+
     this._validateGetByIds(ids, options)
 
-    await this._repository.multipleSoftDelete(ids)
+    await uploadRepository.softDelete({ id: In(ids) })
   }
 
   /**
@@ -180,9 +301,11 @@ export default class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
+    const uploadRepository = this._repository().upload
+
     this._validateGetByIds(ids, options)
 
-    await this._repository.multipleForceDelete(ids)
+    await uploadRepository.delete({ id: In(ids) })
   }
 
   /**
@@ -195,7 +318,8 @@ export default class UploadService {
     keyFile: string,
     options?: ReqOptions
   ): Promise<Upload> {
-    const data = await this._repository.findByKeyfile(keyFile, options)
+    const uploadRepository = this._repository().upload
+    const data = await this.findByKeyfile(keyFile, options)
 
     const signedURL = await storageService.getPresignedURL(keyFile)
 
@@ -204,7 +328,7 @@ export default class UploadService {
       optionsYup
     )
 
-    const newData = await this._repository.save({ ...data, ...value })
+    const newData = await uploadRepository.save({ ...data, ...value })
 
     return newData
   }
@@ -233,10 +357,7 @@ export default class UploadService {
       expiryDateURL: expiryDate,
     }
 
-    const uploadResponse = await this._repository.createOrUpdate(
-      formUpload,
-      UploadId
-    )
+    const uploadResponse = await this.createOrUpdate(formUpload, UploadId)
     const data = { storageResponse, uploadResponse }
 
     return data
@@ -246,27 +367,29 @@ export default class UploadService {
    * Update Signed URL
    */
   public static async updateSignedURL(): Promise<void> {
+    const uploadRepository = this._repository().upload
+
     // get uploads
-    const getUploads = await this._repository.find({
+    const getUploads = await uploadRepository.find({
       where: { updatedAt: LessThanOrEqual(sub(new Date(), { days: 3 })) },
+      take: 10,
+      order: { updatedAt: 'ASC' },
     })
 
-    const chunkUploads = _.chunk(getUploads, 50)
+    const { expiryDate } = storageService.expiresObject()
 
-    // chunk uploads data
-    if (!_.isEmpty(chunkUploads)) {
-      for (let i = 0; i < chunkUploads.length; i += 1) {
-        const itemUploads = chunkUploads[i]
+    // check uploads
+    if (!_.isEmpty(getUploads)) {
+      for (let i = 0; i < getUploads.length; i += 1) {
+        const item = getUploads[i]
 
-        // check uploads
-        if (!_.isEmpty(itemUploads)) {
-          for (let i = 0; i < itemUploads.length; i += 1) {
-            const item = itemUploads[i]
+        const signedURL = await storageService.getPresignedURL(item.keyFile)
 
-            // update signed url
-            await this.getPresignedURL(item.keyFile)
-          }
-        }
+        // update signed url
+        await uploadRepository.update(
+          { id: item.id },
+          { signedURL, expiryDateURL: expiryDate }
+        )
       }
     }
   }

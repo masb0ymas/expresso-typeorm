@@ -8,6 +8,8 @@ interface SessionEntity extends IBaseEntity {
   ipAddress?: string | null
   device?: string | null
   platform?: string | null
+  latitude?: string | null
+  longitude?: string | null
 }
 
 export type SessionAttributes = Omit<
@@ -37,4 +39,10 @@ export class Session extends Base {
 
   @Column({ nullable: true })
   platform!: string
+
+  @Column({ nullable: true })
+  latitude!: string
+
+  @Column({ nullable: true })
+  longitude!: string
 }

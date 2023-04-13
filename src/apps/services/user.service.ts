@@ -1,9 +1,9 @@
-import { UserRepository } from '@apps/repositories/user.repository'
 import userSchema from '@apps/schemas/user.schema'
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import { validateUUID } from '@core/helpers/formatter'
 import { optionsYup } from '@core/helpers/yup'
+import { useQuery } from '@core/hooks/useQuery'
 import { type DtoFindAll } from '@core/interface/Paginate'
 import { type ReqOptions } from '@core/interface/ReqOptions'
 import ResponseError from '@core/modules/response/ResponseError'
@@ -13,15 +13,24 @@ import { type Request } from 'express'
 import { validateEmpty } from 'expresso-core'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
+import { type FindOneOptions, In, type Repository } from 'typeorm'
 
-const userRepository = new UserRepository({
-  entity: 'User',
-  repository: AppDataSource.getRepository(User),
-})
+interface UserRepository {
+  user: Repository<User>
+}
 
 export default class UserService {
   private static readonly _entity = 'User'
-  private static readonly _repository = userRepository
+
+  /**
+   * Collect Repository
+   * @returns
+   */
+  private static _repository(): UserRepository {
+    const user = AppDataSource.getRepository(User)
+
+    return { user }
+  }
 
   /**
    *
@@ -29,22 +38,55 @@ export default class UserService {
    * @returns
    */
   public static async findAll(req: Request): Promise<DtoFindAll<User>> {
+    // declare repository
+    const userRepository = this._repository().user
+
     const reqQuery = req.getQuery()
 
     const defaultLang = reqQuery.lang ?? APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
-    const query = this._repository
-      .findQuery(reqQuery)
+    // create query builder
+    const query = userRepository.createQueryBuilder()
+
+    // use query
+    const newQuery = useQuery({ entity: this._entity, query, reqQuery })
       .leftJoinAndSelect(`${this._entity}.Role`, 'Role')
       .leftJoinAndSelect(`${this._entity}.Upload`, 'Upload')
       .leftJoinAndSelect(`${this._entity}.Sessions`, 'Session')
 
-    const data = await query.getMany()
-    const total = await query.getCount()
+    const data = await newQuery.getMany()
+    const total = await newQuery.getCount()
 
     const message = i18nConfig.t('success.data_received', i18nOpt)
     return { message: `${total} ${message}`, data, total }
+  }
+
+  /**
+   *
+   * @param options
+   * @returns
+   */
+  private static async _findOne<T>(
+    options: FindOneOptions<T> & { lang?: string }
+  ): Promise<User> {
+    const userRepository = this._repository().user
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+
+    const data = await userRepository.findOne({
+      where: options.where,
+      relations: options.relations,
+      withDeleted: options.withDeleted,
+    })
+
+    if (!data) {
+      const options = { ...i18nOpt, entity: 'user' }
+      const message = i18nConfig.t('errors.not_found', options)
+
+      throw new ResponseError.NotFound(message)
+    }
+
+    return data
   }
 
   /**
@@ -55,7 +97,10 @@ export default class UserService {
    */
   public static async getById(id: string, options?: ReqOptions): Promise<User> {
     const newId = validateUUID(id, { ...options })
-    const data = await this._repository.findById(newId, options)
+    const data = await this._findOne<User>({
+      where: { id: newId },
+      lang: options?.lang,
+    })
 
     return data
   }
@@ -71,9 +116,10 @@ export default class UserService {
     options?: ReqOptions
   ): Promise<User> {
     const newId = validateUUID(id, { ...options })
-    const data = await this._repository.findById(newId, {
-      ...options,
+    const data = await this._findOne<User>({
+      where: { id: newId },
       relations: ['Role', 'Upload', 'Sessions'],
+      lang: options?.lang,
     })
 
     return data
@@ -85,8 +131,22 @@ export default class UserService {
    * @returns
    */
   public static async create(formData: UserAttributes): Promise<User> {
-    const data = await this._repository.create(formData)
+    const userRepository = this._repository().user
+    const newEntity = new User()
 
+    const value = userSchema.create.validateSync(formData, optionsYup)
+
+    const newFormData = {
+      ...newEntity,
+      ...value,
+      phone: validateEmpty(value?.phone),
+      password: validateEmpty(value?.confirmNewPassword),
+    }
+
+    // @ts-expect-error
+    const data = await userRepository.save(newFormData)
+
+    // @ts-expect-error
     return data
   }
 
@@ -102,7 +162,9 @@ export default class UserService {
     formData: UserAttributes,
     options?: ReqOptions
   ): Promise<User> {
-    const data = await this.getById(id, options)
+    const userRepository = this._repository().user
+
+    const data = await this.getById(id, { ...options })
 
     // validate email from request
     if (!_.isEmpty(formData.email) && formData.email !== data.email) {
@@ -119,8 +181,9 @@ export default class UserService {
     }
 
     // @ts-expect-error
-    const newData = await this._repository.save(newFormData)
+    const newData = await userRepository.save(newFormData)
 
+    // @ts-expect-error
     return newData
   }
 
@@ -130,9 +193,11 @@ export default class UserService {
    * @param options
    */
   public static async restore(id: string, options?: ReqOptions): Promise<void> {
-    const data = await this.getById(id, { withDeleted: true, ...options })
+    const userRepository = this._repository().user
 
-    await this._repository.restore(data.id)
+    const data = await this.getById(id, { ...options, withDeleted: true })
+
+    await userRepository.restore(data.id)
   }
 
   /**
@@ -144,9 +209,11 @@ export default class UserService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
+    const userRepository = this._repository().user
+
     const data = await this.getById(id, options)
 
-    await this._repository.softDelete(data.id)
+    await userRepository.softDelete(data.id)
   }
 
   /**
@@ -158,9 +225,11 @@ export default class UserService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
+    const userRepository = this._repository().user
+
     const data = await this.getById(id, options)
 
-    await this._repository.forceDelete(data.id)
+    await userRepository.delete(data.id)
   }
 
   /**
@@ -186,9 +255,11 @@ export default class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
+    const userRepository = this._repository().user
+
     this._validateGetByIds(ids, options)
 
-    await this._repository.multipleRestore(ids)
+    await userRepository.restore({ id: In(ids) })
   }
 
   /**
@@ -200,9 +271,11 @@ export default class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
+    const userRepository = this._repository().user
+
     this._validateGetByIds(ids, options)
 
-    await this._repository.multipleSoftDelete(ids)
+    await userRepository.softDelete({ id: In(ids) })
   }
 
   /**
@@ -214,9 +287,11 @@ export default class UserService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
+    const userRepository = this._repository().user
+
     this._validateGetByIds(ids, options)
 
-    await this._repository.multipleForceDelete(ids)
+    await userRepository.delete({ id: In(ids) })
   }
 
   /**
@@ -228,9 +303,10 @@ export default class UserService {
     email: string,
     options?: ReqOptions
   ): Promise<void> {
+    const userRepository = this._repository().user
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const data = await this._repository.findOne({
+    const data = await userRepository.findOne({
       where: { email },
     })
 

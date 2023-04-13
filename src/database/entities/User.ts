@@ -23,6 +23,7 @@ interface UserEntity extends IBaseEntity {
   password?: string | null
   phone?: string | null
   tokenVerify?: string | null
+  address?: string | null
   isActive?: boolean | null
   isBlocked?: boolean | null
   UploadId?: string | null
@@ -73,6 +74,9 @@ export class User extends Base {
 
   @Column({ type: 'text', nullable: true })
   tokenVerify!: string
+
+  @Column({ type: 'text', nullable: true })
+  address!: string
 
   @Index()
   @Column({ type: 'boolean', default: false })
