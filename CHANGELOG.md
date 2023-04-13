@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.0.2...v4.1.0) (2023-04-13)
+
+
+### Features
+
+* add osm feature ([cc95653](https://github.com/masb0ymas/expresso-typeorm/commit/cc95653754c0c940aaf3eecb429e1b31ab15b16a))
+
+
+### Bug Fixes
+
+* add env osm ([d8466f1](https://github.com/masb0ymas/expresso-typeorm/commit/d8466f16eafd3db7da17f97130adc5959c3ea14f))
+* add field lat long ([d875724](https://github.com/masb0ymas/expresso-typeorm/commit/d875724d176c50786ae67f383a8933e852d169b3))
+* bug import docs ([40d76d5](https://github.com/masb0ymas/expresso-typeorm/commit/40d76d52cea38d348f22ff4d504c524cb4834bb5))
+* endpoint auth ([abaad0e](https://github.com/masb0ymas/expresso-typeorm/commit/abaad0efac71beaf6b3b0c974188ed53d6846449))
+* github sponsor ([f5e230a](https://github.com/masb0ymas/expresso-typeorm/commit/f5e230a6e29906a306bc9d836f2fe813cc0c15c8))
+* improve auth middleware ([8b6f4b5](https://github.com/masb0ymas/expresso-typeorm/commit/8b6f4b51cd3f733985a0ae568bbbe1d1f448a19d))
+* improve auth service ([c67d923](https://github.com/masb0ymas/expresso-typeorm/commit/c67d923729940f787d9229b9040da9ecd9ba20a8))
+* improve role service ([a431359](https://github.com/masb0ymas/expresso-typeorm/commit/a43135979271d30538ae7806b210b1a3df3896c7))
+* improve session service ([9796b8d](https://github.com/masb0ymas/expresso-typeorm/commit/9796b8d02454b2f63ee9e014511599c60d3ab4ed))
+* improve upload service ([120a4c1](https://github.com/masb0ymas/expresso-typeorm/commit/120a4c12ea275db54f08fbdb631517276a845b1f))
+* improve user service ([17095c0](https://github.com/masb0ymas/expresso-typeorm/commit/17095c0d3c57991f24c69e57811fd177386c986e))
+* move docs to apps ([88e9ebf](https://github.com/masb0ymas/expresso-typeorm/commit/88e9ebfe3588fae5de73d71f139be1bfb417801e))
+* remove unuse file ([710d42b](https://github.com/masb0ymas/expresso-typeorm/commit/710d42bcddfff93e867ed4a5a3537ba001416bcb))
+* session service ([c523bcb](https://github.com/masb0ymas/expresso-typeorm/commit/c523bcbb4c34867570ebd59cd31bdd7865b62e06))
+* update package ([8d0618e](https://github.com/masb0ymas/expresso-typeorm/commit/8d0618e581eead23f538c4be4accbb2f9cfcd042))
+
+
+### Other Commit
+
+* improve config fetcher ([ac1ccd9](https://github.com/masb0ymas/expresso-typeorm/commit/ac1ccd9dccae7ca4e2ddf0da153912aa00d453df))
+* improve this.application ([5651785](https://github.com/masb0ymas/expresso-typeorm/commit/56517854d5a84019821c7ce398f0f7db61f1efd5))
+
 ### [4.0.2](https://github.com/masb0ymas/expresso-typeorm/compare/v4.0.1...v4.0.2) (2023-04-06)
 
 
