@@ -6,6 +6,7 @@ import ConstRole from '@core/constants/ConstRole'
 import asyncHandler from '@core/helpers/asyncHandler'
 import { type ReqOptions } from '@core/interface/ReqOptions'
 import HttpResponse from '@core/modules/response/HttpResponse'
+import { type UserLoginAttributes } from '@database/entities/User'
 import route from '@routes/v1'
 import { type Request, type Response } from 'express'
 import { arrayFormatter } from 'expresso-core'
@@ -59,6 +60,22 @@ route.post(
 
     const httpResponse = HttpResponse.created({ data }, options)
     res.status(201).json(httpResponse)
+  })
+)
+
+route.post(
+  '/user/change-password',
+  authorization,
+  asyncHandler(async function create(req: Request, res: Response) {
+    const userLogin = req.getState('userLogin') as UserLoginAttributes
+    const UserId = userLogin.uid
+
+    const formData = req.getBody()
+
+    await UserService.changePassword(UserId, formData)
+
+    const httpResponse = HttpResponse.updated({})
+    res.status(200).json(httpResponse)
   })
 )
 
