@@ -5,6 +5,7 @@
     "already_phone": "Phone number already in use",
     "already_email": "Email already in use",
     "incorrect_email_or_pass": "Incorrect email or password",
+    "incorrect_current_pass": "Incorrect current password",
     "incorrect_phone": "Incorrect phone number",
     "incorrect_pin": "Incorrect pin",
     "incorrect_UUID_format": "Incorrect uuid format",

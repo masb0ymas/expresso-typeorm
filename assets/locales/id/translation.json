@@ -5,6 +5,7 @@
     "already_phone": "Nomor telepon sudah digunakan",
     "already_email": "Email sudah digunakan",
     "incorrect_email_or_pass": "email atau kata sandi salah",
+    "incorrect_current_pass": "kata sandi saat ini salah",
     "incorrect_phone": "Nomor telepon salah",
     "incorrect_pin": "Pin salah",
     "incorrect_UUID_format": "Format uuid tidak benar",
