@@ -13,7 +13,7 @@ import { type Request } from 'express'
 import { validateEmpty } from 'expresso-core'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
-import { type FindOneOptions, In, type Repository } from 'typeorm'
+import { In, type FindOneOptions, type Repository } from 'typeorm'
 
 interface UserRepository {
   user: Repository<User>
@@ -185,6 +185,49 @@ export default class UserService {
 
     // @ts-expect-error
     return newData
+  }
+
+  /**
+   *
+   * @param id
+   * @param formData
+   * @param options
+   */
+  public static async changePassword(
+    id: string,
+    formData: Partial<UserAttributes>,
+    options?: ReqOptions
+  ): Promise<void> {
+    const userRepository = AppDataSource.getRepository(User)
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+
+    const value = userSchema.changePassword.validateSync(formData, optionsYup)
+
+    const newId = validateUUID(id, { ...options })
+    const getUser = await userRepository.findOne({
+      select: ['id', 'email', 'isActive', 'password', 'RoleId'],
+      where: { id: newId },
+    })
+
+    // check user account
+    if (!getUser) {
+      const message = i18nConfig.t('errors.account_not_found', i18nOpt)
+      throw new ResponseError.NotFound(message)
+    }
+
+    const matchPassword = await getUser.comparePassword(value.currentPassword)
+
+    // compare password
+    if (!matchPassword) {
+      const message = i18nConfig.t('errors.incorrect_current_pass', i18nOpt)
+      throw new ResponseError.BadRequest(message)
+    }
+
+    // update password
+    await userRepository.save({
+      ...getUser,
+      password: value.confirmNewPassword,
+    })
   }
 
   /**
