@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.2.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.1.0...v4.2.0) (2023-04-16)
+
+
+### Features
+
+* add endpoint user change password ([2252ebf](https://github.com/masb0ymas/expresso-typeorm/commit/2252ebfbf17cf4c93238d964855ae821db135d8b))
+
+
+### Bug Fixes
+
+* add translate incorrect password ([de6f639](https://github.com/masb0ymas/expresso-typeorm/commit/de6f6397e4631768056b564758c2e4ff8fa93fbe))
+
 ## [4.1.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.0.2...v4.1.0) (2023-04-13)
 
 
