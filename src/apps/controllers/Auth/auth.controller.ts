@@ -4,7 +4,6 @@ import SessionService from '@apps/services/session.service'
 import { APP_LANG } from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import asyncHandler from '@core/helpers/asyncHandler'
-import { extractToken } from '@core/helpers/token'
 import { type DtoUserAgent } from '@core/interface/UserAgent'
 import HttpResponse from '@core/modules/response/HttpResponse'
 import ResponseError from '@core/modules/response/ResponseError'
@@ -12,6 +11,7 @@ import { type UserLoginAttributes } from '@database/entities/User'
 import route from '@routes/v1'
 import { type Request, type Response } from 'express'
 import { validateEmpty } from 'expresso-core'
+import { useToken } from 'expresso-hooks'
 import { type TOptions } from 'i18next'
 
 route.post(
@@ -73,7 +73,7 @@ route.get(
     const { lang } = req.getQuery()
     const defaultLang = lang ?? APP_LANG
 
-    const token = extractToken(req)
+    const token = useToken.extract(req)
     const userLogin = req.getState('userLogin') as UserLoginAttributes
 
     const data = await AuthService.verifySession(userLogin.uid, String(token), {
@@ -94,7 +94,7 @@ route.post(
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
     const formData = req.getBody()
-    const token = extractToken(req)
+    const token = useToken.extract(req)
     const userLogin = req.getState('userLogin') as UserLoginAttributes
 
     // check user login not same user id at formData
