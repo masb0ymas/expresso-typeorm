@@ -1,7 +1,8 @@
 import SessionService from '@apps/services/session.service'
-import { extractToken, verifyToken } from '@core/helpers/token'
+import { JWT_SECRET_ACCESS_TOKEN } from '@config/env'
 import { type NextFunction, type Request, type Response } from 'express'
 import { printLog } from 'expresso-core'
+import { useToken } from 'expresso-hooks'
 import _ from 'lodash'
 
 /**
@@ -16,10 +17,13 @@ async function authorization(
   res: Response,
   next: NextFunction
 ): Promise<Response<any, Record<string, any>> | undefined> {
-  const getToken = extractToken(req)
+  const getToken = useToken.extract(req)
 
   // verify token
-  const token = verifyToken(String(getToken))
+  const token = useToken.verify({
+    token: String(getToken),
+    secretKey: String(JWT_SECRET_ACCESS_TOKEN),
+  })
 
   // check session from token header
   const getSession = await SessionService.getByToken(String(getToken))
