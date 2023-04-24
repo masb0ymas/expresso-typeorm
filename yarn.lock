@@ -5095,10 +5095,10 @@ express@^4.18.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-expresso-core@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.4.2.tgz#9b8aa52ba62e90b327a8cdd9e60a7eeab2ceb0b1"
-  integrity sha512-r3MzHmhr3xTh1u0JW/g+yuMHD8qLP/bd6vvUwRz6Jvx3OU4aNNEKKKa9p34tDOEMcmZIK26C/WXTR6CfeCHTew==
+expresso-core@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/expresso-core/-/expresso-core-0.5.0.tgz#8714855393f81f32ea1e51fc8e2fca28070a5756"
+  integrity sha512-QJkKFWTRoRoyXwSK1luXKStLQ8JUhfpiBwF/NtOKTAyn33bca9Q1pZp15Cpz8wWI37VEpddAwi5YRIz2+QUMDQ==
   dependencies:
     chalk "~4.1.2"
     lodash "^4.17.21"

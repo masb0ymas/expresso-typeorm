@@ -57,7 +57,7 @@
     "express-async-handler": "^1.2.0",
     "express-rate-limit": "^6.7.0",
     "express-useragent": "^1.0.15",
-    "expresso-core": "^0.4.2",
+    "expresso-core": "^0.5.0",
     "expresso-hooks": "^0.4.0",
     "expresso-provider": "^0.4.2",
     "expresso-query": "^0.4.3",
