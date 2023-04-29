@@ -1,10 +1,14 @@
 import { type DtoLogin } from '@apps/interfaces/Dto'
 import userSchema from '@apps/schemas/user.schema'
-import { MAIL_PASSWORD, MAIL_USERNAME } from '@config/env'
+import {
+  JWT_ACCESS_TOKEN_EXPIRED,
+  JWT_SECRET_ACCESS_TOKEN,
+  MAIL_PASSWORD,
+  MAIL_USERNAME,
+} from '@config/env'
 import { i18nConfig } from '@config/i18n'
 import ConstRole from '@core/constants/ConstRole'
 import SendMail from '@core/helpers/sendMails'
-import { generateToken, verifyToken } from '@core/helpers/token'
 import { optionsYup } from '@core/helpers/yup'
 import { type ReqOptions } from '@core/interface/ReqOptions'
 import ResponseError from '@core/modules/response/ResponseError'
@@ -15,13 +19,15 @@ import {
   type UserLoginAttributes,
 } from '@database/entities/User'
 import { validateEmpty } from 'expresso-core'
+import { useToken } from 'expresso-hooks'
+import { type ExpiresType } from 'expresso-hooks/lib/token/interface'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { type Repository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
+import OpenStreetMapService from './Provider/osm.service'
 import SessionService from './session.service'
 import UserService from './user.service'
-import OpenStreetMapService from './Provider/osm.service'
 
 interface AuthRepository {
   user: Repository<User>
@@ -48,7 +54,12 @@ export default class AuthService {
     const userRepository = this._repository().user
 
     const uid = uuidv4()
-    const { token } = generateToken({ token: uid })
+
+    const { token } = useToken.generate({
+      value: { token: uid },
+      secretKey: String(JWT_SECRET_ACCESS_TOKEN),
+      expires: JWT_ACCESS_TOKEN_EXPIRED as ExpiresType,
+    })
 
     let RoleId = ConstRole.ID_USER
 
@@ -145,7 +156,12 @@ export default class AuthService {
     }
 
     const payloadToken = { uid: UserId }
-    const { token, expiresIn } = generateToken(payloadToken)
+
+    const { token, expiresIn } = useToken.generate({
+      value: payloadToken,
+      secretKey: String(JWT_SECRET_ACCESS_TOKEN),
+      expires: JWT_ACCESS_TOKEN_EXPIRED as ExpiresType,
+    })
 
     const message = i18nConfig.t('success.login', i18nOpt)
 
@@ -174,7 +190,11 @@ export default class AuthService {
     options?: ReqOptions
   ): Promise<User | null> {
     const getSession = await SessionService.findByUserToken(UserId, token)
-    const validateToken = verifyToken(getSession.token)
+
+    const validateToken = useToken.verify({
+      token: getSession.token,
+      secretKey: String(JWT_SECRET_ACCESS_TOKEN),
+    })
 
     const userToken = validateToken?.data as UserLoginAttributes
 
