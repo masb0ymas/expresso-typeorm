@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.1](https://github.com/masb0ymas/expresso-typeorm/compare/v4.2.0...v4.2.1) (2023-05-03)
+
+
+### Bug Fixes
+
+* func takeOver OTP ([61a60c7](https://github.com/masb0ymas/expresso-typeorm/commit/61a60c7d644283d164ef8ff8e34d552a64d90ba5))
+* implementation expresso use token ([b1b2738](https://github.com/masb0ymas/expresso-typeorm/commit/b1b2738c1ea351a29770916c37d2ba16053d4f50))
+* remove unuse helper ([1cad70f](https://github.com/masb0ymas/expresso-typeorm/commit/1cad70f4f79183301508b73fc5add23b99de9f98))
+
 ## [4.2.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.1.0...v4.2.0) (2023-04-16)
 
 
