@@ -1,7 +1,7 @@
-import { TYPEORM_CONNECTION } from '@config/env'
 import { useTypeOrm } from 'expresso-query'
 import { type UseTypeOrmQuery } from 'expresso-query/lib/interface'
-import { type SelectQueryBuilder, type ObjectLiteral } from 'typeorm'
+import { type ObjectLiteral, type SelectQueryBuilder } from 'typeorm'
+import { TYPEORM_CONNECTION } from '~/config/env'
 
 type ConnectType = 'postgres' | 'mysql' | 'mariadb'
 

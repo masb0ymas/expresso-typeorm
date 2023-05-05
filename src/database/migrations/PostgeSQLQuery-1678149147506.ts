@@ -1,5 +1,5 @@
-import { TYPEORM_DATABASE } from '@config/env'
 import { type MigrationInterface, type QueryRunner } from 'typeorm'
+import { TYPEORM_DATABASE } from '~/config/env'
 
 export class PostgreSQLQuery1678149147506 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

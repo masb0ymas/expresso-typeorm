@@ -1,10 +1,10 @@
-import { APP_LANG } from '@config/env'
-import { i18nConfig } from '@config/i18n'
-import { AppDataSource } from '@database/data-source'
-import { User, type UserLoginAttributes } from '@database/entities/User'
 import { type NextFunction, type Request, type Response } from 'express'
 import { printLog } from 'expresso-core'
 import { type TOptions } from 'i18next'
+import { APP_LANG } from '~/config/env'
+import { i18nConfig } from '~/config/i18n'
+import { AppDataSource } from '~/database/data-source'
+import { User, type UserLoginAttributes } from '~/database/entities/User'
 
 /**
  * Not Permitted Access

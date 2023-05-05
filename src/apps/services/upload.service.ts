@@ -1,16 +1,3 @@
-import { type UploadFileEntity } from '@apps/interfaces/Upload'
-import uploadSchema from '@apps/schemas/upload.schema'
-import { APP_LANG } from '@config/env'
-import { i18nConfig } from '@config/i18n'
-import { storageService } from '@config/storage'
-import { validateUUID } from '@core/helpers/formatter'
-import { optionsYup } from '@core/helpers/yup'
-import { useQuery } from '@core/hooks/useQuery'
-import { type DtoFindAll } from '@core/interface/Paginate'
-import { type ReqOptions } from '@core/interface/ReqOptions'
-import ResponseError from '@core/modules/response/ResponseError'
-import { AppDataSource } from '@database/data-source'
-import { Upload, type UploadAttributes } from '@database/entities/Upload'
 import { sub } from 'date-fns'
 import { type Request } from 'express'
 import { type TOptions } from 'i18next'
@@ -23,9 +10,22 @@ import {
   type Repository,
 } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
+import { type UploadFileEntity } from '~/apps/interfaces/Upload'
+import uploadSchema from '~/apps/schemas/upload.schema'
+import { APP_LANG } from '~/config/env'
+import { i18nConfig } from '~/config/i18n'
+import { storageService } from '~/config/storage'
+import { validateUUID } from '~/core/helpers/formatter'
+import { optionsYup } from '~/core/helpers/yup'
+import { useQuery } from '~/core/hooks/useQuery'
+import { type DtoFindAll } from '~/core/interface/Paginate'
+import { type ReqOptions } from '~/core/interface/ReqOptions'
+import ResponseError from '~/core/modules/response/ResponseError'
+import { AppDataSource } from '~/database/data-source'
+import { Upload, type UploadAttributes } from '~/database/entities/Upload'
 
 interface UploadRepository {
-  upload: Repository<Upload>
+  uploadRepo: Repository<Upload>
 }
 
 export default class UploadService {
@@ -36,9 +36,9 @@ export default class UploadService {
    * @returns
    */
   private static _repository(): UploadRepository {
-    const upload = AppDataSource.getRepository(Upload)
+    const uploadRepo = AppDataSource.getRepository(Upload)
 
-    return { upload }
+    return { uploadRepo }
   }
 
   /**
@@ -48,7 +48,7 @@ export default class UploadService {
    */
   public static async findAll(req: Request): Promise<DtoFindAll<Upload>> {
     // declare repository
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
 
     const reqQuery = req.getQuery()
 
@@ -56,7 +56,7 @@ export default class UploadService {
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
     // create query builder
-    const query = uploadRepository.createQueryBuilder()
+    const query = uploadRepo.createQueryBuilder()
 
     // use query
     const newQuery = useQuery({ entity: this._entity, query, reqQuery })
@@ -76,10 +76,10 @@ export default class UploadService {
   private static async _findOne<T>(
     options: FindOneOptions<T> & { lang?: string }
   ): Promise<Upload> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const data = await uploadRepository.findOne({
+    const data = await uploadRepo.findOne({
       where: options.where,
       relations: options.relations,
       withDeleted: options.withDeleted,
@@ -138,11 +138,11 @@ export default class UploadService {
    * @returns
    */
   public static async create(formData: UploadAttributes): Promise<Upload> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
     const newEntity = new Upload()
 
     const value = uploadSchema.create.validateSync(formData, optionsYup)
-    const data = await uploadRepository.save({ ...newEntity, ...value })
+    const data = await uploadRepo.save({ ...newEntity, ...value })
 
     return data
   }
@@ -159,11 +159,11 @@ export default class UploadService {
     formData: UploadAttributes,
     options?: ReqOptions
   ): Promise<Upload> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
     const data = await this.findById(id, options)
 
     const value = uploadSchema.create.validateSync(formData, optionsYup)
-    const newData = await uploadRepository.save({ ...data, ...value })
+    const newData = await uploadRepo.save({ ...data, ...value })
 
     return newData
   }
@@ -178,17 +178,17 @@ export default class UploadService {
     formData: UploadAttributes,
     UploadId?: string
   ): Promise<Upload> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
     let data
 
     if (!_.isEmpty(UploadId) && uuidValidate(String(UploadId))) {
-      const getUpload = await uploadRepository.findOne({
+      const getUpload = await uploadRepo.findOne({
         where: { id: UploadId },
       })
 
       if (getUpload) {
         // update
-        data = await uploadRepository.save({ ...getUpload, ...formData })
+        data = await uploadRepo.save({ ...getUpload, ...formData })
       } else {
         // create
         data = await this.create(formData)
@@ -207,11 +207,11 @@ export default class UploadService {
    * @param options
    */
   public static async restore(id: string, options?: ReqOptions): Promise<void> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
 
     const data = await this.findById(id, { withDeleted: true, ...options })
 
-    await uploadRepository.restore(data.id)
+    await uploadRepo.restore(data.id)
   }
 
   /**
@@ -223,11 +223,11 @@ export default class UploadService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
 
     const data = await this.findById(id, options)
 
-    await uploadRepository.softDelete(data.id)
+    await uploadRepo.softDelete(data.id)
   }
 
   /**
@@ -239,11 +239,11 @@ export default class UploadService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
 
     const data = await this.findById(id, options)
 
-    await uploadRepository.delete(data.id)
+    await uploadRepo.delete(data.id)
   }
 
   /**
@@ -269,11 +269,11 @@ export default class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
 
     this._validateGetByIds(ids, options)
 
-    await uploadRepository.restore({ id: In(ids) })
+    await uploadRepo.restore({ id: In(ids) })
   }
 
   /**
@@ -285,11 +285,11 @@ export default class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
 
     this._validateGetByIds(ids, options)
 
-    await uploadRepository.softDelete({ id: In(ids) })
+    await uploadRepo.softDelete({ id: In(ids) })
   }
 
   /**
@@ -301,11 +301,11 @@ export default class UploadService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
 
     this._validateGetByIds(ids, options)
 
-    await uploadRepository.delete({ id: In(ids) })
+    await uploadRepo.delete({ id: In(ids) })
   }
 
   /**
@@ -318,7 +318,7 @@ export default class UploadService {
     keyFile: string,
     options?: ReqOptions
   ): Promise<Upload> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
     const data = await this.findByKeyfile(keyFile, options)
 
     const signedURL = await storageService.getPresignedURL(keyFile)
@@ -328,7 +328,7 @@ export default class UploadService {
       optionsYup
     )
 
-    const newData = await uploadRepository.save({ ...data, ...value })
+    const newData = await uploadRepo.save({ ...data, ...value })
 
     return newData
   }
@@ -367,10 +367,10 @@ export default class UploadService {
    * Update Signed URL
    */
   public static async updateSignedURL(): Promise<void> {
-    const uploadRepository = this._repository().upload
+    const { uploadRepo } = this._repository()
 
     // get uploads
-    const getUploads = await uploadRepository.find({
+    const getUploads = await uploadRepo.find({
       where: { updatedAt: LessThanOrEqual(sub(new Date(), { days: 3 })) },
       take: 10,
       order: { updatedAt: 'ASC' },
@@ -386,7 +386,7 @@ export default class UploadService {
         const signedURL = await storageService.getPresignedURL(item.keyFile)
 
         // update signed url
-        await uploadRepository.update(
+        await uploadRepo.update(
           { id: item.id },
           { signedURL, expiryDateURL: expiryDate }
         )

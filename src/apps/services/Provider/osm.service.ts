@@ -1,7 +1,7 @@
-import FetchAxios from '@config/axios'
-import { OPEN_STREET_MAP_URL } from '@config/env'
 import { type AxiosResponse } from 'axios'
 import qs from 'qs'
+import FetchAxios from '~/config/axios'
+import { OPEN_STREET_MAP_URL } from '~/config/env'
 
 const FetchApi = new FetchAxios(OPEN_STREET_MAP_URL)
 

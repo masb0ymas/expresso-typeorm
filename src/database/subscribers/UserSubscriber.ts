@@ -1,12 +1,12 @@
-import { User } from '@database/entities/User'
 import * as bcrypt from 'bcrypt'
 import _ from 'lodash'
 import {
-  type EntitySubscriberInterface,
   EventSubscriber,
+  type EntitySubscriberInterface,
   type InsertEvent,
   type UpdateEvent,
 } from 'typeorm'
+import { User } from '~/database/entities/User'
 
 const saltRound = 10
 

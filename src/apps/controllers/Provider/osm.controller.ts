@@ -1,9 +1,9 @@
-import authorization from '@apps/middlewares/authorization'
-import OpenStreetMapService from '@apps/services/Provider/osm.service'
-import asyncHandler from '@core/helpers/asyncHandler'
-import HttpResponse from '@core/modules/response/HttpResponse'
-import route from '@routes/v1'
 import { type Request, type Response } from 'express'
+import authorization from '~/apps/middlewares/authorization'
+import OpenStreetMapService from '~/apps/services/Provider/osm.service'
+import asyncHandler from '~/core/helpers/asyncHandler'
+import HttpResponse from '~/core/modules/response/HttpResponse'
+import route from '~/routes/v1'
 
 route.get(
   '/open-street-map/by-address',

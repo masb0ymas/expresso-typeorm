@@ -1,10 +1,10 @@
 import 'module-alias/register'
 import './pathAlias'
 
-import { AppDataSource } from '@database/data-source'
 import chalk from 'chalk'
 import { printLog } from 'expresso-core'
 import _ from 'lodash'
+import { AppDataSource } from '~/database/data-source'
 import App from './app'
 
 const server = new App()

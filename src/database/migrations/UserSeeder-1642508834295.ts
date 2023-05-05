@@ -1,9 +1,9 @@
-import ConstRole from '@core/constants/ConstRole'
-import { AppDataSource } from '@database/data-source'
-import { User } from '@database/entities/User'
 import _ from 'lodash'
 import { type MigrationInterface, type QueryRunner } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
+import ConstRole from '~/core/constants/ConstRole'
+import { AppDataSource } from '~/database/data-source'
+import { User } from '~/database/entities/User'
 
 const defaultPass = 'Padang123'
 

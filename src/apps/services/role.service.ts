@@ -1,21 +1,21 @@
-import roleSchema from '@apps/schemas/role.schema'
-import { APP_LANG } from '@config/env'
-import { i18nConfig } from '@config/i18n'
-import { validateUUID } from '@core/helpers/formatter'
-import { optionsYup } from '@core/helpers/yup'
-import { useQuery } from '@core/hooks/useQuery'
-import { type DtoFindAll } from '@core/interface/Paginate'
-import { type ReqOptions } from '@core/interface/ReqOptions'
-import ResponseError from '@core/modules/response/ResponseError'
-import { AppDataSource } from '@database/data-source'
-import { Role, type RoleAttributes } from '@database/entities/Role'
 import { type Request } from 'express'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { In, type FindOneOptions, type Repository } from 'typeorm'
+import roleSchema from '~/apps/schemas/role.schema'
+import { APP_LANG } from '~/config/env'
+import { i18nConfig } from '~/config/i18n'
+import { validateUUID } from '~/core/helpers/formatter'
+import { optionsYup } from '~/core/helpers/yup'
+import { useQuery } from '~/core/hooks/useQuery'
+import { type DtoFindAll } from '~/core/interface/Paginate'
+import { type ReqOptions } from '~/core/interface/ReqOptions'
+import ResponseError from '~/core/modules/response/ResponseError'
+import { AppDataSource } from '~/database/data-source'
+import { Role, type RoleAttributes } from '~/database/entities/Role'
 
 interface RoleRepository {
-  role: Repository<Role>
+  roleRepo: Repository<Role>
 }
 
 export default class RoleService {
@@ -26,9 +26,9 @@ export default class RoleService {
    * @returns
    */
   private static _repository(): RoleRepository {
-    const role = AppDataSource.getRepository(Role)
+    const roleRepo = AppDataSource.getRepository(Role)
 
-    return { role }
+    return { roleRepo }
   }
 
   /**
@@ -38,7 +38,7 @@ export default class RoleService {
    */
   public static async findAll(req: Request): Promise<DtoFindAll<Role>> {
     // declare repository
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
 
     const reqQuery = req.getQuery()
 
@@ -46,7 +46,7 @@ export default class RoleService {
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
     // create query builder
-    const query = roleRepository.createQueryBuilder()
+    const query = roleRepo.createQueryBuilder()
 
     // use query
     const newQuery = useQuery({ entity: this._entity, query, reqQuery })
@@ -66,10 +66,10 @@ export default class RoleService {
   private static async _findOne<T>(
     options: FindOneOptions<T> & { lang?: string }
   ): Promise<Role> {
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const data = await roleRepository.findOne({
+    const data = await roleRepo.findOne({
       where: options.where,
       relations: options.relations,
       withDeleted: options.withDeleted,
@@ -96,7 +96,7 @@ export default class RoleService {
     options?: ReqOptions
   ): Promise<Role> {
     const newId = validateUUID(id, { ...options })
-    const data = await this._findOne({
+    const data = await this._findOne<Role>({
       where: { id: newId },
       lang: options?.lang,
     })
@@ -110,11 +110,11 @@ export default class RoleService {
    * @returns
    */
   public static async create(formData: RoleAttributes): Promise<Role> {
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
     const newEntity = new Role()
 
     const value = roleSchema.create.validateSync(formData, optionsYup)
-    const data = await roleRepository.save({ ...newEntity, ...value })
+    const data = await roleRepo.save({ ...newEntity, ...value })
 
     return data
   }
@@ -131,11 +131,11 @@ export default class RoleService {
     formData: RoleAttributes,
     options?: ReqOptions
   ): Promise<Role> {
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
     const data = await this.findById(id, options)
 
     const value = roleSchema.create.validateSync(formData, optionsYup)
-    const newData = await roleRepository.save({ ...data, ...value })
+    const newData = await roleRepo.save({ ...data, ...value })
 
     return newData
   }
@@ -146,11 +146,11 @@ export default class RoleService {
    * @param options
    */
   public static async restore(id: string, options?: ReqOptions): Promise<void> {
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
 
     const data = await this.findById(id, { ...options, withDeleted: true })
 
-    await roleRepository.restore(data.id)
+    await roleRepo.restore(data.id)
   }
 
   /**
@@ -162,11 +162,11 @@ export default class RoleService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
 
     const data = await this.findById(id, options)
 
-    await roleRepository.softDelete(data.id)
+    await roleRepo.softDelete(data.id)
   }
 
   /**
@@ -178,11 +178,11 @@ export default class RoleService {
     id: string,
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
 
     const data = await this.findById(id, options)
 
-    await roleRepository.delete(data.id)
+    await roleRepo.delete(data.id)
   }
 
   /**
@@ -208,11 +208,11 @@ export default class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
 
     this._validateGetByIds(ids, options)
 
-    await roleRepository.restore({ id: In(ids) })
+    await roleRepo.restore({ id: In(ids) })
   }
 
   /**
@@ -224,11 +224,11 @@ export default class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
 
     this._validateGetByIds(ids, options)
 
-    await roleRepository.softDelete({ id: In(ids) })
+    await roleRepo.softDelete({ id: In(ids) })
   }
 
   /**
@@ -240,10 +240,10 @@ export default class RoleService {
     ids: string[],
     options?: ReqOptions
   ): Promise<void> {
-    const roleRepository = this._repository().role
+    const { roleRepo } = this._repository()
 
     this._validateGetByIds(ids, options)
 
-    await roleRepository.delete({ id: In(ids) })
+    await roleRepo.delete({ id: In(ids) })
   }
 }

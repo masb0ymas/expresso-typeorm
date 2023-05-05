@@ -1,8 +1,8 @@
-import ConstRole from '@core/constants/ConstRole'
-import { AppDataSource } from '@database/data-source'
-import { Role } from '@database/entities/Role'
 import _ from 'lodash'
 import { type MigrationInterface, type QueryRunner } from 'typeorm'
+import ConstRole from '~/core/constants/ConstRole'
+import { AppDataSource } from '~/database/data-source'
+import { Role } from '~/database/entities/Role'
 
 const data = [
   {

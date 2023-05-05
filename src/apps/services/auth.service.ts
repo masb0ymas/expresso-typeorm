@@ -1,23 +1,3 @@
-import { type DtoLogin } from '@apps/interfaces/Dto'
-import userSchema from '@apps/schemas/user.schema'
-import {
-  JWT_ACCESS_TOKEN_EXPIRED,
-  JWT_SECRET_ACCESS_TOKEN,
-  MAIL_PASSWORD,
-  MAIL_USERNAME,
-} from '@config/env'
-import { i18nConfig } from '@config/i18n'
-import ConstRole from '@core/constants/ConstRole'
-import SendMail from '@core/helpers/sendMails'
-import { optionsYup } from '@core/helpers/yup'
-import { type ReqOptions } from '@core/interface/ReqOptions'
-import ResponseError from '@core/modules/response/ResponseError'
-import { AppDataSource } from '@database/data-source'
-import {
-  User,
-  type LoginAttributes,
-  type UserLoginAttributes,
-} from '@database/entities/User'
 import { validateEmpty } from 'expresso-core'
 import { useToken } from 'expresso-hooks'
 import { type ExpiresType } from 'expresso-hooks/lib/token/interface'
@@ -25,12 +5,32 @@ import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { type Repository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
+import { type DtoLogin } from '~/apps/interfaces/Dto'
+import userSchema from '~/apps/schemas/user.schema'
+import {
+  JWT_ACCESS_TOKEN_EXPIRED,
+  JWT_SECRET_ACCESS_TOKEN,
+  MAIL_PASSWORD,
+  MAIL_USERNAME,
+} from '~/config/env'
+import { i18nConfig } from '~/config/i18n'
+import ConstRole from '~/core/constants/ConstRole'
+import SendMail from '~/core/helpers/sendMails'
+import { optionsYup } from '~/core/helpers/yup'
+import { type ReqOptions } from '~/core/interface/ReqOptions'
+import ResponseError from '~/core/modules/response/ResponseError'
+import { AppDataSource } from '~/database/data-source'
+import {
+  User,
+  type LoginAttributes,
+  type UserLoginAttributes,
+} from '~/database/entities/User'
 import OpenStreetMapService from './Provider/osm.service'
 import SessionService from './session.service'
 import UserService from './user.service'
 
 interface AuthRepository {
-  user: Repository<User>
+  userRepo: Repository<User>
 }
 
 export default class AuthService {
@@ -39,9 +39,9 @@ export default class AuthService {
    * @returns
    */
   private static _repository(): AuthRepository {
-    const user = AppDataSource.getRepository(User)
+    const userRepo = AppDataSource.getRepository(User)
 
-    return { user }
+    return { userRepo }
   }
 
   /**
@@ -51,7 +51,7 @@ export default class AuthService {
    */
   public static async signUp(formData: any): Promise<User> {
     // declare repository
-    const userRepository = this._repository().user
+    const { userRepo } = this._repository()
 
     const uid = uuidv4()
 
@@ -84,7 +84,7 @@ export default class AuthService {
     }
 
     const data = new User()
-    const newData = await userRepository.save({
+    const newData = await userRepo.save({
       ...data,
       ...formRegister,
     })
@@ -111,12 +111,12 @@ export default class AuthService {
     options?: ReqOptions
   ): Promise<DtoLogin> {
     // declare repository
-    const userRepository = this._repository().user
+    const { userRepo } = this._repository()
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     const value = userSchema.login.validateSync(formData, optionsYup)
 
-    const getUser = await userRepository.findOne({
+    const getUser = await userRepo.findOne({
       select: ['id', 'fullname', 'email', 'isActive', 'password', 'RoleId'],
       where: { email: value.email },
     })
@@ -152,7 +152,7 @@ export default class AuthService {
       const address = _.get(response, 'display_name', '')
 
       // update address
-      await userRepository.update({ id: UserId }, { address })
+      await userRepo.update({ id: UserId }, { address })
     }
 
     const payloadToken = { uid: UserId }
