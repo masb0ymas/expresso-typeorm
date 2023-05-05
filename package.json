@@ -143,10 +143,6 @@
     "typescript": "^4.9.5"
   },
   "_moduleAliases": {
-    "@apps/*": "dist/apps/*",
-    "@core/*": "dist/core/*",
-    "@config/*": "dist/config/*",
-    "@database/*": "dist/database/*",
-    "@routes/*": "dist/routes/*"
+    "~/*": "dist/*"
   }
 }
