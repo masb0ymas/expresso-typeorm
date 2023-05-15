@@ -5215,10 +5215,10 @@ expresso-provider@^0.5.3:
     nodemailer-mailgun-transport "^2.1.5"
     xlsx "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
 
-expresso-query@^0.5.3:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/expresso-query/-/expresso-query-0.5.3.tgz#2852683fd2e8c8b72017ba0978e985907ad72cca"
-  integrity sha512-O9Kqi+YD9uPcwhRLAkSVaRvHSU93mqFGBZZd2nu7wxXvRVVEOEQuhyWe0OUGxTYLkk/uHe+m2+25oJtzmLhhhA==
+expresso-query@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/expresso-query/-/expresso-query-0.5.4.tgz#7e22f5f581dcf8094d5e5d61ca6c59c44a4a6213"
+  integrity sha512-5xtleTyDAAHuSUGlBXEdYtjMOvrBpKVkbJzsMLfQcCCFLmrqDuBGfQEiQ7DN8xTdHoGMJo/LhXMboZIVZAtf0g==
   dependencies:
     lodash "^4.17.21"
     sequelize "^6.31.1"
