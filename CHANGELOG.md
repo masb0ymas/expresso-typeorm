@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.2](https://github.com/masb0ymas/expresso-typeorm/compare/v4.2.1...v4.2.2) (2023-05-18)
+
+
+### Bug Fixes
+
+* update env storage ([54d48b7](https://github.com/masb0ymas/expresso-typeorm/commit/54d48b75bb79dd80764d465184b037ebc9a8d320))
+* update storage config ([584633e](https://github.com/masb0ymas/expresso-typeorm/commit/584633e717a22ecc64f8040289eed607c795180d))
+* use query hooks ([b381e8b](https://github.com/masb0ymas/expresso-typeorm/commit/b381e8bd1797af7228242e409dd57a0113ab2bf8))
+
+
+### Other Commit
+
+* change config module alias import ([9df88e1](https://github.com/masb0ymas/expresso-typeorm/commit/9df88e1d6e01f7f7d5878aab550a48f7119e6f0d))
+* fixing module alias import ([69353ab](https://github.com/masb0ymas/expresso-typeorm/commit/69353abb93bb6150812223929de7435820e0a8b5))
+
 ### [4.2.1](https://github.com/masb0ymas/expresso-typeorm/compare/v4.2.0...v4.2.1) (2023-05-03)
 
 
