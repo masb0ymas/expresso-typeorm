@@ -5,15 +5,25 @@ import { TYPEORM_CONNECTION } from '~/config/env'
 
 type ConnectType = 'postgres' | 'mysql' | 'mariadb'
 
+type IUseQuery<T extends ObjectLiteral> = Omit<
+  UseTypeOrmQuery<T>,
+  'options'
+> & {
+  limit?: number
+}
+
 /**
  * Create New Instance Query TypeORM from `expresso-query` Library
  * @param params
  * @returns
  */
 export function useQuery<T extends ObjectLiteral>(
-  params: UseTypeOrmQuery<T>
+  params: IUseQuery<T>
 ): SelectQueryBuilder<T> {
   const connectType = TYPEORM_CONNECTION as ConnectType
 
-  return useTypeOrm.queryBuilder(params, { type: connectType })
+  return useTypeOrm.queryBuilder(
+    { ...params, options: { orderKey: 'createdAt' } },
+    { type: connectType }
+  )
 }
