@@ -3,9 +3,9 @@ import { Base, type IBaseEntity } from './Base'
 import { User } from './User'
 
 interface SessionEntity extends IBaseEntity {
-  UserId: string
+  user_id: string
   token: string
-  ipAddress?: string | null
+  ip_address?: string | null
   device?: string | null
   platform?: string | null
   latitude?: string | null
@@ -14,25 +14,25 @@ interface SessionEntity extends IBaseEntity {
 
 export type SessionAttributes = Omit<
   SessionEntity,
-  'id' | 'createdAt' | 'updatedAt'
+  'id' | 'created_at' | 'updated_at'
 >
 
 @Entity()
 export class Session extends Base {
-  @ManyToOne(() => User, (User) => User.Sessions)
-  @JoinColumn({ name: 'UserId' })
-  User: Relation<User>
+  @ManyToOne(() => User, (User) => User.sessions)
+  @JoinColumn({ name: 'user_id' })
+  user: Relation<User>
 
   @Index()
   @Column({ type: 'uuid' })
-  UserId: string
+  user_id: string
 
   @Index()
   @Column({ type: 'text' })
   token: string
 
   @Column({ nullable: true })
-  ipAddress!: string
+  ip_address!: string
 
   @Column({ nullable: true })
   device!: string

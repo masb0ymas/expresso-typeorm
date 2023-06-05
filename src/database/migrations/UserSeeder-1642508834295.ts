@@ -11,17 +11,17 @@ const data = [
   {
     fullname: 'Super Admin',
     email: 'super.admin@mail.com',
-    RoleId: ConstRole.ID_SUPER_ADMIN,
+    role_id: ConstRole.ID_SUPER_ADMIN,
   },
   {
     fullname: 'Admin',
     email: 'admin@mail.com',
-    RoleId: ConstRole.ID_ADMIN,
+    role_id: ConstRole.ID_ADMIN,
   },
   {
     fullname: 'User',
     email: 'user@mail.com',
-    RoleId: ConstRole.ID_USER,
+    role_id: ConstRole.ID_USER,
   },
 ]
 
@@ -34,10 +34,10 @@ if (!_.isEmpty(data)) {
     formData.push({
       ...item,
       id: uuidv4(),
-      isActive: true,
+      is_active: true,
       password: defaultPass,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      created_at: new Date(),
+      updated_at: new Date(),
     })
   }
 }

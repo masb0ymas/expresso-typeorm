@@ -8,7 +8,7 @@
     "incorrect_current_pass": "kata sandi saat ini salah",
     "incorrect_phone": "Nomor telepon salah",
     "incorrect_pin": "Pin salah",
-    "incorrect_UUID_format": "Format uuid tidak benar",
+    "incorrect_uuid_format": "Format uuid tidak benar",
     "invalid_user_login": "Login pengguna tidak valid",
     "session_ended": "Sesi masuk telah berakhir, harap masuk kembali.",
     "otp_expired": "OTP kedaluwarsa",

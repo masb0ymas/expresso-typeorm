@@ -17,21 +17,21 @@ import { Session } from './Session'
 import { Upload } from './Upload'
 
 interface UserEntity extends IBaseEntity {
-  deletedAt?: Date | null
+  deleted_at?: Date | null
   fullname: string
   email: string
   password?: string | null
   phone?: string | null
-  tokenVerify?: string | null
+  token_verify?: string | null
   address?: string | null
-  isActive?: boolean | null
-  isBlocked?: boolean | null
-  UploadId?: string | null
-  RoleId: string
+  is_active?: boolean | null
+  is_blocked?: boolean | null
+  upload_id?: string | null
+  role_id: string
 
   // virtual
-  newPassword?: string | null
-  confirmNewPassword?: string | null
+  new_password?: string | null
+  confirm_new_password?: string | null
 }
 
 export interface UserLoginAttributes {
@@ -40,14 +40,14 @@ export interface UserLoginAttributes {
 
 export type CreatePassword = Pick<
   UserEntity,
-  'newPassword' | 'confirmNewPassword'
+  'new_password' | 'confirm_new_password'
 >
 
 export type LoginAttributes = Pick<UserEntity, 'email' | 'password'>
 
 export type UserAttributes = Omit<
   UserEntity,
-  'id' | 'createdAt' | 'updatedAt' | 'deletedAt'
+  'id' | 'created_at' | 'updated_at' | 'deleted_at'
 >
 
 @Entity()
@@ -55,7 +55,7 @@ export type UserAttributes = Omit<
 export class User extends Base {
   @Index()
   @DeleteDateColumn({ nullable: true })
-  deletedAt!: Date
+  deleted_at!: Date
 
   @Index()
   @Column()
@@ -73,38 +73,38 @@ export class User extends Base {
   phone!: string
 
   @Column({ type: 'text', nullable: true })
-  tokenVerify!: string
+  token_verify!: string
 
   @Column({ type: 'text', nullable: true })
   address!: string
 
   @Index()
   @Column({ type: 'boolean', default: false })
-  isActive: boolean
+  is_active: boolean
 
   @Index()
   @Column({ type: 'boolean', default: false })
-  isBlocked: boolean
+  is_blocked: boolean
 
   @ManyToOne(() => Role, (role) => role)
-  @JoinColumn({ name: 'RoleId' })
-  Role: Relation<Role>
+  @JoinColumn({ name: 'role_id' })
+  role: Relation<Role>
 
   @Column({ type: 'uuid' })
-  RoleId: string
+  role_id: string
 
   @ManyToOne(() => Upload, (upload) => upload)
-  @JoinColumn({ name: 'UploadId' })
-  Upload: Upload
+  @JoinColumn({ name: 'upload_id' })
+  upload: Upload
 
   @Column({ type: 'uuid', nullable: true })
-  UploadId!: string
+  upload_id!: string
 
-  @OneToMany(() => Session, (Session) => Session.User)
+  @OneToMany(() => Session, (Session) => Session.user)
   @JoinTable()
-  Sessions: Array<Relation<Session>>
+  sessions: Array<Relation<Session>>
 
-  async comparePassword(currentPassword: string): Promise<boolean> {
-    return await bcrypt.compare(currentPassword, this.password)
+  async comparePassword(current_password: string): Promise<boolean> {
+    return await bcrypt.compare(current_password, this.password)
   }
 }
