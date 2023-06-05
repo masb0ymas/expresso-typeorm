@@ -8,7 +8,7 @@
     "incorrect_current_pass": "Incorrect current password",
     "incorrect_phone": "Incorrect phone number",
     "incorrect_pin": "Incorrect pin",
-    "incorrect_UUID_format": "Incorrect uuid format",
+    "incorrect_uuid_format": "Incorrect uuid format",
     "invalid_user_login": "Invalid user login",
     "session_ended": "The login session has ended, please re-login.",
     "otp_expired": "OTP expired",

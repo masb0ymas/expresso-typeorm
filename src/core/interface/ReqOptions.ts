@@ -1,6 +1,6 @@
 import { type FindOptionsRelations } from 'typeorm'
 
-export interface ReqOptions {
+export interface IReqOptions {
   lang?: string
   withDeleted?: boolean
   relations?: FindOptionsRelations<any> | string[]
