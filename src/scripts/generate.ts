@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { printLog, randomString } from 'expresso-core'
+import { createDirNotExist, printLog, randomString } from 'expresso-core'
 import fs from 'fs'
 import path from 'path'
 
@@ -40,6 +40,13 @@ function generateEnv(value: string, regExp: RegExp): void {
     const logMessage = printLog(`Generate ${value}`, `= ${uniqueCode}`)
     console.log(logMessage)
   }
+}
+
+const listDirectory = ['public/uploads/temp', 'public/uploads/excel']
+
+for (let i = 0; i < listDirectory.length; i += 1) {
+  const dir = listDirectory[i]
+  createDirNotExist(dir)
 }
 
 // generate app key

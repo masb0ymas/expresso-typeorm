@@ -46,7 +46,7 @@ route.get(
 )
 
 const uploadFile = useMulter({
-  dest: 'public/uploads',
+  dest: 'public/uploads/temp',
 }).fields([{ name: 'file_upload', maxCount: 1 }])
 
 const setFileToBody = asyncHandler(async function setFileToBody(
