@@ -1,14 +1,14 @@
 import chalk from 'chalk'
 import { printLog } from 'expresso-core'
 import fs from 'fs'
-import _ from 'lodash'
+import { capitalizeFirstLetter } from '../utils/formatter'
 
 /**
  * Get Controller from Route Path
  * @param controllerPath
  * @param filePath
  */
-function getController(controllerPath: string, filePath: string): void {
+function _getController(controllerPath: string, filePath: string): void {
   if (fs.existsSync(controllerPath)) {
     const msgType = 'Routes'
 
@@ -43,9 +43,9 @@ export const getRoutes = (basePath: string): void => {
 
       if (matchFile) {
         const splitFilename = file.split('.')
-        const filename = _.capitalize(splitFilename[0])
+        const filename = capitalizeFirstLetter(splitFilename[0])
 
-        getController(controllerPath, filename)
+        _getController(controllerPath, filename)
       }
 
       if (!matchFile || !controllerExist) {

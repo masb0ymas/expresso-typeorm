@@ -11,7 +11,7 @@ const route = express.Router()
 route.get('/', function index(req: Request, res: Response) {
   let responseData: any = {
     message: 'expresso TypeORM',
-    maintaner: 'masb0ymas, <n.fajri@outlook.com>',
+    maintaner: 'masb0ymas, <n.fajri@mail.com>',
     source: 'https://github.com/masb0ymas/expresso-typeorm',
   }
 
