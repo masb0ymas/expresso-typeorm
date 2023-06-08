@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.3.1](https://github.com/masb0ymas/expresso-typeorm/compare/v4.3.0...v4.3.1) (2023-06-08)
+
+
+### Bug Fixes
+
+* improve import controller ([7ee3629](https://github.com/masb0ymas/expresso-typeorm/commit/7ee362901d9d8168d345f3fc384eb107ed54703c))
+* minor typo & import ([10a04b2](https://github.com/masb0ymas/expresso-typeorm/commit/10a04b28c497cbc1d58f0937e2843517b540a79f))
+* **scripts:** generate create dir public uploads ([63860ce](https://github.com/masb0ymas/expresso-typeorm/commit/63860ce456fc6340bbff40069f8613050d4ad3f6))
+
 ## [4.3.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.2.2...v4.3.0) (2023-06-05)
 
 
