@@ -138,6 +138,9 @@ export class App {
     return this._app
   }
 
+  /**
+   * Initialize Database
+   */
   private _database(): void {
     // connect to database
     AppDataSource.initialize()
