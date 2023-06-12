@@ -10,7 +10,6 @@ import { type DtoFindAll } from '~/core/interface/dto/Paginate'
 import { useQuery } from '~/core/modules/hooks/useQuery'
 import ResponseError from '~/core/modules/response/ResponseError'
 import { validateUUID } from '~/core/utils/formatter'
-import { yupOptions } from '~/core/utils/yup'
 import { AppDataSource } from '~/database/data-source'
 import { User, type UserAttributes } from '~/database/entities/User'
 import userSchema from '../schema/user.schema'
@@ -138,7 +137,7 @@ export default class UserService {
     const { userRepo } = this._repository()
     const newEntity = new User()
 
-    const value = userSchema.create.validateSync(formData, yupOptions)
+    const value = userSchema.create.parse(formData)
 
     const newFormData = {
       ...newEntity,
@@ -175,7 +174,7 @@ export default class UserService {
       await this.validateEmail(String(formData.email), { ...options })
     }
 
-    const value = userSchema.create.validateSync(formData, yupOptions)
+    const value = userSchema.create.parse(formData)
 
     const newFormData = {
       ...data,
@@ -205,7 +204,7 @@ export default class UserService {
     const { userRepo } = this._repository()
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const value = userSchema.changePassword.validateSync(formData, yupOptions)
+    const value = userSchema.changePassword.parse(formData)
 
     const newId = validateUUID(id, { ...options })
     const getUser = await userRepo.findOne({

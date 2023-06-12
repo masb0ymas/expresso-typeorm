@@ -9,7 +9,6 @@ import { type DtoFindAll } from '~/core/interface/dto/Paginate'
 import { useQuery } from '~/core/modules/hooks/useQuery'
 import ResponseError from '~/core/modules/response/ResponseError'
 import { validateUUID } from '~/core/utils/formatter'
-import { yupOptions } from '~/core/utils/yup'
 import { AppDataSource } from '~/database/data-source'
 import { Role, type RoleAttributes } from '~/database/entities/Role'
 import roleSchema from '../schema/role.schema'
@@ -113,7 +112,7 @@ export default class RoleService {
     const { roleRepo } = this._repository()
     const newEntity = new Role()
 
-    const value = roleSchema.create.validateSync(formData, yupOptions)
+    const value = roleSchema.create.parse(formData)
     const data = await roleRepo.save({ ...newEntity, ...value })
 
     return data
@@ -134,7 +133,7 @@ export default class RoleService {
     const { roleRepo } = this._repository()
     const data = await this.findById(id, options)
 
-    const value = roleSchema.create.validateSync(formData, yupOptions)
+    const value = roleSchema.create.parse(formData)
     const newData = await roleRepo.save({ ...data, ...value })
 
     return newData

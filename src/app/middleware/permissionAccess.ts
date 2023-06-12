@@ -1,8 +1,9 @@
+import { green } from 'colorette'
 import { type NextFunction, type Request, type Response } from 'express'
-import { printLog } from 'expresso-core'
 import { type TOptions } from 'i18next'
 import { env } from '~/config/env'
 import { i18n } from '~/config/i18n'
+import { logger } from '~/config/pino'
 import { AppDataSource } from '~/database/data-source'
 import { User, type UserLoginAttributes } from '~/database/entities/User'
 
@@ -24,13 +25,12 @@ function permissionAccess(roles: string[]) {
       where: { id: userLogin.uid },
     })
 
-    const errType = `Permitted Access Error:`
-    const errMessage = 'You are not allowed'
+    const errType = `permitted access error:`
+    const errMessage = 'you are not allowed'
 
     if (getUser && !roles.includes(getUser.role_id)) {
-      // log error
-      const logMessage = printLog(errType, errMessage, { label: 'error' })
-      console.log(logMessage)
+      const msgType = green('permission')
+      logger.error(`${msgType} - ${errType} ${errMessage}`)
 
       const message = i18n.t('errors.permission_access', i18nOpt)
 

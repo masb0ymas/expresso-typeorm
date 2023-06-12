@@ -17,13 +17,12 @@
 - [TypeORM](https://github.com/typeorm/typeorm) `0.3.x`
 - [Nodemailer](https://github.com/nodemailer/nodemailer) `6.x`
 - [Handlebars](https://github.com/wycats/handlebars.js) for templating HTML
-- [Yup](https://github.com/jquense/yup) for validation schema `1.x`
+- [Zod](https://github.com/colinhacks/zod) for validation schema `3.x`
 - [SWC](https://github.com/swc-project/swc) for build runtime app `1.3.x`
 - JavaScript Style [Standard with TypeScript](https://github.com/standard/eslint-config-standard-with-typescript)
 - Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier) and [TypeScript Eslint](https://github.com/typescript-eslint/typescript-eslint#readme)
-- Using [Module Alias](https://github.com/ilearnio/module-alias) for simplify the require/import paths
 - Documentation with [Swagger](https://github.com/swagger-api/swagger-ui) OpenApi `3.x`
-- Generate Log File with [Winston](https://github.com/winstonjs/winston)
+- Logger with [Pino](https://github.com/pinojs/pino)
 - [Convensional Commit](https://www.conventionalcommits.org/en/v1.0.0/) with [Husky](https://github.com/typicode/husky) & [Commitlint](https://github.com/conventional-changelog/commitlint)
 
 ## Steps to run this project:
@@ -34,9 +33,10 @@
 4. Create your database ( manual ) or run `yarn db:create && yarn db:reset`
 5. Run `yarn dev` command
 6. Run watch command `yarn dev:watch`
-7. Release your app for *Production* or *Staging* with `yarn release`
-8. Build your code with Docker `docker build -t yourname/express:v1.0.0 .`
-9. Run with docker image `docker run -p 7000:8000 -d yourname/express:v1.0.0`
+7. Enable commitlint with husky `yarn husky install`
+8. Release your app for *Production* or *Staging* with `yarn release`
+9. Build your code with Docker `docker build -t yourname/express:v1.0.0 .`
+10. Run with docker image `docker run -p 7000:8000 -d yourname/express:v1.0.0`
 
 ## Author
 
