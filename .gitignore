@@ -5,6 +5,7 @@
 /public/output
 /public/temp
 /public/uploads
+/temp
 
 package-lock.json
 yarn-error.log
