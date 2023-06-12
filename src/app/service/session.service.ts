@@ -10,7 +10,6 @@ import { type DtoFindAll } from '~/core/interface/dto/Paginate'
 import { useQuery } from '~/core/modules/hooks/useQuery'
 import ResponseError from '~/core/modules/response/ResponseError'
 import { validateUUID } from '~/core/utils/formatter'
-import { yupOptions } from '~/core/utils/yup'
 import { AppDataSource } from '~/database/data-source'
 import { Session, type SessionAttributes } from '~/database/entities/Session'
 import sessionSchema from '../schema/session.schema'
@@ -139,7 +138,7 @@ export default class SessionService {
     const { sessionRepo } = this._repository()
     const newEntity = new Session()
 
-    const value = sessionSchema.create.validateSync(formData, yupOptions)
+    const value = sessionSchema.create.parse(formData)
 
     // @ts-expect-error
     const data = await sessionRepo.save({ ...newEntity, ...value })
@@ -163,7 +162,7 @@ export default class SessionService {
     const { sessionRepo } = this._repository()
     const data = await this.findById(id, options)
 
-    const value = sessionSchema.create.validateSync(formData, yupOptions)
+    const value = sessionSchema.create.parse(formData)
 
     // @ts-expect-error
     const newData = await sessionRepo.save({ ...data, ...value })
@@ -181,7 +180,7 @@ export default class SessionService {
   ): Promise<void> {
     const { sessionRepo } = this._repository()
 
-    const value = sessionSchema.create.validateSync(formData, yupOptions)
+    const value = sessionSchema.create.parse(formData)
 
     const data = await sessionRepo.findOne({
       where: { user_id: value.user_id },

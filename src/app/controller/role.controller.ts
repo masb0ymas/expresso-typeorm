@@ -1,14 +1,14 @@
 import { type Request, type Response } from 'express'
 import { arrayFormatter } from 'expresso-core'
-import authorization from '~/app/middleware/authorization'
-import permissionAccess from '~/app/middleware/permissionAccess'
 import RoleService from '~/app/service/role.service'
 import { env } from '~/config/env'
-import ConstRole from '~/core/constants/ConstRole'
 import { type IReqOptions } from '~/core/interface/ReqOptions'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
 import route from '~/routes/v1'
+import authorization from '../middleware/authorization'
+import permissionAccess from '../middleware/permissionAccess'
+import ConstRole from '~/core/constants/ConstRole'
 
 route.get(
   '/role',

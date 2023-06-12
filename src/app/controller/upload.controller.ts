@@ -78,7 +78,7 @@ route.post(
     let data
 
     if (!_.isEmpty(fieldUpload) && !_.isEmpty(fieldUpload.path)) {
-      const directory = formData.type ?? 'temp'
+      const directory = formData.type ?? 'uploads'
 
       data = await UploadService.uploadFile({
         fieldUpload,
@@ -137,7 +137,7 @@ route.put(
     let data
 
     if (!_.isEmpty(fieldUpload) && !_.isEmpty(fieldUpload.path)) {
-      const directory = formData.type ?? 'temp'
+      const directory = formData.type ?? 'uploads'
 
       data = await UploadService.uploadFile({
         fieldUpload,

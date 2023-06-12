@@ -1,8 +1,8 @@
 import { sub } from 'date-fns'
 import { type Request } from 'express'
+import { type TypeS3 } from 'expresso-provider/lib/storage'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
-import type * as Minio from 'minio'
 import {
   In,
   LessThanOrEqual,
@@ -18,7 +18,6 @@ import { type DtoFindAll } from '~/core/interface/dto/Paginate'
 import { useQuery } from '~/core/modules/hooks/useQuery'
 import ResponseError from '~/core/modules/response/ResponseError'
 import { validateUUID } from '~/core/utils/formatter'
-import { yupOptions } from '~/core/utils/yup'
 import { AppDataSource } from '~/database/data-source'
 import { Upload, type UploadAttributes } from '~/database/entities/Upload'
 import { type UploadFileEntity } from '../interface/Upload'
@@ -141,7 +140,7 @@ export default class UploadService {
     const { uploadRepo } = this._repository()
     const newEntity = new Upload()
 
-    const value = uploadSchema.create.validateSync(formData, yupOptions)
+    const value = uploadSchema.create.parse(formData)
     const data = await uploadRepo.save({ ...newEntity, ...value })
 
     return data
@@ -162,7 +161,7 @@ export default class UploadService {
     const { uploadRepo } = this._repository()
     const data = await this.findById(id, options)
 
-    const value = uploadSchema.create.validateSync(formData, yupOptions)
+    const value = uploadSchema.create.parse(formData)
     const newData = await uploadRepo.save({ ...data, ...value })
 
     return newData
@@ -326,11 +325,7 @@ export default class UploadService {
 
     const signed_url = await storageService.getPresignedURL(key_file)
 
-    const value = uploadSchema.create.validateSync(
-      { ...data, signed_url },
-      yupOptions
-    )
-
+    const value = uploadSchema.create.parse({ ...data, signed_url })
     const newData = await uploadRepo.save({ ...data, ...value })
 
     return newData
@@ -351,7 +346,7 @@ export default class UploadService {
     const key_file = `${directory}/${fieldUpload.filename}`
 
     const { data: storageResponse, signedURL: signed_url } =
-      await storageService.uploadFile<Minio.Client>(fieldUpload, directory)
+      await storageService.uploadFile<TypeS3>(fieldUpload, directory)
 
     const formUpload = {
       ...fieldUpload,

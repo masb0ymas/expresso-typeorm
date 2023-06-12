@@ -1,13 +1,13 @@
 import { type Request, type Response } from 'express'
 import authorization from '~/app/middleware/authorization'
-import OpenStreetMapService from '~/app/service/Provider/osm.service'
+import OpenStreetMapService from '~/app/service/providers/osm.service'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
 import route from '~/routes/v1'
 
 route.get(
   '/open-street-map/by-address',
-  authorization,
+  // authorization,
   asyncHandler(async function getAddress(req: Request, res: Response) {
     const { q: address } = req.getQuery()
 

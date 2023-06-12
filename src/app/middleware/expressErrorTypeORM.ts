@@ -1,6 +1,7 @@
+import { green } from 'colorette'
 import { type NextFunction, type Request, type Response } from 'express'
-import { printLog } from 'expresso-core'
 import { QueryFailedError } from 'typeorm'
+import { logger } from '~/config/pino'
 
 /**
  * Express Error TypeORM
@@ -17,15 +18,12 @@ async function expressErrorTypeORM(
   next: NextFunction
 ): Promise<Response<any, Record<string, any>> | undefined> {
   if (err instanceof QueryFailedError) {
-    const errType = 'TypeORM Error:'
-    const message = err.message ?? err
-
-    const logMessage = printLog(errType, message, { label: 'error' })
-    console.log(logMessage)
+    const msgType = green('typeorm')
+    logger.error(`${msgType} - err, ${err.message ?? err}`)
 
     return res.status(400).json({
       code: 400,
-      message: `${errType} ${err.message}`,
+      message: `${msgType} ${err.message}`,
     })
   }
 
