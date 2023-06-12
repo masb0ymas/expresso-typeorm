@@ -1,11 +1,13 @@
-import { printLog, readHTMLFile } from 'expresso-core'
+import { readHTMLFile } from 'expresso-core'
 import fs from 'fs'
+import { green } from 'colorette'
 import Handlebars from 'handlebars'
 import path from 'path'
 import { env } from '~/config/env'
 import { mailService } from '~/config/mail'
 import { type TMailRegistrationEntity } from '../interface/SendMail'
 import ResponseError from '../modules/response/ResponseError'
+import { logger } from '~/config/pino'
 
 class SendMail {
   /**
@@ -18,10 +20,8 @@ class SendMail {
       `${process.cwd()}/public/templates/emails/${htmlPath}`
     )
 
-    const msgType = 'Template Email :'
-    const logMessage = printLog(msgType, `${templatePath}`)
-
-    console.log(logMessage)
+    const msgType = green('email template')
+    logger.info(`${msgType} - ${templatePath} exists`)
 
     return templatePath
   }
