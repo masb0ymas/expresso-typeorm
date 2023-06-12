@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.4.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.3.1...v4.4.0) (2023-06-12)
+
+
+### Bug Fixes
+
+* **config:** improve ([2917e51](https://github.com/masb0ymas/expresso-typeorm/commit/2917e5135e82a68aa647038b90f515cf700396a9))
+* **core:** improve code ([74f2c06](https://github.com/masb0ymas/expresso-typeorm/commit/74f2c06543efc7e8e47e2de65f5b36aa75e05a01))
+* gitignore ([77ad18a](https://github.com/masb0ymas/expresso-typeorm/commit/77ad18adf253a90a024ee82fef3c84a86ee1a1a3))
+* improve main.ts ([97c2809](https://github.com/masb0ymas/expresso-typeorm/commit/97c280943051f0fc01cc7c07ca34dd1c34d63984))
+* readme ([4e3cf91](https://github.com/masb0ymas/expresso-typeorm/commit/4e3cf913adce02264a8180c25c32d06e0a61d994))
+
+
+### Other Commit
+
+* **validation:** change yup to zod ([6515df6](https://github.com/masb0ymas/expresso-typeorm/commit/6515df6337dd4f298f439ac5dbd357f75632e091))
+
 ### [4.3.1](https://github.com/masb0ymas/expresso-typeorm/compare/v4.3.0...v4.3.1) (2023-06-08)
 
 
