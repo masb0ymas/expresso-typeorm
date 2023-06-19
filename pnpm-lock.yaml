@@ -26,8 +26,8 @@ dependencies:
     specifier: ^2.30.0
     version: 2.30.0
   dotenv:
-    specifier: ^16.1.4
-    version: 16.1.4
+    specifier: ^16.3.1
+    version: 16.3.1
   express:
     specifier: ^4.18.2
     version: 4.18.2
@@ -4088,8 +4088,8 @@ packages:
       is-obj: 2.0.0
     dev: true
 
-  /dotenv@16.1.4:
-    resolution: {integrity: sha512-m55RtE8AsPeJBpOIFKihEmqUcoVncQIwo7x9U8ZwLEZw9ZpXboz2c+rvog+jUaJvVrZ5kBOeYQBX5+8Aa/OZQw==}
+  /dotenv@16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
     dev: false
 
@@ -4772,7 +4772,7 @@ packages:
       colorette: 2.0.20
       convert-excel-to-json: 1.7.0
       date-fns: 2.30.0
-      dotenv: 16.1.4
+      dotenv: 16.3.1
       exceljs: 4.3.0
       firebase-admin: 11.9.0
       googleapis: 111.0.0
@@ -9317,7 +9317,7 @@ packages:
       chalk: 4.1.2
       cli-highlight: 2.1.11
       debug: 4.3.4
-      dotenv: 16.1.4
+      dotenv: 16.3.1
       glob: 8.1.0
       mkdirp: 2.1.6
       pg: 8.11.0
