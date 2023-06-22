@@ -1,6 +1,6 @@
 import http from 'http'
-import { env } from './config/env'
 import { App } from './config/app'
+import { env } from './config/env'
 import { httpHandle } from './core/modules/http/handle'
 
 function bootstrap(): void {
