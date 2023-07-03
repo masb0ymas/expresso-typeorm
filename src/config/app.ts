@@ -18,6 +18,7 @@ import { expressRateLimit } from '~/app/middleware/expressRateLimit'
 import { expressUserAgent } from '~/app/middleware/expressUserAgent'
 import { expressWithState } from '~/app/middleware/expressWithState'
 import { optionsSwaggerUI, swaggerSpec } from '~/core/modules/docsSwagger'
+import ResponseError from '~/core/modules/response/ResponseError'
 import { AppDataSource } from '~/database/data-source'
 import indexRoute from '../routes'
 import { corsOptions } from './cors'
@@ -99,6 +100,7 @@ export class App {
     )
   }
 
+  // Initialize Database
   private _database(): void {
     const msgType = green('typeorm')
 
@@ -120,6 +122,19 @@ export class App {
   // Initialize Routes
   private _routes(): void {
     this._app.use(indexRoute)
+
+    // Catch error 404 endpoint not found
+    this._app.use('*', function (req: Request, _res: Response) {
+      const method = req.method
+      const url = req.originalUrl
+      const host = req.hostname
+
+      const endpoint = `${host}${url}`
+
+      throw new ResponseError.NotFound(
+        `Sorry, the ${endpoint} HTTP method ${method} resource you are looking for was not found.`
+      )
+    })
   }
 
   // Create Bootstrap App
