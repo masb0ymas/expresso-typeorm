@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.1](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.0...v4.4.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* improve app & send mail ([963cb21](https://github.com/masb0ymas/expresso-typeorm/commit/963cb2162136aa0a4e0e3260bea3cc1f17c81863))
+* improve bootstrap app ([a5bf4c9](https://github.com/masb0ymas/expresso-typeorm/commit/a5bf4c9bc9af52f590a12493dad09920a600971b))
+* main app ([ddbf15b](https://github.com/masb0ymas/expresso-typeorm/commit/ddbf15bc2bc23fd307e718794b43fd7a25b9bac5))
+* update dockerfile ([d6d2a28](https://github.com/masb0ymas/expresso-typeorm/commit/d6d2a28d648a62e52ece6158486838da7e16b9b4))
+* update pino logger ([c0f32bf](https://github.com/masb0ymas/expresso-typeorm/commit/c0f32bf57ef73d243cdef454bcd76b1922002416))
+
 ## [4.4.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.3.1...v4.4.0) (2023-06-12)
 
 

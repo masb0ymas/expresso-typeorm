@@ -1,6 +1,6 @@
 {
   "name": "expresso-typeorm",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "expressjs, typescript, typeorm, gcp, aws, minio",
   "main": "./dist/main.js",
   "scripts": {
