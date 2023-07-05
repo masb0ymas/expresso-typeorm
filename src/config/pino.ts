@@ -2,6 +2,7 @@ import { blue, green } from 'colorette'
 import { randomUUID } from 'node:crypto'
 import { pino } from 'pino'
 import PinoHttp, { type HttpLogger } from 'pino-http'
+import { formatDate } from '~/core/utils/date'
 import { env } from './env'
 
 export const logger = pino(
@@ -14,7 +15,7 @@ export const logger = pino(
       },
     },
   },
-  pino.destination(`./temp/logs/pino.log`)
+  pino.destination(`./logs/pino-${formatDate(new Date())}.log`)
 )
 
 /**
@@ -55,12 +56,16 @@ export function httpLogger(): HttpLogger {
         url: req.url,
         query: req.query,
         params: req.params,
-        body: req.raw.body,
+        headers: req.headers,
+        body: req.body || req.raw.body,
       }),
       res: (res) => ({
         statusCode: res.statusCode,
         message: res.message,
         data: res.data,
+        'x-request-id': res.headers['x-request-id'],
+        'x-ratelimit-limit': res.headers['x-ratelimit-limit'],
+        'x-ratelimit-remaining': res.headers['x-ratelimit-remaining'],
       }),
     },
 
