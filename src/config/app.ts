@@ -11,6 +11,7 @@ import _ from 'lodash'
 import path from 'path'
 import requestIp from 'request-ip'
 import swaggerUI from 'swagger-ui-express'
+import { Jobs } from '~/app/job'
 import expressErrorResponse from '~/app/middleware/expressErrorResponse'
 import expressErrorTypeORM from '~/app/middleware/expressErrorTypeORM'
 import expressErrorZod from '~/app/middleware/expressErrorZod'
@@ -20,7 +21,7 @@ import { expressWithState } from '~/app/middleware/expressWithState'
 import { optionsSwaggerUI, swaggerSpec } from '~/core/modules/docsSwagger'
 import ResponseError from '~/core/modules/response/ResponseError'
 import { AppDataSource } from '~/database/data-source'
-import indexRoute from '../routes'
+import indexRoutes from '../routes'
 import { corsOptions } from './cors'
 import { env } from './env'
 import { i18n } from './i18n'
@@ -28,6 +29,9 @@ import { mailService } from './mail'
 import { httpLogger, logger } from './pino'
 import { storageService } from './storage'
 
+/**
+ * Initialize Bootsrap Application
+ */
 export class App {
   private readonly _app: Application
   private readonly _port: number | string
@@ -36,25 +40,21 @@ export class App {
     this._app = express()
     this._port = env.APP_PORT
 
-    // plugins
     this._plugins()
-
-    // provider
     this._provider()
-
-    // database
     this._database()
-
-    // routes
-    this._routes()
 
     // docs swagger disable for production mode
     if (env.NODE_ENV !== 'production') {
       this._swagger()
     }
+
+    this._routes()
   }
 
-  // Initialize Plugins
+  /**
+   * Initialize Plugins
+   */
   private _plugins(): void {
     this._app.use(helmet())
     this._app.use(cors(corsOptions))
@@ -75,7 +75,9 @@ export class App {
     this._app.use(expressUserAgent())
   }
 
-  // Initialize Provider
+  /**
+   * Initialize Provider
+   */
   private _provider(): void {
     // storage
     void storageService.initialize()
@@ -84,9 +86,14 @@ export class App {
     if (env.MAIL_USERNAME && env.MAIL_PASSWORD) {
       mailService.initialize()
     }
+
+    // cron job
+    Jobs.initialize()
   }
 
-  // Initialize Swagger
+  /**
+   * Initialize Swagger
+   */
   private _swagger(): void {
     this._app.get('/v1/api-docs.json', (req: Request, res: Response) => {
       res.setHeader('Content-Type', 'application/json')
@@ -100,7 +107,29 @@ export class App {
     )
   }
 
-  // Initialize Database
+  /**
+   * Initialize Routes
+   */
+  private _routes(): void {
+    this._app.use(indexRoutes)
+
+    // Catch error 404 endpoint not found
+    this._app.use('*', function (req: Request, _res: Response) {
+      const method = req.method
+      const url = req.originalUrl
+      const host = req.hostname
+
+      const endpoint = `${host}${url}`
+
+      throw new ResponseError.NotFound(
+        `Sorry, the ${endpoint} HTTP method ${method} resource you are looking for was not found.`
+      )
+    })
+  }
+
+  /**
+   * Initialize Database
+   */
   private _database(): void {
     const msgType = green('typeorm')
 
@@ -119,32 +148,18 @@ export class App {
       })
   }
 
-  // Initialize Routes
-  private _routes(): void {
-    this._app.use(indexRoute)
-
-    // Catch error 404 endpoint not found
-    this._app.use('*', function (req: Request, _res: Response) {
-      const method = req.method
-      const url = req.originalUrl
-      const host = req.hostname
-
-      const endpoint = `${host}${url}`
-
-      throw new ResponseError.NotFound(
-        `Sorry, the ${endpoint} HTTP method ${method} resource you are looking for was not found.`
-      )
-    })
-  }
-
-  // Create Bootstrap App
+  /**
+   * Create Bootstrap App
+   */
   public create(): Application {
     this._app.use(expressErrorZod)
     this._app.use(expressErrorTypeORM)
     this._app.use(expressErrorResponse)
 
+    // set port
     this._app.set('port', this._port)
 
+    // return this application
     return this._app
   }
 }
