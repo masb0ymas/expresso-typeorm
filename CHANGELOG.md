@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.2](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.1...v4.4.2) (2023-07-24)
+
+
+### Bug Fixes
+
+* improve .eslintrc ([b60920f](https://github.com/masb0ymas/expresso-typeorm/commit/b60920f6872c8a7b2e00dc94ec1866d5ca09c018))
+* regex get routes ([3cc69e8](https://github.com/masb0ymas/expresso-typeorm/commit/3cc69e8e0c6741ae3122afc7169407d67331f6f8))
+
 ### [4.4.1](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.0...v4.4.1) (2023-07-05)
 
 
