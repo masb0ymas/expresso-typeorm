@@ -33,7 +33,7 @@ export const getRoutes = (basePath: string): void => {
   if (checkTS ?? checkJS) {
     // loop main controller directory
     fs.readdirSync(basePath).forEach((file) => {
-      const regexExt = /.ts|.js/
+      const regexExt = /^.*\.(ts|js)$/
       const matchFile = file.match(regexExt)
 
       const controllerPath = `${basePath}/${file}`
