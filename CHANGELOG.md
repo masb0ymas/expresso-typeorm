@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.3](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.2...v4.4.3) (2023-08-05)
+
 ### [4.4.2](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.1...v4.4.2) (2023-07-24)
 
 
