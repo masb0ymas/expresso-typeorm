@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   axios:
     specifier: ^1.4.0
@@ -122,8 +126,8 @@ dependencies:
     specifier: ^0.3.17
     version: 0.3.17(pg@8.11.2)(ts-node@10.9.1)
   typeorm-extension:
-    specifier: ^2.8.1
-    version: 2.8.1(typeorm@0.3.17)
+    specifier: ^3.0.1
+    version: 3.0.1(typeorm@0.3.17)
   uuid:
     specifier: ^9.0.0
     version: 9.0.0
@@ -3509,6 +3513,11 @@ packages:
       supports-color: 8.1.1
       tree-kill: 1.2.2
       yargs: 17.7.2
+    dev: false
+
+  /consola@3.2.3:
+    resolution: {integrity: sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==}
+    engines: {node: ^14.18.0 || >=16.10.0}
     dev: false
 
   /console-control-strings@1.1.0:
@@ -8171,9 +8180,10 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /rapiq@0.8.1:
-    resolution: {integrity: sha512-AyhUNucaIy7LOBs200uvED36FqhCWznwUWPEmjuarbVxG39KLfL0cW2ymhPfPz/T7g4SrPk1+2JRaIV87rTYYw==}
+  /rapiq@0.9.0:
+    resolution: {integrity: sha512-k4oT4RarFBrlLMJ49xUTeQpa/us0uU4I70D/UEnK3FWQ4GENzei01rEQAmvPKAIzACo4NMW+YcYJ7EVfSa7EFg==}
     dependencies:
+      ebec: 1.1.0
       smob: 1.4.0
     dev: false
 
@@ -9447,17 +9457,18 @@ packages:
   /typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
 
-  /typeorm-extension@2.8.1(typeorm@0.3.17):
-    resolution: {integrity: sha512-QCkSzPAT6+fR0wA/NGzKrygEyIAkZV9464dz8+hQNzh3HbaJdYLcvWFe7KS6qO3EuxMY3B9/6Ydv5BeSv+O3bg==}
+  /typeorm-extension@3.0.1(typeorm@0.3.17):
+    resolution: {integrity: sha512-N+98JBeeEFZlxBCGB2YRtDZmKs200I3+a+Zu2oX8OHyUdsPWzpiS+jOruRTGjt7gVA0rF3gQO2vO1GFL8aQOvw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     peerDependencies:
       typeorm: ~0.3.0
     dependencies:
       '@faker-js/faker': 8.0.2
+      consola: 3.2.3
       locter: 1.2.1
       pascal-case: 3.1.2
-      rapiq: 0.8.1
+      rapiq: 0.9.0
       reflect-metadata: 0.1.13
       smob: 1.4.0
       typeorm: 0.3.17(pg@8.11.2)(ts-node@10.9.1)

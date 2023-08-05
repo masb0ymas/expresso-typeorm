@@ -89,7 +89,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3",
     "typeorm": "^0.3.17",
-    "typeorm-extension": "^2.8.1",
+    "typeorm-extension": "^3.0.1",
     "uuid": "^9.0.0",
     "zod": "^3.21.4"
   },
