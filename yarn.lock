@@ -4277,10 +4277,10 @@ express-async-handler@^1.2.0:
   resolved "https://registry.yarnpkg.com/express-async-handler/-/express-async-handler-1.2.0.tgz#ffc9896061d90f8d2e71a2d2b8668db5b0934391"
   integrity sha512-rCSVtPXRmQSW8rmik/AIb2P0op6l7r1fMW538yyvTMltCO4xQEWMmobfrIxN2V1/mVrgxB8Az3reYF6yUZw37w==
 
-express-rate-limit@^6.8.1:
-  version "6.8.1"
-  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-6.8.1.tgz#f614bc3a7040fe6f75dc3198536f4cc13526f989"
-  integrity sha512-xJyudsE60CsDShK74Ni1MxsldYaIoivmG3ieK2tAckMsYCBewEuGalss6p/jHmFFnqM9xd5ojE0W2VlanxcOKg==
+express-rate-limit@^6.9.0:
+  version "6.9.0"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-6.9.0.tgz#afecb23936d9cd1d133a3c20056708b9955cad0f"
+  integrity sha512-AnISR3V8qy4gpKM62/TzYdoFO9NV84fBx0POXzTryHU/qGUJBWuVGd+JhbvtVmKBv37t8/afmqdnv16xWoQxag==
 
 express-useragent@^1.0.15:
   version "1.0.15"
@@ -5341,10 +5341,10 @@ i18next-http-middleware@^3.3.2:
   resolved "https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.3.2.tgz#6a24fee6bde44952a5af24364d43fa32f6c1b9b6"
   integrity sha512-PSeLXQXr9Qiv9Q3GCWCoIJenKVbxCcVsXb7VMp/mOprV4gu+AMJT7VHw4+QEf6oYW6GU31QSLnfDpLNoSMtx3g==
 
-i18next@^23.4.1:
-  version "23.4.1"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-23.4.1.tgz#11fe0db92ac8a4125934960ebccf6a5f8ed6b9fc"
-  integrity sha512-07ekE7hbUrbxTYj97VnBzyhKcGURTJC9p4iWTwCVC8t63T+YrgqQmb/n1LBQMivZYwR61pqS+PC0G2rtENycyQ==
+i18next@^23.4.2:
+  version "23.4.2"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-23.4.2.tgz#e68108be82287114e027afc5402bb7830d7f45c9"
+  integrity sha512-hkVPHKFLtn9iewdqHDiU+MGVIBk+bVFn5usw7CIeCn/SBcVKGTItGdjNPm2B8Lnz42CeHUlnSOTgsr5vbITjhA==
   dependencies:
     "@babel/runtime" "^7.22.5"
 
@@ -7262,7 +7262,7 @@ pino-abstract-transport@^1.0.0, pino-abstract-transport@v1.0.0:
     readable-stream "^4.0.0"
     split2 "^4.0.0"
 
-pino-http@^8.3.3:
+pino-http@^8.4.0:
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/pino-http/-/pino-http-8.4.0.tgz#ebfd601f7244d7bd9ead578843025505da4e3f56"
   integrity sha512-9I1eRLxsujQJwLQTrHBU0wDlwnry2HzV2TlDwAsmZ9nT3Y2NQBLrz+DYp73L4i11vl/eudnFT8Eg0Kp62tMwEw==
@@ -7272,7 +7272,7 @@ pino-http@^8.3.3:
     pino-std-serializers "^6.0.0"
     process-warning "^2.0.0"
 
-pino-pretty@^10.1.0, pino-pretty@^10.2.0:
+pino-pretty@^10.2.0:
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/pino-pretty/-/pino-pretty-10.2.0.tgz#c674a153e15c08d7032a826d0051d786feace1d9"
   integrity sha512-tRvpyEmGtc2D+Lr3FulIZ+R1baggQ4S3xD2Ar93KixFEDx6SEAUP3W5aYuEw1C73d6ROrNcB2IXLteW8itlwhA==
@@ -7297,7 +7297,7 @@ pino-std-serializers@^6.0.0:
   resolved "https://registry.yarnpkg.com/pino-std-serializers/-/pino-std-serializers-6.2.2.tgz#d9a9b5f2b9a402486a5fc4db0a737570a860aab3"
   integrity sha512-cHjPPsE+vhj/tnhCy/wiMh3M3z3h/j15zHQX+S9GkTBgqJuTuJzYJ4gUyACLhDaJ7kk9ba9iRDmbH2tJU03OiA==
 
-pino@^8.0.0, pino@^8.14.1, pino@^8.15.0:
+pino@^8.0.0, pino@^8.15.0:
   version "8.15.0"
   resolved "https://registry.yarnpkg.com/pino/-/pino-8.15.0.tgz#67c61d5e397bf297e5a0433976a7f7b8aa6f876b"
   integrity sha512-olUADJByk4twxccmAxb1RiGKOSvddHugCV3wkqjyv+3Sooa2KLrmXrKEWOKi0XPCLasRR5jBXxioE1jxUa4KzQ==

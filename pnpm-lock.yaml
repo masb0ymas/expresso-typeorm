@@ -35,8 +35,8 @@ dependencies:
     specifier: ^1.2.0
     version: 1.2.0
   express-rate-limit:
-    specifier: ^6.8.1
-    version: 6.8.1(express@4.18.2)
+    specifier: ^6.9.0
+    version: 6.9.0(express@4.18.2)
   express-useragent:
     specifier: ^1.0.15
     version: 1.0.15
@@ -62,8 +62,8 @@ dependencies:
     specifier: ^0.2.3
     version: 0.2.3
   i18next:
-    specifier: ^23.4.1
-    version: 23.4.1
+    specifier: ^23.4.2
+    version: 23.4.2
   i18next-fs-backend:
     specifier: ^2.1.5
     version: 2.1.5
@@ -89,14 +89,14 @@ dependencies:
     specifier: ^2.3.4
     version: 2.3.4
   pino:
-    specifier: ^8.14.1
-    version: 8.14.1
+    specifier: ^8.15.0
+    version: 8.15.0
   pino-http:
-    specifier: ^8.3.3
-    version: 8.3.3
+    specifier: ^8.4.0
+    version: 8.4.0
   pino-pretty:
-    specifier: ^10.1.0
-    version: 10.1.0
+    specifier: ^10.2.0
+    version: 10.2.0
   pm2:
     specifier: ^5.3.0
     version: 5.3.0
@@ -4780,8 +4780,8 @@ packages:
     resolution: {integrity: sha512-rCSVtPXRmQSW8rmik/AIb2P0op6l7r1fMW538yyvTMltCO4xQEWMmobfrIxN2V1/mVrgxB8Az3reYF6yUZw37w==}
     dev: false
 
-  /express-rate-limit@6.8.1(express@4.18.2):
-    resolution: {integrity: sha512-xJyudsE60CsDShK74Ni1MxsldYaIoivmG3ieK2tAckMsYCBewEuGalss6p/jHmFFnqM9xd5ojE0W2VlanxcOKg==}
+  /express-rate-limit@6.9.0(express@4.18.2):
+    resolution: {integrity: sha512-AnISR3V8qy4gpKM62/TzYdoFO9NV84fBx0POXzTryHU/qGUJBWuVGd+JhbvtVmKBv37t8/afmqdnv16xWoQxag==}
     engines: {node: '>= 14.0.0'}
     peerDependencies:
       express: ^4 || ^5
@@ -5935,8 +5935,8 @@ packages:
     resolution: {integrity: sha512-PSeLXQXr9Qiv9Q3GCWCoIJenKVbxCcVsXb7VMp/mOprV4gu+AMJT7VHw4+QEf6oYW6GU31QSLnfDpLNoSMtx3g==}
     dev: false
 
-  /i18next@23.4.1:
-    resolution: {integrity: sha512-07ekE7hbUrbxTYj97VnBzyhKcGURTJC9p4iWTwCVC8t63T+YrgqQmb/n1LBQMivZYwR61pqS+PC0G2rtENycyQ==}
+  /i18next@23.4.2:
+    resolution: {integrity: sha512-hkVPHKFLtn9iewdqHDiU+MGVIBk+bVFn5usw7CIeCn/SBcVKGTItGdjNPm2B8Lnz42CeHUlnSOTgsr5vbITjhA==}
     dependencies:
       '@babel/runtime': 7.22.6
     dev: false
@@ -7772,33 +7772,13 @@ packages:
       split2: 4.2.0
     dev: false
 
-  /pino-http@8.3.3:
-    resolution: {integrity: sha512-p4umsNIXXVu95HD2C8wie/vXH7db5iGRpc+yj1/ZQ3sRtTQLXNjoS6Be5+eI+rQbqCRxen/7k/KSN+qiZubGDw==}
+  /pino-http@8.4.0:
+    resolution: {integrity: sha512-9I1eRLxsujQJwLQTrHBU0wDlwnry2HzV2TlDwAsmZ9nT3Y2NQBLrz+DYp73L4i11vl/eudnFT8Eg0Kp62tMwEw==}
     dependencies:
       get-caller-file: 2.0.5
-      pino: 8.14.1
+      pino: 8.15.0
       pino-std-serializers: 6.2.2
       process-warning: 2.2.0
-    dev: false
-
-  /pino-pretty@10.1.0:
-    resolution: {integrity: sha512-9gAgVHCVTEq0ThcjoXkOICYQgdqh1h90WSuVAnNeCrRrefJInUvMbpDfy6PlsI29Nbu9UW9CGkUHztrR1A9N+A==}
-    hasBin: true
-    dependencies:
-      colorette: 2.0.20
-      dateformat: 4.6.3
-      fast-copy: 3.0.1
-      fast-safe-stringify: 2.1.1
-      help-me: 4.2.0
-      joycon: 3.1.1
-      minimist: 1.2.8
-      on-exit-leak-free: 2.1.0
-      pino-abstract-transport: 1.0.0
-      pump: 3.0.0
-      readable-stream: 4.4.2
-      secure-json-parse: 2.7.0
-      sonic-boom: 3.3.0
-      strip-json-comments: 3.1.1
     dev: false
 
   /pino-pretty@10.2.0:
@@ -7823,23 +7803,6 @@ packages:
 
   /pino-std-serializers@6.2.2:
     resolution: {integrity: sha512-cHjPPsE+vhj/tnhCy/wiMh3M3z3h/j15zHQX+S9GkTBgqJuTuJzYJ4gUyACLhDaJ7kk9ba9iRDmbH2tJU03OiA==}
-    dev: false
-
-  /pino@8.14.1:
-    resolution: {integrity: sha512-8LYNv7BKWXSfS+k6oEc6occy5La+q2sPwU3q2ljTX5AZk7v+5kND2o5W794FyRaqha6DJajmkNRsWtPpFyMUdw==}
-    hasBin: true
-    dependencies:
-      atomic-sleep: 1.0.0
-      fast-redact: 3.3.0
-      on-exit-leak-free: 2.1.0
-      pino-abstract-transport: 1.0.0
-      pino-std-serializers: 6.2.2
-      process-warning: 2.2.0
-      quick-format-unescaped: 4.0.4
-      real-require: 0.2.0
-      safe-stable-stringify: 2.4.3
-      sonic-boom: 3.3.0
-      thread-stream: 2.3.0
     dev: false
 
   /pino@8.15.0:
