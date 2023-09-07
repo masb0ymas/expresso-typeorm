@@ -7,7 +7,7 @@ import route from '~/routes/v1'
 
 route.get(
   '/open-street-map/by-address',
-  // authorization,
+  authorization,
   asyncHandler(async function getAddress(req: Request, res: Response) {
     const { q: address } = req.getQuery()
 

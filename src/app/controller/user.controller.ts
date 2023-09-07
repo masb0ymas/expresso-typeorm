@@ -1,7 +1,6 @@
 import { type Request, type Response } from 'express'
 import { arrayFormatter } from 'expresso-core'
 import authorization from '~/app/middleware/authorization'
-import permissionAccess from '~/app/middleware/permissionAccess'
 import UserService from '~/app/service/user.service'
 import { env } from '~/config/env'
 import ConstRole from '~/core/constants/ConstRole'
@@ -10,6 +9,7 @@ import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
 import { type UserLoginAttributes } from '~/database/entities/User'
 import route from '~/routes/v1'
+import { permissionAccess } from '../middleware/permission'
 
 route.get(
   '/user',
