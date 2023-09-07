@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.4](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.3...v4.4.4) (2023-09-07)
+
+
+### Bug Fixes
+
+* improve endpoint with permission ([a38ace1](https://github.com/masb0ymas/expresso-typeorm/commit/a38ace14f197a4b2a93df3cc9cca0450250931c8))
+* improve mail config ([f38845a](https://github.com/masb0ymas/expresso-typeorm/commit/f38845aa5f1a45e4370a07fac483d6fef2c13fd5))
+* improve permission middleware ([9e4e482](https://github.com/masb0ymas/expresso-typeorm/commit/9e4e48259654dd6babcd7d6d0009d6178ce0c89f))
+* update package ([24cce80](https://github.com/masb0ymas/expresso-typeorm/commit/24cce80cafe0c9600e4b6f7bbd17233b4151a264))
+* update swc config ([84e90d5](https://github.com/masb0ymas/expresso-typeorm/commit/84e90d55f0035355b1fe4051c68e0107e002005f))
+
 ### [4.4.3](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.2...v4.4.3) (2023-08-05)
 
 ### [4.4.2](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.1...v4.4.2) (2023-07-24)
