@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.5](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.4...v4.4.5) (2023-09-15)
+
+
+### Bug Fixes
+
+* update hash from bcrypt to argon2 ([f1ae78a](https://github.com/masb0ymas/expresso-typeorm/commit/f1ae78a35194d524c7d7fbaa13270e86b754ecb8))
+* update package ([cdbbdfb](https://github.com/masb0ymas/expresso-typeorm/commit/cdbbdfb5365cfb07a1315c39d0da6ed7619707f3))
+
 ### [4.4.4](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.3...v4.4.4) (2023-09-07)
 
 
