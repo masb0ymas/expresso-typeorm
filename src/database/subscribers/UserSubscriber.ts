@@ -1,4 +1,3 @@
-import * as bcrypt from 'bcrypt'
 import _ from 'lodash'
 import {
   EventSubscriber,
@@ -6,9 +5,8 @@ import {
   type InsertEvent,
   type UpdateEvent,
 } from 'typeorm'
+import { argon2 } from '~/config/hash'
 import { User } from '~/database/entities/User'
-
-const saltRound = 10
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<any> {
@@ -17,7 +15,7 @@ export class UserSubscriber implements EntitySubscriberInterface<any> {
   }
 
   async hashPassword(entity: User): Promise<void> {
-    entity.password = await bcrypt.hash(entity.password, saltRound)
+    entity.password = await argon2.hash(entity.password)
   }
 
   beforeInsert(event: InsertEvent<User>): Promise<void> | undefined {
