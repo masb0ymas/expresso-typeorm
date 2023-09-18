@@ -104,7 +104,7 @@
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.17",
     "@types/express-useragent": "^1.0.2",
-    "@types/hpp": "^0.2.2",
+    "@types/hpp": "^0.2.3",
     "@types/lodash": "^4.14.198",
     "@types/multer": "^1.4.7",
     "@types/node": "^20.6.1",
