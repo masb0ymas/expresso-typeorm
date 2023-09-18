@@ -3372,6 +3372,11 @@ concurrently@^8.2.1:
     tree-kill "^1.2.2"
     yargs "^17.7.2"
 
+consola@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/consola/-/consola-3.2.3.tgz#0741857aa88cfa0d6fd53f1cff0375136e98502f"
+  integrity sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==
+
 console-control-strings@^1.0.0, console-control-strings@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
@@ -3957,7 +3962,7 @@ eastasianwidth@^0.2.0:
   resolved "https://registry.yarnpkg.com/eastasianwidth/-/eastasianwidth-0.2.0.tgz#696ce2ec0aa0e6ea93a397ffcf24aa7840c827cb"
   integrity sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==
 
-ebec@^1.1.1:
+ebec@^1.1.0, ebec@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ebec/-/ebec-1.1.1.tgz#683a0dc82a77e86349e05b24c43d7233a6d0f840"
   integrity sha512-JZ1vcvPQtR+8LGbZmbjG21IxLQq/v47iheJqn2F6yB2CgnGfn8ZVg3myHrf3buIZS8UCwQK0jOSIb3oHX7aH8g==
@@ -6311,7 +6316,7 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-locter@^1.1.0:
+locter@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/locter/-/locter-1.2.2.tgz#a52e870236cd9383c1e0e3012f33a4c3f2a6f9d8"
   integrity sha512-9C/TDHlFdZUlVtBXUmpXhHaO4V9uGYqWKIHag+2ToPQ22j3VEqg7tz8ZI1iWkHmBUGXS4wKXavzWATwFjxhirw==
@@ -7923,11 +7928,12 @@ range-parser@~1.2.1:
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==
 
-rapiq@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/rapiq/-/rapiq-0.8.1.tgz#502db9c8f45a72bbdbc1bfe7e2d5738cb0701649"
-  integrity sha512-AyhUNucaIy7LOBs200uvED36FqhCWznwUWPEmjuarbVxG39KLfL0cW2ymhPfPz/T7g4SrPk1+2JRaIV87rTYYw==
+rapiq@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/rapiq/-/rapiq-0.9.0.tgz#0f427b1a459064a488ae86d2fb91f14524369240"
+  integrity sha512-k4oT4RarFBrlLMJ49xUTeQpa/us0uU4I70D/UEnK3FWQ4GENzei01rEQAmvPKAIzACo4NMW+YcYJ7EVfSa7EFg==
   dependencies:
+    ebec "^1.1.0"
     smob "^1.4.0"
 
 raw-body@2.5.1:
@@ -9259,15 +9265,16 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typeorm-extension@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-2.8.1.tgz#ffdb5c09ca7f19a63e1203ab741000c3b62fb1a6"
-  integrity sha512-QCkSzPAT6+fR0wA/NGzKrygEyIAkZV9464dz8+hQNzh3HbaJdYLcvWFe7KS6qO3EuxMY3B9/6Ydv5BeSv+O3bg==
+typeorm-extension@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-3.0.2.tgz#34e7256bc24e070b204442ff497a5d28e38341e5"
+  integrity sha512-hV67zcFuJo1o3mslgbPTwCQMeMKAsV4ZcdPZiXDrbY+km6rdsbhIycn1iRfSfbb69aHeKPcbc/tpdJLXsdhBqg==
   dependencies:
     "@faker-js/faker" "^8.0.2"
-    locter "^1.1.0"
+    consola "^3.2.3"
+    locter "^1.2.2"
     pascal-case "^3.1.2"
-    rapiq "^0.8.1"
+    rapiq "^0.9.0"
     reflect-metadata "^0.1.13"
     smob "^1.4.0"
     yargs "^17.7.2"
