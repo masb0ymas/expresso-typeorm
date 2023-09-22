@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 import { type MigrationInterface, type QueryRunner } from 'typeorm'
 import ConstRole from '~/core/constants/ConstRole'
 import { AppDataSource } from '~/database/data-source'
@@ -19,22 +19,22 @@ const data = [
   },
 ]
 
-const formData: any[] = []
-
-if (!_.isEmpty(data)) {
-  for (let i = 0; i < data.length; i += 1) {
-    const item = data[i]
-
-    formData.push({
-      ...item,
-      created_at: new Date(),
-      updated_at: new Date(),
-    })
-  }
-}
-
 export class RoleSeeder1642501604297 implements MigrationInterface {
   public async up(_: QueryRunner): Promise<void> {
+    const formData: any[] = []
+
+    if (!isEmpty(data)) {
+      for (let i = 0; i < data.length; i += 1) {
+        const item = data[i]
+
+        formData.push({
+          ...item,
+          created_at: new Date(),
+          updated_at: new Date(),
+        })
+      }
+    }
+
     // save
     await AppDataSource.getRepository(Role).save(formData)
   }
