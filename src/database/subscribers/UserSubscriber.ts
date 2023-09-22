@@ -5,7 +5,7 @@ import {
   type InsertEvent,
   type UpdateEvent,
 } from 'typeorm'
-import { argon2 } from '~/config/hash'
+import { hashing } from '~/config/hashing'
 import { User } from '~/database/entities/User'
 
 @EventSubscriber()
@@ -15,7 +15,7 @@ export class UserSubscriber implements EntitySubscriberInterface<any> {
   }
 
   async hashPassword(entity: User): Promise<void> {
-    entity.password = await argon2.hash(entity.password)
+    entity.password = await hashing.hash(entity.password)
   }
 
   beforeInsert(event: InsertEvent<User>): Promise<void> | undefined {

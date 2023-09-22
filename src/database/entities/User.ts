@@ -10,7 +10,7 @@ import {
   Relation,
   Unique,
 } from 'typeorm'
-import { argon2 } from '~/config/hash'
+import { hashing } from '~/config/hashing'
 import { Base, type IBaseEntity } from './Base'
 import { Role } from './Role'
 import { Session } from './Session'
@@ -105,6 +105,6 @@ export class User extends Base {
   sessions: Array<Relation<Session>>
 
   async comparePassword(current_password: string): Promise<boolean> {
-    return await argon2.verify(this.password, current_password)
+    return await hashing.verify(this.password, current_password)
   }
 }
