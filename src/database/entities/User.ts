@@ -90,13 +90,15 @@ export class User extends Base {
   @JoinColumn({ name: 'role_id' })
   role: Relation<Role>
 
+  @Index()
   @Column({ type: 'uuid' })
   role_id: string
 
   @ManyToOne(() => Upload, (upload) => upload)
   @JoinColumn({ name: 'upload_id' })
-  upload: Upload
+  upload: Relation<Upload>
 
+  @Index()
   @Column({ type: 'uuid', nullable: true })
   upload_id!: string
 
