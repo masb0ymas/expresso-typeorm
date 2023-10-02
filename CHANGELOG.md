@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.6](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.5...v4.4.6) (2023-10-02)
+
+
+### Bug Fixes
+
+* fixing typing ([8b46cf7](https://github.com/masb0ymas/expresso-typeorm/commit/8b46cf7b8396a75a87dfbb6850a43a89c7554f98))
+* improve pino logger config ([a4a148a](https://github.com/masb0ymas/expresso-typeorm/commit/a4a148ad7c9781cb1405358729057d0ccab205da))
+* update hashing config ([f36b260](https://github.com/masb0ymas/expresso-typeorm/commit/f36b2608447614120600b14410ec65d04a7332ca))
+* update package ([37ac1b0](https://github.com/masb0ymas/expresso-typeorm/commit/37ac1b0a4b201b18835709f09fa45fbf4ac96c0e))
+* update seeder ([9f98434](https://github.com/masb0ymas/expresso-typeorm/commit/9f98434153b169a5b2e92e0131504d6db9668d44))
+
 ### [4.4.5](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.4...v4.4.5) (2023-09-15)
 
 
