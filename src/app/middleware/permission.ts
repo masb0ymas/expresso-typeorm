@@ -1,9 +1,9 @@
 import { green } from 'colorette'
 import { type NextFunction, type Request, type Response } from 'express'
+import { logger } from 'expresso-core'
 import { type TOptions } from 'i18next'
 import { env } from '~/config/env'
 import { i18n } from '~/config/i18n'
-import { logger } from '~/config/pino'
 import { AppDataSource } from '~/database/data-source'
 import { User, type UserLoginAttributes } from '~/database/entities/User'
 

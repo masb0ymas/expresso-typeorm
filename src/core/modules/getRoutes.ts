@@ -1,6 +1,6 @@
 import { green } from 'colorette'
+import { logger } from 'expresso-core'
 import fs from 'fs'
-import { logger } from '~/config/pino'
 import { capitalizeFirstLetter } from '../utils/formatter'
 
 /**

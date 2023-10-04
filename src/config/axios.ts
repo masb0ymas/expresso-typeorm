@@ -1,10 +1,9 @@
 import axios, { type AxiosError, type AxiosInstance } from 'axios'
 import { red } from 'colorette'
-import { ms } from 'expresso-core'
+import { logger, ms } from 'expresso-core'
 import _ from 'lodash'
 import ResponseError from '~/core/modules/response/ResponseError'
 import { env } from './env'
-import { logger } from './pino'
 
 const timeout = ms(env.AXIOS_TIMEOUT)
 

@@ -1,8 +1,7 @@
 import { green, red } from 'colorette'
-import { createDirNotExist, randomString } from 'expresso-core'
+import { createDirNotExist, logger, randomString } from 'expresso-core'
 import fs from 'fs'
 import path from 'path'
-import { logger } from '~/config/pino'
 
 const msgType = green('script')
 

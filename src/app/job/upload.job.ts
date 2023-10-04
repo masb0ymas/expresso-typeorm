@@ -1,7 +1,7 @@
 import { green } from 'colorette'
+import { logger } from 'expresso-core'
 import cron from 'node-cron'
 import { env } from '~/config/env'
-import { logger } from '~/config/pino'
 import UploadService from '../service/upload.service'
 
 export class UploadJob {

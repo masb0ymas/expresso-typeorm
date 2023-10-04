@@ -1,7 +1,7 @@
 import { blue, cyan, green } from 'colorette'
+import { logger } from 'expresso-core'
 import type http from 'http'
 import { env } from '~/config/env'
-import { logger } from '~/config/pino'
 
 export function httpHandle(
   server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>,
