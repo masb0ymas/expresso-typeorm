@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.7](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.6...v4.4.7) (2023-10-04)
+
+
+### Bug Fixes
+
+* import logger from expresso-core ([4e7c72f](https://github.com/masb0ymas/expresso-typeorm/commit/4e7c72f12f64aa1b45921b1ac4f50b8ef5c707be))
+* update endpoint upload ([734b20f](https://github.com/masb0ymas/expresso-typeorm/commit/734b20fc9001c8456b8372e8b927de7e82329a71))
+* update package ([a20d31f](https://github.com/masb0ymas/expresso-typeorm/commit/a20d31f9ed4aa3c6d4e50c781d754623da9f413a))
+* update user entity ([dd4eae5](https://github.com/masb0ymas/expresso-typeorm/commit/dd4eae5cae99449cf64373c5b80963a3ca32e76d))
+
 ### [4.4.6](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.5...v4.4.6) (2023-10-02)
 
 
