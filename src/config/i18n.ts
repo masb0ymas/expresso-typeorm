@@ -1,7 +1,7 @@
 import { green } from 'colorette'
+import { logger } from 'expresso-core'
 import i18next from 'i18next'
 import i18nextBackend from 'i18next-fs-backend'
-import { logger } from './pino'
 
 /**
  * i18n

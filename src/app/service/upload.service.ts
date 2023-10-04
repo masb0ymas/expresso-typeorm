@@ -20,7 +20,7 @@ import ResponseError from '~/core/modules/response/ResponseError'
 import { validateUUID } from '~/core/utils/formatter'
 import { AppDataSource } from '~/database/data-source'
 import { Upload, type UploadAttributes } from '~/database/entities/Upload'
-import { type UploadFileEntity } from '../interface/Upload'
+import { DtoUploadFile, type UploadFileEntity } from '../interface/Upload'
 import uploadSchema from '../schema/upload.schema'
 
 interface UploadRepository {
@@ -336,10 +336,9 @@ export default class UploadService {
    * @param params
    * @returns
    */
-  public static async uploadFile(params: UploadFileEntity): Promise<{
-    storageResponse: any
-    uploadResponse: Upload
-  }> {
+  public static async uploadFile(
+    params: UploadFileEntity
+  ): Promise<DtoUploadFile> {
     const { fieldUpload, directory, upload_id } = params
 
     const { expiryDate } = storageService.expiresObject()
@@ -355,8 +354,8 @@ export default class UploadService {
       expiry_date_url: expiryDate,
     }
 
-    const uploadResponse = await this.createOrUpdate(formUpload, upload_id)
-    const data = { storageResponse, uploadResponse }
+    const upload = await this.createOrUpdate(formUpload, upload_id)
+    const data = { storage: storageResponse, upload }
 
     return data
   }

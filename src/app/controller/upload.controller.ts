@@ -91,8 +91,8 @@ route.post(
 
     const httpResponse = HttpResponse.created(
       {
-        data: data?.uploadResponse,
-        storage: data?.storageResponse,
+        data: data?.upload,
+        storage: data?.storage,
       },
       options
     )
@@ -151,8 +151,8 @@ route.put(
 
     const httpResponse = HttpResponse.updated(
       {
-        data: data?.uploadResponse,
-        storage: data?.storageResponse,
+        data: data?.upload,
+        storage: data?.storage,
       },
       options
     )

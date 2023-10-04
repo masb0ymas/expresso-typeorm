@@ -1,7 +1,7 @@
 import { green } from 'colorette'
 import { type NextFunction, type Request, type Response } from 'express'
+import { logger } from 'expresso-core'
 import { z } from 'zod'
-import { logger } from '~/config/pino'
 
 /**
  * Express Error TypeORM

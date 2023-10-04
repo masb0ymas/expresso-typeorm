@@ -1,14 +1,7 @@
 import { blue, green } from 'colorette'
+import { logger } from 'expresso-core'
 import { randomUUID } from 'node:crypto'
-import { pino } from 'pino'
 import PinoHttp, { type HttpLogger } from 'pino-http'
-import { env } from './env'
-
-export const logger = pino({
-  level: env.NODE_ENV === 'production' ? 'info' : 'debug',
-  // BUG Memory Leak
-  // transport: { target: 'pino-pretty', options: { colorize: true } },
-})
 
 /**
  * Http Logger

@@ -1,11 +1,10 @@
 import { green } from 'colorette'
-import { readHTMLFile } from 'expresso-core'
+import { logger, readHTMLFile } from 'expresso-core'
 import fs from 'fs'
 import Handlebars from 'handlebars'
 import path from 'path'
 import { env } from '~/config/env'
 import { mailService } from '~/config/mail'
-import { logger } from '~/config/pino'
 import { type TMailRegistrationEntity } from '../interface/SendMail'
 import ResponseError from '../modules/response/ResponseError'
 

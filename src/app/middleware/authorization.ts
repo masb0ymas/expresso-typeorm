@@ -1,9 +1,9 @@
 import { green } from 'colorette'
 import { type NextFunction, type Request, type Response } from 'express'
+import { logger } from 'expresso-core'
 import { useToken } from 'expresso-hooks'
 import _ from 'lodash'
 import { env } from '~/config/env'
-import { logger } from '~/config/pino'
 import SessionService from '../service/session.service'
 
 /**
