@@ -46,7 +46,9 @@ export default class SessionService {
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
     // create query builder
-    const query = sessionRepo.createQueryBuilder(this._entity)
+    const query = sessionRepo
+      .createQueryBuilder(this._entity)
+      .leftJoinAndSelect(`${this._entity}.user`, 'user')
 
     // use query
     const newQuery = useQuery({ entity: this._entity, query, reqQuery })
@@ -91,6 +93,25 @@ export default class SessionService {
    * @param options
    * @returns
    */
+  public static async getById(
+    id: string,
+    options?: IReqOptions
+  ): Promise<Session> {
+    const newId = validateUUID(id, { ...options })
+    const data = await this._findOne<Session>({
+      where: { id: newId },
+      lang: options?.lang,
+    })
+
+    return data
+  }
+
+  /**
+   *
+   * @param id
+   * @param options
+   * @returns
+   */
   public static async findById(
     id: string,
     options?: IReqOptions
@@ -98,6 +119,7 @@ export default class SessionService {
     const newId = validateUUID(id, { ...options })
     const data = await this._findOne<Session>({
       where: { id: newId },
+      relations: ['user'],
       lang: options?.lang,
     })
 
@@ -160,7 +182,7 @@ export default class SessionService {
     options?: IReqOptions
   ): Promise<Session | undefined> {
     const { sessionRepo } = this._repository()
-    const data = await this.findById(id, options)
+    const data = await this.getById(id, options)
 
     const value = sessionSchema.create.parse(formData)
 
@@ -218,7 +240,7 @@ export default class SessionService {
   public static async delete(id: string, options?: IReqOptions): Promise<void> {
     const { sessionRepo } = this._repository()
 
-    const data = await this.findById(id, options)
+    const data = await this.getById(id, options)
 
     await sessionRepo.delete(data.id)
   }
