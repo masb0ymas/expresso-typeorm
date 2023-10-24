@@ -161,9 +161,9 @@ export default class AuthService {
 
     const newData = {
       message,
-      accessToken: token,
-      expiresIn,
-      tokenType: 'Bearer',
+      access_token: token,
+      expires_in: expiresIn,
+      token_type: 'Bearer',
       user: payloadToken,
       fullname: getUser.fullname,
     }

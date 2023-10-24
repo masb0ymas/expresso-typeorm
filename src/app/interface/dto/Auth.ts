@@ -1,10 +1,10 @@
 export interface DtoLogin {
-  tokenType: string
+  token_type: string
   user: {
     uid: string
   }
   fullname: string
-  accessToken: string
-  expiresIn: number
+  access_token: string
+  expires_in: number
   message: string
 }

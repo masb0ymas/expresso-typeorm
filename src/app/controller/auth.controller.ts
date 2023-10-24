@@ -46,7 +46,7 @@ route.post(
     // create session
     await SessionService.createOrUpdate({
       user_id: String(data.user.uid),
-      token: data.accessToken,
+      token: data.access_token,
       ip_address: req.clientIp?.replace('::ffff:', ''),
       device: userAgent.os,
       platform: userAgent.platform,
@@ -56,8 +56,8 @@ route.post(
 
     res
       .status(200)
-      .cookie('token', data.accessToken, {
-        maxAge: Number(data.expiresIn) * 1000,
+      .cookie('token', data.access_token, {
+        maxAge: Number(data.expires_in) * 1000,
         httpOnly: true,
         path: '/v1',
         secure: process.env.NODE_ENV === 'production',

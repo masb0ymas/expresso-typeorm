@@ -4,13 +4,13 @@ import { type IReqOptions } from '~/core/interface/ReqOptions'
 
 type DataResponseEntity<TData> = {
   message?: string
-  code?: number
+  statusCode?: number
 } & TData
 
 type DtoHttpResponse<TData> = {
-  code: number
+  statusCode: number
   message: string
-} & Omit<DataResponseEntity<TData>, 'message' | 'code'>
+} & Omit<DataResponseEntity<TData>, 'message' | 'statusCode'>
 
 class HttpResponse {
   /**
@@ -23,11 +23,11 @@ class HttpResponse {
   ): DtoHttpResponse<TData> {
     const {
       message = 'data has been received',
-      code = 200,
+      statusCode = 200,
       ...rest
     } = dataResponse
 
-    return { code, message, ...rest }
+    return { statusCode, message, ...rest }
   }
 
   /**
@@ -59,7 +59,7 @@ class HttpResponse {
     const i18nOpt: string | TOptions = { lng: options?.lang }
     const message = i18n.t('success.data_added', i18nOpt)
 
-    return this.baseResponse({ code: 201, message, ...dataResponse })
+    return this.baseResponse({ statusCode: 201, message, ...dataResponse })
   }
 
   /**

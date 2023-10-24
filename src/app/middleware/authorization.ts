@@ -35,7 +35,7 @@ async function authorization(
 
     return res
       .status(401)
-      .json({ code: 401, message: 'unauthorized, invalid jwt' })
+      .json({ statusCode: 401, message: 'unauthorized, invalid jwt' })
   }
 
   req.setState({ userLogin: token?.data })

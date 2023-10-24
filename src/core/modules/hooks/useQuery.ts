@@ -23,7 +23,7 @@ export function useQuery<T extends ObjectLiteral>(
   const connectType = env.TYPEORM_CONNECTION as ConnectType
 
   return useTypeOrm.queryBuilder(
-    { ...params, options: { orderKey: 'created_at' } },
+    { ...params, options: { limit: params.limit, orderKey: 'created_at' } },
     { type: connectType }
   )
 }

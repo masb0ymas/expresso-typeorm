@@ -4,18 +4,23 @@ import multer from 'multer'
 import ResponseError from '~/core/modules/response/ResponseError'
 
 interface DtoErrorResponse {
-  code: number
+  statusCode: number
   message: string
 }
 
 /**
  *
  * @param err - Error
- * @param code - Status Code
+ * @param statusCode - Status Code
  * @returns
  */
-function generateErrorResponse(err: Error, code: number): DtoErrorResponse {
-  return _.isObject(err.message) ? err.message : { code, message: err.message }
+function generateErrorResponse(
+  err: Error,
+  statusCode: number
+): DtoErrorResponse {
+  return _.isObject(err.message)
+    ? err.message
+    : { statusCode, message: err.message }
 }
 
 /**
