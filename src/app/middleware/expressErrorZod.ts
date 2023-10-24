@@ -24,7 +24,7 @@ async function expressErrorZod(
     logger.error(`${msgType} - ${message}`)
 
     const error = {
-      code: 422,
+      statusCode: 422,
       message,
       errors:
         err.errors.length > 0

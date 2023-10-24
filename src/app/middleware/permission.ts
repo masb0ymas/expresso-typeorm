@@ -35,7 +35,7 @@ export function permissionAccess(roles: string[]) {
       const message = i18n.t('errors.permission_access', i18nOpt)
 
       return res.status(403).json({
-        code: 403,
+        statusCode: 403,
         message: `${errType} ${message}`,
       })
     }
@@ -72,7 +72,7 @@ export function notPermittedAccess(roles: string[]) {
       const message = i18n.t('errors.permission_access', i18nOpt)
 
       return res.status(403).json({
-        code: 403,
+        statusCode: 403,
         message: `${errType} ${message}`,
       })
     }

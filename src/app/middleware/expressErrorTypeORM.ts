@@ -22,7 +22,7 @@ async function expressErrorTypeORM(
     logger.error(`${msgType} - err, ${err.message ?? err}`)
 
     return res.status(400).json({
-      code: 400,
+      statusCode: 400,
       message: `${msgType} ${err.message}`,
     })
   }

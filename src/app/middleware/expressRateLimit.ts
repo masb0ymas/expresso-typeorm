@@ -25,7 +25,7 @@ export const expressRateLimit = (): RateLimitRequestHandler => {
       options: Options
     ) => {
       const httpResponse = HttpResponse.get({
-        code: options.statusCode,
+        statusCode: options.statusCode,
         message: options.message,
       })
 
