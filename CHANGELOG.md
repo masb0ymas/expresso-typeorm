@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.8](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.7...v4.4.8) (2023-10-24)
+
+
+### Bug Fixes
+
+* bug increase page size limit ([65fb26c](https://github.com/masb0ymas/expresso-typeorm/commit/65fb26c92a5a0ab5d22d27bc2d1564de82f26a59))
+* change dto login ([bd5a536](https://github.com/masb0ymas/expresso-typeorm/commit/bd5a53676020b9edf964cba2cb475410c5c026ca))
+* change global statusCode ([cf4b365](https://github.com/masb0ymas/expresso-typeorm/commit/cf4b3654500c64e4ecfe8481b2a10af3b06487e9))
+* update session service ([9570f7b](https://github.com/masb0ymas/expresso-typeorm/commit/9570f7bbdd3487678a0913ef8ef91b0d22a3d2e5))
+
 ### [4.4.7](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.6...v4.4.7) (2023-10-04)
 
 
