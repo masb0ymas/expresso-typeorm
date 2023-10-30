@@ -2169,10 +2169,10 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.6.tgz#7cb33992049fd7340d5b10c0098e104184dfcd2a"
   integrity sha512-+0autS93xyXizIYiyL02FCY8N+KkKPhILhcUSA276HxzreZ16kl+cmwvV2qAM/PuCCwPXzOXOWhiPcw20uSFcA==
 
-"@types/request-ip@^0.0.39":
-  version "0.0.39"
-  resolved "https://registry.yarnpkg.com/@types/request-ip/-/request-ip-0.0.39.tgz#78851acdfbf373d8a1e47dde5f2225e8d500033d"
-  integrity sha512-2vZI+q4ToHvm6Qspi6G+S1f8+dWL23ZnCaauSS4i6LPxR4V//+O44l472aCG5rZtuAQfODihIWWN8z1UK2bOIA==
+"@types/request-ip@^0.0.40":
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/@types/request-ip/-/request-ip-0.0.40.tgz#b7eb7785bcf2f1c1fdd7ebdb4fbc7a5b6f258ef4"
+  integrity sha512-3pBKLRLlE5YwVWp2hQRqv6dOXWkoE3bEt+EXHTVd8Q3XNnIWFJx+VC2Dy8+DAnBI9MmSqHSljUZPeuTBMvsNYg==
   dependencies:
     "@types/node" "*"
 

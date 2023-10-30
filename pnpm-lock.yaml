@@ -173,8 +173,8 @@ devDependencies:
     specifier: ^6.9.9
     version: 6.9.9
   '@types/request-ip':
-    specifier: ^0.0.39
-    version: 0.0.39
+    specifier: ^0.0.40
+    version: 0.0.40
   '@types/swagger-jsdoc':
     specifier: ^6.0.2
     version: 6.0.2
@@ -2463,8 +2463,8 @@ packages:
   /@types/range-parser@1.2.6:
     resolution: {integrity: sha512-+0autS93xyXizIYiyL02FCY8N+KkKPhILhcUSA276HxzreZ16kl+cmwvV2qAM/PuCCwPXzOXOWhiPcw20uSFcA==}
 
-  /@types/request-ip@0.0.39:
-    resolution: {integrity: sha512-2vZI+q4ToHvm6Qspi6G+S1f8+dWL23ZnCaauSS4i6LPxR4V//+O44l472aCG5rZtuAQfODihIWWN8z1UK2bOIA==}
+  /@types/request-ip@0.0.40:
+    resolution: {integrity: sha512-3pBKLRLlE5YwVWp2hQRqv6dOXWkoE3bEt+EXHTVd8Q3XNnIWFJx+VC2Dy8+DAnBI9MmSqHSljUZPeuTBMvsNYg==}
     dependencies:
       '@types/node': 20.8.8
     dev: true
