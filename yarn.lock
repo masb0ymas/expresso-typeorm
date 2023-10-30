@@ -9447,10 +9447,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typeorm-extension@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-3.1.0.tgz#42e22078747156bcfe68b69dcae4c5b84ea52a64"
-  integrity sha512-EhPNOjChIr8mkKOZ0s/Z0rE9j5BbZEMNmUu6D1tONJCTHg3q7sEW+8Y4YrqXpVlm6Q+RveN2LeiRsj2YJcB5eA==
+typeorm-extension@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/typeorm-extension/-/typeorm-extension-3.1.1.tgz#9778e87d808c2bbeb3cab94122b6e0b2973114da"
+  integrity sha512-37Y4CXH6PSKZC8ISKTccbH4T/1WPg8dSYhT58ps/VYGiWZ1lnzC24NR1mycb4KO8b0MzH0lUUmSXV3exIBzPXQ==
   dependencies:
     "@faker-js/faker" "^8.2.0"
     consola "^3.2.3"

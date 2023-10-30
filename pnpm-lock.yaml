@@ -117,8 +117,8 @@ dependencies:
     specifier: ^0.3.17
     version: 0.3.17(pg@8.11.3)(ts-node@10.9.1)
   typeorm-extension:
-    specifier: ^3.1.0
-    version: 3.1.0(typeorm@0.3.17)
+    specifier: ^3.1.1
+    version: 3.1.1(typeorm@0.3.17)
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
@@ -9958,8 +9958,8 @@ packages:
   /typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
 
-  /typeorm-extension@3.1.0(typeorm@0.3.17):
-    resolution: {integrity: sha512-EhPNOjChIr8mkKOZ0s/Z0rE9j5BbZEMNmUu6D1tONJCTHg3q7sEW+8Y4YrqXpVlm6Q+RveN2LeiRsj2YJcB5eA==}
+  /typeorm-extension@3.1.1(typeorm@0.3.17):
+    resolution: {integrity: sha512-37Y4CXH6PSKZC8ISKTccbH4T/1WPg8dSYhT58ps/VYGiWZ1lnzC24NR1mycb4KO8b0MzH0lUUmSXV3exIBzPXQ==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     peerDependencies:
