@@ -7,7 +7,7 @@
     "key:generate": "node ./dist/scripts/generate.js",
     "clean": "rimraf dist coverage",
     "typecheck": "tsc --noEmit",
-    "lint": "npx eslint '*/**/*.{js,jsx,ts,tsx}' --quiet --fix",
+    "lint": "npx eslint \"*/**/*.{js,jsx,ts,tsx}\" --quiet --fix",
     "prebuild": "npm-run-all clean lint typecheck",
     "build": "npx swc src -d dist",
     "build:ts": "tsc && tsc-alias",
@@ -128,6 +128,8 @@
     "prettier": "^3.1.1",
     "rimraf": "^5.0.5",
     "standard-version": "^9.5.0",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
     "tsc-alias": "^1.8.8",
     "typescript": "^5.3.3"
   }
