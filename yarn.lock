@@ -670,7 +670,7 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@commitlint/cli@^18.4.2":
+"@commitlint/cli@^18.4.3":
   version "18.4.3"
   resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-18.4.3.tgz#5b6112035f2cb17b76244cde5f1587ab853c2365"
   integrity sha512-zop98yfB3A6NveYAZ3P1Mb6bIXuCeWgnUfVNkH4yhIMQpQfzFwseadazOuSn0OOfTt0lWuFauehpm9GcqM5lww==
