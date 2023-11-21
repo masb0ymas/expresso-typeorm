@@ -1,4 +1,4 @@
-import { type FileAttributes } from 'expresso-provider/lib/interface'
+import { FileAttributes } from 'expresso-provider/lib/storage/types'
 import { Upload } from '~/database/entities/Upload'
 
 export interface UploadFileEntity {

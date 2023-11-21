@@ -1,6 +1,6 @@
 import { sub } from 'date-fns'
 import { type Request } from 'express'
-import { type TypeS3 } from 'expresso-provider/lib/storage'
+import { TypeS3 } from 'expresso-provider/lib/storage/types'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import {

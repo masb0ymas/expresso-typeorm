@@ -1,6 +1,6 @@
 import { validateEmpty } from 'expresso-core'
 import { useToken } from 'expresso-hooks'
-import { type ExpiresType } from 'expresso-hooks/lib/token/interface'
+import { ExpiresType } from 'expresso-hooks/lib/token/types'
 import { type TOptions } from 'i18next'
 import _ from 'lodash'
 import { type Repository } from 'typeorm'

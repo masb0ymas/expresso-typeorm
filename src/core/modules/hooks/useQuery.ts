@@ -1,12 +1,12 @@
 import { useTypeOrm } from 'expresso-query'
-import { type IUseTypeOrmQuery } from 'expresso-query/lib/interface'
+import { UseQueryTypeOrm } from 'expresso-query/lib/typeorm/types'
 import { type ObjectLiteral, type SelectQueryBuilder } from 'typeorm'
 import { env } from '~/config/env'
 
 type ConnectType = 'postgres' | 'mysql' | 'mariadb'
 
 type IUseQuery<T extends ObjectLiteral> = Omit<
-  IUseTypeOrmQuery<T>,
+  UseQueryTypeOrm<T>,
   'options'
 > & {
   limit?: number
