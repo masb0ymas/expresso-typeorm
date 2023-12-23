@@ -68,6 +68,7 @@ export default class AuthService {
       phone: validateEmpty(formData.phone),
       token_verify: token,
       role_id,
+      upload_id: null,
     }
 
     const value = userSchema.register.parse(newFormData)
