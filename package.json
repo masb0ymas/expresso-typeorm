@@ -93,7 +93,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.4.3",
+    "@commitlint/cli": "^19.2.0",
     "@commitlint/config-conventional": "^18.4.3",
     "@jest/globals": "^29.7.0",
     "@swc/cli": "^0.1.63",
