@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.5.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.8...v4.5.0) (2024-05-15)
+
+
+### Features
+
+* add utils test ([3a771c5](https://github.com/masb0ymas/expresso-typeorm/commit/3a771c5abe8870be553ef13f7c5670f2636f3e71))
+
+
+### Bug Fixes
+
+* add jest config ([60aeab6](https://github.com/masb0ymas/expresso-typeorm/commit/60aeab65f80087036e31ab7ea4b33c0490a505e0))
+* form signup ([01ad564](https://github.com/masb0ymas/expresso-typeorm/commit/01ad564b92f5a4d95d70ee16eb2439b77b4250a3))
+* update deps ([0505998](https://github.com/masb0ymas/expresso-typeorm/commit/0505998aadce5ac4711ca2dc341193375142e60c))
+* update from dev ([5e9de32](https://github.com/masb0ymas/expresso-typeorm/commit/5e9de323e45a08021930339469a7875df3ab6831))
+* update setting json .vscode ([ad3f1b7](https://github.com/masb0ymas/expresso-typeorm/commit/ad3f1b753b1c808e32bc91bca19e1da74a537603))
+
+
+### Other Commit
+
+* fix missing typing ([37c8a4a](https://github.com/masb0ymas/expresso-typeorm/commit/37c8a4a2cc70e8c4c5e407d8ff07abc4e3032030))
+
 ### [4.4.8](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.7...v4.4.8) (2023-10-24)
 
 
