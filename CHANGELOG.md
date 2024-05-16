@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.5.1](https://github.com/masb0ymas/expresso-typeorm/compare/v4.5.0...v4.5.1) (2024-05-16)
+
+
+### Bug Fixes
+
+* update deps ([de4b044](https://github.com/masb0ymas/expresso-typeorm/commit/de4b044203f3048c6f99c4ec02aac88e758d4a21))
+
 ## [4.5.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.4.8...v4.5.0) (2024-05-15)
 
 
