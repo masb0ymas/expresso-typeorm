@@ -181,6 +181,9 @@ devDependencies:
   '@types/request-ip':
     specifier: ^0.0.41
     version: 0.0.41
+  '@types/supertest':
+    specifier: ^6.0.2
+    version: 6.0.2
   '@types/swagger-jsdoc':
     specifier: ^6.0.4
     version: 6.0.4
@@ -226,6 +229,9 @@ devDependencies:
   jest:
     specifier: ^29.7.0
     version: 29.7.0(@types/node@20.12.12)
+  msw:
+    specifier: ^2.3.0
+    version: 2.3.0(typescript@5.4.5)
   nodemon:
     specifier: ^3.1.0
     version: 3.1.0
@@ -1281,6 +1287,18 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==, tarball: https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz}
     dev: true
 
+  /@bundled-es-modules/cookie@2.0.0:
+    resolution: {integrity: sha512-Or6YHg/kamKHpxULAdSqhGqnWFneIXu1NKvvfBBzKGwpVsYuFIQ5aBPHDnnoR3ghW1nvSkALd+EF9iMtY7Vjxw==, tarball: https://registry.npmjs.org/@bundled-es-modules/cookie/-/cookie-2.0.0.tgz}
+    dependencies:
+      cookie: 0.5.0
+    dev: true
+
+  /@bundled-es-modules/statuses@1.0.1:
+    resolution: {integrity: sha512-yn7BklA5acgcBr+7w064fGV+SGIFySjCKpqjcWgBAIfrAkY+4GQTJJHQMeT3V/sgz23VTEVV8TtOmkvJAhFVfg==, tarball: https://registry.npmjs.org/@bundled-es-modules/statuses/-/statuses-1.0.1.tgz}
+    dependencies:
+      statuses: 2.0.1
+    dev: true
+
   /@commitlint/cli@18.6.1(@types/node@20.12.12)(typescript@5.4.5):
     resolution: {integrity: sha512-5IDE0a+lWGdkOvKH892HHAZgbAjcj1mT5QrfA/SVbLJV/BbBMGyKN0W5mhgjekPJJwEQdVNvhl9PwUacY58Usw==, tarball: https://registry.npmjs.org/@commitlint/cli/-/cli-18.6.1.tgz}
     engines: {node: '>=v18'}
@@ -1756,6 +1774,43 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: true
 
+  /@inquirer/confirm@3.1.7:
+    resolution: {integrity: sha512-BZjjj19W8gnh5UGFTdP5ZxpgMNRjy03Dzq3k28sB2MDlEUFrcyTkMEoGgvBmGpUw0vNBoCJkTcbHZ3e9tb+d+w==, tarball: https://registry.npmjs.org/@inquirer/confirm/-/confirm-3.1.7.tgz}
+    engines: {node: '>=18'}
+    dependencies:
+      '@inquirer/core': 8.2.0
+      '@inquirer/type': 1.3.1
+    dev: true
+
+  /@inquirer/core@8.2.0:
+    resolution: {integrity: sha512-pexNF9j2orvMMTgoQ/uKOw8V6/R7x/sIDwRwXRhl4i0pPSh6paRzFehpFKpfMbqix1/+gzCekhYTmVbQpWkVjQ==, tarball: https://registry.npmjs.org/@inquirer/core/-/core-8.2.0.tgz}
+    engines: {node: '>=18'}
+    dependencies:
+      '@inquirer/figures': 1.0.1
+      '@inquirer/type': 1.3.1
+      '@types/mute-stream': 0.0.4
+      '@types/node': 20.12.12
+      '@types/wrap-ansi': 3.0.0
+      ansi-escapes: 4.3.2
+      chalk: 4.1.2
+      cli-spinners: 2.9.2
+      cli-width: 4.1.0
+      mute-stream: 1.0.0
+      signal-exit: 4.1.0
+      strip-ansi: 6.0.1
+      wrap-ansi: 6.2.0
+    dev: true
+
+  /@inquirer/figures@1.0.1:
+    resolution: {integrity: sha512-mtup3wVKia3ZwULPHcbs4Mor8Voi+iIXEWD7wCNbIO6lYR62oPCTQyrddi5OMYVXHzeCSoneZwJuS8sBvlEwDw==, tarball: https://registry.npmjs.org/@inquirer/figures/-/figures-1.0.1.tgz}
+    engines: {node: '>=18'}
+    dev: true
+
+  /@inquirer/type@1.3.1:
+    resolution: {integrity: sha512-Pe3PFccjPVJV1vtlfVvm9OnlbxqdnP5QcscFEFEnK5quChf1ufZtM0r8mR5ToWHMxZOh0s8o/qp9ANGRTo/DAw==, tarball: https://registry.npmjs.org/@inquirer/type/-/type-1.3.1.tgz}
+    engines: {node: '>=18'}
+    dev: true
+
   /@ioredis/commands@1.2.0:
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==, tarball: https://registry.npmjs.org/@ioredis/commands/-/commands-1.2.0.tgz}
     dev: false
@@ -2076,6 +2131,23 @@ packages:
       os-filter-obj: 2.0.0
     dev: true
 
+  /@mswjs/cookies@1.1.0:
+    resolution: {integrity: sha512-0ZcCVQxifZmhwNBoQIrystCb+2sWBY2Zw8lpfJBPCHGCA/HWqehITeCRVIv4VMy8MPlaHo2w2pTHFV2pFfqKPw==, tarball: https://registry.npmjs.org/@mswjs/cookies/-/cookies-1.1.0.tgz}
+    engines: {node: '>=18'}
+    dev: true
+
+  /@mswjs/interceptors@0.29.1:
+    resolution: {integrity: sha512-3rDakgJZ77+RiQUuSK69t1F0m8BQKA8Vh5DCS5V0DWvNY67zob2JhhQrhCO0AKLGINTRSFd1tBaHcJTkhefoSw==, tarball: https://registry.npmjs.org/@mswjs/interceptors/-/interceptors-0.29.1.tgz}
+    engines: {node: '>=18'}
+    dependencies:
+      '@open-draft/deferred-promise': 2.2.0
+      '@open-draft/logger': 0.3.0
+      '@open-draft/until': 2.1.0
+      is-node-process: 1.2.0
+      outvariant: 1.4.2
+      strict-event-emitter: 0.5.1
+    dev: true
+
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==, tarball: https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz}
     engines: {node: '>= 8'}
@@ -2093,6 +2165,21 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  /@open-draft/deferred-promise@2.2.0:
+    resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==, tarball: https://registry.npmjs.org/@open-draft/deferred-promise/-/deferred-promise-2.2.0.tgz}
+    dev: true
+
+  /@open-draft/logger@0.3.0:
+    resolution: {integrity: sha512-X2g45fzhxH238HKO4xbSr7+wBS8Fvw6ixhTDuvLd5mqh6bJJCFAPwU9mPDxbcrRtfxv4u5IHCEH77BmxvXmmxQ==, tarball: https://registry.npmjs.org/@open-draft/logger/-/logger-0.3.0.tgz}
+    dependencies:
+      is-node-process: 1.2.0
+      outvariant: 1.4.2
+    dev: true
+
+  /@open-draft/until@2.1.0:
+    resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==, tarball: https://registry.npmjs.org/@open-draft/until/-/until-2.1.0.tgz}
+    dev: true
 
   /@opencensus/core@0.0.8:
     resolution: {integrity: sha512-yUFT59SFhGMYQgX0PhoTR0LBff2BEhPrD9io1jWfF/VDbakRfs6Pq60rjv0Z7iaTav5gQlttJCX2+VPxFWCuoQ==, tarball: https://registry.npmjs.org/@opencensus/core/-/core-0.0.8.tgz}
@@ -2964,6 +3051,14 @@ packages:
       '@types/express': 4.17.21
     dev: true
 
+  /@types/cookie@0.6.0:
+    resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==, tarball: https://registry.npmjs.org/@types/cookie/-/cookie-0.6.0.tgz}
+    dev: true
+
+  /@types/cookiejar@2.1.5:
+    resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==, tarball: https://registry.npmjs.org/@types/cookiejar/-/cookiejar-2.1.5.tgz}
+    dev: true
+
   /@types/cors@2.8.17:
     resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==, tarball: https://registry.npmjs.org/@types/cors/-/cors-2.8.17.tgz}
     dependencies:
@@ -3092,6 +3187,10 @@ packages:
     dev: false
     optional: true
 
+  /@types/methods@1.1.4:
+    resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==, tarball: https://registry.npmjs.org/@types/methods/-/methods-1.1.4.tgz}
+    dev: true
+
   /@types/mime@1.3.5:
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==, tarball: https://registry.npmjs.org/@types/mime/-/mime-1.3.5.tgz}
 
@@ -3113,6 +3212,12 @@ packages:
     resolution: {integrity: sha512-svK240gr6LVWvv3YGyhLlA+6LRRWA4mnGIU7RcNmgjBYFl6665wcXrRfxGp5tEPVHUNm5FMcmq7too9bxCwX/w==, tarball: https://registry.npmjs.org/@types/multer/-/multer-1.4.11.tgz}
     dependencies:
       '@types/express': 4.17.21
+    dev: true
+
+  /@types/mute-stream@0.0.4:
+    resolution: {integrity: sha512-CPM9nzrCPPJHQNA9keH9CVkVI+WR5kMa+7XEs5jcGQ0VoAGnLv242w8lIVgwAEfmE4oufJRaTc9PNLQl0ioAow==, tarball: https://registry.npmjs.org/@types/mute-stream/-/mute-stream-0.0.4.tgz}
+    dependencies:
+      '@types/node': 20.12.12
     dev: true
 
   /@types/node-cron@3.0.11:
@@ -3195,6 +3300,25 @@ packages:
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==, tarball: https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.3.tgz}
     dev: true
 
+  /@types/statuses@2.0.5:
+    resolution: {integrity: sha512-jmIUGWrAiwu3dZpxntxieC+1n/5c3mjrImkmOSQ2NC5uP6cYO4aAZDdSmRcI5C1oiTmqlZGHC+/NmJrKogbP5A==, tarball: https://registry.npmjs.org/@types/statuses/-/statuses-2.0.5.tgz}
+    dev: true
+
+  /@types/superagent@8.1.7:
+    resolution: {integrity: sha512-NmIsd0Yj4DDhftfWvvAku482PZum4DBW7U51OvS8gvOkDDY0WT1jsVyDV3hK+vplrsYw8oDwi9QxOM7U68iwww==, tarball: https://registry.npmjs.org/@types/superagent/-/superagent-8.1.7.tgz}
+    dependencies:
+      '@types/cookiejar': 2.1.5
+      '@types/methods': 1.1.4
+      '@types/node': 20.12.12
+    dev: true
+
+  /@types/supertest@6.0.2:
+    resolution: {integrity: sha512-137ypx2lk/wTQbW6An6safu9hXmajAifU/s7szAHLN/FeIm5w7yR0Wkl9fdJMRSHwOn4HLAI0DaB2TOORuhPDg==, tarball: https://registry.npmjs.org/@types/supertest/-/supertest-6.0.2.tgz}
+    dependencies:
+      '@types/methods': 1.1.4
+      '@types/superagent': 8.1.7
+    dev: true
+
   /@types/swagger-jsdoc@6.0.4:
     resolution: {integrity: sha512-W+Xw5epcOZrF/AooUM/PccNMSAFOKWZA5dasNyMujTwsBkU74njSJBpvCCJhHAJ95XRMzQrrW844Btu0uoetwQ==, tarball: https://registry.npmjs.org/@types/swagger-jsdoc/-/swagger-jsdoc-6.0.4.tgz}
     dev: true
@@ -3217,6 +3341,10 @@ packages:
   /@types/validator@13.11.10:
     resolution: {integrity: sha512-e2PNXoXLr6Z+dbfx5zSh9TRlXJrELycxiaXznp4S5+D2M3b9bqJEitNHA5923jhnB2zzFiZHa2f0SI1HoIahpg==, tarball: https://registry.npmjs.org/@types/validator/-/validator-13.11.10.tgz}
     dev: false
+
+  /@types/wrap-ansi@3.0.0:
+    resolution: {integrity: sha512-ltIpx+kM7g/MLRZfkbL7EsCEjfzCcScLpkg37eXEtx5kmrAKBkTJwd1GIAjDSL8wTpM6Hzn5YO4pSb91BEwu1g==, tarball: https://registry.npmjs.org/@types/wrap-ansi/-/wrap-ansi-3.0.0.tgz}
+    dev: true
 
   /@types/yargs-parser@21.0.3:
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==, tarball: https://registry.npmjs.org/@types/yargs-parser/-/yargs-parser-21.0.3.tgz}
@@ -4292,12 +4420,22 @@ packages:
       yargs: 16.2.0
     dev: false
 
+  /cli-spinners@2.9.2:
+    resolution: {integrity: sha512-ywqV+5MmyL4E7ybXgKys4DugZbX0FC6LnwrhjuykIjnK9k8OQacQ7axGKnjDXWNhns0xot3bZI5h55H8yo9cJg==, tarball: https://registry.npmjs.org/cli-spinners/-/cli-spinners-2.9.2.tgz}
+    engines: {node: '>=6'}
+    dev: true
+
   /cli-tableau@2.0.1:
     resolution: {integrity: sha512-he+WTicka9cl0Fg/y+YyxcN6/bfQ/1O3QmgxRXDhABKqLzvoOSM4fMzp39uMyLBulAFuywD2N7UaoQE7WaADxQ==, tarball: https://registry.npmjs.org/cli-tableau/-/cli-tableau-2.0.1.tgz}
     engines: {node: '>=8.10.0'}
     dependencies:
       chalk: 3.0.0
     dev: false
+
+  /cli-width@4.1.0:
+    resolution: {integrity: sha512-ouuZd4/dm2Sw5Gmqy6bGyNNNe1qt9RpmxveLSO7KcgsTnU7RXfsw+/bukWGo1abgBiMAic068rclZsO4IWmmxQ==, tarball: https://registry.npmjs.org/cli-width/-/cli-width-4.1.0.tgz}
+    engines: {node: '>= 12'}
+    dev: true
 
   /cliss@0.0.2:
     resolution: {integrity: sha512-6rj9pgdukjT994Md13JCUAgTk91abAKrygL9sAvmHY4F6AKMOV8ccGaxhUUfcBuyg3sundWnn3JE0Mc9W6ZYqw==, tarball: https://registry.npmjs.org/cliss/-/cliss-0.0.2.tgz}
@@ -4924,6 +5062,11 @@ packages:
     resolution: {integrity: sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==, tarball: https://registry.npmjs.org/cookie/-/cookie-0.4.1.tgz}
     engines: {node: '>= 0.6'}
     dev: false
+
+  /cookie@0.5.0:
+    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==, tarball: https://registry.npmjs.org/cookie/-/cookie-0.5.0.tgz}
+    engines: {node: '>= 0.6'}
+    dev: true
 
   /cookie@0.6.0:
     resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==, tarball: https://registry.npmjs.org/cookie/-/cookie-0.6.0.tgz}
@@ -7031,6 +7174,11 @@ packages:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==, tarball: https://registry.npmjs.org/graphemer/-/graphemer-1.4.0.tgz}
     dev: true
 
+  /graphql@16.8.1:
+    resolution: {integrity: sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==, tarball: https://registry.npmjs.org/graphql/-/graphql-16.8.1.tgz}
+    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
+    dev: true
+
   /gtoken@6.1.2:
     resolution: {integrity: sha512-4ccGpzz7YAr7lxrT2neugmXQ3hP9ho2gcaityLVkiUecAiwiy60Ii8gRbZeOsXV19fYaRjgBSshs8kXw+NKCPQ==, tarball: https://registry.npmjs.org/gtoken/-/gtoken-6.1.2.tgz}
     engines: {node: '>=12.0.0'}
@@ -7110,6 +7258,10 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       function-bind: 1.1.2
+
+  /headers-polyfill@4.0.3:
+    resolution: {integrity: sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ==, tarball: https://registry.npmjs.org/headers-polyfill/-/headers-polyfill-4.0.3.tgz}
+    dev: true
 
   /helmet@7.1.0:
     resolution: {integrity: sha512-g+HZqgfbpXdCkme/Cd/mZkV0aV3BZZZSugecH03kl38m/Kmdx8jKjBikpDj2cr+Iynv4KpYEviojNdTJActJAg==, tarball: https://registry.npmjs.org/helmet/-/helmet-7.1.0.tgz}
@@ -7507,6 +7659,10 @@ packages:
   /is-negative-zero@2.0.3:
     resolution: {integrity: sha512-5KoIu2Ngpyek75jXodFvnafB6DJgr3u8uuK0LEZJjrU19DrMD3EVERaR8sjz8CCGgpZvxPl9SuE1GMVPFHx1mw==, tarball: https://registry.npmjs.org/is-negative-zero/-/is-negative-zero-2.0.3.tgz}
     engines: {node: '>= 0.4'}
+
+  /is-node-process@1.2.0:
+    resolution: {integrity: sha512-Vg4o6/fqPxIjtxgUH5QLJhwZ7gW5diGCVlXpuUfELC62CuxM1iHcRe51f2W1FDy04Ai4KJkagKjx3XaqyfRKXw==, tarball: https://registry.npmjs.org/is-node-process/-/is-node-process-1.2.0.tgz}
+    dev: true
 
   /is-number-object@1.0.7:
     resolution: {integrity: sha512-k1U0IRzLMo7ZlYIfzRu23Oh6MiIFasgpb9X76eqfFZAqwH44UI4KTBvBYIZ1dSL9ZzChTB9ShHfLkR4pdW5krQ==, tarball: https://registry.npmjs.org/is-number-object/-/is-number-object-1.0.7.tgz}
@@ -8972,6 +9128,37 @@ packages:
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==, tarball: https://registry.npmjs.org/ms/-/ms-2.1.3.tgz}
 
+  /msw@2.3.0(typescript@5.4.5):
+    resolution: {integrity: sha512-cDr1q/QTMzaWhY8n9lpGhceY209k29UZtdTgJ3P8Bzne3TSMchX2EM/ldvn4ATLOktpCefCU2gcEgzHc31GTPw==, tarball: https://registry.npmjs.org/msw/-/msw-2.3.0.tgz}
+    engines: {node: '>=18'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      typescript: '>= 4.7.x'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@bundled-es-modules/cookie': 2.0.0
+      '@bundled-es-modules/statuses': 1.0.1
+      '@inquirer/confirm': 3.1.7
+      '@mswjs/cookies': 1.1.0
+      '@mswjs/interceptors': 0.29.1
+      '@open-draft/until': 2.1.0
+      '@types/cookie': 0.6.0
+      '@types/statuses': 2.0.5
+      chalk: 4.1.2
+      graphql: 16.8.1
+      headers-polyfill: 4.0.3
+      is-node-process: 1.2.0
+      outvariant: 1.4.2
+      path-to-regexp: 6.2.2
+      strict-event-emitter: 0.5.1
+      type-fest: 4.18.2
+      typescript: 5.4.5
+      yargs: 17.7.2
+    dev: true
+
   /multer@1.4.5-lts.1:
     resolution: {integrity: sha512-ywPWvcDMeH+z9gQq5qYHCCy+ethsk4goepZ45GLD63fOu0YcNecQxi64nDs3qluZB+murG3/D4dJ7+dGctcCQQ==, tarball: https://registry.npmjs.org/multer/-/multer-1.4.5-lts.1.tgz}
     engines: {node: '>= 6.0.0'}
@@ -8988,6 +9175,11 @@ packages:
   /mute-stream@0.0.8:
     resolution: {integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==, tarball: https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.8.tgz}
     dev: false
+
+  /mute-stream@1.0.0:
+    resolution: {integrity: sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==, tarball: https://registry.npmjs.org/mute-stream/-/mute-stream-1.0.0.tgz}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+    dev: true
 
   /mylas@2.1.13:
     resolution: {integrity: sha512-+MrqnJRtxdF+xngFfUUkIMQrUUL0KsxbADUkn23Z/4ibGg192Q+z+CQyiYwvWTsYjJygmMR8+w3ZDa98Zh6ESg==, tarball: https://registry.npmjs.org/mylas/-/mylas-2.1.13.tgz}
@@ -9391,6 +9583,10 @@ packages:
       arch: 2.2.0
     dev: true
 
+  /outvariant@1.4.2:
+    resolution: {integrity: sha512-Ou3dJ6bA/UJ5GVHxah4LnqDwZRwAmWxrG3wtrHrbGnP4RnLCtA64A4F+ae7Y8ww660JaddSoArUR5HjipWSHAQ==, tarball: https://registry.npmjs.org/outvariant/-/outvariant-1.4.2.tgz}
+    dev: true
+
   /p-cancelable@2.1.1:
     resolution: {integrity: sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==, tarball: https://registry.npmjs.org/p-cancelable/-/p-cancelable-2.1.1.tgz}
     engines: {node: '>=8'}
@@ -9572,6 +9768,10 @@ packages:
   /path-to-regexp@0.1.7:
     resolution: {integrity: sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ==, tarball: https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-0.1.7.tgz}
     dev: false
+
+  /path-to-regexp@6.2.2:
+    resolution: {integrity: sha512-GQX3SSMokngb36+whdpRXE+3f9V8UzyAorlYvOGx87ufGHehNTn5lCxrKtLyZ4Yl/wEKnNnr98ZzOwwDZV5ogw==, tarball: https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-6.2.2.tgz}
+    dev: true
 
   /path-type@3.0.0:
     resolution: {integrity: sha512-T2ZUsdZFHgA3u4e5PfPbjd7HDDpxPnQb5jN0SrDsjNSuVXHJqtwTnWqG0B1jZrgmJ/7lj1EmVIByWt1gxGkWvg==, tarball: https://registry.npmjs.org/path-type/-/path-type-3.0.0.tgz}
@@ -10964,7 +11164,6 @@ packages:
   /statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==, tarball: https://registry.npmjs.org/statuses/-/statuses-2.0.1.tgz}
     engines: {node: '>= 0.8'}
-    dev: false
 
   /std-env@3.7.0:
     resolution: {integrity: sha512-JPbdCEQLj1w5GilpiHAx3qJvFndqybBysA3qUOnznweH4QbNYUsW/ea8QzSrnh0vNsezMMw5bcVool8lM0gwzg==, tarball: https://registry.npmjs.org/std-env/-/std-env-3.7.0.tgz}
@@ -10984,6 +11183,10 @@ packages:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==, tarball: https://registry.npmjs.org/streamsearch/-/streamsearch-1.1.0.tgz}
     engines: {node: '>=10.0.0'}
     dev: false
+
+  /strict-event-emitter@0.5.1:
+    resolution: {integrity: sha512-vMgjE/GGEPEFnhFub6pa4FmJBRBVOLpIII2hvCZ8Kzb7K0hlHo7mQv6xYrBvCL2LtAIBwFUK8wvuJgTVSQ5MFQ==, tarball: https://registry.npmjs.org/strict-event-emitter/-/strict-event-emitter-0.5.1.tgz}
+    dev: true
 
   /strict-uri-encode@2.0.0:
     resolution: {integrity: sha512-QwiXZgpRcKkhTj2Scnn++4PKtWsH0kpzZ62L2R6c/LUVYv7hVnZqcg2+sMuT6R7Jusu1vviK/MFsu6kNJfWlEQ==, tarball: https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz}
@@ -11584,6 +11787,11 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /type-fest@4.18.2:
+    resolution: {integrity: sha512-+suCYpfJLAe4OXS6+PPXjW3urOS4IoP9waSiLuXfLgqZODKw/aWwASvzqE886wA0kQgGy0mIWyhd87VpqIy6Xg==, tarball: https://registry.npmjs.org/type-fest/-/type-fest-4.18.2.tgz}
+    engines: {node: '>=16'}
+    dev: true
+
   /type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==, tarball: https://registry.npmjs.org/type-is/-/type-is-1.6.18.tgz}
     engines: {node: '>= 0.6'}
@@ -11994,6 +12202,15 @@ packages:
       reduce-flatten: 1.0.1
       typical: 2.6.1
     dev: false
+
+  /wrap-ansi@6.2.0:
+    resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==, tarball: https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-6.2.0.tgz}
+    engines: {node: '>=8'}
+    dependencies:
+      ansi-styles: 4.3.0
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+    dev: true
 
   /wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==, tarball: https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-7.0.0.tgz}
