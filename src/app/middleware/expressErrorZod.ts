@@ -1,17 +1,17 @@
 import { green } from 'colorette'
-import { type NextFunction, type Request, type Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { logger } from 'expresso-core'
 import { z } from 'zod'
 
 /**
- * Express Error TypeORM
+ * Express Error Zod
  * @param err
  * @param req
  * @param res
  * @param next
  * @returns
  */
-async function expressErrorZod(
+export default async function expressErrorZod(
   err: any,
   req: Request,
   res: Response,
@@ -23,24 +23,25 @@ async function expressErrorZod(
 
     logger.error(`${msgType} - ${message}`)
 
-    const error = {
+    const errors =
+      err.errors.length > 0
+        ? err.errors.reduce((acc: any, curVal: any) => {
+            acc[`${curVal.path}`] = curVal.message || curVal.type
+            return acc
+          }, {})
+        : { [`${err.errors[0].path}`]: err.errors[0].message }
+
+    console.log({ errors })
+
+    const result = {
       statusCode: 422,
+      error: 'Unprocessable Content',
       message,
-      errors:
-        err.errors.length > 0
-          ? err.errors.reduce((acc: any, curVal: any) => {
-              acc[`${curVal.path}`] = curVal.message || curVal.type
-              return acc
-            }, {})
-          : {
-              [`${err.errors[0].path}`]: err.errors[0].message,
-            },
+      errors,
     }
 
-    return res.status(422).json(error)
+    return res.status(422).json(result)
   }
 
   next(err)
 }
-
-export default expressErrorZod

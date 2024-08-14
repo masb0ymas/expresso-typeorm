@@ -3,7 +3,7 @@ import _ from 'lodash'
 import getterObject from '../utils/getterObject'
 import { pickMultiFieldMulter, pickSingleFieldMulter } from './withMulter'
 
-class withState {
+export default class withState {
   private readonly req: Request
 
   constructor(req: Request) {
@@ -100,5 +100,3 @@ class withState {
     return pickMultiFieldMulter(this.req, fields)
   }
 }
-
-export default withState

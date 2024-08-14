@@ -1,6 +1,6 @@
 import { type TOptions } from 'i18next'
 import { i18n } from '~/config/i18n'
-import { type IReqOptions } from '~/core/interface/ReqOptions'
+import { IReqOptions } from '~/core/interface/ReqOptions'
 
 type DataResponseEntity<TData> = {
   message?: string
@@ -42,6 +42,22 @@ class HttpResponse {
   ): DtoHttpResponse<TData> {
     const i18nOpt: string | TOptions = { lng: options?.lang }
     const message = i18n.t('success.data_received', i18nOpt)
+
+    return this.baseResponse({ message, ...dataResponse })
+  }
+
+  /**
+   * Response Failed or Error
+   * @param dataResponse
+   * @param options
+   * @returns
+   */
+  public static error<TData>(
+    dataResponse: DataResponseEntity<TData>,
+    options?: IReqOptions
+  ): DtoHttpResponse<TData> {
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+    const message = i18n.t('errors.too_many_request', i18nOpt)
 
     return this.baseResponse({ message, ...dataResponse })
   }

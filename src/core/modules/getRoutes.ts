@@ -1,7 +1,8 @@
 import { green } from 'colorette'
 import { logger } from 'expresso-core'
 import fs from 'fs'
-import { capitalizeFirstLetter } from '../utils/formatter'
+import { require } from '~/core/utils/file'
+import { capitalizeFirstLetter } from '../utils/string'
 
 /**
  * Get Controller from Route Path
@@ -29,6 +30,8 @@ function _getController(controllerPath: string, filePath: string): void {
 export const getRoutes = (basePath: string): void => {
   const checkTS = basePath.match('src')
   const checkJS = basePath.match('dist')
+
+  console.log({ checkTS, checkJS })
 
   if (checkTS ?? checkJS) {
     // loop main controller directory

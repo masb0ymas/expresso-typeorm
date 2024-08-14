@@ -1,9 +1,5 @@
-import { type NextFunction, type Request, type Response } from 'express'
-import {
-  rateLimit,
-  type Options,
-  type RateLimitRequestHandler,
-} from 'express-rate-limit'
+import { NextFunction, Request, Response } from 'express'
+import rateLimit, { Options, RateLimitRequestHandler } from 'express-rate-limit'
 import { ms } from 'expresso-core'
 import { env } from '~/config/env'
 import HttpResponse from '~/core/modules/response/HttpResponse'
@@ -12,7 +8,7 @@ import HttpResponse from '~/core/modules/response/HttpResponse'
  * Express Rate Limit
  * @returns
  */
-export const expressRateLimit = (): RateLimitRequestHandler => {
+export default function expressRateLimit(): RateLimitRequestHandler {
   const delay = ms(env.RATE_DELAY)
 
   return rateLimit({
@@ -24,12 +20,13 @@ export const expressRateLimit = (): RateLimitRequestHandler => {
       _next: NextFunction,
       options: Options
     ) => {
-      const httpResponse = HttpResponse.get({
+      const result = {
         statusCode: options.statusCode,
+        error: 'Too Many Requests',
         message: options.message,
-      })
+      }
 
-      res.status(options.statusCode).json(httpResponse)
+      res.status(options.statusCode).json(result)
     },
   })
 }

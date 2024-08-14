@@ -104,7 +104,7 @@ export class User extends Base {
 
   @OneToMany(() => Session, (Session) => Session.user)
   @JoinTable()
-  sessions: Array<Relation<Session>>
+  sessions: Relation<Session>[]
 
   async comparePassword(current_password: string): Promise<boolean> {
     return await hashing.verify(this.password, current_password)

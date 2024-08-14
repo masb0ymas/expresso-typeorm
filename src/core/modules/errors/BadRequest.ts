@@ -2,7 +2,7 @@ import BaseResponse from './BaseResponse'
 
 class BadRequest extends BaseResponse {
   constructor(message: string) {
-    super(message, 400)
+    super(message, 'Bad Request', 400)
     Object.setPrototypeOf(this, BadRequest.prototype)
   }
 }

@@ -1,7 +1,0 @@
-Dockerfile
-Dockerfile.dev
-.gitignore
-
-/node_modules
-/dist
-/coverage

@@ -2,7 +2,7 @@ import BaseResponse from './BaseResponse'
 
 class Forbidden extends BaseResponse {
   constructor(message: string) {
-    super(message, 403)
+    super(message, 'Forbidden', 403)
     Object.setPrototypeOf(this, Forbidden.prototype)
   }
 }

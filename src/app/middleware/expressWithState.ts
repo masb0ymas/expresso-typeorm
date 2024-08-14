@@ -1,11 +1,11 @@
-import { type NextFunction, type Request, type Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import withState from '~/core/modules/withState'
 
 /**
  * Express With State
  * @returns
  */
-export const expressWithState = () => {
+export default function expressWithState() {
   return function (req: Request, _res: Response, next: NextFunction) {
     new withState(req)
 

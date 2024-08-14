@@ -1,10 +1,11 @@
-import { type NextFunction, type Request, type Response } from 'express'
+import { NextFunction, Response } from 'express'
 import _ from 'lodash'
 import multer from 'multer'
-import ResponseError from '~/core/modules/response/ResponseError'
+import ErrorResponse from '~/core/modules/response/ErrorResponse'
 
 interface DtoErrorResponse {
   statusCode: number
+  error: string
   message: string
 }
 
@@ -20,7 +21,7 @@ function generateErrorResponse(
 ): DtoErrorResponse {
   return _.isObject(err.message)
     ? err.message
-    : { statusCode, message: err.message }
+    : { statusCode, error: err.name, message: err.message }
 }
 
 /**
@@ -31,7 +32,7 @@ function generateErrorResponse(
  * @param next - NextFunction
  * @returns
  */
-async function expressErrorResponse(
+export default async function expressErrorResponse(
   err: any,
   _req: Request,
   res: Response,
@@ -43,7 +44,7 @@ async function expressErrorResponse(
   }
 
   // catch from global error
-  if (err instanceof ResponseError.BaseResponse) {
+  if (err instanceof ErrorResponse.BaseResponse) {
     return res
       .status(err.statusCode)
       .json(generateErrorResponse(err, err.statusCode))
@@ -51,5 +52,3 @@ async function expressErrorResponse(
 
   next(err)
 }
-
-export default expressErrorResponse
