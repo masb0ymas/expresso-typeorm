@@ -21,7 +21,7 @@ interface IBaseService<T> {
 }
 
 export default class BaseService<T extends ObjectLiteral> {
-  private readonly _tableName: string
+  public tableName: string
   public repository: Repository<T>
 
   /**
@@ -29,7 +29,7 @@ export default class BaseService<T extends ObjectLiteral> {
    * @param params
    */
   constructor(params: IBaseService<T>) {
-    this._tableName = params.tableName
+    this.tableName = params.tableName
     this.repository = AppDataSource.getRepository(params.entity)
   }
 
@@ -41,8 +41,8 @@ export default class BaseService<T extends ObjectLiteral> {
   public async findAll(req: Request) {
     const reqQuery = req.getQuery()
 
-    const query = this.repository.createQueryBuilder(this._tableName)
-    const newQuery = useQuery({ entity: this._tableName, query, reqQuery })
+    const query = this.repository.createQueryBuilder(this.tableName)
+    const newQuery = useQuery({ entity: this.tableName, query, reqQuery })
 
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()
@@ -56,17 +56,20 @@ export default class BaseService<T extends ObjectLiteral> {
    * @param options
    * @returns
    */
-  private async _findOne(options: FindOneOptions<T>) {
+  private async _findOne(options: FindOneOptions<T> & { lang?: string }) {
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+
     const data = await this.repository.findOne({
       where: options.where,
       relations: options.relations,
       withDeleted: options.withDeleted,
     })
 
-    const entity = this._tableName.replace('_', ' ')
+    const entity = this.tableName.replace('_', ' ')
 
     if (!data) {
-      const message = `${entity} not found or has been deleted`
+      const options = { ...i18nOpt, entity }
+      const message = i18n.t('errors.not_found', options)
       throw new ErrorResponse.NotFound(message)
     }
 
@@ -79,7 +82,7 @@ export default class BaseService<T extends ObjectLiteral> {
    * @returns
    */
   public async findById(id: string, options?: IReqOptions) {
-    const newId = validateUUID(id)
+    const newId = validateUUID(id, options)
 
     // @ts-expect-error
     const data = await this._findOne({ ...options, where: { id: newId } })

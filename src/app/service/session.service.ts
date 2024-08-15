@@ -5,6 +5,7 @@ import { LessThanOrEqual } from 'typeorm'
 import { i18n } from '~/config/i18n'
 import { IReqOptions } from '~/core/interface/ReqOptions'
 import ErrorResponse from '~/core/modules/response/ErrorResponse'
+import { validateUUID } from '~/core/utils/uuid'
 import { Session, SessionAttributes } from '~/database/entities/Session'
 import sessionSchema from '../schema/session.schema'
 import BaseService from './base.service'
@@ -17,10 +18,9 @@ export default class SessionService extends BaseService<Session> {
    */
   public async create(formData: SessionAttributes) {
     const newEntity = new Session()
-    const value = sessionSchema.create.parse(formData)
 
     // @ts-expect-error
-    const data = await this.repository.save({ ...newEntity, ...value })
+    const data = await this.repository.save({ ...newEntity, ...formData })
     return data
   }
 
@@ -37,7 +37,7 @@ export default class SessionService extends BaseService<Session> {
 
     if (!data) {
       // create
-      await this.create(formData)
+      await this.create(value)
     } else {
       // @ts-expect-error
       await this.repository.save({ ...data, ...value })
@@ -57,8 +57,11 @@ export default class SessionService extends BaseService<Session> {
     options?: IReqOptions
   ): Promise<Session> {
     const i18nOpt: string | TOptions = { lng: options?.lang }
+    const newId = validateUUID(user_id, options)
 
-    const data = await this.repository.findOne({ where: { user_id, token } })
+    const data = await this.repository.findOne({
+      where: { user_id: newId, token },
+    })
 
     if (!data) {
       const message = i18n.t('errors_ended', i18nOpt)
