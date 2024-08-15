@@ -1,7 +1,7 @@
-import { green, red } from 'colorette'
 import { createDirNotExist, logger, randomString } from 'expresso-core'
 import fs from 'fs'
 import path from 'path'
+import { checkEnv } from '~/config/env'
 
 const msgType = 'script'
 
@@ -11,20 +11,10 @@ const msgType = 'script'
  * @param {RegExp} regExp
  */
 function _generateEnv(value: string, regExp: RegExp): void {
-  const pathRes = path.resolve('.env')
+  const envPath = path.resolve('.env')
+  checkEnv(envPath)
 
-  if (!fs.existsSync(pathRes)) {
-    const errType = red('Missing env!!!')
-    const message = `Copy / Duplicate ${green(
-      '.env.example'
-    )} root directory to ${green('.env')}`
-
-    logger.error(`${msgType} - ${errType}, ${message}`)
-
-    throw new Error(message)
-  }
-
-  const contentEnv = fs.readFileSync(pathRes, { encoding: 'utf-8' })
+  const contentEnv = fs.readFileSync(envPath, { encoding: 'utf-8' })
 
   const uniqueCode = randomString.generate()
   const valueEnv = `${value}=${uniqueCode}`
@@ -32,13 +22,13 @@ function _generateEnv(value: string, regExp: RegExp): void {
   if (contentEnv.includes(`${value}=`)) {
     // change value
     const replaceContent = contentEnv.replace(regExp, valueEnv)
-    fs.writeFileSync(`${pathRes}`, replaceContent)
+    fs.writeFileSync(`${envPath}`, replaceContent)
 
     logger.info(`${msgType} - refresh ${value} = ${uniqueCode}`)
   } else {
     // Generate value
     const extraContent = `${valueEnv}\n\n${contentEnv}`
-    fs.writeFileSync(`${pathRes}`, extraContent)
+    fs.writeFileSync(`${envPath}`, extraContent)
 
     logger.info(`${msgType} - generate ${value} = ${uniqueCode}`)
   }

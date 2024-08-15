@@ -1,20 +1,24 @@
 import 'dotenv/config'
 
 import { green } from 'colorette'
-import { logger, validateBoolean } from 'expresso-core'
+import { logger, validate } from 'expresso-core'
 import fs from 'fs'
 import path from 'path'
 
 const envPath = path.resolve('.env')
 
-if (!fs.existsSync(envPath)) {
-  const envExample = green('.env.example')
-  const env = green('.env')
+export function checkEnv(_path: string | Buffer) {
+  if (!fs.existsSync(envPath)) {
+    const envExample = green('.env.example')
+    const env = green('.env')
 
-  const message = `Copy / Duplicate ${envExample} root directory to ${env}`
-  logger.error(`Missing env! - ${message}`)
-  process.exit(1)
+    const message = `Copy / Duplicate ${envExample} root directory to ${env}`
+    logger.error(`Missing env! - ${message}`)
+    process.exit(1)
+  }
 }
+
+checkEnv(envPath)
 
 /**
  *
@@ -94,9 +98,9 @@ const database = {
   TYPEORM_DATABASE: _getEnv('TYPEORM_DATABASE', 'expresso'),
   TYPEORM_USERNAME: _getEnv('TYPEORM_USERNAME', 'postgres'),
   TYPEORM_PASSWORD: _getEnv('TYPEORM_PASSWORD', 'postgres'),
-  TYPEORM_SYNCHRONIZE: validateBoolean(_getEnv('TYPEORM_SYNCHRONIZE', true)),
-  TYPEORM_LOGGING: validateBoolean(_getEnv('TYPEORM_LOGGING', true)),
-  TYPEORM_MIGRATIONS_RUN: validateBoolean(
+  TYPEORM_SYNCHRONIZE: validate.boolean(_getEnv('TYPEORM_SYNCHRONIZE', true)),
+  TYPEORM_LOGGING: validate.boolean(_getEnv('TYPEORM_LOGGING', true)),
+  TYPEORM_MIGRATIONS_RUN: validate.boolean(
     _getEnv('TYPEORM_MIGRATIONS_RUN', true)
   ),
   TYPEORM_TIMEZONE: _getEnv('TYPEORM_TIMEZONE', 'Asia/Jakarta'),
