@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express'
 import rateLimit, { Options, RateLimitRequestHandler } from 'express-rate-limit'
 import { ms } from 'expresso-core'
 import { env } from '~/config/env'
-import HttpResponse from '~/core/modules/response/HttpResponse'
 
 /**
  * Express Rate Limit
