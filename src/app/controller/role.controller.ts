@@ -8,6 +8,7 @@ import { asyncHandler } from '~/core/utils/asyncHandler'
 import { Role } from '~/database/entities/Role'
 import authorization from '../middleware/authorization'
 import { permissionAccess } from '../middleware/permission'
+import roleSchema from '../schema/role.schema'
 import RoleService from '../service/role.service'
 
 const route = express.Router()
@@ -61,8 +62,9 @@ route.post(
     const options: IReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
+    const newFormData = roleSchema.create.parse(formData)
 
-    const data = await newRoleService.create(formData)
+    const data = await newRoleService.create(newFormData)
 
     const httpResponse = HttpResponse.created({ data }, options)
     res.status(201).json(httpResponse)
@@ -80,8 +82,9 @@ route.put(
 
     const { id } = req.getParams()
     const formData = req.getBody()
+    const newFormData = roleSchema.update.parse(formData)
 
-    const data = await newRoleService.update(id, formData, options)
+    const data = await newRoleService.update(id, newFormData, options)
 
     const httpResponse = HttpResponse.updated({ data }, options)
     res.status(200).json(httpResponse)

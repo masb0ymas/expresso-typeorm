@@ -8,6 +8,7 @@ import { asyncHandler } from '~/core/utils/asyncHandler'
 import { Session } from '~/database/entities/Session'
 import authorization from '../middleware/authorization'
 import { permissionAccess } from '../middleware/permission'
+import sessionSchema from '../schema/session.schema'
 import SessionService from '../service/session.service'
 
 const route = express.Router()
@@ -59,8 +60,9 @@ route.post(
     const options: IReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
+    const newFormData = sessionSchema.create.parse(formData)
 
-    const data = await newSessionService.create(formData)
+    const data = await newSessionService.create(newFormData)
 
     const httpResponse = HttpResponse.created({ data }, options)
     res.status(201).json(httpResponse)
@@ -78,8 +80,9 @@ route.put(
 
     const { id } = req.getParams()
     const formData = req.getBody()
+    const newFormData = sessionSchema.update.parse(formData)
 
-    const data = await newSessionService.update(id, formData, options)
+    const data = await newSessionService.update(id, newFormData, options)
 
     const httpResponse = HttpResponse.updated({ data }, options)
     res.status(200).json(httpResponse)
