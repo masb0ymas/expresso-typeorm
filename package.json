@@ -22,7 +22,18 @@
     "db:sync": "npx typeorm schema:sync -d ./dist/database/datasource.js",
     "db:drop": "npx typeorm schema:drop -d ./dist/database/datasource.js",
     "db:reset": "npm-run-all db:drop db:sync",
-    "test": "jest --watchAll --detectOpenHandles"
+    "test": "jest --watchAll --detectOpenHandles",
+    "serve:staging": "NODE_ENV=staging node ./dist/main.js",
+    "serve:production": "NODE_ENV=production node ./dist/main.js",
+    "serve:staging-docker": "NODE_ENV=staging pm2-runtime ./dist/main.js",
+    "serve:production-docker": "NODE_ENV=production pm2-runtime ./dist/main.js",
+    "prerelease": "npm run prebuild",
+    "postrelease": "git push --follow-tags origin main",
+    "release": "standard-version",
+    "release:pre": "npm run release -- --prerelease",
+    "release:patch": "npm run release -- --release-as patch",
+    "release:minor": "npm run release -- --release-as minor",
+    "release:major": "npm run release -- --release-as major"
   },
   "keywords": [
     "expressjs",
@@ -79,6 +90,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@eslint/js": "^9.9.0",
     "@jest/globals": "^29.7.0",
     "@swc/cli": "0.1.65",
@@ -103,6 +116,7 @@
     "@types/uuid": "^10.0.0",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.4",
     "jest": "^29.7.0",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3",
