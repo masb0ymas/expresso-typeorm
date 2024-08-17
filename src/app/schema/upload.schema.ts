@@ -42,6 +42,6 @@ const create = z.object({
   }),
 })
 
-const uploadSchema = { create }
+const uploadSchema = { create, update: create }
 
 export default uploadSchema

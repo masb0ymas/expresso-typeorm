@@ -1,11 +1,11 @@
 import { green } from 'colorette'
-import { type NextFunction, type Request, type Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { logger } from 'expresso-core'
-import { type TOptions } from 'i18next'
+import { TOptions } from 'i18next'
 import { env } from '~/config/env'
 import { i18n } from '~/config/i18n'
-import { AppDataSource } from '~/database/data-source'
-import { User, type UserLoginAttributes } from '~/database/entities/User'
+import { AppDataSource } from '~/database/datasource'
+import { User, UserLoginAttributes } from '~/database/entities/User'
 
 /**
  * Permission Access
@@ -18,11 +18,13 @@ export function permissionAccess(roles: string[]) {
     const defaultLang = lang ?? env.APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
-    const userRepository = AppDataSource.getRepository(User)
+    const userRepo = AppDataSource.getRepository(User)
 
     const userLogin = req.getState('userLogin') as UserLoginAttributes
-    const getUser = await userRepository.findOne({
-      where: { id: userLogin.uid },
+    const user_id = userLogin.uid
+
+    const getUser = await userRepo.findOne({
+      where: { id: user_id },
     })
 
     const errType = `permitted access error:`
@@ -33,11 +35,13 @@ export function permissionAccess(roles: string[]) {
       logger.error(`${msgType} - ${errType} ${errMessage}`)
 
       const message = i18n.t('errors.permission_access', i18nOpt)
-
-      return res.status(403).json({
+      const result = {
         statusCode: 403,
+        error: 'Forbidden',
         message: `${errType} ${message}`,
-      })
+      }
+
+      return res.status(403).json(result)
     }
 
     next()
@@ -55,11 +59,13 @@ export function notPermittedAccess(roles: string[]) {
     const defaultLang = lang ?? env.APP_LANG
     const i18nOpt: string | TOptions = { lng: defaultLang }
 
-    const userRepository = AppDataSource.getRepository(User)
+    const userRepo = AppDataSource.getRepository(User)
 
     const userLogin = req.getState('userLogin') as UserLoginAttributes
-    const getUser = await userRepository.findOne({
-      where: { id: userLogin.uid },
+    const user_id = userLogin.uid
+
+    const getUser = await userRepo.findOne({
+      where: { id: user_id },
     })
 
     const errType = `not permitted access error:`
@@ -70,11 +76,13 @@ export function notPermittedAccess(roles: string[]) {
       logger.error(`${msgType} - ${errType} ${errMessage}`)
 
       const message = i18n.t('errors.permission_access', i18nOpt)
-
-      return res.status(403).json({
+      const result = {
         statusCode: 403,
+        error: 'Forbidden',
         message: `${errType} ${message}`,
-      })
+      }
+
+      return res.status(403).json(result)
     }
 
     next()

@@ -1,10 +1,10 @@
-import type cors from 'cors'
-import allowedOrigins from '~/core/constants/allowedOrigins'
+import { CorsOptions } from 'cors'
+import allowedOrigin from '~/core/constant/allowedOrigin'
 
 /**
  * Initialize Cors
  */
-export const corsOptions: cors.CorsOptions = {
+export const corsOptions: CorsOptions = {
   // Restrict Allowed Origin
-  origin: allowedOrigins,
+  origin: allowedOrigin,
 }

@@ -53,6 +53,11 @@ const create = passwordForm
       invalid_type_error: 'is_active must be a boolean',
     }),
 
+    is_blocked: z.boolean({
+      required_error: 'is_blocked is required',
+      invalid_type_error: 'is_blocked must be a boolean',
+    }),
+
     role_id: z
       .string({
         required_error: 'role_id is required',
@@ -80,6 +85,7 @@ const login = z.object({
 const userSchema = {
   create,
   register: create,
+  update: create,
   createPassword,
   changePassword,
   login,

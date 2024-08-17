@@ -4,8 +4,8 @@
 [![maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/masb0ymas/expresso-typeorm/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/masb0ymas/expresso-typeorm/blob/master/LICENSE.md)
 
-[![version](https://img.shields.io/badge/Version-4.4.5-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso-typeorm/releases/tag/v4.4.5)
-[![Express](https://img.shields.io/badge/Express-4.18.2-informational?logo=express&color=22272E)](https://expressjs.com/)
+[![version](https://img.shields.io/badge/Version-4.5.1-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso-typeorm/releases/tag/v4.5.1)
+[![Express](https://img.shields.io/badge/Express-4.19.2-informational?logo=express&color=22272E)](https://expressjs.com/)
 ![Node](https://badges.aleen42.com/src/node.svg)
 ![Eslint](https://badges.aleen42.com/src/eslint.svg)
 ![TypeScript](https://badges.aleen42.com/src/typescript.svg)
@@ -13,17 +13,20 @@
 
 ## Feature
 
-- [TypeScript](https://github.com/microsoft/TypeScript) `5.1.x`
+- [TypeScript](https://github.com/microsoft/TypeScript) `5.5.x`
 - [TypeORM](https://github.com/typeorm/typeorm) `0.3.x`
 - [Nodemailer](https://github.com/nodemailer/nodemailer) `6.x`
 - [Handlebars](https://github.com/wycats/handlebars.js) for templating HTML
 - [Zod](https://github.com/colinhacks/zod) for validation schema `3.x`
-- [SWC](https://github.com/swc-project/swc) for build runtime app `1.3.x`
 - JavaScript Style [Standard with TypeScript](https://github.com/standard/eslint-config-standard-with-typescript)
 - Formating code using [Prettier](https://github.com/prettier/prettier) Integration [Eslint](https://github.com/prettier/eslint-config-prettier) and [TypeScript Eslint](https://github.com/typescript-eslint/typescript-eslint#readme)
 - Documentation with [Swagger](https://github.com/swagger-api/swagger-ui) OpenApi `3.x`
 - Logger with [Pino](https://github.com/pinojs/pino)
 - [Convensional Commit](https://www.conventionalcommits.org/en/v1.0.0/) with [Husky](https://github.com/typicode/husky) & [Commitlint](https://github.com/conventional-changelog/commitlint)
+
+## Note
+
+By Default branch `main` using `type: module`. If you want to use `CommonJS` you must clone the branch `commonjs`
 
 ## Steps to run this project:
 

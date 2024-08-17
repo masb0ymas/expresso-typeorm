@@ -1,17 +1,17 @@
 import { green } from 'colorette'
-import { type NextFunction, type Request, type Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { logger } from 'expresso-core'
 import { QueryFailedError } from 'typeorm'
 
 /**
- * Express Error TypeORM
+ * Express Error Typeorm
  * @param err
  * @param req
  * @param res
  * @param next
  * @returns
  */
-async function expressErrorTypeORM(
+export default async function expressErrorTypeorm(
   err: any,
   req: Request,
   res: Response,
@@ -21,13 +21,14 @@ async function expressErrorTypeORM(
     const msgType = green('typeorm')
     logger.error(`${msgType} - err, ${err.message ?? err}`)
 
-    return res.status(400).json({
+    const result = {
       statusCode: 400,
+      error: 'Bad Request',
       message: `${msgType} ${err.message}`,
-    })
+    }
+
+    return res.status(400).json(result)
   }
 
   next(err)
 }
-
-export default expressErrorTypeORM

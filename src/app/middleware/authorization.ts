@@ -1,10 +1,16 @@
 import { green } from 'colorette'
-import { type NextFunction, type Request, type Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { logger } from 'expresso-core'
 import { useToken } from 'expresso-hooks'
 import _ from 'lodash'
 import { env } from '~/config/env'
+import { Session } from '~/database/entities/Session'
 import SessionService from '../service/session.service'
+
+const newSessionService = new SessionService({
+  tableName: 'session',
+  entity: Session,
+})
 
 /**
  * Authorization
@@ -13,7 +19,7 @@ import SessionService from '../service/session.service'
  * @param next
  * @returns
  */
-async function authorization(
+export default async function authorization(
   req: Request,
   res: Response,
   next: NextFunction
@@ -27,19 +33,21 @@ async function authorization(
   })
 
   // check session from token header
-  const getSession = await SessionService.getByToken(String(getToken))
+  const getSession = await newSessionService.getByToken(String(getToken))
 
-  if (_.isEmpty(token?.data) || _.isEmpty(getSession)) {
+  if (_.isEmpty(token?.data) || !getSession) {
     const msgType = green('permission')
     logger.error(`${msgType} - unauthorized invalid jwt`)
 
-    return res
-      .status(401)
-      .json({ statusCode: 401, message: 'unauthorized, invalid jwt' })
+    const result = {
+      statusCode: 401,
+      error: 'Unauthorized',
+      message: 'Unauthorized, invalid jwt',
+    }
+
+    return res.status(401).json(result)
   }
 
   req.setState({ userLogin: token?.data })
   next()
 }
-
-export default authorization

@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-function getterObject<
+export default function getterObject<
   TObject extends object,
   TKey extends keyof TObject,
   TDefault,
@@ -15,5 +15,3 @@ function getterObject<
 
   return _.get(object, path, defaultValue)
 }
-
-export default getterObject

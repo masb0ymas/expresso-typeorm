@@ -1,9 +1,9 @@
-import { isEmpty } from 'lodash'
+import _ from 'lodash'
 import { type MigrationInterface, type QueryRunner } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
-import ConstRole from '~/core/constants/ConstRole'
-import { AppDataSource } from '~/database/data-source'
+import ConstRole from '~/core/constant/entity/role'
 import { User } from '~/database/entities/User'
+import { AppDataSource } from '../datasource'
 
 const defaultPass = 'Padang123'
 
@@ -26,10 +26,10 @@ const data = [
 ]
 
 export class UserSeeder1642508834295 implements MigrationInterface {
-  public async up(_: QueryRunner): Promise<void> {
+  public async up(_queryRunner: QueryRunner): Promise<void> {
     const formData: any[] = []
 
-    if (!isEmpty(data)) {
+    if (!_.isEmpty(data)) {
       for (let i = 0; i < data.length; i += 1) {
         const item = data[i]
 

@@ -41,6 +41,6 @@ const create = z.object({
   longitude: z.string().nullable(),
 })
 
-const sessionSchema = { create }
+const sessionSchema = { create, update: create }
 
 export default sessionSchema

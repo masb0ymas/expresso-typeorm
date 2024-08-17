@@ -9,6 +9,6 @@ const create = z.object({
     .min(2, `name can't be empty`),
 })
 
-const roleSchema = { create }
+const roleSchema = { create, update: create }
 
 export default roleSchema

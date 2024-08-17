@@ -5,7 +5,8 @@
 /public/temp
 /public/uploads
 /temp
-/.husky
+
+.husky
 
 package-lock.json
 yarn-error.log

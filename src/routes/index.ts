@@ -1,14 +1,15 @@
-import express, { type Request, type Response } from 'express'
+import express, { Request, Response } from 'express'
 import { env } from '~/config/env'
-import { BASE_URL_SERVER } from '~/core/constants/baseURL'
+import { BASE_URL_SERVER } from '~/core/constant/baseUrl'
 import HttpResponse from '~/core/modules/response/HttpResponse'
-import ResponseError from '~/core/modules/response/ResponseError'
 import { formatDateTime } from '~/core/utils/date'
-import v1Routes from '~/routes/v1'
+import { require } from '~/core/utils/file'
+import { v1Routes } from './api/v1'
 
+const expressVersion = require('express/package').version
 const route = express.Router()
 
-route.get('/', function index(req: Request, res: Response) {
+route.get('/', (req: Request, res: Response) => {
   let responseData: any = {
     message: 'expresso TypeORM',
     maintaner: 'masb0ymas, <n.fajri@mail.com>',
@@ -23,19 +24,18 @@ route.get('/', function index(req: Request, res: Response) {
   }
 
   const httpResponse = HttpResponse.get(responseData)
-  res.status(200).json(httpResponse)
+  return res.status(200).json(httpResponse)
 })
 
-route.get('/health', function serverHealth(req: Request, res: Response) {
+route.get('/health', (req: Request, res: Response) => {
   const startUsage = process.cpuUsage()
 
   const status = {
     uptime: process.uptime(),
-    message: 'Ok',
     timezone: 'ID',
     date: formatDateTime(new Date()),
     node: process.version,
-    memory: process.memoryUsage,
+    express: expressVersion,
     platform: process.platform,
     cpu_usage: process.cpuUsage(startUsage),
   }
@@ -44,21 +44,9 @@ route.get('/health', function serverHealth(req: Request, res: Response) {
     message: 'Server Uptime',
     data: status,
   })
-  res.status(200).json(httpResponse)
-})
-
-route.get('/v1', function (req: Request, res: Response) {
-  const method = req.method
-  const url = req.originalUrl
-  const host = req.hostname
-
-  const endpoint = `${host}${url}`
-
-  throw new ResponseError.Forbidden(
-    `Forbidden, wrong access method ${method} endpoint: ${endpoint}`
-  )
+  return res.status(200).json(httpResponse)
 })
 
 route.use('/v1', v1Routes)
 
-export default route
+export { route as Routes }

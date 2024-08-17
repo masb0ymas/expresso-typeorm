@@ -1,41 +1,45 @@
-import { validateEmpty } from 'expresso-core'
+import { validate } from 'expresso-core'
 import { useToken } from 'expresso-hooks'
 import { ExpiresType } from 'expresso-hooks/lib/token/types'
-import { type TOptions } from 'i18next'
+import { TOptions } from 'i18next'
 import _ from 'lodash'
-import { type Repository } from 'typeorm'
+import { EntityManager } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 import { env } from '~/config/env'
 import { i18n } from '~/config/i18n'
-import ConstRole from '~/core/constants/ConstRole'
-import { type IReqOptions } from '~/core/interface/ReqOptions'
-import ResponseError from '~/core/modules/response/ResponseError'
-import SendMail from '~/core/utils/sendMails'
-import { AppDataSource } from '~/database/data-source'
+import ConstRole from '~/core/constant/entity/role'
+import { IReqOptions } from '~/core/interface/ReqOptions'
+import ErrorResponse from '~/core/modules/response/ErrorResponse'
+import Mailing from '~/core/utils/mailing'
+import { AppDataSource } from '~/database/datasource'
+import { Role } from '~/database/entities/Role'
+import { Session } from '~/database/entities/Session'
 import {
+  LoginAttributes,
   User,
-  type LoginAttributes,
-  type UserLoginAttributes,
+  UserLoginAttributes,
 } from '~/database/entities/User'
-import { type DtoLogin } from '../interface/dto/Auth'
 import userSchema from '../schema/user.schema'
-import OpenStreetMapService from './providers/osm.service'
+import OpenStreetMapService from './provider/osm.service'
 import SessionService from './session.service'
-import UserService from './user.service'
 
-interface AuthRepository {
-  userRepo: Repository<User>
-}
+const sendMail = new Mailing()
+const osmService = new OpenStreetMapService()
+
+const newSessionService = new SessionService({
+  tableName: 'session',
+  entity: Session,
+})
 
 export default class AuthService {
   /**
-   * Collect Repository
+   * Repository
    * @returns
    */
-  private static _repository(): AuthRepository {
-    const userRepo = AppDataSource.getRepository(User)
+  private _repository() {
+    const user_repo = AppDataSource.getRepository(User)
 
-    return { userRepo }
+    return { user_repo }
   }
 
   /**
@@ -43,10 +47,8 @@ export default class AuthService {
    * @param formData
    * @returns
    */
-  public static async signUp(formData: any): Promise<User> {
-    // declare repository
-    const { userRepo } = this._repository()
-
+  public async signUp(formData: any) {
+    const { user_repo } = this._repository()
     const uid = uuidv4()
 
     const { token } = useToken.generate({
@@ -58,20 +60,19 @@ export default class AuthService {
     let role_id = ConstRole.ID_USER
 
     // check role
-    if (formData.roleAs === 'USER') {
+    if (formData.roleAs === ConstRole.ID_USER) {
       role_id = ConstRole.ID_USER
     }
 
-    const newFormData = {
+    const value = userSchema.register.parse({
       ...formData,
       is_active: false,
-      phone: validateEmpty(formData.phone),
+      is_blocked: false,
+      phone: validate.empty(formData.phone),
       token_verify: token,
       role_id,
       upload_id: null,
-    }
-
-    const value = userSchema.register.parse(newFormData)
+    })
 
     const formRegister: any = {
       ...value,
@@ -79,14 +80,14 @@ export default class AuthService {
     }
 
     const data = new User()
-    const newData = await userRepo.save({
+    const newData = await user_repo.save({
       ...data,
       ...formRegister,
     })
 
     // send mail if mail username & password exists
     if (env.MAIL_USERNAME && env.MAIL_PASSWORD) {
-      await SendMail.accountRegistration({
+      await sendMail.accountRegistration({
         email: formData.email,
         fullname: formData.fullname,
       })
@@ -101,75 +102,90 @@ export default class AuthService {
    * @param options
    * @returns
    */
-  public static async signIn(
-    formData: LoginAttributes,
-    options?: IReqOptions
-  ): Promise<DtoLogin> {
-    // declare repository
-    const { userRepo } = this._repository()
+  public async signIn(formData: LoginAttributes, options?: IReqOptions) {
     const i18nOpt: string | TOptions = { lng: options?.lang }
-
     const value = userSchema.login.parse(formData)
 
-    const getUser = await userRepo.findOne({
-      select: ['id', 'fullname', 'email', 'is_active', 'password', 'role_id'],
-      where: { email: value.email },
+    let data: any
+
+    // run transaction
+    await AppDataSource.transaction(async (entityManager: EntityManager) => {
+      // user repo
+      const user_repo = entityManager.getRepository(User)
+
+      // role repo
+      const role_repo = entityManager.getRepository(Role)
+
+      const getUser = await user_repo.findOne({
+        select: ['id', 'fullname', 'email', 'is_active', 'password', 'role_id'],
+        where: { email: value.email },
+      })
+
+      // check user account
+      if (!getUser) {
+        const message = i18n.t('errors.account_not_found', i18nOpt)
+        throw new ErrorResponse.NotFound(message)
+      }
+
+      // check active account
+      if (!getUser.is_active) {
+        const message = i18n.t('errors.please_check_your_email', i18nOpt)
+        throw new ErrorResponse.BadRequest(message)
+      }
+
+      const matchPassword = await getUser.comparePassword(value.password)
+
+      // compare password
+      if (!matchPassword) {
+        const message = i18n.t('errors.incorrect_email_or_pass', i18nOpt)
+        throw new ErrorResponse.BadRequest(message)
+      }
+
+      const user_id = getUser.id
+      const getRole = await role_repo.findOne({
+        where: { id: getUser.role_id },
+      })
+
+      if (value.latitude && value.longitude) {
+        // get address from lat long maps
+        const response = await osmService.getByCoordinate(
+          String(value.latitude),
+          String(value.longitude)
+        )
+        const address = _.get(response, 'display_name', '')
+
+        // update address
+        await user_repo.update({ id: user_id }, { address })
+      }
+
+      const payloadToken = { uid: user_id }
+
+      const { token, expiresIn } = useToken.generate({
+        value: payloadToken,
+        secretKey: env.JWT_SECRET_ACCESS_TOKEN,
+        expires: env.JWT_ACCESS_TOKEN_EXPIRED as ExpiresType,
+      })
+
+      const message = i18n.t('success.login', i18nOpt)
+
+      const newData = {
+        message,
+        data: {
+          access_token: token,
+          expires_in: expiresIn,
+          token_type: 'Bearer',
+          user: {
+            ...payloadToken,
+            fullname: getUser.fullname,
+            roleAs: getRole?.name,
+          },
+        },
+      }
+
+      data = newData
     })
 
-    // check user account
-    if (!getUser) {
-      const message = i18n.t('errors.account_not_found', i18nOpt)
-      throw new ResponseError.NotFound(message)
-    }
-
-    // check active account
-    if (!getUser.is_active) {
-      const message = i18n.t('errors.please_check_your_email', i18nOpt)
-      throw new ResponseError.BadRequest(message)
-    }
-
-    const matchPassword = await getUser.comparePassword(value.password)
-
-    // compare password
-    if (!matchPassword) {
-      const message = i18n.t('errors.incorrect_email_or_pass', i18nOpt)
-      throw new ResponseError.BadRequest(message)
-    }
-
-    const user_id = getUser.id
-
-    if (value.latitude && value.longitude) {
-      // get address from lat long maps
-      const response = await OpenStreetMapService.getByCoordinate(
-        String(value.latitude),
-        String(value.longitude)
-      )
-      const address = _.get(response, 'display_name', '')
-
-      // update address
-      await userRepo.update({ id: user_id }, { address })
-    }
-
-    const payloadToken = { uid: user_id }
-
-    const { token, expiresIn } = useToken.generate({
-      value: payloadToken,
-      secretKey: env.JWT_SECRET_ACCESS_TOKEN,
-      expires: env.JWT_ACCESS_TOKEN_EXPIRED as ExpiresType,
-    })
-
-    const message = i18n.t('success.login', i18nOpt)
-
-    const newData = {
-      message,
-      access_token: token,
-      expires_in: expiresIn,
-      token_type: 'Bearer',
-      user: payloadToken,
-      fullname: getUser.fullname,
-    }
-
-    return newData
+    return data
   }
 
   /**
@@ -179,12 +195,15 @@ export default class AuthService {
    * @param options
    * @returns
    */
-  public static async verifySession(
+  public async verifySession(
     user_id: string,
     token: string,
     options?: IReqOptions
-  ): Promise<User | null> {
-    const getSession = await SessionService.findByUserToken(user_id, token)
+  ) {
+    const { user_repo } = this._repository()
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+
+    const getSession = await newSessionService.findByUserToken(user_id, token)
 
     const validateToken = useToken.verify({
       token: getSession.token,
@@ -194,7 +213,13 @@ export default class AuthService {
     const userToken = validateToken?.data as UserLoginAttributes
 
     if (!_.isEmpty(userToken.uid)) {
-      const getUser = await UserService.findById(userToken.uid, { ...options })
+      // get user
+      const getUser = await user_repo.findOne({ where: { id: userToken.uid } })
+
+      if (!getUser) {
+        const message = i18n.t('errors.account_not_found', i18nOpt)
+        throw new ErrorResponse.NotFound(message)
+      }
 
       return getUser
     }
@@ -209,17 +234,20 @@ export default class AuthService {
    * @param options
    * @returns
    */
-  public static async logout(
-    user_id: string,
-    token: string,
-    options?: IReqOptions
-  ): Promise<string> {
+  public async logout(user_id: string, token: string, options?: IReqOptions) {
+    const { user_repo } = this._repository()
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
-    const getUser = await UserService.findById(user_id, { ...options })
+    // get user
+    const getUser = await user_repo.findOne({ where: { id: user_id } })
+
+    if (!getUser) {
+      const message = i18n.t('errors.account_not_found', i18nOpt)
+      throw new ErrorResponse.NotFound(message)
+    }
 
     // clean session
-    await SessionService.deleteByUserToken(getUser.id, token)
+    await newSessionService.deleteByUserToken(getUser.id, token)
     const message = i18n.t('success.logout', i18nOpt)
 
     return message

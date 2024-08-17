@@ -6,7 +6,7 @@ import {
   type UpdateEvent,
 } from 'typeorm'
 import { hashing } from '~/config/hashing'
-import { User } from '~/database/entities/User'
+import { User } from '../entities/User'
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<any> {

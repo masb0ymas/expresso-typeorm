@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json.schemastore.org/swcrc",
+  "$schema": "https://swc.rs/schema.json",
   "jsc": {
     "baseUrl": "./",
     "parser": {
@@ -11,7 +11,7 @@
     "paths": {
       "~/*": ["dist/*"]
     },
-    "target": "es2022",
+    "target": "esnext",
     "loose": true,
     "keepClassNames": false,
     "externalHelpers": false,
@@ -21,11 +21,12 @@
     }
   },
   "module": {
-    "type": "commonjs",
-    "strict": false,
+    "type": "es6",
+    // These are defaults.
+    "strict": true,
     "strictMode": true,
     "lazy": false,
     "noInterop": false
-  }
-  // "minify": true
+  },
+  "minify": false
 }

@@ -1,6 +1,6 @@
-import { UploadJob } from './upload.job'
+import UploadJob from './upload.job'
 
-export class Jobs {
+export default class Jobs {
   /**
    * Initialize Jobs
    */

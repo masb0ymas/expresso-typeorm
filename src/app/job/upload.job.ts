@@ -2,9 +2,15 @@ import { green } from 'colorette'
 import { logger } from 'expresso-core'
 import cron from 'node-cron'
 import { env } from '~/config/env'
+import { Upload } from '~/database/entities/Upload'
 import UploadService from '../service/upload.service'
 
-export class UploadJob {
+const newUploadService = new UploadService({
+  tableName: 'upload',
+  entity: Upload,
+})
+
+export default class UploadJob {
   /**
    * Get Example Task
    */
@@ -20,7 +26,7 @@ export class UploadJob {
     // Run this job every 2:00 am
     const task = cron.schedule(cronExpression, async () => {
       // Update Signed URL Aws S3
-      await UploadService.updateSignedURL()
+      await newUploadService.updateSignedURL()
 
       const msgType = green(`cron job`)
       logger.info(`${msgType} - running task every 15 minutes at 2:00 am`)

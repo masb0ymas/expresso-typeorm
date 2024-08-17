@@ -1,219 +1,46 @@
 import { subDays } from 'date-fns'
-import { type Request } from 'express'
-import { type TOptions } from 'i18next'
+import { TOptions } from 'i18next'
 import _ from 'lodash'
-import { LessThanOrEqual, type FindOneOptions, type Repository } from 'typeorm'
-import { env } from '~/config/env'
+import { LessThanOrEqual } from 'typeorm'
 import { i18n } from '~/config/i18n'
-import { type IReqOptions } from '~/core/interface/ReqOptions'
-import { type DtoFindAll } from '~/core/interface/dto/Paginate'
-import { useQuery } from '~/core/modules/hooks/useQuery'
-import ResponseError from '~/core/modules/response/ResponseError'
-import { validateUUID } from '~/core/utils/formatter'
-import { AppDataSource } from '~/database/data-source'
-import { Session, type SessionAttributes } from '~/database/entities/Session'
+import { IReqOptions } from '~/core/interface/ReqOptions'
+import ErrorResponse from '~/core/modules/response/ErrorResponse'
+import { validateUUID } from '~/core/utils/uuid'
+import { Session, SessionAttributes } from '~/database/entities/Session'
 import sessionSchema from '../schema/session.schema'
+import BaseService from './base.service'
 
-interface SessionRepository {
-  sessionRepo: Repository<Session>
-}
-
-export default class SessionService {
-  private static readonly _entity = 'session'
-
-  /**
-   * Collect Repository
-   * @returns
-   */
-  private static _repository(): SessionRepository {
-    const sessionRepo = AppDataSource.getRepository(Session)
-
-    return { sessionRepo }
-  }
-
-  /**
-   *
-   * @param req
-   * @returns
-   */
-  public static async findAll(req: Request): Promise<DtoFindAll<Session>> {
-    // declare repository
-    const { sessionRepo } = this._repository()
-
-    const reqQuery = req.getQuery()
-
-    const defaultLang = reqQuery.lang ?? env.APP_LANG
-    const i18nOpt: string | TOptions = { lng: defaultLang }
-
-    // create query builder
-    const query = sessionRepo
-      .createQueryBuilder(this._entity)
-      .leftJoinAndSelect(`${this._entity}.user`, 'user')
-
-    // use query
-    const newQuery = useQuery({ entity: this._entity, query, reqQuery })
-
-    const data = await newQuery.getMany()
-    const total = await newQuery.getCount()
-
-    const message = i18n.t('success.data_received', i18nOpt)
-    return { message: `${total} ${message}`, data, total }
-  }
-
-  /**
-   *
-   * @param options
-   * @returns
-   */
-  private static async _findOne<T>(
-    options: FindOneOptions<T> & { lang?: string }
-  ): Promise<Session> {
-    const { sessionRepo } = this._repository()
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
-    const data = await sessionRepo.findOne({
-      where: options.where,
-      relations: options.relations,
-      withDeleted: options.withDeleted,
-    })
-
-    if (!data) {
-      const options = { ...i18nOpt, entity: 'session' }
-      const message = i18n.t('errors.not_found', options)
-
-      throw new ResponseError.NotFound(message)
-    }
-
-    return data
-  }
-
-  /**
-   *
-   * @param id
-   * @param options
-   * @returns
-   */
-  public static async getById(
-    id: string,
-    options?: IReqOptions
-  ): Promise<Session> {
-    const newId = validateUUID(id, { ...options })
-    const data = await this._findOne<Session>({
-      where: { id: newId },
-      lang: options?.lang,
-    })
-
-    return data
-  }
-
-  /**
-   *
-   * @param id
-   * @param options
-   * @returns
-   */
-  public static async findById(
-    id: string,
-    options?: IReqOptions
-  ): Promise<Session> {
-    const newId = validateUUID(id, { ...options })
-    const data = await this._findOne<Session>({
-      where: { id: newId },
-      relations: ['user'],
-      lang: options?.lang,
-    })
-
-    return data
-  }
-
-  /**
-   *
-   * @param user_id
-   * @param token
-   * @param options
-   * @returns
-   */
-  public static async findByUserToken(
-    user_id: string,
-    token: string,
-    options?: IReqOptions
-  ): Promise<Session> {
-    const { sessionRepo } = this._repository()
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
-    const data = await sessionRepo.findOne({ where: { user_id, token } })
-
-    if (!data) {
-      const message = i18n.t('errors_ended', i18nOpt)
-      throw new ResponseError.Unauthorized(message)
-    }
-
-    return data
-  }
-
+export default class SessionService extends BaseService<Session> {
   /**
    *
    * @param formData
    * @returns
    */
-  public static async create(formData: SessionAttributes): Promise<Session> {
-    const { sessionRepo } = this._repository()
+  public async create(formData: SessionAttributes) {
     const newEntity = new Session()
 
-    const value = sessionSchema.create.parse(formData)
-
     // @ts-expect-error
-    const data = await sessionRepo.save({ ...newEntity, ...value })
-
-    // @ts-expect-error
+    const data = await this.repository.save({ ...newEntity, ...formData })
     return data
   }
 
   /**
-   *
-   * @param id
-   * @param formData
-   * @param options
-   * @returns
-   */
-  public static async update(
-    id: string,
-    formData: SessionAttributes,
-    options?: IReqOptions
-  ): Promise<Session | undefined> {
-    const { sessionRepo } = this._repository()
-    const data = await this.getById(id, options)
-
-    const value = sessionSchema.create.parse(formData)
-
-    // @ts-expect-error
-    const newData = await sessionRepo.save({ ...data, ...value })
-
-    // @ts-expect-error
-    return newData
-  }
-
-  /**
-   *
+   * Create or Update Session
    * @param formData
    */
-  public static async createOrUpdate(
-    formData: SessionAttributes
-  ): Promise<void> {
-    const { sessionRepo } = this._repository()
-
+  public async createOrUpdate(formData: SessionAttributes): Promise<void> {
     const value = sessionSchema.create.parse(formData)
 
-    const data = await sessionRepo.findOne({
+    const data = await this.repository.findOne({
       where: { user_id: value.user_id },
     })
 
     if (!data) {
       // create
-      await this.create(formData)
+      await this.create(value)
     } else {
       // @ts-expect-error
-      await sessionRepo.save({ ...data, ...value })
+      await this.repository.save({ ...data, ...value })
     }
   }
 
@@ -221,61 +48,68 @@ export default class SessionService {
    *
    * @param user_id
    * @param token
+   * @param options
+   * @returns
    */
-  public static async deleteByUserToken(
+  public async findByUserToken(
     user_id: string,
-    token: string
-  ): Promise<void> {
-    const { sessionRepo } = this._repository()
+    token: string,
+    options?: IReqOptions
+  ): Promise<Session> {
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+    const newId = validateUUID(user_id, options)
 
-    // delete record
-    await sessionRepo.delete({ user_id, token })
+    const data = await this.repository.findOne({
+      where: { user_id: newId, token },
+    })
+
+    if (!data) {
+      const message = i18n.t('errors_ended', i18nOpt)
+      throw new ErrorResponse.Unauthorized(message)
+    }
+
+    return data
   }
 
   /**
    *
-   * @param id
-   * @param options
+   * @param token
+   * @returns
    */
-  public static async delete(id: string, options?: IReqOptions): Promise<void> {
-    const { sessionRepo } = this._repository()
+  public async getByToken(token: string): Promise<Session | null> {
+    const data = await this.repository.findOne({ where: { token } })
 
-    const data = await this.getById(id, options)
+    return data
+  }
 
-    await sessionRepo.delete(data.id)
+  /**
+   *
+   * @param user_id
+   * @param token
+   */
+  public async deleteByUserToken(
+    user_id: string,
+    token: string
+  ): Promise<void> {
+    // delete record
+    await this.repository.delete({ user_id, token })
   }
 
   /**
    * Delete Expired Session
    */
-  public static async deleteExpiredSession(): Promise<void> {
-    const { sessionRepo } = this._repository()
+  public async deleteExpiredSession(): Promise<void> {
     const subSevenDays = subDays(new Date(), 7)
 
     const condition = {
       created_at: LessThanOrEqual(subSevenDays),
     }
 
-    const getSession = await sessionRepo.find({ where: condition })
+    const getSession = await this.repository.find({ where: condition })
 
     if (!_.isEmpty(getSession)) {
       // remove session
-      await sessionRepo.delete(condition)
+      await this.repository.delete(condition)
     }
-  }
-
-  /**
-   *
-   * @param token
-   * @returns
-   */
-  public static async getByToken(token: string): Promise<Session[]> {
-    const { sessionRepo } = this._repository()
-
-    const data = await sessionRepo.find({
-      where: { token },
-    })
-
-    return data
   }
 }

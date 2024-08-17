@@ -1,24 +1,34 @@
-import { type Request, type Response } from 'express'
+import express, { Request, Response } from 'express'
 import { arrayFormatter } from 'expresso-core'
-import RoleService from '~/app/service/role.service'
 import { env } from '~/config/env'
-import ConstRole from '~/core/constants/ConstRole'
-import { type IReqOptions } from '~/core/interface/ReqOptions'
+import ConstRole from '~/core/constant/entity/role'
+import { IReqOptions } from '~/core/interface/ReqOptions'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
-import route from '~/routes/v1'
+import { Role } from '~/database/entities/Role'
 import authorization from '../middleware/authorization'
 import { permissionAccess } from '../middleware/permission'
+import roleSchema from '../schema/role.schema'
+import RoleService from '../service/role.service'
+
+const route = express.Router()
+const routePath = '/role'
+const newRoleService = new RoleService({
+  tableName: 'role',
+  entity: Role,
+})
 
 route.get(
-  '/role',
+  `${routePath}`,
   authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
+    console.log({ req })
+
     const { lang } = req.getQuery()
     const defaultLang = lang ?? env.APP_LANG
     const options: IReqOptions = { lang: defaultLang }
 
-    const data = await RoleService.findAll(req)
+    const data = await newRoleService.findAll(req)
 
     const httpResponse = HttpResponse.get(data, options)
     res.status(200).json(httpResponse)
@@ -26,7 +36,7 @@ route.get(
 )
 
 route.get(
-  '/role/:id',
+  `${routePath}/:id`,
   authorization,
   asyncHandler(async function findOne(req: Request, res: Response) {
     const { lang } = req.getQuery()
@@ -35,7 +45,7 @@ route.get(
 
     const { id } = req.getParams()
 
-    const data = await RoleService.findById(id, options)
+    const data = await newRoleService.findById(id, options)
 
     const httpResponse = HttpResponse.get({ data }, options)
     res.status(200).json(httpResponse)
@@ -43,7 +53,7 @@ route.get(
 )
 
 route.post(
-  '/role',
+  `${routePath}`,
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function create(req: Request, res: Response) {
@@ -52,8 +62,9 @@ route.post(
     const options: IReqOptions = { lang: defaultLang }
 
     const formData = req.getBody()
+    const newFormData = roleSchema.create.parse(formData)
 
-    const data = await RoleService.create(formData)
+    const data = await newRoleService.create(newFormData)
 
     const httpResponse = HttpResponse.created({ data }, options)
     res.status(201).json(httpResponse)
@@ -61,7 +72,7 @@ route.post(
 )
 
 route.put(
-  '/role/:id',
+  `${routePath}/:id`,
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function update(req: Request, res: Response) {
@@ -71,8 +82,9 @@ route.put(
 
     const { id } = req.getParams()
     const formData = req.getBody()
+    const newFormData = roleSchema.update.parse(formData)
 
-    const data = await RoleService.update(id, formData, options)
+    const data = await newRoleService.update(id, newFormData, options)
 
     const httpResponse = HttpResponse.updated({ data }, options)
     res.status(200).json(httpResponse)
@@ -80,7 +92,7 @@ route.put(
 )
 
 route.put(
-  '/role/restore/:id',
+  `${routePath}/restore/:id`,
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function restore(req: Request, res: Response) {
@@ -90,7 +102,7 @@ route.put(
 
     const { id } = req.getParams()
 
-    await RoleService.restore(id, options)
+    await newRoleService.restore(id, options)
 
     const httpResponse = HttpResponse.updated({}, options)
     res.status(200).json(httpResponse)
@@ -98,7 +110,7 @@ route.put(
 )
 
 route.delete(
-  '/role/soft-delete/:id',
+  `${routePath}/soft-delete/:id`,
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function softDelete(req: Request, res: Response) {
@@ -108,7 +120,7 @@ route.delete(
 
     const { id } = req.getParams()
 
-    await RoleService.softDelete(id, options)
+    await newRoleService.softDelete(id, options)
 
     const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
@@ -116,7 +128,7 @@ route.delete(
 )
 
 route.delete(
-  '/role/force-delete/:id',
+  `${routePath}/force-delete/:id`,
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function forceDelete(req: Request, res: Response) {
@@ -126,7 +138,7 @@ route.delete(
 
     const { id } = req.getParams()
 
-    await RoleService.forceDelete(id, options)
+    await newRoleService.forceDelete(id, options)
 
     const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
@@ -134,7 +146,7 @@ route.delete(
 )
 
 route.post(
-  '/role/multiple/restore',
+  `${routePath}/multiple/restore`,
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleRestore(req: Request, res: Response) {
@@ -145,7 +157,7 @@ route.post(
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await RoleService.multipleRestore(arrayIds, options)
+    await newRoleService.multipleRestore(arrayIds, options)
 
     const httpResponse = HttpResponse.updated({}, options)
     res.status(200).json(httpResponse)
@@ -153,7 +165,7 @@ route.post(
 )
 
 route.post(
-  '/role/multiple/soft-delete',
+  `${routePath}/multiple/soft-delete`,
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleSoftDelete(req: Request, res: Response) {
@@ -164,7 +176,7 @@ route.post(
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await RoleService.multipleSoftDelete(arrayIds, options)
+    await newRoleService.multipleSoftDelete(arrayIds, options)
 
     const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
@@ -172,7 +184,7 @@ route.post(
 )
 
 route.post(
-  '/role/multiple/force-delete',
+  `${routePath}/multiple/force-delete`,
   authorization,
   permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async function multipleForceDelete(req: Request, res: Response) {
@@ -183,9 +195,11 @@ route.post(
     const formData = req.getBody()
     const arrayIds = arrayFormatter(formData.ids)
 
-    await RoleService.multipleForceDelete(arrayIds, options)
+    await newRoleService.multipleForceDelete(arrayIds, options)
 
     const httpResponse = HttpResponse.deleted({}, options)
     res.status(200).json(httpResponse)
   })
 )
+
+export { route as RoleController }

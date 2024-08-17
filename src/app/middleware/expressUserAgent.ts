@@ -1,11 +1,11 @@
-import { type NextFunction, type Request, type Response } from 'express'
-import { type Details } from 'express-useragent'
+import { NextFunction, Request, Response } from 'express'
+import { Details } from 'express-useragent'
 
 /**
  * Express User Agent
  * @returns
  */
-export const expressUserAgent = () => {
+export default function expressUserAgent() {
   return function (req: Request, _res: Response, next: NextFunction) {
     // check is user agent
     const userAgentIs = (useragent: Details | any): string[] => {
