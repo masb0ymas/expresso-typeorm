@@ -20,7 +20,6 @@ import {
   UserLoginAttributes,
 } from '~/database/entities/User'
 import userSchema from '../schema/user.schema'
-import BaseService from './base.service'
 import OpenStreetMapService from './provider/osm.service'
 import SessionService from './session.service'
 
@@ -32,13 +31,24 @@ const newSessionService = new SessionService({
   entity: Session,
 })
 
-export default class AuthService extends BaseService<User> {
+export default class AuthService {
+  /**
+   * Repository
+   * @returns
+   */
+  private _repository() {
+    const user_repo = AppDataSource.getRepository(User)
+
+    return { user_repo }
+  }
+
   /**
    *
    * @param formData
    * @returns
    */
   public async signUp(formData: any) {
+    const { user_repo } = this._repository()
     const uid = uuidv4()
 
     const { token } = useToken.generate({
@@ -57,6 +67,7 @@ export default class AuthService extends BaseService<User> {
     const value = userSchema.register.parse({
       ...formData,
       is_active: false,
+      is_blocked: false,
       phone: validate.empty(formData.phone),
       token_verify: token,
       role_id,
@@ -69,7 +80,7 @@ export default class AuthService extends BaseService<User> {
     }
 
     const data = new User()
-    const newData = await this.repository.save({
+    const newData = await user_repo.save({
       ...data,
       ...formRegister,
     })
@@ -85,6 +96,12 @@ export default class AuthService extends BaseService<User> {
     return newData
   }
 
+  /**
+   *
+   * @param formData
+   * @param options
+   * @returns
+   */
   public async signIn(formData: LoginAttributes, options?: IReqOptions) {
     const i18nOpt: string | TOptions = { lng: options?.lang }
     const value = userSchema.login.parse(formData)
@@ -138,7 +155,7 @@ export default class AuthService extends BaseService<User> {
         const address = _.get(response, 'display_name', '')
 
         // update address
-        await this.repository.update({ id: user_id }, { address })
+        await user_repo.update({ id: user_id }, { address })
       }
 
       const payloadToken = { uid: user_id }
@@ -157,9 +174,11 @@ export default class AuthService extends BaseService<User> {
           access_token: token,
           expires_in: expiresIn,
           token_type: 'Bearer',
-          user: payloadToken,
-          fullname: getUser.fullname,
-          roleAs: getRole?.name,
+          user: {
+            ...payloadToken,
+            fullname: getUser.fullname,
+            roleAs: getRole?.name,
+          },
         },
       }
 
@@ -181,6 +200,9 @@ export default class AuthService extends BaseService<User> {
     token: string,
     options?: IReqOptions
   ) {
+    const { user_repo } = this._repository()
+    const i18nOpt: string | TOptions = { lng: options?.lang }
+
     const getSession = await newSessionService.findByUserToken(user_id, token)
 
     const validateToken = useToken.verify({
@@ -192,7 +214,12 @@ export default class AuthService extends BaseService<User> {
 
     if (!_.isEmpty(userToken.uid)) {
       // get user
-      const getUser = await this.findById(userToken.uid, { ...options })
+      const getUser = await user_repo.findOne({ where: { id: userToken.uid } })
+
+      if (!getUser) {
+        const message = i18n.t('errors.account_not_found', i18nOpt)
+        throw new ErrorResponse.NotFound(message)
+      }
 
       return getUser
     }
@@ -208,10 +235,16 @@ export default class AuthService extends BaseService<User> {
    * @returns
    */
   public async logout(user_id: string, token: string, options?: IReqOptions) {
+    const { user_repo } = this._repository()
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     // get user
-    const getUser = await this.findById(user_id, { ...options })
+    const getUser = await user_repo.findOne({ where: { id: user_id } })
+
+    if (!getUser) {
+      const message = i18n.t('errors.account_not_found', i18nOpt)
+      throw new ErrorResponse.NotFound(message)
+    }
 
     // clean session
     await newSessionService.deleteByUserToken(getUser.id, token)

@@ -9,17 +9,13 @@ import ErrorResponse from '~/core/modules/response/ErrorResponse'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
 import { Session } from '~/database/entities/Session'
-import { User, UserLoginAttributes } from '~/database/entities/User'
+import { UserLoginAttributes } from '~/database/entities/User'
 import AuthService from '../service/auth.service'
 import SessionService from '../service/session.service'
 
 const route = express.Router()
 const routePath = '/auth'
-const newAuthService = new AuthService({
-  tableName: 'user',
-  entity: User,
-})
-
+const newAuthService = new AuthService()
 const newSessionService = new SessionService({
   tableName: 'session',
   entity: Session,
@@ -51,8 +47,10 @@ route.post(
     const userAgent = req.getState('userAgent') as DtoUserAgent
     const formData = req.getBody()
 
-    const data = await newAuthService.signIn(formData, { lang: defaultLang })
-    const httpResponse = HttpResponse.get(data)
+    const { data, message } = await newAuthService.signIn(formData, {
+      lang: defaultLang,
+    })
+    const httpResponse = HttpResponse.get({ message, data })
 
     // create session
     await newSessionService.createOrUpdate({
