@@ -228,4 +228,4 @@ route.post(
   })
 )
 
-export { route as RoleController }
+export { route as UserController }
