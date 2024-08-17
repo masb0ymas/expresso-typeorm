@@ -1,6 +1,6 @@
 {
   "name": "expresso-typeorm",
-  "version": "4.5.1",
+  "version": "5.0.0",
   "description": "Built using expressjs and typeorm",
   "main": "./dist/index.js",
   "scripts": {
