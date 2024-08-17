@@ -45,7 +45,7 @@ export class App {
     this._app.use(cookieParser())
     this._app.use(express.json({ limit: '200mb', type: 'application/json' }))
     this._app.use(express.urlencoded({ extended: true }))
-    this._app.use(express.static(path.resolve(`${__dirname}/../../public`)))
+    this._app.use(express.static(path.resolve(`${__dirname}/public`)))
     this._app.use(hpp())
     this._app.use(requestIp.mw())
     this._app.use(userAgent.express())
