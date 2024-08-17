@@ -115,7 +115,7 @@
       }
     }
   },
-  "/logout": {
+  "/auth/logout": {
     "post": {
       "tags": [
         "Account - Auth"
