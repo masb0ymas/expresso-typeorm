@@ -8,6 +8,7 @@ import hpp from 'hpp'
 import i18nextMiddleware from 'i18next-http-middleware'
 import path from 'path'
 import requestIp from 'request-ip'
+import Jobs from '~/app/job'
 import expressErrorResponse from '~/app/middleware/expressErrorResponse'
 import expressRateLimit from '~/app/middleware/expressRateLimit'
 import expressUserAgent from '~/app/middleware/expressUserAgent'
@@ -65,6 +66,9 @@ export class App {
     if (env.MAIL_USERNAME && env.MAIL_PASSWORD) {
       mailService.initialize()
     }
+
+    // cron job
+    Jobs.initialize()
   }
 
   private _routes() {
