@@ -10,6 +10,8 @@ import path from 'path'
 import requestIp from 'request-ip'
 import Jobs from '~/app/job'
 import expressErrorResponse from '~/app/middleware/expressErrorResponse'
+import expressErrorTypeorm from '~/app/middleware/expressErrorTypeorm'
+import expressErrorZod from '~/app/middleware/expressErrorZod'
 import expressRateLimit from '~/app/middleware/expressRateLimit'
 import expressUserAgent from '~/app/middleware/expressUserAgent'
 import expressWithState from '~/app/middleware/expressWithState'
@@ -89,6 +91,9 @@ export class App {
   }
 
   public create() {
+    this._app.use(expressErrorZod)
+    this._app.use(expressErrorTypeorm)
+
     // @ts-expect-error
     this._app.use(expressErrorResponse)
 
