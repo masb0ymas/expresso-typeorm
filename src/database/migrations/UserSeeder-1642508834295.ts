@@ -1,11 +1,12 @@
 import _ from 'lodash'
 import { type MigrationInterface, type QueryRunner } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
+import { env } from '~/config/env'
 import ConstRole from '~/core/constant/entity/role'
 import { User } from '~/database/entities/User'
 import { AppDataSource } from '../datasource'
 
-const defaultPass = 'Padang123'
+const defaultPass = env.APP_PASSWORD
 
 const data = [
   {
