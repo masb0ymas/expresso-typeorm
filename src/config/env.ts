@@ -50,6 +50,7 @@ const app = {
   APP_NAME: _getEnv('APP_NAME', 'expresso'),
   APP_LANG: _getEnv('APP_LANG', 'id'),
   APP_PORT: Number(_getEnv('APP_PORT', 8000)),
+  APP_PASSWORD: _getEnv('APP_PASSWORD', 'default_pass'),
 
   // Config
   AXIOS_TIMEOUT: _getEnv('AXIOS_TIMEOUT', '5m'),
