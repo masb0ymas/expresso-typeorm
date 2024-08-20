@@ -4,6 +4,7 @@
   "description": "Built using expressjs and typeorm",
   "main": "./dist/index.js",
   "scripts": {
+    "key:generate": "node ./dist/scripts/key_generate.js",
     "clean": "rimraf dist coverage",
     "typecheck": "tsc --noEmit",
     "lint": "npx eslint .",

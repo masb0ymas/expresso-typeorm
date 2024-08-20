@@ -7,30 +7,29 @@ const msgType = 'script'
 
 /**
  *
- * @param {string} value
+ * @param {string} key
  * @param {RegExp} regExp
  */
-function _generateEnv(value: string, regExp: RegExp): void {
+function _generateEnv(key: string, regExp: RegExp) {
   const envPath = path.resolve('.env')
   checkEnv(envPath)
 
   const contentEnv = fs.readFileSync(envPath, { encoding: 'utf-8' })
-
   const uniqueCode = randomString.generate()
-  const valueEnv = `${value}=${uniqueCode}`
+  const newEnvEntry = `${key}=${uniqueCode}`
 
-  if (contentEnv.includes(`${value}=`)) {
+  if (contentEnv.includes(`${key}=`)) {
     // change value
-    const replaceContent = contentEnv.replace(regExp, valueEnv)
-    fs.writeFileSync(`${envPath}`, replaceContent)
+    const replaceContent = contentEnv.replace(regExp, newEnvEntry)
 
-    logger.info(`${msgType} - refresh ${value} = ${uniqueCode}`)
+    fs.writeFileSync(`${envPath}`, replaceContent)
+    logger.info(`${msgType} - refresh ${key} = ${uniqueCode}`)
   } else {
     // Generate value
-    const extraContent = `${valueEnv}\n\n${contentEnv}`
-    fs.writeFileSync(`${envPath}`, extraContent)
+    const extraContent = `${newEnvEntry}\n\n${contentEnv}`
 
-    logger.info(`${msgType} - generate ${value} = ${uniqueCode}`)
+    fs.writeFileSync(`${envPath}`, extraContent)
+    logger.info(`${msgType} - generate ${key} = ${uniqueCode}`)
   }
 }
 
@@ -54,6 +53,9 @@ const listKeys = [
 
 for (let i = 0; i < listKeys.length; i += 1) {
   const item = listKeys[i]
-  const regex = new RegExp(`/${item}=(.*)?/`)
+  const newItem = `/${item}=(.*)?/`.replace(/\//g, '')
+  const regex = new RegExp(newItem)
+
+  console.log({ regex })
   _generateEnv(item, regex)
 }
