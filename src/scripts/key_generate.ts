@@ -51,11 +51,10 @@ const listKeys = [
   'JWT_SECRET_REFRESH_TOKEN',
 ]
 
-for (let i = 0; i < listKeys.length; i += 1) {
-  const item = listKeys[i]
+listKeys.forEach((item) => {
   const newItem = `/${item}=(.*)?/`.replace(/\//g, '')
   const regex = new RegExp(newItem)
 
   console.log({ regex })
   _generateEnv(item, regex)
-}
+})
