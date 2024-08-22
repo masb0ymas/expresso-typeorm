@@ -12,7 +12,7 @@ const msgType = 'script'
  */
 function _generateEnv(key: string, regExp: RegExp) {
   const envPath = path.resolve('.env')
-  checkEnv(envPath)
+  checkEnv()
 
   const contentEnv = fs.readFileSync(envPath, { encoding: 'utf-8' })
   const uniqueCode = randomString.generate()
