@@ -8,7 +8,6 @@ import { DtoUserAgent } from '~/core/interface/dto/UserAgent'
 import ErrorResponse from '~/core/modules/response/ErrorResponse'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
-import { Session } from '~/database/entities/Session'
 import { UserLoginAttributes } from '~/database/entities/User'
 import AuthService from '../service/auth.service'
 import SessionService from '../service/session.service'
@@ -16,10 +15,7 @@ import SessionService from '../service/session.service'
 const route = express.Router()
 const routePath = '/auth'
 const newAuthService = new AuthService()
-const newSessionService = new SessionService({
-  tableName: 'session',
-  entity: Session,
-})
+const newSessionService = new SessionService()
 
 route.post(
   `${routePath}/sign-up`,

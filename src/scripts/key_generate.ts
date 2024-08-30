@@ -12,7 +12,7 @@ const msgType = 'script'
  */
 function _generateEnv(key: string, regExp: RegExp) {
   const envPath = path.resolve('.env')
-  checkEnv(envPath)
+  checkEnv()
 
   const contentEnv = fs.readFileSync(envPath, { encoding: 'utf-8' })
   const uniqueCode = randomString.generate()
@@ -51,11 +51,10 @@ const listKeys = [
   'JWT_SECRET_REFRESH_TOKEN',
 ]
 
-for (let i = 0; i < listKeys.length; i += 1) {
-  const item = listKeys[i]
+listKeys.forEach((item) => {
   const newItem = `/${item}=(.*)?/`.replace(/\//g, '')
   const regex = new RegExp(newItem)
 
   console.log({ regex })
   _generateEnv(item, regex)
-}
+})

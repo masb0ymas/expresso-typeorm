@@ -8,17 +8,13 @@ import ConstRole from '~/core/constant/entity/role'
 import { IReqOptions } from '~/core/interface/ReqOptions'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
-import { Upload } from '~/database/entities/Upload'
 import authorization from '../middleware/authorization'
 import { permissionAccess } from '../middleware/permission'
 import UploadService from '../service/upload.service'
 
 const route = express.Router()
 const routePath = '/upload'
-const newUploadService = new UploadService({
-  tableName: 'upload',
-  entity: Upload,
-})
+const newUploadService = new UploadService()
 
 route.get(
   `${routePath}`,

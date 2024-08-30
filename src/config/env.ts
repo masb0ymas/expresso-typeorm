@@ -5,20 +5,24 @@ import { logger, validate } from 'expresso-core'
 import fs from 'fs'
 import path from 'path'
 
-const envPath = path.resolve('.env')
+const ENV_FILE = '.env'
+const ENV_EXAMPLE_FILE = '.env.example'
 
-export function checkEnv(_path: string | Buffer) {
+export function checkEnv(): void {
+  const envPath = path.resolve(ENV_FILE)
+
   if (!fs.existsSync(envPath)) {
-    const envExample = green('.env.example')
-    const env = green('.env')
+    const envExample = green(ENV_EXAMPLE_FILE)
+    const env = green(ENV_FILE)
 
-    const message = `Copy / Duplicate ${envExample} root directory to ${env}`
-    logger.error(`Missing env! - ${message}`)
+    logger.error(
+      `Missing ${env} file! Please copy ${envExample} to ${env} in the root directory.`
+    )
     process.exit(1)
   }
 }
 
-checkEnv(envPath)
+checkEnv()
 
 /**
  *
@@ -26,20 +30,14 @@ checkEnv(envPath)
  * @param fallback
  * @returns
  */
-function _getEnv(value: any, fallback?: any): any {
-  const result = process.env[value]
+function _getEnv(key: string, fallback?: any): any {
+  const value = process.env[key]
 
-  // check env value
-  if ([undefined, null, ''].includes(result)) {
-    // check fallback
-    if (fallback) {
-      return fallback
-    }
-
-    return undefined
+  if (value === undefined || value === null || value === '') {
+    return fallback
   }
 
-  return result
+  return value
 }
 
 const app = {

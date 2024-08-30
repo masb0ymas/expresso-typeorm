@@ -11,6 +11,10 @@ import sessionSchema from '../schema/session.schema'
 import BaseService from './base.service'
 
 export default class SessionService extends BaseService<Session> {
+  constructor() {
+    super({ tableName: 'session', entity: Session })
+  }
+
   /**
    *
    * @param formData
@@ -18,9 +22,10 @@ export default class SessionService extends BaseService<Session> {
    */
   public async create(formData: SessionAttributes) {
     const newEntity = new Session()
+    const value = sessionSchema.create.parse(formData)
 
     // @ts-expect-error
-    const data = await this.repository.save({ ...newEntity, ...formData })
+    const data = await this.repository.save({ ...newEntity, ...value })
     return data
   }
 

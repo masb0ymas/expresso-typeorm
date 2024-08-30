@@ -4,13 +4,9 @@ import { logger } from 'expresso-core'
 import { useToken } from 'expresso-hooks'
 import _ from 'lodash'
 import { env } from '~/config/env'
-import { Session } from '~/database/entities/Session'
 import SessionService from '../service/session.service'
 
-const newSessionService = new SessionService({
-  tableName: 'session',
-  entity: Session,
-})
+const newSessionService = new SessionService()
 
 /**
  * Authorization
