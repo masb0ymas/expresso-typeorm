@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.1.0](https://github.com/masb0ymas/expresso-typeorm/compare/v5.0.0...v5.1.0) (2024-08-30)
+
+
+### Features
+
+* add unit test base service ([b7f733f](https://github.com/masb0ymas/expresso-typeorm/commit/b7f733f5b0ecc0557c176f6fb8d444ec1e18fedb))
+* add utils test ([c0e9512](https://github.com/masb0ymas/expresso-typeorm/commit/c0e9512c60107595905da26f23c02de891d7d35b))
+
+
+### Bug Fixes
+
+* env default password ([125b413](https://github.com/masb0ymas/expresso-typeorm/commit/125b413105eca4c22971efdd6bd00c78239d8f8c))
+* improve config env ([08c9162](https://github.com/masb0ymas/expresso-typeorm/commit/08c91628111821d3dfca72c491c4d1e518ac3ee3))
+* improve script generate ([a1d7406](https://github.com/masb0ymas/expresso-typeorm/commit/a1d740646f2fcd97efdd14d902d10a723c0d8f52))
+* script key_generate ([d2a1263](https://github.com/masb0ymas/expresso-typeorm/commit/d2a1263cd0d66dfbb2cf17c01716422d9a7c3bfd))
+
+
+### Other Commit
+
+* improve base service ([f924336](https://github.com/masb0ymas/expresso-typeorm/commit/f92433681a5336ac589eed6700fee4fd0aa74db1))
+
 ## [5.0.0](https://github.com/masb0ymas/expresso-typeorm/compare/v4.5.1...v5.0.0) (2024-08-17)
 
 
