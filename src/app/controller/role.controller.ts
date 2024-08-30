@@ -5,7 +5,6 @@ import ConstRole from '~/core/constant/entity/role'
 import { IReqOptions } from '~/core/interface/ReqOptions'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
-import { Role } from '~/database/entities/Role'
 import authorization from '../middleware/authorization'
 import { permissionAccess } from '../middleware/permission'
 import roleSchema from '../schema/role.schema'
@@ -13,10 +12,7 @@ import RoleService from '../service/role.service'
 
 const route = express.Router()
 const routePath = '/role'
-const newRoleService = new RoleService({
-  tableName: 'role',
-  entity: Role,
-})
+const newRoleService = new RoleService()
 
 route.get(
   `${routePath}`,

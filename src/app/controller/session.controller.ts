@@ -5,7 +5,6 @@ import ConstRole from '~/core/constant/entity/role'
 import { IReqOptions } from '~/core/interface/ReqOptions'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
-import { Session } from '~/database/entities/Session'
 import authorization from '../middleware/authorization'
 import { permissionAccess } from '../middleware/permission'
 import sessionSchema from '../schema/session.schema'
@@ -13,10 +12,7 @@ import SessionService from '../service/session.service'
 
 const route = express.Router()
 const routePath = '/session'
-const newSessionService = new SessionService({
-  tableName: 'session',
-  entity: Session,
-})
+const newSessionService = new SessionService()
 
 route.get(
   `${routePath}`,

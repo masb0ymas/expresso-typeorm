@@ -2,13 +2,9 @@ import { green } from 'colorette'
 import { logger } from 'expresso-core'
 import cron from 'node-cron'
 import { env } from '~/config/env'
-import { Upload } from '~/database/entities/Upload'
 import UploadService from '../service/upload.service'
 
-const newUploadService = new UploadService({
-  tableName: 'upload',
-  entity: Upload,
-})
+const newUploadService = new UploadService()
 
 export default class UploadJob {
   /**

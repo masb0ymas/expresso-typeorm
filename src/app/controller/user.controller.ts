@@ -6,7 +6,6 @@ import ConstRole from '~/core/constant/entity/role'
 import { IReqOptions } from '~/core/interface/ReqOptions'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
-import { User } from '~/database/entities/User'
 import authorization from '../middleware/authorization'
 import { permissionAccess } from '../middleware/permission'
 import userSchema from '../schema/user.schema'
@@ -14,10 +13,7 @@ import UserService from '../service/user.service'
 
 const route = express.Router()
 const routePath = '/user'
-const newUserService = new UserService({
-  tableName: 'user',
-  entity: User,
-})
+const newUserService = new UserService()
 
 route.get(
   `${routePath}`,

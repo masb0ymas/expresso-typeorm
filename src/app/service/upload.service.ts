@@ -1,19 +1,20 @@
 import { sub } from 'date-fns'
 import { TypeS3 } from 'expresso-provider/lib/storage/types'
-import { TOptions } from 'i18next'
 import _ from 'lodash'
 import { LessThanOrEqual } from 'typeorm'
 import { validate as uuidValidate } from 'uuid'
-import { i18n } from '~/config/i18n'
 import { storageService } from '~/config/storage'
 import { IReqOptions } from '~/core/interface/ReqOptions'
-import ErrorResponse from '~/core/modules/response/ErrorResponse'
 import { Upload, UploadAttributes } from '~/database/entities/Upload'
 import { UploadFileEntity } from '../interface/Upload'
 import uploadSchema from '../schema/upload.schema'
 import BaseService from './base.service'
 
 export default class UploadService extends BaseService<Upload> {
+  constructor() {
+    super({ tableName: 'upload', entity: Upload })
+  }
+
   /**
    *
    * @param formData
@@ -21,8 +22,9 @@ export default class UploadService extends BaseService<Upload> {
    */
   public async create(formData: UploadAttributes) {
     const newEntity = new Upload()
+    const value = uploadSchema.create.parse(formData)
 
-    const data = await this.repository.save({ ...newEntity, ...formData })
+    const data = await this.repository.save({ ...newEntity, ...value })
     return data
   }
 
@@ -65,19 +67,10 @@ export default class UploadService extends BaseService<Upload> {
     key_file: string,
     options?: IReqOptions
   ): Promise<Upload> {
-    const i18nOpt: string | TOptions = { lng: options?.lang }
-
-    const data = await this.repository.findOne({
+    const data = await this._findOne({
+      ...options,
       where: { key_file },
     })
-
-    const entity = this.tableName.replace('_', ' ')
-
-    if (!data) {
-      const options = { ...i18nOpt, entity }
-      const message = i18n.t('errors.not_found', options)
-      throw new ErrorResponse.NotFound(message)
-    }
 
     return data
   }

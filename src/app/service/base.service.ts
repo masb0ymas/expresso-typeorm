@@ -8,6 +8,7 @@ import {
   ObjectLiteral,
   Repository,
 } from 'typeorm'
+import { env } from '~/config/env'
 import { i18n } from '~/config/i18n'
 import { IReqOptions } from '~/core/interface/ReqOptions'
 import { useQuery } from '~/core/modules/hooks/useQuery'
@@ -40,6 +41,8 @@ export default class BaseService<T extends ObjectLiteral> {
    */
   public async findAll(req: Request) {
     const reqQuery = req.getQuery()
+    const defaultLang = reqQuery.lang ?? env.APP_LANG
+    const i18nOpt: string | TOptions = { lng: defaultLang }
 
     const query = this.repository.createQueryBuilder(this.tableName)
     const newQuery = useQuery({ entity: this.tableName, query, reqQuery })
@@ -47,8 +50,8 @@ export default class BaseService<T extends ObjectLiteral> {
     const data = await newQuery.getMany()
     const total = await newQuery.getCount()
 
-    const message = `${total} data has been received`
-    return { data, total, message }
+    const message = i18n.t('success.data_received', i18nOpt)
+    return { message: `${total} ${message}`, data, total }
   }
 
   /**
@@ -56,7 +59,7 @@ export default class BaseService<T extends ObjectLiteral> {
    * @param options
    * @returns
    */
-  private async _findOne(options: FindOneOptions<T> & { lang?: string }) {
+  protected async _findOne(options: FindOneOptions<T> & { lang?: string }) {
     const i18nOpt: string | TOptions = { lng: options?.lang }
 
     const data = await this.repository.findOne({

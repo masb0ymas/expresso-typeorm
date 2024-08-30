@@ -13,7 +13,6 @@ import ErrorResponse from '~/core/modules/response/ErrorResponse'
 import Mailing from '~/core/utils/mailing'
 import { AppDataSource } from '~/database/datasource'
 import { Role } from '~/database/entities/Role'
-import { Session } from '~/database/entities/Session'
 import {
   LoginAttributes,
   User,
@@ -25,11 +24,7 @@ import SessionService from './session.service'
 
 const sendMail = new Mailing()
 const osmService = new OpenStreetMapService()
-
-const newSessionService = new SessionService({
-  tableName: 'session',
-  entity: Session,
-})
+const newSessionService = new SessionService()
 
 export default class AuthService {
   /**
