@@ -1,12 +1,15 @@
 import express, { Request, Response } from 'express'
 import { env } from '~/config/env'
+import { redisService } from '~/config/redis'
 import { BASE_URL_SERVER } from '~/core/constant/baseUrl'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { formatDateTime } from '~/core/utils/date'
-import { require } from '~/core/utils/file'
+import { __dirname, require } from '~/core/utils/file'
+import { AppDataSource } from '~/database/datasource'
 import { v1Routes } from './api/v1'
 
 const expressVersion = require('express/package').version
+const appVersion = require(`${__dirname}/package.json`).version
 const route = express.Router()
 
 route.get('/', (req: Request, res: Response) => {
@@ -27,16 +30,22 @@ route.get('/', (req: Request, res: Response) => {
   return res.status(200).json(httpResponse)
 })
 
-route.get('/health', (req: Request, res: Response) => {
+route.get('/health', async (req: Request, res: Response) => {
   const startUsage = process.cpuUsage()
 
+  const isConnectedDB = AppDataSource.isInitialized
+  const connectedRedis = await redisService.ping()
+
   const status = {
-    uptime: process.uptime(),
     timezone: 'ID',
+    database: isConnectedDB ? 'Ok' : 'Failed',
+    redis: connectedRedis === 'PONG' ? 'Ok' : 'Failed',
     date: formatDateTime(new Date()),
     node: process.version,
-    express: expressVersion,
+    express: `v${expressVersion}`,
+    api: `v${appVersion}`,
     platform: process.platform,
+    uptime: process.uptime(),
     cpu_usage: process.cpuUsage(startUsage),
   }
 
