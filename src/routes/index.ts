@@ -8,8 +8,15 @@ import { __dirname, require } from '~/core/utils/file'
 import { AppDataSource } from '~/database/datasource'
 import { v1Routes } from './api/v1'
 
-const expressVersion = require('express/package').version
-const appVersion = require(`${__dirname}/package.json`).version
+function versioning() {
+  const node_modules = `${__dirname}/node_modules`
+  const express = require(`${node_modules}/express/package.json`).version
+  const typeorm = require(`${node_modules}/typeorm/package.json`).version
+  const app = require(`${__dirname}/package.json`).version
+
+  return { express: `v${express}`, typeorm: `v${typeorm}`, app: `v${app}` }
+}
+
 const route = express.Router()
 
 route.get('/', (req: Request, res: Response) => {
@@ -35,6 +42,7 @@ route.get('/health', async (req: Request, res: Response) => {
 
   const isConnectedDB = AppDataSource.isInitialized
   const connectedRedis = await redisService.ping()
+  const { express, typeorm, app } = versioning()
 
   const status = {
     timezone: 'ID',
@@ -42,11 +50,13 @@ route.get('/health', async (req: Request, res: Response) => {
     redis: connectedRedis === 'PONG' ? 'Ok' : 'Failed',
     date: formatDateTime(new Date()),
     node: process.version,
-    express: `v${expressVersion}`,
-    api: `v${appVersion}`,
+    express,
+    typeorm,
+    api: app,
     platform: process.platform,
     uptime: process.uptime(),
     cpu_usage: process.cpuUsage(startUsage),
+    memory: process.memoryUsage(),
   }
 
   const httpResponse = HttpResponse.get({
