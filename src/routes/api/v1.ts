@@ -1,3 +1,4 @@
+import { apiReference } from '@scalar/express-api-reference'
 import express, { Request, Response } from 'express'
 import swaggerUI from 'swagger-ui-express'
 import { AuthController } from '~/app/controller/auth.controller'
@@ -17,13 +18,22 @@ route.use(UserController)
 route.use(AuthController)
 
 function docsSwagger() {
-  route.get('/api-docs.json', (_req: Request, res: Response) => {
+  route.get('/swagger.json', (_req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json')
     res.send(swaggerSpec)
   })
 
-  route.use('/api-docs', swaggerUI.serve)
-  route.get('/api-docs', swaggerUI.setup(swaggerSpec, optionsSwaggerUI))
+  route.use('/swagger', swaggerUI.serve)
+  route.get('/swagger', swaggerUI.setup(swaggerSpec, optionsSwaggerUI))
+
+  route.use(
+    '/api-docs',
+    apiReference({
+      spec: {
+        url: '/v1/swagger.json',
+      },
+    })
+  )
 }
 
 // docs swagger disable for production mode

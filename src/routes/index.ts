@@ -29,7 +29,10 @@ route.get('/', (req: Request, res: Response) => {
   if (env.NODE_ENV !== 'production') {
     responseData = {
       ...responseData,
-      docs: `${BASE_URL_SERVER}/v1/api-docs`,
+      docs: {
+        swagger: `${BASE_URL_SERVER}/v1/swagger`,
+        scalar: `${BASE_URL_SERVER}/v1/api-docs`,
+      },
     }
   }
 
