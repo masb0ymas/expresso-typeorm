@@ -5,7 +5,7 @@ import express, { Application, Request, Response } from 'express'
 import userAgent from 'express-useragent'
 import helmet from 'helmet'
 import hpp from 'hpp'
-import i18nextMiddleware from 'i18next-http-middleware'
+import * as i18nextMiddleware from 'i18next-http-middleware'
 import path from 'path'
 import requestIp from 'request-ip'
 import Jobs from '~/app/job'
@@ -38,7 +38,12 @@ export class App {
   }
 
   private _plugins() {
-    this._app.use(helmet())
+    this._app.use(
+      helmet({
+        contentSecurityPolicy: false,
+        xDownloadOptions: false,
+      })
+    )
     this._app.use(cors(corsOptions))
     this._app.use(httpLogger())
     this._app.use(compression())
