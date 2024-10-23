@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.2.0](https://github.com/masb0ymas/expresso-typeorm/compare/v5.1.0...v5.2.0) (2024-10-23)
+
+
+### Features
+
+* add api docs with scalar ([e111f32](https://github.com/masb0ymas/expresso-typeorm/commit/e111f328800f078bfb3f25de2de9c8833e89bb0f))
+* add vscode settings ([f0f5823](https://github.com/masb0ymas/expresso-typeorm/commit/f0f582399842397a996be2f65bd9e0c8408abc56))
+
+
+### Bug Fixes
+
+* endpoint auth ([ed74307](https://github.com/masb0ymas/expresso-typeorm/commit/ed74307c160f57aea185587f3f907edb639821e5))
+* helmet config for scalar ([f60ec56](https://github.com/masb0ymas/expresso-typeorm/commit/f60ec56aaf47bf9d0357b69f0b2aeb8208119a53))
+* update endpoint health ([0f665b3](https://github.com/masb0ymas/expresso-typeorm/commit/0f665b3e3d0803ee7ed60f4a9fb19b9e0e3ad9cf))
+* update routes ([5f9cddc](https://github.com/masb0ymas/expresso-typeorm/commit/5f9cddc6ffd13897645bab78f943685097ca8919))
+* update vscode settings ([d30305a](https://github.com/masb0ymas/expresso-typeorm/commit/d30305a6202e528d0eb9b0f68e078c529649ab31))
+
 ## [5.1.0](https://github.com/masb0ymas/expresso-typeorm/compare/v5.0.0...v5.1.0) (2024-08-30)
 
 
