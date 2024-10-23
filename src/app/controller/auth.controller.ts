@@ -9,6 +9,7 @@ import ErrorResponse from '~/core/modules/response/ErrorResponse'
 import HttpResponse from '~/core/modules/response/HttpResponse'
 import { asyncHandler } from '~/core/utils/asyncHandler'
 import { UserLoginAttributes } from '~/database/entities/User'
+import authorization from '../middleware/authorization'
 import AuthService from '../service/auth.service'
 import SessionService from '../service/session.service'
 
@@ -73,6 +74,7 @@ route.post(
 
 route.get(
   `${routePath}/verify-session`,
+  authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? env.APP_LANG
@@ -93,6 +95,7 @@ route.get(
 
 route.post(
   `${routePath}/logout`,
+  authorization,
   asyncHandler(async function findAll(req: Request, res: Response) {
     const { lang } = req.getQuery()
     const defaultLang = lang ?? env.APP_LANG
