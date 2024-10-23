@@ -37,7 +37,7 @@ const baseURLServer = [
 
 const swaggerOptURL = [
   {
-    url: `${BASE_URL_SERVER}/v1/api-docs.json`,
+    url: `${BASE_URL_SERVER}/v1/swagger.json`,
     name: `${_.capitalize(env.NODE_ENV)} Server`,
   },
 ]

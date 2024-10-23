@@ -48,6 +48,7 @@
     "node": ">=18.x"
   },
   "dependencies": {
+    "@scalar/express-api-reference": "^0.4.165",
     "ajv": "^8.17.1",
     "axios": "^1.7.6",
     "colorette": "^2.0.20",

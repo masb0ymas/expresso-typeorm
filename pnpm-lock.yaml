@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@scalar/express-api-reference':
+        specifier: ^0.4.165
+        version: 0.4.165
       ajv:
         specifier: ^8.17.1
         version: 8.17.1
@@ -989,6 +992,18 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==, tarball: https://registry.npmjs.org/@protobufjs/utf8/-/utf8-1.1.0.tgz}
 
+  '@scalar/express-api-reference@0.4.165':
+    resolution: {integrity: sha512-Bpam2htoq6Oq+vlW05qlEyw1libyoA2i44DwN+1gHH9s6toydEIkFdlAS00gor+3WwN+ogdBeAyfJDZlqUj7Bw==, tarball: https://registry.npmjs.org/@scalar/express-api-reference/-/express-api-reference-0.4.165.tgz}
+    engines: {node: '>=18'}
+
+  '@scalar/openapi-types@0.1.4':
+    resolution: {integrity: sha512-+wRXgmqzgDnj8Dxqf4OOPMPo4or/LRd1Bsy4pnrIW0yBt8rKSdtBb+jH/aRnhgDDmKVjWxJ+KFk7WlSKvZwNTw==, tarball: https://registry.npmjs.org/@scalar/openapi-types/-/openapi-types-0.1.4.tgz}
+    engines: {node: '>=18'}
+
+  '@scalar/types@0.0.17':
+    resolution: {integrity: sha512-wUrvNnYFMULsHENX/9TP3oyECRTtZsP06mOZU+RlWg9sRtzWVTjlBCahkgUETL93J+Bz2RLFSKVgPyNN4fpIpA==, tarball: https://registry.npmjs.org/@scalar/types/-/types-0.0.17.tgz}
+    engines: {node: '>=18'}
+
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==, tarball: https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.27.8.tgz}
 
@@ -1553,6 +1568,9 @@ packages:
   '@typescript-eslint/visitor-keys@8.3.0':
     resolution: {integrity: sha512-RmZwrTbQ9QveF15m/Cl28n0LXD6ea2CjkhH5rQ55ewz3H24w+AMCJHPVYaZ8/0HoG8Z3cLLFFycRXxeO2tz9FA==, tarball: https://registry.npmjs.org/@typescript-eslint/visitor-keys/-/visitor-keys-8.3.0.tgz}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@unhead/schema@1.11.10':
+    resolution: {integrity: sha512-lXh7cm5XtFaw3gc+ZVXTSfIHXiBpAywbjtEiOsz5TR4GxOjj2rtfOAl4C3Difk1yupP6L2otYmOZdn/i8EXSJg==, tarball: https://registry.npmjs.org/@unhead/schema/-/schema-1.11.10.tgz}
 
   '@zxing/text-encoding@0.9.0':
     resolution: {integrity: sha512-U/4aVJ2mxI0aDNI8Uq0wEhMgY+u4CNtEb0om3+y3+niDAsoTCOB33UF0sxpzqzdqXLqmvc+vZyAt4O8pPdfkwA==, tarball: https://registry.npmjs.org/@zxing/text-encoding/-/text-encoding-0.9.0.tgz}
@@ -3447,6 +3465,9 @@ packages:
 
   highlight.js@10.7.3:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==, tarball: https://registry.npmjs.org/highlight.js/-/highlight.js-10.7.3.tgz}
+
+  hookable@5.5.3:
+    resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==, tarball: https://registry.npmjs.org/hookable/-/hookable-5.5.3.tgz}
 
   hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==, tarball: https://registry.npmjs.org/hosted-git-info/-/hosted-git-info-2.8.9.tgz}
@@ -6228,6 +6249,9 @@ packages:
     engines: {node: '>=8.0.0'}
     hasBin: true
 
+  zhead@2.2.4:
+    resolution: {integrity: sha512-8F0OI5dpWIA5IGG5NHUg9staDwz/ZPxZtvGVf01j7vHqSyZ0raHY+78atOVxRqb73AotX22uV1pXt3gYSstGag==, tarball: https://registry.npmjs.org/zhead/-/zhead-2.2.4.tgz}
+
   zip-stream@4.1.1:
     resolution: {integrity: sha512-9qv4rlDiopXg4E69k+vMHjNN63YFMe9sZMrdlvKnCjlCRWeCBswPPMPUfx+ipsAWq1LXHe70RcbaHdJJpS6hyQ==, tarball: https://registry.npmjs.org/zip-stream/-/zip-stream-4.1.1.tgz}
     engines: {node: '>= 10'}
@@ -7635,6 +7659,17 @@ snapshots:
   '@protobufjs/utf8@1.1.0':
     optional: true
 
+  '@scalar/express-api-reference@0.4.165':
+    dependencies:
+      '@scalar/types': 0.0.17
+
+  '@scalar/openapi-types@0.1.4': {}
+
+  '@scalar/types@0.0.17':
+    dependencies:
+      '@scalar/openapi-types': 0.1.4
+      '@unhead/schema': 1.11.10
+
   '@sinclair/typebox@0.27.8': {}
 
   '@sindresorhus/is@4.6.0': {}
@@ -8370,6 +8405,11 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.3.0
       eslint-visitor-keys: 3.4.3
+
+  '@unhead/schema@1.11.10':
+    dependencies:
+      hookable: 5.5.3
+      zhead: 2.2.4
 
   '@zxing/text-encoding@0.9.0':
     optional: true
@@ -10571,6 +10611,8 @@ snapshots:
   hexoid@1.0.0: {}
 
   highlight.js@10.7.3: {}
+
+  hookable@5.5.3: {}
 
   hosted-git-info@2.8.9: {}
 
@@ -13706,6 +13748,8 @@ snapshots:
       validator: 13.12.0
     optionalDependencies:
       commander: 9.5.0
+
+  zhead@2.2.4: {}
 
   zip-stream@4.1.1:
     dependencies:
