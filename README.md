@@ -1,11 +1,11 @@
-# expresso with TypeORM
+# [express-api](https://github.com/masb0ymas/express-api) with TypeORM
 
 [![documentation](https://img.shields.io/badge/Documentation-yes-brightgreen.svg)](https://github.com/masb0ymas/expresso-typeorm#readme)
 [![maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/masb0ymas/expresso-typeorm/graphs/commit-activity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/masb0ymas/expresso-typeorm/blob/master/LICENSE.md)
 
 [![version](https://img.shields.io/badge/Version-5.0.0-blue.svg?cacheSeconds=2592000)](https://github.com/masb0ymas/expresso-typeorm/releases/tag/v5.0.0)
-[![Express](https://img.shields.io/badge/Express-4.19.2-informational?logo=express&color=22272E)](https://expressjs.com/)
+[![Express](https://img.shields.io/badge/Express-4.21.2-informational?logo=express&color=22272E)](https://expressjs.com/)
 ![Node](https://badges.aleen42.com/src/node.svg)
 ![Eslint](https://badges.aleen42.com/src/eslint.svg)
 ![TypeScript](https://badges.aleen42.com/src/typescript.svg)
@@ -13,7 +13,7 @@
 
 ## Feature
 
-- [TypeScript](https://github.com/microsoft/TypeScript) `5.5.x`
+- [TypeScript](https://github.com/microsoft/TypeScript) `5.8.x`
 - [TypeORM](https://github.com/typeorm/typeorm) `0.3.x`
 - [Nodemailer](https://github.com/nodemailer/nodemailer) `6.x`
 - [Handlebars](https://github.com/wycats/handlebars.js) for templating HTML
@@ -42,8 +42,6 @@ By Default branch `main` using `type: module`. If you want to use `CommonJS` you
 10. Run with docker image `docker run -p 7000:8000 -d yourname/express:v1.0.0`
 
 ## Author
-
-[**masb0ymas** (Resume)](https://resume.masb0ymas.com)
 
 [![Github](https://badges.aleen42.com/src/github.svg)](https://github.com/masb0ymas)
 [![Twitter](https://badges.aleen42.com/src/twitter.svg)](https://twitter.com/masb0ymas)
