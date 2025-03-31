@@ -22,9 +22,9 @@ export const AppDataSource = new DataSource({
 export const initDatabase = async () => {
   try {
     const connection = await AppDataSource.initialize()
-    logger.info('Database connection established:', connection.options.database)
-  } catch (error) {
-    logger.error('Failed to initialize database:', error)
+    logger.info(`Database connection established: ${connection.options.database}`)
+  } catch (error: any) {
+    logger.error(`Failed to initialize database: ${error.message}`)
     process.exit(1)
   }
 }
