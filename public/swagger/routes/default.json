@@ -1,9 +1,7 @@
 {
   "/": {
     "get": {
-      "tags": [
-        "Default"
-      ],
+      "tags": ["Default"],
       "summary": "Default Route",
       "security": [
         {
@@ -11,23 +9,15 @@
         }
       ],
       "responses": {
-        "200": {
-          "description": "Find all records"
-        },
-        "400": {
-          "description": "Something went wrong"
-        },
-        "500": {
-          "description": "Internal Server Error"
-        }
+        "200": { "description": "Find all records" },
+        "400": { "description": "Something went wrong" },
+        "500": { "description": "Internal Server Error" }
       }
     }
   },
   "/health": {
     "get": {
-      "tags": [
-        "Default"
-      ],
+      "tags": ["Default"],
       "summary": "Default Route",
       "security": [
         {
@@ -35,15 +25,9 @@
         }
       ],
       "responses": {
-        "200": {
-          "description": "Find all records"
-        },
-        "400": {
-          "description": "Something went wrong"
-        },
-        "500": {
-          "description": "Internal Server Error"
-        }
+        "200": { "description": "Find all records" },
+        "400": { "description": "Something went wrong" },
+        "500": { "description": "Internal Server Error" }
       }
     }
   }
