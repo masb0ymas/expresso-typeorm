@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from 'typeorm'
 import Hashing from '~/config/hashing'
-import { User } from '../schema/user'
+import { User } from '../entity/user'
 
 const hashing = new Hashing()
 

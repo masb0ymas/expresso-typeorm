@@ -1,7 +1,5 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, Relation } from 'typeorm'
 import { z } from 'zod'
-import { Base, BaseSchema } from './base'
-import { User } from './user'
+import { BaseSchema } from '../entity/base'
 
 // Schema
 export const sessionSchema = z.object({
@@ -20,34 +18,3 @@ export const sessionSchema = z.object({
 
 // Type
 export type SessionSchema = z.infer<typeof sessionSchema> & BaseSchema
-
-// Entity
-@Entity()
-export class Session extends Base {
-  @ManyToOne(() => User, (User) => User.sessions)
-  @JoinColumn({ name: 'user_id' })
-  user: Relation<User>
-
-  @Index()
-  @Column({ type: 'uuid' })
-  user_id: string
-
-  @Index()
-  @Column({ type: 'text' })
-  token: string
-
-  @Column({ nullable: true })
-  ip_address!: string
-
-  @Column({ nullable: true })
-  device!: string
-
-  @Column({ nullable: true })
-  platform!: string
-
-  @Column({ nullable: true })
-  latitude!: string
-
-  @Column({ nullable: true })
-  longitude!: string
-}

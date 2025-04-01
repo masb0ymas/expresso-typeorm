@@ -1,5 +1,6 @@
 import { AppDataSource } from '../database/connection'
-import { Role, roleSchema } from '../database/schema/role'
+import { Role } from '../database/entity/role'
+import { roleSchema } from '../database/schema/role'
 import BaseService from './base'
 
 export default class RoleService extends BaseService<Role> {

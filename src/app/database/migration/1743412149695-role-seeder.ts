@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { MigrationInterface, QueryRunner } from 'typeorm'
 import { ConstRole } from '~/lib/constant/seed/role'
 import { AppDataSource } from '../connection'
-import { Role } from '../schema/role'
+import { Role } from '../entity/role'
 
 const data = [
   {

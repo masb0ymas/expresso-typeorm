@@ -1,5 +1,6 @@
 import { AppDataSource } from '../database/connection'
-import { Session, sessionSchema } from '../database/schema/session'
+import { Session } from '../database/entity/session'
+import { sessionSchema } from '../database/schema/session'
 import BaseService from './base'
 
 export default class SessionService extends BaseService<Session> {

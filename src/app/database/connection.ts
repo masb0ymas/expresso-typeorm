@@ -14,7 +14,7 @@ export const AppDataSource = new DataSource({
   synchronize: env.TYPEORM_SYNCHRONIZE,
   logging: env.TYPEORM_LOGGING,
   migrationsRun: env.TYPEORM_MIGRATIONS_RUN,
-  entities: [`${process.cwd()}/dist/app/database/schema/**/*{.js,.ts}`],
+  entities: [`${process.cwd()}/dist/app/database/entity/**/*{.js,.ts}`],
   migrations: [`${process.cwd()}/dist/app/database/migration/**/*{.js,.ts}`],
   subscribers: [`${process.cwd()}/dist/app/database/subscriber/**/*{.js,.ts}`],
 })

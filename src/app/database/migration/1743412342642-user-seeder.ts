@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { env } from '~/config/env'
 import { ConstRole } from '~/lib/constant/seed/role'
 import { AppDataSource } from '../connection'
-import { User } from '../schema/user'
+import { User } from '../entity/user'
 
 const data = [
   {
