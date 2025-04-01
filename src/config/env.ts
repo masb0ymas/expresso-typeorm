@@ -18,4 +18,14 @@ export const env = {
   TYPEORM_LOGGING: validate.boolean(process.env.TYPEORM_LOGGING) || true,
   TYPEORM_MIGRATIONS_RUN: validate.boolean(process.env.TYPEORM_MIGRATIONS_RUN) || true,
   TYPEORM_TIMEZONE: process.env.TYPEORM_TIMEZONE || 'Asia/Jakarta',
+
+  STORAGE_PROVIDER: process.env.STORAGE_PROVIDER || 'gcs',
+  STORAGE_HOST: process.env.STORAGE_HOST || '',
+  STORAGE_PORT: validate.number(process.env.STORAGE_PORT),
+  STORAGE_ACCESS_KEY: process.env.STORAGE_ACCESS_KEY || '',
+  STORAGE_SECRET_KEY: process.env.STORAGE_SECRET_KEY || '',
+  STORAGE_BUCKET_NAME: process.env.STORAGE_BUCKET_NAME || '',
+  STORAGE_REGION: process.env.STORAGE_REGION || '',
+  STORAGE_SIGN_EXPIRED: process.env.STORAGE_SIGN_EXPIRED || '7d',
+  STORAGE_FILEPATH: process.env.STORAGE_FILEPATH || '',
 }
