@@ -2,7 +2,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, Relation } from 'typeorm'
 import { Base } from './base'
 import { User } from './user'
 
-@Entity()
+@Entity({ name: 'session' })
 export class Session extends Base {
   @ManyToOne(() => User, (User) => User.sessions)
   @JoinColumn({ name: 'user_id' })

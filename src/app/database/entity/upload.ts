@@ -1,7 +1,7 @@
 import { Column, DeleteDateColumn, Entity, Index } from 'typeorm'
 import { Base } from './base'
 
-@Entity()
+@Entity({ name: 'upload' })
 export class Upload extends Base {
   @Index()
   @DeleteDateColumn({ nullable: true })
@@ -9,7 +9,7 @@ export class Upload extends Base {
 
   @Index()
   @Column({ type: 'text' })
-  key_file: string
+  keyfile: string
 
   @Column({ type: 'text' })
   filename: string

@@ -18,7 +18,7 @@ import { Upload } from './upload'
 
 const hashing = new Hashing()
 
-@Entity()
+@Entity({ name: 'user' })
 @Unique(['email'])
 export class User extends Base {
   @Index()

@@ -1,7 +1,7 @@
 import { Column, DeleteDateColumn, Entity, Index } from 'typeorm'
 import { Base } from './base'
 
-@Entity()
+@Entity({ name: 'role' })
 export class Role extends Base {
   @Index()
   @DeleteDateColumn({ nullable: true })
