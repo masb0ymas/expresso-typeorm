@@ -2,12 +2,25 @@ import _ from 'lodash'
 import { FindOneOptions, In, ObjectLiteral, Repository } from 'typeorm'
 import { z } from 'zod'
 import ErrorResponse from '~/lib/http/errors'
+import { QueryBuilder } from '~/lib/query-builder'
 import { validate } from '~/lib/validate'
 
 type IProps<T extends ObjectLiteral> = {
   repository: Repository<T>
   schema: z.ZodType<any>
   model: string
+}
+
+type FindParams = {
+  page: number
+  pageSize: number
+  filtered: any
+  sorted: any
+}
+
+type DtoFindAll<T extends ObjectLiteral> = {
+  data: T[]
+  total: number
 }
 
 export default class BaseService<T extends ObjectLiteral> {
@@ -24,8 +37,20 @@ export default class BaseService<T extends ObjectLiteral> {
   /**
    * Find all
    */
-  async find(): Promise<T[]> {
-    return this.repository.find()
+  async find({ page, pageSize, filtered = [], sorted = [] }: FindParams): Promise<DtoFindAll<T>> {
+    const query = this.repository.createQueryBuilder(this._model)
+    const newQuery = QueryBuilder({
+      params: {
+        query,
+        model: this._model,
+        reqQuery: { page, pageSize, filtered, sorted },
+      },
+    })
+
+    const data = await newQuery.getMany()
+    const total = await newQuery.getCount()
+
+    return { data, total }
   }
 
   /**

@@ -9,7 +9,8 @@ const service = new UserService()
 route.get(
   '/',
   asyncHandler(async (req: Request, res: Response) => {
-    const records = await service.find()
+    const { page, pageSize, filtered, sorted } = req.getQuery()
+    const records = await service.find({ page, pageSize, filtered, sorted })
     const httpResponse = HttpResponse.get({ data: records })
     res.status(200).json(httpResponse)
   })
