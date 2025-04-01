@@ -3,9 +3,9 @@ import { BaseSchema } from '../entity/base'
 
 // Schema
 export const uploadSchema = z.object({
-  key_file: z
-    .string({ required_error: 'key_file is required' })
-    .min(3, { message: 'key_file must be at least 3 characters long' }),
+  keyfile: z
+    .string({ required_error: 'keyfile is required' })
+    .min(3, { message: 'keyfile must be at least 3 characters long' }),
   filename: z
     .string({ required_error: 'filename is required' })
     .min(3, { message: 'filename must be at least 3 characters long' }),
@@ -23,6 +23,6 @@ export const uploadSchema = z.object({
 
 // Type
 export type UploadSchema = z.infer<typeof uploadSchema> &
-  BaseSchema & {
-    deleted_at: Date | null
+  Partial<BaseSchema> & {
+    deleted_at?: Date | null
   }
