@@ -1,6 +1,9 @@
 import { ObjectLiteral } from 'typeorm'
 import { ApplySortParams, QuerySorts } from './types'
 
+/**
+ * Apply sort to query
+ */
 export function applySort<T extends ObjectLiteral>({
   query,
   sorts,

@@ -6,6 +6,9 @@ import { applyPagination } from './pagination'
 import { applySort } from './sorted'
 import { QueryBuilderParams } from './types'
 
+/**
+ * Query builder for TypeORM
+ */
 export function QueryBuilder<T extends ObjectLiteral>({ params, options }: QueryBuilderParams<T>) {
   const { query, model, reqQuery, options: opt } = params
 

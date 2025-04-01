@@ -2,6 +2,9 @@ import { ObjectLiteral } from 'typeorm'
 import { validate } from '../validate'
 import { ApplyFilterParams, QueryFilters } from './types'
 
+/**
+ * Apply filter
+ */
 export function applyFilter<T extends ObjectLiteral>({
   query,
   filters,

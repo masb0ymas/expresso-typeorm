@@ -2,6 +2,9 @@ import { ObjectLiteral } from 'typeorm'
 import { validate } from '../validate'
 import { ApplyPaginationParams, CalculatePageSizeParams } from './types'
 
+/**
+ * Calculate page size
+ */
 function _calculatePageSize({ pageSize, limit }: CalculatePageSizeParams) {
   const min = 10
   const parsePageSize = validate.number(pageSize)
@@ -13,6 +16,9 @@ function _calculatePageSize({ pageSize, limit }: CalculatePageSizeParams) {
   return min
 }
 
+/**
+ * Apply pagination to query
+ */
 export function applyPagination<T extends ObjectLiteral>({
   query,
   page,
