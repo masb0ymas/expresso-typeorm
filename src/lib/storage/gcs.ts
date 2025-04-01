@@ -44,10 +44,16 @@ export default class GoogleCloudStorage {
     })
   }
 
+  /**
+   * Generate keyfile
+   */
   private _generateKeyfile(values: string[]) {
     return values.join('/')
   }
 
+  /**
+   * Get expires object
+   */
   public expiresObject() {
     const getExpired = this._expires.replace(/[^0-9]/g, '')
 
@@ -57,6 +63,9 @@ export default class GoogleCloudStorage {
     return { expiresIn, expiryDate }
   }
 
+  /**
+   * Initialize storage
+   */
   async initialize() {
     const msgType = `${green('storage - google cloud storage')}`
     const bucketName = this._bucket
@@ -79,6 +88,9 @@ export default class GoogleCloudStorage {
     }
   }
 
+  /**
+   * Create bucket
+   */
   private async _createBucket() {
     const msgType = `${green('storage - google cloud storage')}`
     const bucketName = this._bucket
@@ -97,6 +109,9 @@ export default class GoogleCloudStorage {
     }
   }
 
+  /**
+   * Upload file
+   */
   async uploadFile({ directory, file }: UploadFileParams) {
     const keyfile = this._generateKeyfile([directory, file.filename])
 
@@ -112,12 +127,15 @@ export default class GoogleCloudStorage {
     }
 
     const data = await this.client.bucket(this._bucket).upload(file.path, options)
-    const signedUrl = await this.presignedURL(keyfile)
+    const signedUrl = await this.presignedUrl(keyfile)
 
     return { data: data[1], signedUrl }
   }
 
-  async presignedURL(keyfile: string) {
+  /**
+   * Generate presigned URL
+   */
+  async presignedUrl(keyfile: string) {
     const msgType = `${green('storage - google cloud storage')}`
     const bucketName = this._bucket
 

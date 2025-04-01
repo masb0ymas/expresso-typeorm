@@ -3,15 +3,17 @@ import MinIOStorage from './minio'
 import S3Storage from './s3'
 import { GoogleCloudStorageParams, MinIOStorageParams, S3StorageParams } from './types'
 
-export type StorageType = 's3' | 'minio' | 'gcs'
+type StorageType = 's3' | 'minio' | 'gcs'
 
-export type StorageParams = {
+type StorageParams = {
   storageType: StorageType
   params: S3StorageParams | MinIOStorageParams | GoogleCloudStorageParams
 }
 
+type StorageInstance = S3Storage | MinIOStorage | GoogleCloudStorage
+
 export default class Storage {
-  constructor({ storageType, params }: StorageParams) {
+  static create({ storageType, params }: StorageParams): StorageInstance {
     switch (storageType) {
       case 's3':
         // @ts-expect-error

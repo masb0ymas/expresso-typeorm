@@ -35,10 +35,16 @@ export default class MinIOStorage {
     })
   }
 
+  /**
+   * Generate keyfile
+   */
   private _generateKeyfile(values: string[]) {
     return values.join('/')
   }
 
+  /**
+   * Get expires object
+   */
   public expiresObject() {
     const getExpired = this._expires.replace(/[^0-9]/g, '')
 
@@ -48,6 +54,9 @@ export default class MinIOStorage {
     return { expiresIn, expiryDate }
   }
 
+  /**
+   * Initialize storage
+   */
   async initialize() {
     const msgType = `${green('storage - minio')}`
     const bucketName = this._bucket
@@ -62,6 +71,9 @@ export default class MinIOStorage {
     }
   }
 
+  /**
+   * Create bucket
+   */
   private async _createBucket() {
     const msgType = `${green('storage - minio')}`
     const bucketName = this._bucket
@@ -79,6 +91,9 @@ export default class MinIOStorage {
     }
   }
 
+  /**
+   * Upload file
+   */
   async uploadFile({ directory, file }: UploadFileParams) {
     const keyfile = this._generateKeyfile([directory, file.filename])
 
@@ -89,12 +104,15 @@ export default class MinIOStorage {
     }
 
     const data = await this.client.fPutObject(this._bucket, keyfile, file.path, options)
-    const signedUrl = await this.presignedURL(keyfile)
+    const signedUrl = await this.presignedUrl(keyfile)
 
     return { data, signedUrl }
   }
 
-  async presignedURL(keyfile: string) {
+  /**
+   * Generate presigned URL
+   */
+  async presignedUrl(keyfile: string) {
     const msgType = `${green('storage - minio')}`
     const bucketName = this._bucket
 
