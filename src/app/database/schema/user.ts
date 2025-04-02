@@ -7,7 +7,7 @@ const passwordSchema = z.object({
   confirm_new_password: z.string().min(8, 'confirm new password at least 8 characters'),
 })
 
-export const createPassword = passwordSchema.refine(
+export const createPasswordSchema = passwordSchema.refine(
   (data) => data.new_password === data.confirm_new_password,
   {
     message: "passwords don't match",
@@ -15,7 +15,7 @@ export const createPassword = passwordSchema.refine(
   }
 )
 
-export const changePassword = passwordSchema
+export const changePasswordSchema = passwordSchema
   .extend({
     current_password: z.string().min(8, 'current password at least 8 characters'),
   })
@@ -77,6 +77,7 @@ export type UserSchema = Omit<z.infer<typeof userSchema>, 'new_password' | 'conf
   }
 
 export type CreatePasswordSchema = z.infer<typeof passwordSchema>
+export type ChangePasswordSchema = z.infer<typeof changePasswordSchema>
 export type LoginSchema = z.infer<typeof loginSchema>
 export type UserLoginState = {
   uid: string

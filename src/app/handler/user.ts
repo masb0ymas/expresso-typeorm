@@ -10,7 +10,7 @@ route.get(
   '/',
   asyncHandler(async (req: Request, res: Response) => {
     const { page, pageSize, filtered, sorted } = req.getQuery()
-    const records = await service.find({ page, pageSize, filtered, sorted })
+    const records = await service.findWithRelations({ page, pageSize, filtered, sorted })
     const httpResponse = HttpResponse.get({ data: records })
     res.status(200).json(httpResponse)
   })
@@ -20,7 +20,7 @@ route.get(
   '/:id',
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
-    const record = await service.findById(id)
+    const record = await service.findByIdWithRelation(id)
     const httpResponse = HttpResponse.get({ data: record })
     res.status(200).json(httpResponse)
   })

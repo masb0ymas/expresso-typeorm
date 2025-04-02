@@ -4,31 +4,14 @@ import { z } from 'zod'
 import ErrorResponse from '~/lib/http/errors'
 import { QueryBuilder } from '~/lib/query-builder'
 import { validate } from '~/lib/validate'
-
-type IProps<T extends ObjectLiteral> = {
-  repository: Repository<T>
-  schema: z.ZodType<any>
-  model: string
-}
-
-type FindParams = {
-  page: number
-  pageSize: number
-  filtered: any
-  sorted: any
-}
-
-type DtoFindAll<T extends ObjectLiteral> = {
-  data: T[]
-  total: number
-}
+import { BaseServiceParams, DtoFindAll, FindParams } from './types'
 
 export default class BaseService<T extends ObjectLiteral> {
   public repository: Repository<T>
   private _schema: z.ZodType<any>
-  private _model: string
+  protected _model: string
 
-  constructor({ repository, schema, model }: IProps<T>) {
+  constructor({ repository, schema, model }: BaseServiceParams<T>) {
     this.repository = repository
     this._schema = schema
     this._model = model
@@ -56,7 +39,7 @@ export default class BaseService<T extends ObjectLiteral> {
   /**
    * Find one
    */
-  private async _findOne(options: FindOneOptions<T>): Promise<T> {
+  protected async _findOne(options: FindOneOptions<T>): Promise<T> {
     const record = await this.repository.findOne(options)
 
     if (!record) {
