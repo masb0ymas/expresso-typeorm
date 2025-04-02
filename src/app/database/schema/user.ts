@@ -68,6 +68,8 @@ export const loginSchema = z.object({
   password: z.string().min(2, "password can't be empty"),
   latitude: z.string().nullable(),
   longitude: z.string().nullable(),
+  ip_address: z.string().nullable().optional(),
+  user_agent: z.string().nullable().optional(),
 })
 
 // Type
