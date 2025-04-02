@@ -1,5 +1,6 @@
 import http from 'http'
 import { initDatabase } from './app/database/connection'
+import Job from './app/job'
 import { App } from './config/app'
 import { env } from './config/env'
 import { storage } from './config/storage'
@@ -19,6 +20,9 @@ function bootstrap() {
   if (isStorageEnabled) {
     storage.initialize()
   }
+
+  // initial job
+  Job.initialize()
 
   // http handle
   const { onError, onListening } = httpHandle(server, port)
