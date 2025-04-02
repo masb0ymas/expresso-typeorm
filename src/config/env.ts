@@ -28,4 +28,7 @@ export const env = {
   STORAGE_REGION: process.env.STORAGE_REGION || '',
   STORAGE_SIGN_EXPIRED: process.env.STORAGE_SIGN_EXPIRED || '7d',
   STORAGE_FILEPATH: process.env.STORAGE_FILEPATH || '',
+
+  JWT_SECRET: process.env.JWT_SECRET || 'your_secret_key',
+  JWT_EXPIRES: process.env.JWT_EXPIRES || '7d',
 }

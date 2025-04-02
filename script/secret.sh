@@ -19,6 +19,7 @@ echo " - Detecting OS version: $OS_VERSION"
 TYPEORM_PASSWORD=$(openssl rand -hex 16)
 APP_DEFAULT_PASS=$(openssl rand -hex 8)
 APP_SECRET=$(openssl rand -base64 32)
+JWT_SECRET=$(openssl rand -base64 32)
 
 echo " - Generating secure values..."
 
@@ -43,6 +44,7 @@ if [ -f "$BASE_ENV_FILE" ]; then
   $SED_CMD "s|^TYPEORM_PASSWORD=.*|TYPEORM_PASSWORD='$TYPEORM_PASSWORD'|" "$ENV_FILE"
   $SED_CMD "s|^APP_DEFAULT_PASS=.*|APP_DEFAULT_PASS='$APP_DEFAULT_PASS'|" "$ENV_FILE"
   $SED_CMD "s|^APP_SECRET=.*|APP_SECRET='$APP_SECRET'|" "$ENV_FILE"
+  $SED_CMD "s|^JWT_SECRET=.*|JWT_SECRET='$JWT_SECRET'|" "$ENV_FILE"
 
   echo " - Secrets have been generated and saved to $ENV_FILE file"
 else
