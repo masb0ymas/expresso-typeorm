@@ -12,6 +12,7 @@ import { Session } from '../database/entity/session'
 import { User } from '../database/entity/user'
 import { LoginSchema, loginSchema, UserLoginState, userSchema } from '../database/schema/user'
 import SessionService from './session'
+import { fromUnixTime } from 'date-fns'
 
 type VerifySessionParams = {
   user_id: string
@@ -108,7 +109,8 @@ export default class AuthService {
         email: getUser.email,
         uid: getUser.id,
         access_token: token,
-        expires_at: expiresIn,
+        expires_at: new Date(Date.now() + expiresIn * 1000),
+        expires_in: expiresIn,
         is_admin,
       }
     })

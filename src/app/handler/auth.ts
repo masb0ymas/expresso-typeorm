@@ -46,7 +46,16 @@ route.post(
       data,
       message: 'Login successfully',
     })
-    res.status(200).json(httpResponse)
+
+    res
+      .status(200)
+      .cookie('token', data.access_token, {
+        maxAge: Number(data.expires_in) * 1000,
+        httpOnly: true,
+        path: '/v1',
+        secure: process.env.NODE_ENV === 'production',
+      })
+      .json(httpResponse)
   })
 )
 
