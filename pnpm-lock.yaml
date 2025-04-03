@@ -32,6 +32,9 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
+      cronstrue:
+        specifier: ^2.57.0
+        version: 2.57.0
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -1362,6 +1365,10 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  cronstrue@2.57.0:
+    resolution: {integrity: sha512-gQOfxJa1RA9uDT4hx37NshhX4dW9t9zTCtIYu15LUziH+mkpuLXYcSEyM8ZewMJ2p8UVuHGjI3n4hGpu3HtCbg==, tarball: https://registry.npmjs.org/cronstrue/-/cronstrue-2.57.0.tgz}
+    hasBin: true
 
   cross-spawn@6.0.6:
     resolution: {integrity: sha512-VqCUuhcd1iB+dsv8gxPttb5iZh/D0iubSP21g36KXdEuf6I5JiioesUVjpCdHV9MZRUfVFlvwtIUyPfxo5trtw==, tarball: https://registry.npmjs.org/cross-spawn/-/cross-spawn-6.0.6.tgz}
@@ -5367,6 +5374,8 @@ snapshots:
       parse-json: 5.2.0
     optionalDependencies:
       typescript: 5.8.2
+
+  cronstrue@2.57.0: {}
 
   cross-spawn@6.0.6:
     dependencies:
