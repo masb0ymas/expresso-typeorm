@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express'
 import { asyncHandler } from '~/lib/async-handler'
+import { ConstRole } from '~/lib/constant/seed/role'
 import HttpResponse from '~/lib/http/response'
 import authorization from '../middleware/authorization'
+import { permissionAccess } from '../middleware/with-permission'
 import RoleService from '../service/role'
 
 const route = express.Router()
@@ -10,6 +12,7 @@ const service = new RoleService()
 route.get(
   '/',
   authorization(),
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async (req: Request, res: Response) => {
     const { page, pageSize, filtered, sorted } = req.getQuery()
     const records = await service.find({ page, pageSize, filtered, sorted })
@@ -21,6 +24,7 @@ route.get(
 route.get(
   '/:id',
   authorization(),
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     const record = await service.findById(id)
@@ -32,6 +36,7 @@ route.get(
 route.post(
   '/',
   authorization(),
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async (req: Request, res: Response) => {
     const values = req.getBody()
     const record = await service.create(values)
@@ -43,6 +48,7 @@ route.post(
 route.put(
   '/:id',
   authorization(),
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     const values = req.getBody()
@@ -55,6 +61,7 @@ route.put(
 route.put(
   '/restore/:id',
   authorization(),
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     await service.restore(id)
@@ -66,6 +73,7 @@ route.put(
 route.delete(
   '/soft-delete/:id',
   authorization(),
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     await service.softDelete(id)
@@ -77,6 +85,7 @@ route.delete(
 route.delete(
   '/force-delete/:id',
   authorization(),
+  permissionAccess(ConstRole.ROLE_ADMIN),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     await service.forceDelete(id)

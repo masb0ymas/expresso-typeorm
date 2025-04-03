@@ -1,12 +1,14 @@
 import { green } from 'colorette'
 import { NextFunction, Request, Response } from 'express'
+import { In } from 'typeorm'
 import { logger } from '~/config/logger'
+import { asyncHandler } from '~/lib/async-handler'
 import { AppDataSource } from '../database/connection'
 import { User } from '../database/entity/user'
 import { UserLoginState } from '../database/schema/user'
 
 export function permissionAccess(roleIds: string[]) {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const repo = {
       user: AppDataSource.getRepository(User),
     }
@@ -31,11 +33,11 @@ export function permissionAccess(roleIds: string[]) {
     }
 
     next()
-  }
+  })
 }
 
 export function notPermittedAccess(roleIds: string[]) {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const repo = {
       user: AppDataSource.getRepository(User),
     }
@@ -60,5 +62,5 @@ export function notPermittedAccess(roleIds: string[]) {
     }
 
     next()
-  }
+  })
 }
