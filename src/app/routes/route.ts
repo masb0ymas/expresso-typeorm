@@ -16,7 +16,7 @@ function versioning() {
 
 route.get(
   '/',
-  asyncHandler((_req: Request, res: Response) => {
+  asyncHandler(async (_req: Request, res: Response) => {
     const httpResponse = HttpResponse.get({ data: 'Hello World!' })
     res.status(200).json(httpResponse)
   })
@@ -24,7 +24,7 @@ route.get(
 
 route.get(
   '/health',
-  asyncHandler((_req: Request, res: Response) => {
+  asyncHandler(async (_req: Request, res: Response) => {
     const startUsage = process.cpuUsage()
     const version = versioning()
 

@@ -134,7 +134,7 @@ export default class AuthService {
       throw new ErrorResponse.BadRequest('user id not match')
     }
 
-    return session
+    return { ...user, session }
   }
 
   /**

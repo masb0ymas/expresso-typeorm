@@ -5,6 +5,8 @@ import ErrorResponse from '~/lib/http/errors'
 import HttpResponse from '~/lib/http/response'
 import JwtToken from '~/lib/token/jwt'
 import { UserLoginState } from '../database/schema/user'
+import authorization from '../middleware/authorization'
+import { UserAgentState } from '../middleware/user-agent'
 import AuthService from '../service/auth'
 
 const route = express.Router()
@@ -29,7 +31,17 @@ route.post(
   '/sign-in',
   asyncHandler(async (req: Request, res: Response) => {
     const values = req.getBody()
-    const data = await service.login(values)
+    const userAgentState = req.getState('userAgent') as UserAgentState
+    const clientIp = req.getState('clientIp') as string
+
+    const data = await service.login({
+      ...values,
+      ip_address: clientIp,
+      device: userAgentState.device,
+      platform: userAgentState.platform,
+      user_agent: userAgentState.source,
+    })
+
     const httpResponse = HttpResponse.get({
       data,
       message: 'Login successfully',
@@ -40,11 +52,12 @@ route.post(
 
 route.get(
   '/verify-session',
+  authorization(),
   asyncHandler(async (req: Request, res: Response) => {
     const token = jwt.extract(req)
     const { uid: user_id } = req.getState('userLoginState') as UserLoginState
 
-    const data = await service.verifySession({ token, user_id })
+    const data = await service.verifySession({ token: String(token), user_id })
     const httpResponse = HttpResponse.get({
       data,
       message: 'Session verified successfully',
@@ -55,6 +68,7 @@ route.get(
 
 route.post(
   '/sign-out',
+  authorization(),
   asyncHandler(async (req: Request, res: Response) => {
     const formData = req.getBody()
 
@@ -65,7 +79,7 @@ route.post(
       throw new ErrorResponse.Forbidden('you are not allowed')
     }
 
-    const { message } = await service.logout({ token, user_id })
+    const { message } = await service.logout({ token: String(token), user_id })
 
     const httpResponse = HttpResponse.get({ message })
     res.status(200).json(httpResponse)
