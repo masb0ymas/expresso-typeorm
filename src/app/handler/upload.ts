@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import { asyncHandler } from '~/lib/async-handler'
 import HttpResponse from '~/lib/http/response'
+import authorization from '../middleware/authorization'
 import UploadService from '../service/upload'
 
 const route = express.Router()
@@ -8,6 +9,7 @@ const service = new UploadService()
 
 route.get(
   '/',
+  authorization(),
   asyncHandler(async (req: Request, res: Response) => {
     const { page, pageSize, filtered, sorted } = req.getQuery()
     const records = await service.find({ page, pageSize, filtered, sorted })
@@ -18,6 +20,7 @@ route.get(
 
 route.get(
   '/:id',
+  authorization(),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     const record = await service.findById(id)
@@ -28,6 +31,7 @@ route.get(
 
 route.post(
   '/',
+  authorization(),
   asyncHandler(async (req: Request, res: Response) => {
     const values = req.getBody()
     const record = await service.create(values)
@@ -38,6 +42,7 @@ route.post(
 
 route.put(
   '/:id',
+  authorization(),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     const values = req.getBody()
@@ -49,6 +54,7 @@ route.put(
 
 route.put(
   '/restore/:id',
+  authorization(),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     await service.restore(id)
@@ -59,6 +65,7 @@ route.put(
 
 route.delete(
   '/soft-delete/:id',
+  authorization(),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     await service.softDelete(id)
@@ -69,6 +76,7 @@ route.delete(
 
 route.delete(
   '/force-delete/:id',
+  authorization(),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.getParams()
     await service.forceDelete(id)
