@@ -31,19 +31,19 @@ export default class JwtToken {
   /**
    * Extract token from request
    */
-  extract(req: Request) {
+  extract(req: Request): string | null {
     const queryToken = _.get(req, 'query.token', undefined)
     const cookieToken = _.get(req, 'cookies.token', undefined)
     const headerToken = _.get(req, 'headers.authorization', undefined)
 
     if (queryToken) {
       logger.info('Token extracted from query')
-      return queryToken
+      return String(queryToken)
     }
 
     if (cookieToken) {
       logger.info('Token extracted from cookie')
-      return cookieToken
+      return String(cookieToken)
     }
 
     if (headerToken) {
@@ -55,7 +55,7 @@ export default class JwtToken {
       }
 
       logger.info('Token extracted from header')
-      return splitAuthorize[1]
+      return String(splitAuthorize[1])
     }
 
     logger.info('Token not found')
