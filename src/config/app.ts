@@ -1,11 +1,14 @@
 import compression from 'compression'
+import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
 import userAgent from 'express-useragent'
 import helmet from 'helmet'
+import hpp from 'hpp'
 import path from 'path'
 import requestIp from 'request-ip'
 import expressErrorHandle from '~/app/middleware/error-handle'
+import expressErrorTypeorm from '~/app/middleware/error-typeorm'
 import expressErrorValidation from '~/app/middleware/error-validation'
 import expressRateLimit from '~/app/middleware/rate-limit'
 import expressUserAgent from '~/app/middleware/user-agent'
@@ -31,8 +34,10 @@ export class App {
     this._app.use(express.urlencoded({ extended: true }))
     this._app.use(express.static(path.resolve(`${__dirname}/public`)))
     this._app.use(compression())
+    this._app.use(cookieParser())
     this._app.use(helmet())
     this._app.use(cors({ origin: allowedCors }))
+    this._app.use(hpp())
     this._app.use(requestIp.mw())
     this._app.use(userAgent.express())
 
@@ -61,6 +66,9 @@ export class App {
   public get create() {
     // @ts-expect-error
     this._app.use(expressErrorValidation)
+
+    // @ts-expect-error
+    this._app.use(expressErrorTypeorm)
 
     // @ts-expect-error
     this._app.use(expressErrorHandle)
