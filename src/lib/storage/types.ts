@@ -1,3 +1,7 @@
+import GoogleCloudStorage from './gcs'
+import MinIOStorage from './minio'
+import S3Storage from './s3'
+
 export type UploadFileParams = {
   directory: string
   file: FileParams
@@ -39,3 +43,12 @@ export type MinIOStorageParams = {
   port: number
   ssl: boolean
 }
+
+export type StorageType = 's3' | 'minio' | 'gcs'
+
+export type StorageParams = {
+  storageType: StorageType
+  params: S3StorageParams | MinIOStorageParams | GoogleCloudStorageParams
+}
+
+export type StorageInstance = S3Storage | MinIOStorage | GoogleCloudStorage

@@ -1,13 +1,14 @@
 import Storage from '~/lib/storage'
-import { GoogleCloudStorageParams } from '~/lib/storage/types'
+import { S3StorageParams, StorageType } from '~/lib/storage/types'
 import { env } from './env'
 
 export const storage = Storage.create({
-  storageType: 'gcs',
+  storageType: env.STORAGE_PROVIDER as StorageType,
   params: {
     access_key: env.STORAGE_ACCESS_KEY,
+    secret_key: env.STORAGE_SECRET_KEY,
     bucket: env.STORAGE_BUCKET_NAME,
     expires: env.STORAGE_SIGN_EXPIRED,
-    filepath: env.STORAGE_FILEPATH,
-  } as GoogleCloudStorageParams,
+    region: env.STORAGE_REGION,
+  } as S3StorageParams,
 })
