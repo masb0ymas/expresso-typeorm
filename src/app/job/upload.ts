@@ -1,3 +1,4 @@
+import cronstrue from 'cronstrue'
 import cron from 'node-cron'
 import { env } from '~/config/env'
 import { logger } from '~/config/logger'
@@ -17,7 +18,7 @@ export default class UploadJob {
 
     const task = cron.schedule(cronExpression, () => {
       service.updateSignedUrl()
-      logger.info(`Schedule update signed url, schedule at ${cronExpression}`)
+      logger.info(`Schedule update signed url, schedule at ${cronstrue.toString(cronExpression)}`)
     })
 
     return task
