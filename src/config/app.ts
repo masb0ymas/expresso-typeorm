@@ -1,11 +1,14 @@
 import compression from 'compression'
 import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
+import userAgent from 'express-useragent'
 import helmet from 'helmet'
 import path from 'path'
+import requestIp from 'request-ip'
 import expressErrorHandle from '~/app/middleware/error-handle'
 import expressErrorValidation from '~/app/middleware/error-validation'
 import expressRateLimit from '~/app/middleware/rate-limit'
+import expressUserAgent from '~/app/middleware/user-agent'
 import expressWithState from '~/app/middleware/with-state'
 import { Route } from '~/app/routes/route'
 import { allowedCors } from '~/lib/constant/allowed-cors'
@@ -30,9 +33,12 @@ export class App {
     this._app.use(compression())
     this._app.use(helmet())
     this._app.use(cors({ origin: allowedCors }))
+    this._app.use(requestIp.mw())
+    this._app.use(userAgent.express())
 
     this._app.use(expressRateLimit())
     this._app.use(expressWithState())
+    this._app.use(expressUserAgent())
   }
 
   private _routes() {
