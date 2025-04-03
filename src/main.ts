@@ -1,43 +1,36 @@
-import 'reflect-metadata'
-import { blue, green } from 'colorette'
-import { logger } from 'expresso-core'
 import http from 'http'
-import _ from 'lodash'
+import { initDatabase } from './app/database/connection'
+import Job from './app/job'
 import { App } from './config/app'
 import { env } from './config/env'
-import { httpHandle } from './core/modules/http/handle'
-import { AppDataSource } from './database/datasource'
+import { storage } from './config/storage'
+import { storageExists } from './lib/boolean'
+import { httpHandle } from './lib/http/handle'
 
-async function bootstrap() {
+function bootstrap() {
   const port = env.APP_PORT
-  const app = new App().create()
-
+  const app = new App().create
   const server = http.createServer(app)
+  const isStorageEnabled = storageExists()
 
-  // connect to database
-  const msgType = green('typeorm')
+  // initial database
+  initDatabase()
 
-  try {
-    const connection = await AppDataSource.initialize()
-
-    const dbName = blue(`${_.get(connection, 'options.database', '')}`)
-    const dbConnect = blue(`${_.get(connection, 'options.type', '')}`)
-
-    const message = `database ${dbName}, connection ${dbConnect} has been established successfully.`
-    logger.info(`${msgType} - ${message}`)
-
-    // http handle
-    const { onError, onListening } = httpHandle(server, port)
-
-    // run server listen
-    server.listen(port)
-    server.on('error', onError)
-    server.on('listening', onListening)
-  } catch (error) {
-    const message = `unable to connect to the database: ${error}`
-    logger.error(`${msgType} - err, ${message}`)
-    process.exit(1)
+  // initial storage
+  if (isStorageEnabled) {
+    storage.initialize()
   }
+
+  // initial job
+  Job.initialize()
+
+  // http handle
+  const { onError, onListening } = httpHandle(server, port)
+
+  // run server listen
+  server.listen(port)
+  server.on('error', onError)
+  server.on('listening', onListening)
 }
 
 bootstrap()
