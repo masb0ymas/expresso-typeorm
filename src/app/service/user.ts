@@ -1,5 +1,5 @@
 import ErrorResponse from '~/lib/http/errors'
-import { QueryBuilder } from '~/lib/query-builder'
+import { useQuery } from '~/lib/query-builder'
 import { validate } from '~/lib/validate'
 import { AppDataSource } from '../database/connection'
 import { User } from '../database/entity/user'
@@ -31,12 +31,10 @@ export default class UserService extends BaseService<User> {
       .leftJoinAndSelect(`${this._model}.upload`, 'upload')
       .leftJoinAndSelect(`${this._model}.sessions`, 'sessions')
 
-    const newQuery = QueryBuilder({
-      params: {
-        query,
-        model: this._model,
-        reqQuery: { page, pageSize, filtered, sorted },
-      },
+    const newQuery = useQuery({
+      query,
+      model: this._model,
+      reqQuery: { page, pageSize, filtered, sorted },
     })
 
     const data = await newQuery.getMany()

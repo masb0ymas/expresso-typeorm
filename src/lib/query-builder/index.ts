@@ -1,15 +1,16 @@
 import _ from 'lodash'
 import { ObjectLiteral, SelectQueryBuilder } from 'typeorm'
+import { env } from '~/config/env'
 import { validate } from '../validate'
 import { applyFilter } from './filtered'
 import { applyPagination } from './pagination'
 import { applySort } from './sorted'
-import { QueryBuilderParams } from './types'
+import { QueryBuilderParams, QueryParams } from './types'
 
 /**
  * Query builder for TypeORM
  */
-export function QueryBuilder<T extends ObjectLiteral>({
+function QueryBuilder<T extends ObjectLiteral>({
   params,
   options,
 }: QueryBuilderParams<T>): SelectQueryBuilder<T> {
@@ -40,4 +41,17 @@ export function QueryBuilder<T extends ObjectLiteral>({
   })
 
   return query
+}
+
+type ConnectType = 'postgres' | 'mysql' | 'mariadb'
+
+/**
+ * Use query builder
+ */
+export function useQuery<T extends ObjectLiteral>(params: QueryParams<T>) {
+  const connectType = env.TYPEORM_CONNECTION as ConnectType
+  return QueryBuilder({
+    params,
+    options: { type: connectType },
+  })
 }

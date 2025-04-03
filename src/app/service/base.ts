@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { FindOneOptions, In, ObjectLiteral, Repository } from 'typeorm'
 import { z } from 'zod'
 import ErrorResponse from '~/lib/http/errors'
-import { QueryBuilder } from '~/lib/query-builder'
+import { useQuery } from '~/lib/query-builder'
 import { validate } from '~/lib/validate'
 import { BaseServiceParams, DtoFindAll, FindParams } from './types'
 
@@ -22,12 +22,10 @@ export default class BaseService<T extends ObjectLiteral> {
    */
   async find({ page, pageSize, filtered = [], sorted = [] }: FindParams): Promise<DtoFindAll<T>> {
     const query = this.repository.createQueryBuilder(this._model)
-    const newQuery = QueryBuilder({
-      params: {
-        query,
-        model: this._model,
-        reqQuery: { page, pageSize, filtered, sorted },
-      },
+    const newQuery = useQuery({
+      query,
+      model: this._model,
+      reqQuery: { page, pageSize, filtered, sorted },
     })
 
     const data = await newQuery.getMany()
