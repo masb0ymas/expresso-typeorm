@@ -25,6 +25,9 @@ export class Session extends Base {
   @Column({ nullable: true })
   platform!: string
 
+  @Column({ type: 'text', nullable: true })
+  user_agent!: string
+
   @Column({ nullable: true })
   latitude!: string
 

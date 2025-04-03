@@ -69,6 +69,8 @@ export const loginSchema = z.object({
   latitude: z.string().nullable(),
   longitude: z.string().nullable(),
   ip_address: z.string().nullable().optional(),
+  device: z.string().nullable().optional(),
+  platform: z.string().nullable().optional(),
   user_agent: z.string().nullable().optional(),
 })
 

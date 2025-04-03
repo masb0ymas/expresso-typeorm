@@ -12,6 +12,7 @@ export const sessionSchema = z.object({
   ip_address: z.string({ required_error: 'ip_address is required' }).nullable().optional(),
   device: z.string({ required_error: 'device is required' }).nullable().optional(),
   platform: z.string({ required_error: 'platform is required' }).nullable().optional(),
+  user_agent: z.string({ required_error: 'user_agent is required' }).nullable().optional(),
   latitude: z.string({ required_error: 'latitude is required' }).nullable().optional(),
   longitude: z.string({ required_error: 'longitude is required' }).nullable().optional(),
 })
