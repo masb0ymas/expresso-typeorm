@@ -50,8 +50,5 @@ type ConnectType = 'postgres' | 'mysql' | 'mariadb'
  */
 export function useQuery<T extends ObjectLiteral>(params: QueryParams<T>) {
   const connectType = env.TYPEORM_CONNECTION as ConnectType
-  return QueryBuilder({
-    params,
-    options: { type: connectType },
-  })
+  return QueryBuilder({ params, options: { type: connectType } })
 }
