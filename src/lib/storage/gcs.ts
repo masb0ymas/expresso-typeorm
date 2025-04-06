@@ -4,7 +4,7 @@ import { addDays } from 'date-fns'
 import fs from 'fs'
 import path from 'path'
 import { logger } from '~/config/logger'
-import { __dirname } from '~/lib/string'
+import { currentDir } from '~/lib/string'
 import { ms } from '../date'
 import { GoogleCloudStorageParams, UploadFileParams } from './types'
 
@@ -20,7 +20,7 @@ export default class GoogleCloudStorage {
     this._access_key = params.access_key
     this._bucket = params.bucket
     this._expires = params.expires
-    this._filepath = path.resolve(`${__dirname}/${params.filepath}`)
+    this._filepath = path.resolve(`${currentDir}/${params.filepath}`)
 
     const msgType = `${green('storage - google cloud storage')}`
 

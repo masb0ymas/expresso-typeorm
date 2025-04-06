@@ -3,9 +3,9 @@ import { randomUUID } from 'crypto'
 import path from 'path'
 import pino from 'pino'
 import { pinoHttp } from 'pino-http'
-import { __dirname } from '~/lib/string'
+import { currentDir } from '~/lib/string'
 
-const logDir = path.resolve(`${__dirname}/logs`)
+const logDir = path.resolve(`${currentDir}/logs`)
 
 const fileTransport = pino.transport({
   target: 'pino/file',
