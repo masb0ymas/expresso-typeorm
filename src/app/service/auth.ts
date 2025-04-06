@@ -2,8 +2,10 @@ import _ from 'lodash'
 import { Repository } from 'typeorm'
 import { v4 as uuidv4 } from 'uuid'
 import { env } from '~/config/env'
+import { mailExists } from '~/lib/boolean'
 import { ConstRole } from '~/lib/constant/seed/role'
 import ErrorResponse from '~/lib/http/errors'
+import { SendEmailRegistration } from '~/lib/smtp/template/auth'
 import JwtToken from '~/lib/token/jwt'
 import { validate } from '~/lib/validate'
 import { AppDataSource } from '../database/connection'
@@ -12,7 +14,6 @@ import { Session } from '../database/entity/session'
 import { User } from '../database/entity/user'
 import { LoginSchema, loginSchema, UserLoginState, userSchema } from '../database/schema/user'
 import SessionService from './session'
-import { fromUnixTime } from 'date-fns'
 
 type VerifySessionParams = {
   user_id: string
@@ -36,6 +37,7 @@ export default class AuthService {
    */
   async register(formData: any) {
     const uuid = uuidv4()
+    const isMailEnabled = mailExists()
 
     const payload = JSON.parse(JSON.stringify({ uid: uuid }))
     const { token } = jwt.generate(payload)
@@ -50,9 +52,18 @@ export default class AuthService {
       upload_id: null,
     })
 
-    const formRegister: any = { ...values, password: validate.empty(formData.new_password) }
+    // @ts-expect-error
+    const formRegister: User = { ...values, password: validate.empty(formData.new_password) }
     const userEntity = new User()
     const data = await this._repository.save({ ...userEntity, ...formRegister })
+
+    if (isMailEnabled) {
+      await SendEmailRegistration({
+        fullname: values.fullname,
+        email: values.email,
+        url_token: token,
+      })
+    }
 
     return data
   }
